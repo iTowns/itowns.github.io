@@ -345,6 +345,12 @@
 				color: white;
 			}
 
+			
+            .icon.circle.fa-vimeo {
+                background: #17b4e8;
+                color: white;
+            }
+			
 				.icon.circle.fa-github:hover {
 					background: #e1b89b;
 				}
