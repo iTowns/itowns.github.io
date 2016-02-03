@@ -517,8 +517,8 @@ aside#sidebar p.repo-owner a {
 }
 
 a.button {
-  width: 134px;
-  height: 58px;
+  width: 202px;
+  height: 78px;
   padding-top: 22px;
   padding-left: 68px;
   font-family: 'Helvetica Neue', Helvetica, Arial, serif;
@@ -538,7 +538,8 @@ header a.button {
 }
 aside a.button {
   display: block;
-  width: 138px;
+  width: 202px;
+  height: 78px;
   padding-left: 64px;
   margin-bottom: 20px;
   font-size: 21px;
@@ -617,7 +618,7 @@ form {
   font-family: 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 2.8em;
   font-weight: normal;
-  color: #474747;
+  color: #404e73;
   text-indent: 6px;
   letter-spacing: -1px;
 }
@@ -634,7 +635,7 @@ form {
   font-family: 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 22px;
   font-weight: bold;
-  color: #474747;
+  color: #404e73;
   text-indent: 4px;
 }
 #main-content h2:before {
@@ -650,7 +651,7 @@ form {
   font-family: 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 18px;
   font-weight: bold;
-  color: #474747;
+  color: #404e73;
   text-indent: 3px;
 }
 
@@ -666,7 +667,7 @@ form {
   font-family: 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 15px;
   font-weight: bold;
-  color: #474747;
+  color: #404e73;
   text-indent: 3px;
 }
 
@@ -681,7 +682,7 @@ h4:before {
   margin-bottom: 8px;
   font-family: 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 14px;
-  color: #474747;
+  color: #404e73;
   text-indent: 3px;
 }
 h5:before {
@@ -695,7 +696,7 @@ h5:before {
   margin-bottom: 8px;
   font-family: 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: .8em;
-  color: #474747;
+  color: #404e73;
   text-indent: 3px;
 }
 h6:before {
