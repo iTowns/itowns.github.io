@@ -1110,3 +1110,9 @@
 			display: inline-block;
 			width: 5em;
 		}
+		
+code,
+.code {
+    background: #eee;
+    padding: 20px;
+}
