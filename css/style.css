@@ -612,6 +612,15 @@
 			padding: 4em;
 		}
 
+        .wrapper.style5 {
+            background-color: #80b4b4;
+            background-image: url("images/light-bl.svg"), url("images/light-br.svg");
+            background-position: bottom left, bottom right;
+            background-repeat: no-repeat, no-repeat;
+            background-size: 25em, 25em;
+            color: white;
+        }
+		
 /* Header */
 	@-moz-keyframes reveal-header { 0% { top: -5em; } 100% { top: 0; } }
 	@-webkit-keyframes reveal-header { 0% { top: -5em; } 100% { top: 0; } }
@@ -1110,9 +1119,16 @@
 			display: inline-block;
 			width: 5em;
 		}
-		
+
+/* Custom */
 code,
 .code {
     background: #eee;
     padding: 20px;
+}
+
+
+.fa-bar-chart-o:before, .fa-bar-chart:before {
+/*     content: "\f080"; */
+    content: url("../images/itowns_sphere_100_deluxe_grey.png");
 }
