@@ -657,7 +657,7 @@ form {
 
 #main-content h3:before {
   padding-right: 0.3em;
-  margin-left: -2em;
+/*   margin-left: -2em; */
   content: url('../images/itowns_sphere_16.png');
   position:relative;
 }
@@ -673,8 +673,8 @@ form {
 
 h4:before {
   padding-right: 0.3em;
-  margin-left: -2.8em;
-  content: "////";
+/*   margin-left: -2.8em; */
+/*   content: "////"; */
   color: #9ddcff;
 }
 
