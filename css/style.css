@@ -847,7 +847,7 @@
 			color: white;
 			display: inline-block;
 			opacity: 0;
-			padding: 3em;
+			padding: 2em;
 			text-align: center;
 		}
 
@@ -855,7 +855,7 @@
 				display: inline-block;
 /* 				border-bottom: solid 2px; */
 /* 				border-top: solid 2px; */
-				margin: 0 0 2em 0;
+				margin: 0 0 0 0;
 				padding: 3px 0 3px 0;
 			}
 
@@ -1174,10 +1174,11 @@ a.follow_github {
   margin-top: 20px;
   margin-bottom: 20px;
   font-size: 16px;
-  background: transparent url(../images/github-button-grey.png) 0 0 no-repeat;
+  background: transparent url(../images/github-button.png) 0 0 no-repeat;
   text-decoration: none;
   border-bottom: none;
   margin: 0 auto;
+  color: white;
 }
 a.download_github {
   display: block;
