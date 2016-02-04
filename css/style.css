@@ -1132,3 +1132,34 @@ code,
 /*     content: "\f080"; */
     content: url("../images/itowns_sphere_100_deluxe_grey.png");
 }
+
+/* Github specifics */
+
+a.follow_github {
+/*   position: absolute; */
+/*   top: 0; */
+/*   right: 0; */
+  display: block;
+  width: 202px;
+  height: 79px;
+  padding-left: 64px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  background: transparent url(../images/github-button-grey.png) 0 0 no-repeat;
+  text-decoration: none;
+  border-bottom: none;
+  margin: 0 auto;
+}
+a.download_github {
+  display: block;
+  width: 202px;
+  height: 79px;
+  padding-left: 64px;
+  margin-bottom: 20px;
+  font-size: 21px;
+  background: transparent url(../images/download-button.png) 0 0 no-repeat;
+  text-decoration: none;
+  border-bottom: none;
+  margin: 0 auto;
+}
