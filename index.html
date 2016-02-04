@@ -28,17 +28,29 @@ layout: landing-page
                 </section>
 
                 <section id="data_types" class="wrapper style4 container special-alt">
-                    <h2>Supported data types</h2>
-                    <ul>
-                        <li>Oriented images</li>
-                        <li>Panoramic images</li>
-                        <li>Point Clouds</li>
-                        <li>3D textured models</li>
-                        <li>WFS Vector</li>
-                    </ul>
-                    <p>
-                        The V1 of iTowns Open Source is the core of the original iTowns from IGN Matis lab. As such, it contains a subset of the original application features.
-                    </p>
+                    <div class="row half">
+                        <div class="6u">
+                            <h2>Supported data types</h2>
+                            <ul>
+                                <li>Oriented images</li>
+                                <li>Panoramic images</li>
+                                <li>Point Clouds</li>
+                                <li>3D textured models</li>
+                                <li>WFS Vector</li>
+                            </ul>
+                        </div>
+                        <div class="6u">
+                            <p>
+                                The V1 of iTowns Open Source is the core of the original iTowns from IGN Matis lab. As such, it contains a subset of the original application features.
+                            </p>
+                            <p>
+                                <a href="https://github.com/iTowns/github.io/zipball/master" class="download_github">
+                                    <small>Download v1.0</small>
+                                    .zip file
+                                </a>
+                            </p>
+
+                        </div>
                 </section>
 
                 <section id="features" class="wrapper style5 container special-alt">
@@ -47,7 +59,8 @@ layout: landing-page
                         <li>Load and project Oriented Images on mesh (cube or city model)</li>
                         <li>Load and display Panoramic Images</li>
                         <li>Load Depth Panoramic Image and render in 3D</li>
-                        <li>Load 2D multipolygons with height (building footprint) from WFS or local file and triangulate it to create building boxes. This mesh can then be use for texture projection.</li>
+                        <li>Load 2D multipolygons with height (building footprint) from WFS or local file</li>
+                        <li>Triangulate 2D multipolygons to create building boxes (this mesh can then be use for texture projection)</li>
                         <li>Navigate through Image Data using click and go functions</li>
                         <li>Load and display Point Cloud from PLY files.</li>
                         <li>Load and display 3D textured models (B3D, 3DS).</li>
@@ -56,7 +69,7 @@ layout: landing-page
 
                     </section>
 
-                    <section id="sample_data" class="wrapper style2 container special-alt">
+                <section id="sample_data" class="wrapper style2 container special-alt">
                     <h2>Sample data</h2>
                     <p>
                     You can test iTowns with a provided sample data set, courtesy of French IGN.
@@ -76,47 +89,30 @@ layout: landing-page
                 <section id="get_started" class="wrapper style4 container special-alt">
                 <h2>Getting started</h2>
                 <p>
-                    <a href="https://github.com/iTowns/github.io/zipball/master" class="download_github">
-                        <small>Download v1.0</small>
-                        .zip file
-                    </a>
-                </p>
-                <p>
                 You have to clone the iTowns and sample data repositories, start a webserver, and you have a running demo.
                 <br />
                 Open a command line and run :
                 </p>
 
                 <div class="code">
-                    git clone https://github.com/iTowns/itowns.git itowns<br />
+                    git clone https://github.com/iTowns/itowns.git<br />
                     git clone https://github.com/iTowns/itowns-sample-data.git<br />
-                    cd itowns<br />
-                    ln -s ../itowns-sample-data ./data<br />
                     python -m SimpleHTTPServer<br />
                </div>
 
                 <p>
-                Now open http://localhost:8000 in a browser and enjoy !
+                Now open <strong>http://localhost:8000/itowns/</strong> in a browser and enjoy !
                 </p>
                 </section>
 
                 <!-- One -->
                 <section id="video" class="wrapper style5 container special-alt">
-                    <div class="row half">
-                        <div class="8u">
-                            <header>
-                                <h2>Watch <strong>video</strong> of iTowns.</h2>
-                            </header>
-                            <p>The following video shows iTowns in action.</p>
-                            <iframe src="https://player.vimeo.com/video/154052505" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                            <p><a href="https://vimeo.com/154052505">iTowns - A webgl mapping application-HD</a> from <a href="https://vimeo.com/user48543162">itowns</a>.</p>		
-                        </div>
-                        <div class="4u skel-cell-important">
-                            <ul class="featured-icons">
-                                <li><span class="icon fa-cog"><span class="label">Feature 6</span></span></li>
-                            </ul>
-                        </div>
-                    </div>
+                    <header>
+                        <h2>Watch <strong>video</strong> of iTowns.</h2>
+                    </header>
+                    <p>The following video shows iTowns in action.</p>
+                    <iframe src="https://player.vimeo.com/video/154052505" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                    <p><a href="https://vimeo.com/154052505">iTowns - A webgl mapping application-HD</a> from <a href="https://vimeo.com/user48543162">itowns</a>.</p>		
                 </section>
 
                     <section  id="demo" class="wrapper style2 container special-alt">
@@ -139,46 +135,34 @@ layout: landing-page
                 <!-- Two -->
                 <section  id="credits" class="wrapper style1 container special">
                     <div class="row">
-                        <div class="4u">
+                        <div class="6u">
                             <section>
                                 <span class="icon featured fa-check"></span>
                                 <header>
-                                    <h3>Notes</h3>
+                                    <h3>Support</h3>
                                 </header>
-                                <p>The application should be able to work without the need of a local database or PHP scripts. But you will still need to have a local server running like apache.</p>
-                            </section>
-                        </div>
-                        <div class="4u">
-                            <section>
-                                <span class="icon featured fa-check"></span>
-                                <header>
-                                    <h3>Roadmap items</h3>
-                                </header>
-                                <p>The following tasks are currently worked on :
-                                <ul>
-                                    <li>Code simplification</li>
-                                    <li>Documentation</li>
-                                    <li>Offline examples</li>
-                                    <li>Python code for data preparation</li>
-                                    <li>Meanwhile, <a href="https://github.com/iTowns/itowns2">iTowns version 2</a> is also at the design phase.</li>
-                                </ul>
+                                <p>iTowns is currently maintained by <strong><a href="http://www.ign.fr">IGN</a></strong> and <strong><a href="http://www.oslandia.com">Oslandia</a></strong></p>
+
+                                <a href="http://www.ign.fr"><img src="images/logo_ign.png" alt="logo IGN"></a>
+                                <a href="http://www.oslandia.com"><img src="images/logo_oslandia.png" alt="logo Oslandia"></a>
+                                
+                                <p>
+                                You may consult the <strong><a href="https://lists.osgeo.org/pipermail/itowns-user/">user</a></strong> 
+                                and <strong><a href="https://lists.osgeo.org/pipermail/itowns-dev/">developper</a></strong> mailing lists.
+                                <br />
+                                You may also consult <strong><a href="https://github.com/iTowns/itowns/issues">tickets</a></strong> for version 1.
                                 </p>
                             </section>
+                        </div>
+                        <div class="6u">
+                            <section>
+                                <span class="icon featured fa-check"></span>
+                                <header>
+                                    <h3>Origins</h3>
+                                </header>
+                                <p>iTowns is an original work from <strong>French IGN, MATIS research laboratory</strong>. It has been funded through various research programs involving the French National Research Agency, Cap Digital, UPMC, Mines ParisTec, CNRS, LCPC.</p>
+                            </section>
 
-                            </div>
-                            <div class="4u">
-                                <section>
-                                    <span class="icon featured fa-check"></span>
-                                    <header>
-                                        <h3>Support</h3>
-                                    </header>
-                                    <p>iTowns is an original work from <strong>French IGN, MATIS research laboratory</strong>. It has been funded through various research programs involving the French National Research Agency, Cap Digital, UPMC, Mines ParisTec, CNRS, LCPC.
-                                    <br />
-                                    iTowns is currently maintained by <strong><a href="http://www.ign.fr">IGN</a></strong> and <strong><a href="http://www.oslandia.com">Oslandia</a></strong></p>
-
-                                    <a href="http://www.ign.fr"><img src="images/logo_ign.png" alt="logo IGN"></a>
-                                    <a href="http://www.oslandia.com"><img src="images/logo_oslandia.png" alt="logo Oslandia"></a>
-                                </section>
                             </div>
                         </div>
                     </section>
