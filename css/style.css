@@ -1130,6 +1130,8 @@ code,
 
 .fa-bar-chart-o:before, .fa-bar-chart:before {
     content: url("../images/itowns_sphere_100_deluxe_grey.png");
+    display: block;
+    margin-top: -50px;
 }
 
 section ul li:before {
