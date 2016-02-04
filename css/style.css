@@ -1140,6 +1140,10 @@ section ul li:before {
   color: #ccc;
 }
 
+section#banner ul li:before {
+    content: "";
+    padding: 0;
+}
 
 /* Github specifics */
 
