@@ -1133,6 +1133,14 @@ code,
     content: url("../images/itowns_sphere_100_deluxe_grey.png");
 }
 
+section ul li:before {
+  padding-right: 0.3em;
+/*   margin-left: -2.8em; */
+  content: "///";
+  color: #ccc;
+}
+
+
 /* Github specifics */
 
 a.follow_github {
