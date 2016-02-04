@@ -1129,13 +1129,11 @@ code,
 
 
 .fa-bar-chart-o:before, .fa-bar-chart:before {
-/*     content: "\f080"; */
     content: url("../images/itowns_sphere_100_deluxe_grey.png");
 }
 
 section ul li:before {
   padding-right: 0.3em;
-/*   margin-left: -2.8em; */
   content: "///";
   color: #ccc;
 }
@@ -1145,12 +1143,20 @@ section#banner ul li:before {
     padding: 0;
 }
 
+#credits a {
+    border-bottom: none;
+}
+#credits a img {
+    margin-left: 10px;
+}
+
+section img {
+    max-width: 100%;
+}
+
 /* Github specifics */
 
 a.follow_github {
-/*   position: absolute; */
-/*   top: 0; */
-/*   right: 0; */
   display: block;
   width: 202px;
   height: 79px;
