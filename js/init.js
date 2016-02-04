@@ -130,7 +130,7 @@
             // Webgl
             var webglEnabled = webgl_detect();
             if(!webglEnabled) {
-                alert("Your browser does not seem to support WebGL. Demo will not work.");
+                alert("Your browser does not seem to support WebGL, or is disabled. Demo will not work.");
             }
             else {
                 loadDemo();
