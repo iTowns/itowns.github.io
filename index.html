@@ -126,9 +126,11 @@ layout: landing-page
                             <div class="8u">
                                 <header>
                                     <h2>Try it !</h2>
+                                    Click <span id="launchDemo" class="a_like">here</span> to launch or <a href="http://itowns.github.io/itowns/">Open demo in full screen</a>.
                                 </header>
-                                <iframe src="http://itowns.github.io/itowns/" width="600" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                                <a href="http://itowns.github.io/itowns/">Open demo in full screen</a>
+<!--                                 <iframe id="iframe_demo" src="http://itowns.github.io/itowns/" width="600" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> -->
+                                <iframe id="iframe_demo" src="" width="600" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                                
                             </div>
                             <div class="4u skel-cell-important">
                                 <ul class="featured-icons">
@@ -257,29 +259,3 @@ layout: landing-page
                     </ul>-->
                 </footer>
             </section>
-
-<script>
-    var canvas;
-    var ctx;
-    var exts;
-
-    try {
-        canvas = createElement('canvas');
-        ctx = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-        exts = ctx.getSupportedExtensions();
-        console.log("WebGL supported");
-    }
-    catch (e) {
-        console.log("WebGL not supported");
-    }
-
-    if (ctx !== undefined) {
-        Modernizr.webglextensions = new Boolean(true);
-    }
-
-    for (var i = -1, len = exts.length; ++i < len; ){
-        Modernizr.webglextensions[exts[i]] = true;
-    }
-
-    canvas = undefined;
-</script>

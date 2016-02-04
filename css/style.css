@@ -35,7 +35,8 @@
 		line-height: 1.75em;
 	}
 
-	a {
+	a,
+    .a_like {
 		-moz-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
 		-webkit-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
 		-o-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
@@ -1154,6 +1155,10 @@ section#banner ul li:before {
 
 section img {
     max-width: 100%;
+}
+
+.a_like {
+    cursor: pointer;
 }
 
 /* Github specifics */
