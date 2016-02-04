@@ -173,6 +173,5 @@ function webgl_detect(return_context)
 function loadDemo() {
     var demoUrl = "http://itowns.github.io/itowns/";
     var el = document.getElementById('iframe_demo');
-    //$("#iframe_demo").src = demoUrl;
     el.src = demoUrl;
 }
