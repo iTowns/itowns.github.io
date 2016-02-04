@@ -1,24 +1,23 @@
 ---
 layout: landing-page
----		
-		<!-- Main -->
-			<article id="main">
+---
+        <!-- Main -->
+            <article id="main">
 
-				<header class="special container">
-					<span class="icon fa-bar-chart-o"></span>
-					Welcome on <strong>iTowns</strong> website.
-					<br />
-					Scroll down to learn more about the project,
-					<br />
-					see <strong><a href="#video">videos</a></strong> or try a <strong><a href="#demo">live demo</a></strong>.
-<!-- 					<p>Get the code</p> -->
+                <header class="special container">
+                    <span class="icon fa-bar-chart-o"></span>
+                    Welcome on <strong>iTowns</strong> website.
+                    <br />
+                    Scroll down to learn more about the project,
+                    <br />
+                    see <strong><a href="#video">videos</a></strong> or try a <strong><a href="#demo">live demo</a></strong>.
                     <br />
                     <br />
                     <a href="https://github.com/iTowns" class="follow_github"><small>Follow us on</small> GitHub</a>
 
-				</header>
-					
-                <section class="wrapper style2 container special-alt">
+                </header>
+
+                <section id="what" class="wrapper style2 container special-alt">
                 <h2>What is it?</h2>
                 <p>
                 iTowns is a web framework written in Javascript/WebGL for visualisation of 3D geographic data allowing precise measurements in 3D. Its first purpose was the visualisation of street view images and terrestrial lidar point cloud. It has then been extended to handle more data types.
@@ -29,7 +28,7 @@ layout: landing-page
                 </p>
                 </section>
 
-                <section class="wrapper style4 container special-alt">
+                <section id="data_types" class="wrapper style4 container special-alt">
                 <h2>Supported data types</h2>
                 <ul>
                 <li>Oriented images</li>
@@ -43,7 +42,7 @@ layout: landing-page
                 </p>
                 </section>
 
-                <section class="wrapper style5 container special-alt">
+                <section id="features" class="wrapper style5 container special-alt">
                 <h2>Features</h2>
                 <ul>
                 <li>Load and project Oriented Images on mesh (cube or city model)</li>
@@ -58,7 +57,7 @@ layout: landing-page
 
                 </section>
 
-                <section class="wrapper style2 container special-alt">
+                <section id="sample_data" class="wrapper style2 container special-alt">
                 <h2>Sample data</h2>
                 <p>
                 You can test iTowns with a provided sample data set, courtesy of French IGN.
@@ -76,7 +75,7 @@ layout: landing-page
                 </section>
 
 		
-                <section class="wrapper style4 container special-alt">
+                <section id="get_started" class="wrapper style4 container special-alt">
                 <h2>Getting started</h2>
                 <p>
                     <a href="https://github.com/iTowns/github.io/zipball/master" class="download_github">
@@ -92,22 +91,18 @@ layout: landing-page
                 </p>
 
                 <div class="code">
-    
-    
                     git clone https://github.com/iTowns/itowns.git itowns<br />
                     git clone https://github.com/iTowns/itowns-sample-data.git<br />
                     cd itowns<br />
                     ln -s ../itowns-sample-data ./data<br />
                     python -m SimpleHTTPServer<br />
-
-    
                </div>
-               
+
                 <p>
                 Now open http://localhost:8000 and enjoy !
                 </p>
                 </section>
-		
+
 				<!-- One -->
 					<section id="video" class="wrapper style5 container special-alt">
 						<div class="row half">
@@ -116,66 +111,38 @@ layout: landing-page
 								<header>
 									<h2>Watch <strong>video</strong> of iTowns.</h2>
 								</header>
-								<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu comteger ut fermentum lorem. Lorem ipsum dolor sit amet. Sed tristique purus vitae volutpat ultrices. eu elit eget commodo. Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo.</p>
-<iframe src="https://player.vimeo.com/video/154052505" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-<p><a href="https://vimeo.com/154052505">iTowns - A webgl mapping application-HD</a> from <a href="https://vimeo.com/user48543162">itowns</a> on <a href="https://vimeo.com">Vimeo</a>.</p>								
-<!--								<footer>
-									<ul class="buttons">
-										<li><a href="#" class="button">Find Out More</a></li>
-									</ul>
-								</footer>-->
-							
+								<p>The following video shows iTowns in action.</p>
+                                <iframe src="https://player.vimeo.com/video/154052505" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                                <p><a href="https://vimeo.com/154052505">iTowns - A webgl mapping application-HD</a> from <a href="https://vimeo.com/user48543162">itowns</a> on <a href="https://vimeo.com">Vimeo</a>.</p>		
 							</div>
 							<div class="4u skel-cell-important">
 							
 								<ul class="featured-icons">
-<!-- 									<li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li> -->
-<!-- 									<li><span class="icon fa-volume-up"><span class="label">Feature 2</span></span></li> -->
-<!-- 									<li><span class="icon fa-laptop"><span class="label">Feature 3</span></span></li> -->
-<!-- 									<li><span class="icon fa-inbox"><span class="label">Feature 4</span></span></li> -->
-<!-- 									<li><span class="icon fa-lock"><span class="label">Feature 5</span></span></li> -->
 									<li><span class="icon fa-cog"><span class="label">Feature 6</span></span></li>
 								</ul>
 							
 							</div>				
 						</div>
 					</section>
-					
-					
-					
+
                     <section  id="demo" class="wrapper style2 container special-alt">
                         <div class="row half">
                             <div class="8u">
-                            
                                 <header>
                                     <h2>Try it !</h2>
                                 </header>
-<iframe src="http://itowns.github.io/itowns/" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>                           
-<!--                                <footer>
-                                    <ul class="buttons">
-                                        <li><a href="#" class="button">Find Out More</a></li>
-                                    </ul>
-                                </footer>-->
-                            
+                                <iframe src="http://itowns.github.io/itowns/" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>                           
                             </div>
                             <div class="4u skel-cell-important">
-                            
                                 <ul class="featured-icons">
-<!--                                    <li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li> -->
-<!--                                    <li><span class="icon fa-volume-up"><span class="label">Feature 2</span></span></li> -->
-<!--                                    <li><span class="icon fa-laptop"><span class="label">Feature 3</span></span></li> -->
-<!--                                    <li><span class="icon fa-inbox"><span class="label">Feature 4</span></span></li> -->
-<!--                                    <li><span class="icon fa-lock"><span class="label">Feature 5</span></span></li> -->
                                     <li><span class="icon fa-laptop"><span class="label">Feature 6</span></span></li>
                                 </ul>
-                            
-                            </div>              
+                            </div>
                         </div>
                     </section>
-                    					
-					
+
 				<!-- Two -->
-					<section class="wrapper style1 container special">
+					<section  id="credits" class="wrapper style1 container special">
 						<div class="row">
 							<div class="4u">
 							
@@ -225,9 +192,6 @@ layout: landing-page
 							</div>
 						</div>
 					</section>
-					
-					
-					
 					
 				<!-- Three -->
 <!--
