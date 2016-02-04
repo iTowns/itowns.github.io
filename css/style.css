@@ -1157,9 +1157,12 @@ section img {
     max-width: 100%;
 }
 
-.a_like {
+.a_like,
+.clickable_img {
     cursor: pointer;
 }
+
+
 
 /* Github specifics */
 

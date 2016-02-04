@@ -126,13 +126,17 @@
 			}
 
         // Demo
-        $( "#launchDemo" ).click(function() {
+        $("#iframe_demo").hide();
+        //$("#launchDemo").click(function() {
+        $("#thumb_demo").click(function() {
             // Webgl
             var webglEnabled = webgl_detect();
             if(!webglEnabled) {
                 alert("Your browser does not seem to support WebGL, or is disabled. Demo will not work.");
             }
             else {
+                $("#thumb_demo").hide();
+                $("#iframe_demo").show();
                 loadDemo();
             }
         });
