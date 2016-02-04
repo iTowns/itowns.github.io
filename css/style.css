@@ -118,8 +118,8 @@
 	}
 
 	header.special {
-		margin-bottom: 5em;
-		padding-top: 7em;
+		margin-bottom: 1em;
+		padding-top: 5em;
 		position: relative;
 		text-align: center;
 	}
@@ -914,7 +914,7 @@
 			}
 
 	body.index #main {
-		padding-top: 5em;
+		padding-top: 3em;
 	}
 
 /* CTA */
