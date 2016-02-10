@@ -175,7 +175,7 @@ function webgl_detect(return_context)
 }
 
 function loadDemo() {
-    var demoUrl = "//itowns.github.io/itowns-sample-data/";
+    var demoUrl = "v1demo.html";
     var el = document.getElementById('iframe_demo');
     el.src = demoUrl;
 }
