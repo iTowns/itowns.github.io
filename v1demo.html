@@ -112,7 +112,7 @@
     <div id="containerITOWNS" tabindex="1" ></div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <script src="//itowns.github.io/itowns/dist/itowns.js"></script>
+    <script src="http://www.itowns.github.io/itowns/dist/itowns.js"></script>
     <script>
 
       var itowns;
@@ -123,7 +123,7 @@
          itowns = new API({
             images : {
           // HTTP access to itowns sample datasets
-              url : "//itowns-project.org/{lod}/images/{YYMMDD}/Paris-{YYMMDD}_0740-{cam.id}-00001_{pano.id:07}.jpg",
+              url : "http://www.itowns-project.org/{lod}/images/{YYMMDD}/Paris-{YYMMDD}_0740-{cam.id}-00001_{pano.id:07}.jpg",
               lods : ['itowns-sample-data-small', 'itowns-sample-data'],
           /*
           // IIP server access    
@@ -132,10 +132,10 @@
               url : "http://{website}/cgi-bin/iipsrv.fcgi?FIF=/{path}/{YYMMDD}/Paris-{YYMMDD}_0740-{cam.id}-00001_{pano.id:07}.jp2&WID={lod.w}&QLT={lod.q}&CVT=JPEG",
               lods : [{w:32,q:50},{w:256,q:80},{w:2048,q:80}],
           */    
-              cam       : "//itowns-project.org/itowns-sample-data/cameraCalibration.json",
-              pano      : "//itowns-project.org/itowns-sample-data/panoramicsMetaData.json",
-              buildings : "//itowns-project.org/itowns-sample-data/buildingFootprint.json",
-              DTM       : "//itowns-project.org/itowns-sample-data/dtm.json",
+              cam       : "http://www.itowns-project.org/itowns-sample-data/cameraCalibration.json",
+              pano      : "http://www.itowns-project.org/itowns-sample-data/panoramicsMetaData.json",
+              buildings : "http://www.itowns-project.org/itowns-sample-data/buildingFootprint.json",
+              DTM       : "http://www.itowns-project.org/itowns-sample-data/dtm.json",
               YYMMDD : function() {
                 var d = new Date(this.pano.date);
                 return (""+d.getUTCFullYear()).slice(-2) + ("0"+(d.getUTCMonth()+1)).slice(-2) + ("0" + d.getUTCDate()).slice(-2);
@@ -150,12 +150,12 @@
             pointCloud : { 
               offset : {x:650000,y:0,z:6860000},
               delta : 30,
-              url : '//itowns-project.org/itowns-sample-data/pointclouds/{images.YYMMDD}/{lod}/{id}.bin',
+              url : 'http://itowns-project.org/itowns-sample-data/pointclouds/{images.YYMMDD}/{lod}/{id}.bin',
               bitsPerAttribute : 32,
               lods : ['LR','HR'],
               id : function() { return parseInt(10*this.images.seconds()); }
             },
-            buildings : { url: "//itowns-project.org/itowns-sample-data/Buildings3D/"},
+            buildings : { url: "http://www.itowns-project.org/itowns-sample-data/Buildings3D/"},
             position  : { x:651182.91,y:39.6,z:6861343.03 }
          });
 
