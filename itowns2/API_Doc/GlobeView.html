@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: GlobeView</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: GlobeView</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>GlobeView</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="GlobeView"><span class="type-signature"></span>new GlobeView<span class="signature">(viewerDiv, coordCarto, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Creates the viewer Globe (the globe of iTowns).
+The first parameter is the coordinates on wich the globe will be centered at the initialization.
+The second one is the HTML div in wich the scene will be created.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>viewerDiv</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLDivElement</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Where to instanciate the Three.js scene in the DOM</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>coordCarto</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">see <a href="View.html">View</a></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Prefab_GlobeView.js.html">Core/Prefab/GlobeView.js</a>, <a href="Core_Prefab_GlobeView.js.html#line86">line 86</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>view = new GlobeView(viewer, positionOnGlobe);
+// positionOnGlobe in latitude, longitude and altitude</code></pre>
+
+
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="View.html">View</a></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="addLayer"><span class="type-signature"></span>addLayer<span class="signature">(layer, parentLayer<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Layer.html">Layer</a>|GeometryLayer}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Add layer in viewer.
+The layer id must be unique.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>layer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#LayerOptions">LayerOptions</a></span>
+|
+
+<span class="param-type"><a href="Layer.html">Layer</a></span>
+|
+
+<span class="param-type">GeometryLayer</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parentLayer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Layer.html">Layer</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="View.html#addLayer">View#addLayer</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line211">line 211</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Layer.html">Layer</a></span>
+|
+
+<span class="param-type">GeometryLayer</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Add Color Layer
+view.addLayer({
+     type: 'elevation',
+     id: 'iElevation',
+});
+
+// Example to add an OPENSM Layer
+view.addLayer({
+  type: 'color',
+  protocol:   'wmtsc',
+  id:         'OPENSM',
+  fx: 2.5,
+  customUrl:  'http://b.tile.openstreetmap.fr/osmfr/%TILEMATRIX/%COL/%ROW.png',
+  options: {
+      attribution : {
+          name: 'OpenStreetMap',
+          url: 'http://www.openstreetmap.org/',
+      },
+      tileMatrixSet: 'PM',
+      mimetype: 'image/png',
+   },
+});
+
+// Add Elevation Layer
+view.addLayer({
+     type: 'elevation',
+     id: 'iElevation',
+});</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getLayers"><span class="type-signature"></span>getLayers<span class="signature">(filter)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="Layer.html">Layer</a>>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Get all layers, with an optionnal filter applied.
+The filter method will be called with 2 args:
+  - 1st: current layer
+  - 2nd: (optional) the geometry layer to which the current layer is attached
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>filter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="View.html#getLayers">View#getLayers</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line261">line 261</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;<a href="Layer.html">Layer</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// get all layers
+view.getLayers();
+// get all color layers
+view.getLayers(layer => layer.type === 'color');
+// get all elevation layers
+view.getLayers(layer => layer.type === 'elevation');
+// get all geometry layers
+view.getLayers(layer => layer.type === 'geometry');
+// get one layer with id
+view.getLayers(layer => layer.id === 'itt');</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="notifyChange"><span class="type-signature"></span>notifyChange<span class="signature">(needsRedraw, changeSource)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Notifies the scene it needs to be updated due to changes exterior to the
+scene itself (e.g. camera movement).
+non-interactive events (e.g: texture loaded)
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>needsRedraw</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">indicates if notified change requires a full scene redraw.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>changeSource</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="View.html#notifyChange">View#notifyChange</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line237">line 237</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="removeLayer"><span class="type-signature"></span>removeLayer<span class="signature">(layerId)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Removes a specific imagery layer from the current layer list. This removes layers inserted with attach().
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>layerId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The identifier</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Prefab_GlobeView.js.html">Core/Prefab/GlobeView.js</a>, <a href="Core_Prefab_GlobeView.js.html#line292">line 292</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>view.removeLayer('layerId');</code></pre>
+
+
+
+        
+    
+
+    
+
+    
+        <h3 class="subsection-title">Events</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="event:initialized">initialized</h4>
+
+    
+
+
+
+<div class="description">
+    Fires when the view is completely loaded. Controls and view's functions can be called then.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">view</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">dispatched on view</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">initialized</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Prefab_GlobeView.js.html">Core/Prefab/GlobeView.js</a>, <a href="Core_Prefab_GlobeView.js.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="event:layer-added">layer-added</h4>
+
+    
+
+
+
+<div class="description">
+    Fires when a layer is added
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>layerId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the id of the layer</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">view</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">dispatched on view</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">layers-added</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Prefab_GlobeView.js.html">Core/Prefab/GlobeView.js</a>, <a href="Core_Prefab_GlobeView.js.html#line27">line 27</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="event:layer-removed">layer-removed</h4>
+
+    
+
+
+
+<div class="description">
+    Fires when a layer is removed
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>layerId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the id of the layer</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">view</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">dispatched on view</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">layers-added</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Prefab_GlobeView.js.html">Core/Prefab/GlobeView.js</a>, <a href="Core_Prefab_GlobeView.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="event:layers-order-changed">layers-order-changed</h4>
+
+    
+
+
+
+<div class="description">
+    Fires when the layers oder has changed
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>new</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sequence</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>0</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the new layer at position 0</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the new layer at position 1</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the new layer at position 2</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>previous</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sequence</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>0</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the previous layer at position 0</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the previous layer at position 1</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the previous layer at position 2</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">view</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">dispatched on view</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">layers-order-changed</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Prefab_GlobeView.js.html">Core/Prefab/GlobeView.js</a>, <a href="Core_Prefab_GlobeView.js.html#line41">line 41</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coordinates.html">Coordinates</a></li><li><a href="GlobeControls.html">GlobeControls</a></li><li><a href="GlobeView.html">GlobeView</a></li><li><a href="Layer.html">Layer</a></li><li><a href="View.html">View</a></li></ul><h3>Events</h3><ul><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="Layer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="Layer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="Layer.html#event:visible-property-changed">visible-property-changed</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Jul 04 2017 08:19:50 GMT+0000 (UTC)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
