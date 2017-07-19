@@ -1,163 +1,163 @@
 ---
 layout: landing-page
 ---
-        <!-- Main -->
-            <article id="main">
+<!-- Main -->
+<article id="main">
 
-                <header class="special container">
-                    <span class="icon fa-bar-chart-o"></span>
-                </header>
+    <header class="special container">
+        <span class="icon fa-bar-chart-o"></span>
+    </header>
 
-                <section id="what" class="wrapper style2 container special-alt">
-                <h2>What is it?</h2>
+    <section id="what" class="wrapper style2 container special-alt">
+        <h2>What is it?</h2>
+        <p>
+        iTowns is a web framework written in Javascript/WebGL for the visualisation of 3D geographic data and precise 3D measurements. It supports a variety of data types, allowing, among other applications, the visualisation of street view images and terrestrial lidar point cloud.
+        <br />
+        <br />
+        <img src="images/sample_itowns.jpg" alt="itowns sample">
+
+        </p>
+    </section>
+
+    <section id="data_types" class="wrapper style4 container special-alt">
+        <div class="row half">
+            <div class="6u">
+                <h2>Supported data types</h2>
+                <ul>
+                    <li>Oriented images</li>
+                    <li>Panoramic images</li>
+                    <li>Point Clouds</li>
+                    <li>3D textured models</li>
+                    <li>WFS Vector</li>
+                </ul>
+            </div>
+            <div class="6u">
                 <p>
-                iTowns is a web framework written in Javascript/WebGL for the visualisation of 3D geographic data and precise 3D measurements. It supports a variety of data types, allowing, among other applications, the visualisation of street view images and terrestrial lidar point cloud.
-                <br />
-                <br />
-                <img src="images/sample_itowns.jpg" alt="itowns sample">
-
+                iTowns Open Source V1 is the core of the original iTowns from the IGN (French geographical institute) Matis lab. This framework contains a set of features for 3D visualization.
                 </p>
-                </section>
-
-                <section id="data_types" class="wrapper style4 container special-alt">
-                    <div class="row half">
-                        <div class="6u">
-                            <h2>Supported data types</h2>
-                            <ul>
-                                <li>Oriented images</li>
-                                <li>Panoramic images</li>
-                                <li>Point Clouds</li>
-                                <li>3D textured models</li>
-                                <li>WFS Vector</li>
-                            </ul>
-                        </div>
-                        <div class="6u">
-                            <p>
-                                iTowns Open Source V1 is the core of the original iTowns from the IGN (French geographical institute) Matis lab. This framework contains a set of features for 3D visualization.
-                            </p>
-                            <p>
-                                <a href="https://github.com/iTowns/itowns/archive/v1.0.zip" class="download_github">
-                                    <small>Download v1.0</small>
-                                    .zip file
-                                </a>
-                            </p>
-
-                        </div>
-                </section>
-
-                <section id="features" class="wrapper style5 container special-alt">
-                    <h2>Features</h2>
-                    <ul>
-                        <li>Load and project Oriented Images on mesh (cube or city model)</li>
-                        <li>Load and display Panoramic Images</li>
-                        <li>Load Depth Panoramic Image and render in 3D</li>
-                        <li>Load 2D multipolygons with height (building footprint) from WFS or local file</li>
-                        <li>Triangulate 2D multipolygons to create building boxes (that can then be used for texture projection)</li>
-                        <li>Navigate through Image Data using click and go functions</li>
-                        <li>Load and display Point Cloud from PLY files.</li>
-                        <li>Load and display 3D textured models (B3D, 3DS).</li>
-                        <li>Simple API interface.</li>
-                    </ul>
-
-                    </section>
-
-                <section id="sample_data" class="wrapper style2 container special-alt">
-                    <h2>Sample data</h2>
-                    <p>
-                    You can test iTowns with a sample data set, courtesy of the IGN.
-                    <br />
-                    The sample data is here : <a href="https://github.com/iTowns/itowns-sample-data">https://github.com/iTowns/itowns-sample-data</a>
-                    <br />
-                    It includes :
-                    <br />
-                    <ul>
-                        <li>250 Oriented Images (50 Panoramics, 192 MB)</li>
-                        <li>1 patch (500 * 500m) of 3D textured city models (BATI3D, 50 MB)</li>
-                        <li>Terrestrial PointCloud (20 Millions point, 400 MB)</li>
-                        <li>JSON of building footprints and DTM (500 kB)</li>
-                    </ul>
-                </section>
-
-                <section id="get_started" class="wrapper style4 container special-alt">
-                <h2>Getting started</h2>
                 <p>
-                You have to clone the iTowns and sample data repositories and start a webserver to have a running demo.
-                <br />
-                Open a command line and run:
+                <a href="https://github.com/iTowns/itowns/archive/v1.0.zip" class="download_github">
+                    <small>Download v1.0</small>
+                    .zip file
+                </a>
                 </p>
 
-                <div class="code">
-                    git clone -b gh-pages https://github.com/iTowns/itowns.git<br />
-                    git clone https://github.com/iTowns/itowns-sample-data.git<br />
-                    python -m SimpleHTTPServer<br />
-               </div>
+            </div>
+    </section>
 
-                <p>
-                Now open <strong>http://localhost:8000/itowns-sample-data/</strong> in a browser and enjoy!
-                </p>
-                </section>
+    <section id="features" class="wrapper style5 container special-alt">
+        <h2>Features</h2>
+        <ul>
+            <li>Load and project Oriented Images on mesh (cube or city model)</li>
+            <li>Load and display Panoramic Images</li>
+            <li>Load Depth Panoramic Image and render in 3D</li>
+            <li>Load 2D multipolygons with height (building footprint) from WFS or local file</li>
+            <li>Triangulate 2D multipolygons to create building boxes (that can then be used for texture projection)</li>
+            <li>Navigate through Image Data using click and go functions</li>
+            <li>Load and display Point Cloud from PLY files.</li>
+            <li>Load and display 3D textured models (B3D, 3DS).</li>
+            <li>Simple API interface.</li>
+        </ul>
 
-                <!-- One -->
-                <section id="video" class="wrapper style5 container special-alt">
+    </section>
+
+    <section id="sample_data" class="wrapper style2 container special-alt">
+        <h2>Sample data</h2>
+        <p>
+        You can test iTowns with a sample data set, courtesy of the IGN.
+        <br />
+        The sample data is here : <a href="https://github.com/iTowns/itowns-sample-data">https://github.com/iTowns/itowns-sample-data</a>
+        <br />
+        It includes :
+        <br />
+        <ul>
+            <li>250 Oriented Images (50 Panoramics, 192 MB)</li>
+            <li>1 patch (500 * 500m) of 3D textured city models (BATI3D, 50 MB)</li>
+            <li>Terrestrial PointCloud (20 Millions point, 400 MB)</li>
+            <li>JSON of building footprints and DTM (500 kB)</li>
+        </ul>
+    </section>
+
+    <section id="get_started" class="wrapper style4 container special-alt">
+        <h2>Getting started</h2>
+        <p>
+        You have to clone the iTowns and sample data repositories and start a webserver to have a running demo.
+        <br />
+        Open a command line and run:
+        </p>
+
+        <div class="code">
+            git clone -b gh-pages https://github.com/iTowns/itowns.git<br />
+            git clone https://github.com/iTowns/itowns-sample-data.git<br />
+            python -m SimpleHTTPServer<br />
+        </div>
+
+        <p>
+        Now open <strong>http://localhost:8000/itowns-sample-data/</strong> in a browser and enjoy!
+        </p>
+    </section>
+
+    <!-- One -->
+    <section id="video" class="wrapper style5 container special-alt">
+        <header>
+            <h2>Watch <strong>video</strong> of iTowns.</h2>
+        </header>
+        <p>The following video shows iTowns in action.</p>
+
+        <iframe src="https://player.vimeo.com/video/225236123" width="100%" height="800" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        <p><a href="https://vimeo.com/225236123">iTowns Release 2.0</a> from <a href="https://vimeo.com/user48543162">itowns</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+    </section>
+
+    <section  id="demo" class="wrapper style2 container special-alt">
+        <header>
+            <h2>Try it !</h2>
+        </header>
+        <img id="thumb_demo" class="clickable_img" src="images/thumb_demo.png" alt="Demo itowns">
+        <iframe id="iframe_demo" src="" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </section>
+
+    <!-- Two -->
+    <section  id="credits" class="wrapper style1 container special">
+        <div class="row">
+            <div class="6u">
+                <section>
+                    <span class="icon featured fa-check"></span>
                     <header>
-                        <h2>Watch <strong>video</strong> of iTowns.</h2>
+                        <h3>Support</h3>
                     </header>
-                    <p>The following video shows iTowns in action.</p>
-                    <iframe src="https://player.vimeo.com/video/225236123" width="100%" height="800"frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-<p><a href="https://vimeo.com/225236123">iTowns Release 2.0</a> from <a href="https://vimeo.com/user48543162">itowns</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
-	
+                    <p>iTowns is currently maintained by <strong><a href="http://www.ign.fr">IGN</a></strong> and <strong><a href="http://www.oslandia.com">Oslandia</a></strong></p>
+
+                    <a href="http://www.ign.fr"><img src="images/logo_ign.png" alt="logo IGN"></a>
+                    <a href="http://www.oslandia.com"><img src="images/logo_oslandia.png" alt="logo Oslandia"></a>
+
+                    <p>
+                    You may consult the <strong><a href="https://lists.osgeo.org/pipermail/itowns-user/">user</a></strong>
+                    and <strong><a href="https://lists.osgeo.org/pipermail/itowns-dev/">developper</a></strong> mailing lists.
+                    <br />
+                    You may also consult <strong><a href="https://github.com/iTowns/itowns/issues">tickets</a></strong> for version 1.
+                    </p>
+                </section>
+            </div>
+            <div class="6u">
+                <section>
+                    <span class="icon featured fa-check"></span>
+                    <header>
+                        <h3>Acknowledgement</h3>
+                    </header>
+                    <p>iTowns is an original work of the <strong>IGN, MATIS research laboratory</strong>. It has been funded through various research programs involving the French National Research Agency, Cap Digital, UPMC, Mines ParisTec, CNRS, LCPC.</p>
                 </section>
 
-                    <section  id="demo" class="wrapper style2 container special-alt">
-                                <header>
-                                    <h2>Try it !</h2>
-                                </header>
-                                <img id="thumb_demo" class="clickable_img" src="images/thumb_demo.png" alt="Demo itowns">
-                                <iframe id="iframe_demo" src="" width="100%" height="400" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                    </section>
+            </div>
+        </div>
+    </section>
 
-                <!-- Two -->
-                <section  id="credits" class="wrapper style1 container special">
-                    <div class="row">
-                        <div class="6u">
-                            <section>
-                                <span class="icon featured fa-check"></span>
-                                <header>
-                                    <h3>Support</h3>
-                                </header>
-                                <p>iTowns is currently maintained by <strong><a href="http://www.ign.fr">IGN</a></strong> and <strong><a href="http://www.oslandia.com">Oslandia</a></strong></p>
+</article>
 
-                                <a href="http://www.ign.fr"><img src="images/logo_ign.png" alt="logo IGN"></a>
-                                <a href="http://www.oslandia.com"><img src="images/logo_oslandia.png" alt="logo Oslandia"></a>
-
-                                <p>
-                                You may consult the <strong><a href="https://lists.osgeo.org/pipermail/itowns-user/">user</a></strong> 
-                                and <strong><a href="https://lists.osgeo.org/pipermail/itowns-dev/">developper</a></strong> mailing lists.
-                                <br />
-                                You may also consult <strong><a href="https://github.com/iTowns/itowns/issues">tickets</a></strong> for version 1.
-                                </p>
-                            </section>
-                        </div>
-                        <div class="6u">
-                            <section>
-                                <span class="icon featured fa-check"></span>
-                                <header>
-                                    <h3>Acknowledgement</h3>
-                                </header>
-                                <p>iTowns is an original work of the <strong>IGN, MATIS research laboratory</strong>. It has been funded through various research programs involving the French National Research Agency, Cap Digital, UPMC, Mines ParisTec, CNRS, LCPC.</p>
-                            </section>
-
-                            </div>
-                        </div>
-                    </section>
-
-            </article>
-
-            <section id="cta">
-                <header>
-                    <h2>Thanks for your interest in the <strong>iTowns</strong> project.</h2>
-                    <p>Please get in touch if you want additionnal information.</p>
-                </header>
-                <footer>
-                </footer>
-            </section>
+<section id="cta">
+    <header>
+        <h2>Thanks for your interest in the <strong>iTowns</strong> project.</h2>
+        <p>Please get in touch if you want additionnal information.</p>
+    </header>
+    <footer>
+    </footer>
+</section>
