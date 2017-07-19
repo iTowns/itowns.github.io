@@ -19,7 +19,7 @@ article.last-child {
 /* Banner */
 
 #banner {
-    background-image: url("../../images/banner.jpg");
+    background-image: url("../../images/banner_mer_de_glace.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: auto;
@@ -33,7 +33,7 @@ article.last-child {
 /* CTA  */
 
 #cta {
-    background-image: url("../../images/banner.jpg");
+    background-image: url("../../images/banner_mer_de_glace.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: auto;

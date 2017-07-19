@@ -42,7 +42,7 @@ a,
     -o-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
     -ms-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
     transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
-    color: #444444;
+    color: #fff;
     text-decoration: none;
     border-bottom: dotted 1px;
 }
@@ -641,6 +641,7 @@ input[type="reset"].small,
     top: 0;
     width: 100%;
     z-index: 10000;
+    opacity: 0.8;
 }
 
 #header h1 {
@@ -820,24 +821,22 @@ input[type="reset"].small,
 
 #banner {
     background-attachment: scroll, scroll, scroll, fixed;
-    background-color: #645862;
-    /* 		background-image: url("images/light-bl.svg"), url("images/light-br.svg"), url("images/overlay.png"), url("../images/banner.jpg"); */
-    background-image: url("images/light-bl.svg"), url("images/light-br.svg"), url("../images/banner.jpg");
+    background-image: url("images/light-bl.svg"), url("images/light-br.svg"), url("../images/banner_mer_de_glace.png");
     background-position: bottom left, bottom right, top left, top center;
     background-repeat: no-repeat, no-repeat, repeat, no-repeat;
     background-size: 25em, 25em, auto, cover;
     color: white;
     cursor: default;
-    padding: 6em 0;
+    padding: 8em 0 6em;
     text-align: center;
 }
 
 #banner .inner {
-    -moz-animation: reveal-banner 1s 0.25s ease-in-out;
-    -webkit-animation: reveal-banner 1s 0.25s ease-in-out;
-    -o-animation: reveal-banner 1s 0.25s ease-in-out;
-    -ms-animation: reveal-banner 1s 0.25s ease-in-out;
-    animation: reveal-banner 1s 0.25s ease-in-out;
+    -moz-animation: reveal-banner 1s ease-in-out;
+    -webkit-animation: reveal-banner 1s ease-in-out;
+    -o-animation: reveal-banner 1s ease-in-out;
+    -ms-animation: reveal-banner 1s ease-in-out;
+    animation: reveal-banner 1s ease-in-out;
     -moz-animation-fill-mode: forwards;
     -webkit-animation-fill-mode: forwards;
     -o-animation-fill-mode: forwards;
@@ -922,8 +921,7 @@ body.index #main {
 
 #cta {
     background-attachment: scroll, scroll, scroll, fixed;
-    background-color: #645862;
-    background-image: url("images/light-tl.svg"), url("images/light-tr.svg"), url("images/overlay.png"), url("../images/banner.jpg");
+    background-image: url("images/light-tl.svg"), url("images/light-tr.svg"), url("images/overlay.png"), url("../images/banner_mer_de_glace.png");
     background-position: top left, top right, top left, bottom center;
     background-repeat: no-repeat, no-repeat, repeat, no-repeat;
     background-size: 25em, 25em, auto, cover;
