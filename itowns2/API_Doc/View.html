@@ -47,7 +47,7 @@
 
 
 <div class="description">
-    Constructs an Itowns Scene instance
+    Constructs an Itowns View instance
 </div>
 
 
@@ -403,6 +403,190 @@ viewer.notifyChange(true);</code></pre>
 
     
 
+    <h4 class="name" id="addFrameRequester"><span class="type-signature"></span>addFrameRequester<span class="signature">(frameRequester)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Add a frame requester to this view.
+
+FrameRequesters can activate the MainLoop update by calling view.notifyChange.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>frameRequester</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#FrameRequester">FrameRequester</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>update</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">update will be called at each
+MainLoop update with the time delta between last update, or 0 if the
+MainLoop has just been relaunched.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line314">line 314</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id="addLayer"><span class="type-signature"></span>addLayer<span class="signature">(layer, parentLayer<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Layer.html">Layer</a>|GeometryLayer}</span></h4>
 
     
@@ -553,7 +737,7 @@ The layer id must be unique.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line216">line 216</a>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line217">line 217</a>
     </li></ul></dd>
     
 
@@ -740,7 +924,7 @@ The filter method will be called with 2 args:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line266">line 266</a>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line267">line 267</a>
     </li></ul></dd>
     
 
@@ -928,7 +1112,138 @@ non-interactive events (e.g: texture loaded)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line242">line 242</a>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line243">line 243</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="removeFrameRequester"><span class="type-signature"></span>removeFrameRequester<span class="signature">(frameRequester)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Remove a frameRequester.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>frameRequester</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#FrameRequester">FrameRequester</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line323">line 323</a>
     </li></ul></dd>
     
 
@@ -976,7 +1291,7 @@ non-interactive events (e.g: texture loaded)
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Jul 19 2017 13:26:27 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Jul 19 2017 13:40:53 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>
