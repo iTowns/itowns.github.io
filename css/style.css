@@ -42,7 +42,7 @@ a,
     -o-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
     -ms-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
     transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
-    color: #fff;
+    color: #444444;
     text-decoration: none;
     border-bottom: dotted 1px;
 }
@@ -587,6 +587,10 @@ input[type="reset"].small,
     color: white;
 }
 
+.wrapper.style2 a, .wrapper.style2 .a_like {
+    color: white;
+}
+
 .wrapper.style2 .button:hover {
     background: rgba(255, 255, 255, 0.15) !important;
 }
@@ -619,6 +623,10 @@ input[type="reset"].small,
     background-position: bottom left, bottom right;
     background-repeat: no-repeat, no-repeat;
     background-size: 25em, 25em;
+    color: white;
+}
+
+.wrapper.style5 a, .wrapper.style5 .a_like {
     color: white;
 }
 
@@ -859,6 +867,10 @@ input[type="reset"].small,
     text-align: center;
 }
 
+#banner a, #banner .a_like {
+    color: white;
+}
+
 #banner .inner {
     -moz-animation: reveal-banner 1s ease-in-out;
     -webkit-animation: reveal-banner 1s ease-in-out;
@@ -956,6 +968,10 @@ body.index #main {
     color: white;
     padding: 5em;
     text-align: center;
+}
+
+#cta a, #cta .a_like {
+    color: white;
 }
 
 #cta header {
