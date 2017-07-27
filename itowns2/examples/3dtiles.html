@@ -26,11 +26,6 @@
                 top:0px;
                 margin-left: 0px;
             }
-            @media (max-width: 600px) {
-                #menuDiv {
-                    display: none;
-                }
-            }
 
             #viewerDiv > canvas {
                 display: block;
@@ -38,7 +33,7 @@
         </style>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="GUI/dat.gui/dat.gui.min.js"></script>
+        <script src="../node_modules/dat.gui/build/dat.gui.min.js"></script>
     </head>
     <body>
         <div id="viewerDiv"></div>
@@ -69,7 +64,7 @@
 
             // Create a new Layer 3d-tiles For DiscreteLOD
             // -------------------------------------------
-            var $3dTilesLayerDiscreteLOD = new itowns.GeometryLayer('3d-tiles-discrete-lod', globe.scene);
+            var $3dTilesLayerDiscreteLOD = new itowns.GeometryLayer('3d-tiles-discrete-lod');
 
             $3dTilesLayerDiscreteLOD.preUpdate = preUpdateGeo;
             $3dTilesLayerDiscreteLOD.update = itowns.process3dTilesNode(
@@ -87,7 +82,7 @@
 
             // Create a new Layer 3d-tiles For Viewer Request Volume
             // -----------------------------------------------------
-            var $3dTilesLayerRequestVolume = new itowns.GeometryLayer('3d-tiles-request-volume', globe.scene);
+            var $3dTilesLayerRequestVolume = new itowns.GeometryLayer('3d-tiles-request-volume');
 
             $3dTilesLayerRequestVolume.preUpdate = preUpdateGeo;
             $3dTilesLayerRequestVolume.update = itowns.process3dTilesNode(
