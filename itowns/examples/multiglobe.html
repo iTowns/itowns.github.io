@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Itowns - multiglobe</title>
+
+        <style type="text/css">
+            html {
+                height: 100%;
+            }
+
+            body {
+                margin: 0;
+                overflow: hidden;
+                height: 100%;
+            }
+
+            div {
+                margin : auto auto;
+                width: 100%;
+                padding: 0;
+                height: 50%
+            }
+        </style>
+        <meta charset="UTF-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div id="viewerDiv"></div>
+        <div id="viewerDiv2"></div>
+        <script src="../dist/itowns.js"></script>
+        <script type="text/javascript">
+            /* global itowns,document,GuiTools*/
+            var positionOnGlobe = { longitude: 2.351323, latitude: 48.856712, altitude: 10000000 };
+
+            // iTowns namespace defined here
+            var viewerDiv = document.getElementById('viewerDiv');
+            var globeView = new itowns.GlobeView(viewerDiv, positionOnGlobe, { noControls: true });
+
+            function addLayerCb(layer) {
+                return globeView.addLayer(layer);
+            }
+
+            itowns.Fetcher.json('./layers/JSONLayers/Ortho.json').then(addLayerCb);
+            itowns.Fetcher.json('./layers/JSONLayers/IGN_MNT.json').then(addLayerCb);
+
+            // hack: not searched why yet
+            setTimeout(function () {
+                var viewerDiv2 = document.getElementById('viewerDiv2');
+                var globeView2 = new itowns.GlobeView(viewerDiv2, positionOnGlobe);
+
+                var e = {
+                    "type": 'color',
+                    "protocol": "wmtsc",
+                    "id": "DARK",
+                    "opacity": 0.5,
+                    "customUrl": "http://a.basemaps.cartocdn.com/dark_all/%TILEMATRIX/%COL/%ROW.png",
+                    "networkOptions": { crossOrigin: 'anonymous' },
+                    "options": {
+                        "attribution": {
+                            "name":"CARTO",
+                            "url": "https://carto.com/"
+                        },
+                        "tileMatrixSet": "PM",
+                        "mimetype": "image/png"
+                    }
+                };
+                globeView2.addLayer(e);
+                globeView2.notifyChange(true);
+            }, 500);
+        </script>
+    </body>
+</html>
