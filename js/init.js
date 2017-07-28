@@ -173,9 +173,3 @@
         // WebGL not supported
         return false;
     }
-
-    function loadDemo() {
-        var demoUrl = "v1demo.html";
-        var el = document.getElementById('iframe_demo');
-        el.src = demoUrl;
-    }
