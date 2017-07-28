@@ -1,0 +1,59 @@
+---
+---
+<style type="text/css">
+    iframe {
+        width: 300px;
+        height: 200px;
+        border: none;
+    }
+    .exampleContainer {
+        width: 350px;
+        display: inline-block;
+    }
+</style>
+<!-- Main -->
+<article id="main">
+
+    <section id="data_types" class="wrapper style3 container special-alt">
+        <h1>Itowns Examples</h1>
+        <p>
+        (click on title to open fullscreen)
+        </p>
+        {% assign screenshotsDir = "/itowns/examples/screenshots/" %}
+        {% comment %}
+            Putting "for" and "if" starting and ending tags in one
+            line, because liquid keeps the newline. So we added ~10 newlines for
+            each static files in our site, meaning this page would grow each
+            time we add an asset somewhere... (at the time of writing,
+            generated html contained more than 500 blank lines because of this).
+        {% endcomment %}
+        {% for file in site.static_files %}{% assign prefix = file.path | slice: 0, 29 %}{% if prefix == "/itowns/examples/screenshots/" and file.extname == '.jpg' %}
+            {% assign extSize = file.path.size | minus: 4 %}
+            {% assign example = file.path | slice: 0, extSize | remove_first: "/itowns/examples/screenshots/" %}
+            {% unless example contains "/" %}
+                <div class="exampleContainer" >
+                    <h3>
+                        <a href="/itowns/examples/{{ example }}.html" target="_blank">{{ example }}</a>
+                    </h3>
+                    <img src="/itowns/examples/screenshots/{{ example }}.jpg">
+                    <iframe src="" style="display: none;"></iframe>
+                </div>
+        {% endunless %} {% endif %} {% endfor %}
+    </section>
+
+</article>
+
+<script type="text/javascript">
+    function enableOnClick(evt) {
+        this.getElementsByTagName('img')[0].style.display = 'none';
+        this.getElementsByTagName('iframe')[0].style.display = '';
+        this.getElementsByTagName('iframe')[0].src = this.getElementsByTagName('a')[0].href;
+    }
+
+    var divs = document.getElementsByClassName('exampleContainer');
+    var i;
+    for (i = 0; i < divs.length; i++) {
+        divs[i].addEventListener('click', enableOnClick.bind(divs[i]));
+    }
+</script>
+
