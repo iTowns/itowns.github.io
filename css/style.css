@@ -695,7 +695,7 @@ input[type="reset"].small,
     position: absolute;
     right: 1.5em;
     text-transform: uppercase;
-    top: 0.75em;
+    top: 0;
 }
 
 #header nav ul li {
