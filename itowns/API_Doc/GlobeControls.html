@@ -1349,6 +1349,182 @@ This function compute the scale of a map
 
     
 
+    <h4 class="name" id="metersToPixels"><span class="type-signature"></span>metersToPixels<span class="signature">(value, pixelPitch)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Projection on screen in pixels of length in meter on globe
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Length in meter on globe</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pixelPitch</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Screen pixel pitch, in millimeters (default = 0.28 mm / standard pixel size of 0.28 millimeters as defined by the OGC)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Renderer_ThreeExtended_GlobeControls.js.html">Renderer/ThreeExtended/GlobeControls.js</a>, <a href="Renderer_ThreeExtended_GlobeControls.js.html#line1671">line 1671</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    projection in pixels on screen
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id="pan"><span class="type-signature"></span>pan<span class="signature">(pVector)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
 
     
@@ -1646,7 +1822,7 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Renderer_ThreeExtended_GlobeControls.js.html">Renderer/ThreeExtended/GlobeControls.js</a>, <a href="Renderer_ThreeExtended_GlobeControls.js.html#line1726">line 1726</a>
+        <a href="Renderer_ThreeExtended_GlobeControls.js.html">Renderer/ThreeExtended/GlobeControls.js</a>, <a href="Renderer_ThreeExtended_GlobeControls.js.html#line1750">line 1750</a>
     </li></ul></dd>
     
 
@@ -1685,6 +1861,182 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     <dd>
         
 <span class="param-type"><a href="Coordinates.html">Coordinates</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="pixelsToMeters"><span class="type-signature"></span>pixelsToMeters<span class="signature">(pixels, pixelPitch)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+<div class="description">
+    To convert the projection in meters on the globe of a number of pixels of screen
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>pixels</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">count pixels to project</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pixelPitch</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Screen pixel pitch, in millimeters (default = 0.28 mm / standard pixel size of 0.28 millimeters as defined by the OGC)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Renderer_ThreeExtended_GlobeControls.js.html">Renderer/ThreeExtended/GlobeControls.js</a>, <a href="Renderer_ThreeExtended_GlobeControls.js.html#line1659">line 1659</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    projection in meters on globe
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
 
 
     </dd>
@@ -2049,7 +2401,7 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Renderer_ThreeExtended_GlobeControls.js.html">Renderer/ThreeExtended/GlobeControls.js</a>, <a href="Renderer_ThreeExtended_GlobeControls.js.html#line1681">line 1681</a>
+        <a href="Renderer_ThreeExtended_GlobeControls.js.html">Renderer/ThreeExtended/GlobeControls.js</a>, <a href="Renderer_ThreeExtended_GlobeControls.js.html#line1705">line 1705</a>
     </li></ul></dd>
     
 
@@ -2485,7 +2837,7 @@ Scale is ignored if range or Zoom is set.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Renderer_ThreeExtended_GlobeControls.js.html">Renderer/ThreeExtended/GlobeControls.js</a>, <a href="Renderer_ThreeExtended_GlobeControls.js.html#line1707">line 1707</a>
+        <a href="Renderer_ThreeExtended_GlobeControls.js.html">Renderer/ThreeExtended/GlobeControls.js</a>, <a href="Renderer_ThreeExtended_GlobeControls.js.html#line1731">line 1731</a>
     </li></ul></dd>
     
 
@@ -3373,7 +3725,7 @@ Scale is ignored if range or Zoom is set.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Renderer_ThreeExtended_GlobeControls.js.html">Renderer/ThreeExtended/GlobeControls.js</a>, <a href="Renderer_ThreeExtended_GlobeControls.js.html#line1663">line 1663</a>
+        <a href="Renderer_ThreeExtended_GlobeControls.js.html">Renderer/ThreeExtended/GlobeControls.js</a>, <a href="Renderer_ThreeExtended_GlobeControls.js.html#line1687">line 1687</a>
     </li></ul></dd>
     
 
@@ -5244,7 +5596,7 @@ The zoom is always in the [getMinZoom(), getMaxZoom()] range.
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Aug 07 2017 10:43:14 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Aug 07 2017 14:30:27 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>
