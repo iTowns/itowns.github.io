@@ -26,13 +26,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Generated On: 2015-10-5
- * Class: Scene
- * Description: La Scene est l'instance principale du client. Elle est le chef orchestre de l'application.
- */
-
-/* global window, requestAnimationFrame */
+            <pre class="prettyprint source linenums"><code>/* global window, requestAnimationFrame */
 import { Scene, EventDispatcher, Vector2 } from 'three';
 import Camera from '../Renderer/Camera';
 import MainLoop from './MainLoop';
@@ -116,11 +110,17 @@ function View(crs, viewerDiv, options = {}) {
 View.prototype = Object.create(EventDispatcher.prototype);
 View.prototype.constructor = View;
 
-const _syncThreejsLayer = function _syncThreejsLayer(layer, view) {
-    if (layer.visible) {
-        view.camera.camera3D.layers.enable(layer.threejsLayer);
-    } else {
-        view.camera.camera3D.layers.disable(layer.threejsLayer);
+const _syncGeometryLayerVisibility = function _syncGeometryLayerVisibility(layer, view) {
+    if (layer.object3d) {
+        layer.object3d.visible = layer.visible;
+    }
+
+    if (layer.threejsLayer) {
+        if (layer.visible) {
+            view.camera.camera3D.layers.enable(layer.threejsLayer);
+        } else {
+            view.camera.camera3D.layers.disable(layer.threejsLayer);
+        }
     }
 };
 
@@ -152,6 +152,13 @@ function _preprocessLayer(view, layer, provider) {
     }
 
     if (!layer.whenReady) {
+        if (layer.type == 'geometry' || layer.type == 'debug') {
+            if (!layer.object3d) {
+                // layer.threejsLayer *must* be assigned before preprocessing,
+                // because TileProvider.preprocessDataLayer function uses it.
+                layer.threejsLayer = view.mainLoop.gfxEngine.getUniqueThreejsLayer();
+            }
+        }
         let providerPreprocessing = Promise.resolve();
         if (provider &amp;&amp; provider.preprocessDataLayer) {
             providerPreprocessing = provider.preprocessDataLayer(layer, view, view.mainLoop.scheduler);
@@ -176,9 +183,34 @@ function _preprocessLayer(view, layer, provider) {
     } else if (layer.type == 'elevation') {
         defineLayerProperty(layer, 'frozen', false);
     } else if (layer.type == 'geometry' || layer.type == 'debug') {
-        layer.threejsLayer = view.mainLoop.gfxEngine.getUniqueThreejsLayer();
-        defineLayerProperty(layer, 'visible', true, () => _syncThreejsLayer(layer, view));
-        _syncThreejsLayer(layer, view);
+        defineLayerProperty(layer, 'visible', true, () => _syncGeometryLayerVisibility(layer, view));
+        _syncGeometryLayerVisibility(layer, view);
+
+        const changeOpacity = (o) => {
+            if (o.material) {
+                // != undefined: we want the test to pass if opacity is 0
+                if (o.material.opacity != undefined) {
+                    o.material.transparent = layer.opacity &lt; 1.0;
+                    o.material.opacity = layer.opacity;
+                }
+                if (o.material.uniforms &amp;&amp; o.material.uniforms.opacity != undefined) {
+                    o.material.transparent = layer.opacity &lt; 1.0;
+                    o.material.uniforms.opacity.value = layer.opacity;
+                }
+            }
+        };
+        defineLayerProperty(layer, 'opacity', 1.0, () => {
+            layer.object3d.traverse((o) => {
+                if (o.layer !== layer.id) {
+                    return;
+                }
+                changeOpacity(o);
+                // 3dtiles layers store scenes in children's content property
+                if (o.content) {
+                    o.content.traverse(changeOpacity);
+                }
+            });
+        });
     }
     return layer;
 }
@@ -305,6 +337,10 @@ View.prototype.addLayer = function addLayer(layer, parentLayer) {
         this._layers.push(layer);
     }
 
+    if (layer.object3d &amp;&amp; !layer.object3d.parent) {
+        this.scene.add(layer.object3d);
+    }
+
     this.notifyChange(true);
     return layer.whenReady;
 };
@@ -411,13 +447,13 @@ export default View;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gpxUtils.html">gpxUtils</a></li></ul><h3>Classes</h3><ul><li><a href="Coordinates.html">Coordinates</a></li><li><a href="GlobeControls.html">GlobeControls</a></li><li><a href="GlobeView.html">GlobeView</a></li><li><a href="Layer.html">Layer</a></li><li><a href="View.html">View</a></li></ul><h3>Events</h3><ul><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="Layer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="Layer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="Layer.html#event:visible-property-changed">visible-property-changed</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gpxUtils.html">gpxUtils</a></li></ul><h3>Classes</h3><ul><li><a href="Coordinates.html">Coordinates</a></li><li><a href="GlobeControls.html">GlobeControls</a></li><li><a href="GlobeView.html">GlobeView</a></li><li><a href="Layer.html">Layer</a></li></ul><h3>Events</h3><ul><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="Layer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="Layer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="Layer.html#event:visible-property-changed">visible-property-changed</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Sep 12 2017 10:00:12 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Oct 24 2017 09:12:42 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

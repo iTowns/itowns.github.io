@@ -37,6 +37,8 @@ import proj4 from 'proj4';
 import mE from '../Math/MathExtended';
 import Ellipsoid from '../Math/Ellipsoid';
 
+proj4.defs('EPSG:4978', '+proj=geocent +datum=WGS84 +units=m +no_defs');
+
 const projectionCache = {};
 
 export function ellipsoidSizes() {
@@ -176,8 +178,42 @@ function _convert(coordsIn, newCrs, target) {
         }
 
         if (coordsIn.crs in proj4.defs &amp;&amp; newCrs in proj4.defs) {
-            const p = instanceProj4(coordsIn.crs, newCrs).forward([coordsIn._values[0], coordsIn._values[1]]);
-            return target.set(newCrs, p[0], p[1], coordsIn._values[2]);
+            let val0 = coordsIn._values[0];
+            let val1 = coordsIn._values[1];
+
+            // Verify that coordinates are stored in reference unit.
+            const refUnit = crsToUnit(coordsIn.crs);
+            if (coordsIn._internalStorageUnit != coordsIn.crs) {
+                if (coordsIn._internalStorageUnit == UNIT.DEGREE &amp;&amp; refUnit == UNIT.RADIAN) {
+                    val0 = coordsIn.longitude(UNIT.RADIAN);
+                    val1 = coordsIn.latitude(UNIT.RADIAN);
+                } else if (coordsIn._internalStorageUnit == UNIT.RADIAN &amp;&amp; refUnit == UNIT.DEGREE) {
+                    val0 = coordsIn.longitude(UNIT.DEGREE);
+                    val1 = coordsIn.latitude(UNIT.DEGREE);
+                }
+            }
+
+            // there is a bug for converting anything from and to 4978 with proj4
+            // https://github.com/proj4js/proj4js/issues/195
+            // the workaround is to use an intermediate projection, like EPSG:4326
+            if (newCrs == 'EPSG:4978') {
+                const p = instanceProj4(coordsIn.crs, 'EPSG:4326').forward([val0, val1]);
+                target.set('EPSG:4326', p[0], p[1], coordsIn._values[2]);
+                return target.as('EPSG:4978');
+            } else if (coordsIn.crs === 'EPSG:4978') {
+                const coordsInInter = coordsIn.as('EPSG:4326');
+                const p = instanceProj4(coordsInInter.crs, newCrs).forward([coordsInInter._values[0], coordsInInter._values[1]]);
+                target.set(newCrs, p[0], p[1], coordsInInter._values[2]);
+                return target;
+            } else if (coordsIn.crs == 'EPSG:4326' &amp;&amp; newCrs == 'EPSG:3857') {
+                val1 = THREE.Math.clamp(val1, -89.999999999, 89.999999999);
+                const p = instanceProj4(coordsIn.crs, newCrs).forward([val0, val1]);
+                return target.set(newCrs, p[0], p[1], coordsIn._values[2]);
+            } else {
+                // here is the normal case with proj4
+                const p = instanceProj4(coordsIn.crs, newCrs).forward([val0, val1]);
+                return target.set(newCrs, p[0], p[1], coordsIn._values[2]);
+            }
         }
 
         throw new Error(`Cannot convert from crs ${coordsIn.crs} (unit=${coordsIn._internalStorageUnit}) to ${newCrs}`);
@@ -220,6 +256,29 @@ export function convertValueToUnit(unitIn, unitOut, value) {
 function Coordinates(crs, ...coordinates) {
     this._values = new Float64Array(3);
     this.set(crs, ...coordinates);
+
+    Object.defineProperty(this, 'geodesicNormal',
+        {
+            configurable: true,
+            get: () => {
+                this._normal = this._normal || computeGeodesicNormal(this);
+                return this._normal;
+            },
+        });
+}
+
+const planarNormal = new THREE.Vector3(0, 0, 1);
+
+function computeGeodesicNormal(coord) {
+    if (coord.crs == 'EPSG:4326') {
+        return ellipsoid.geodeticSurfaceNormalCartographic(coord);
+    }
+    // In globe mode (EPSG:4978), we compute the normal.
+    if (coord.crs == 'EPSG:4978') {
+        return ellipsoid.geodeticSurfaceNormal(coord);
+    }
+    // In planar mode, normal is the up vector.
+    return planarNormal;
 }
 
 Coordinates.prototype.set = function set(crs, ...coordinates) {
@@ -551,13 +610,13 @@ export default Coordinates;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gpxUtils.html">gpxUtils</a></li></ul><h3>Classes</h3><ul><li><a href="Coordinates.html">Coordinates</a></li><li><a href="GlobeControls.html">GlobeControls</a></li><li><a href="GlobeView.html">GlobeView</a></li><li><a href="Layer.html">Layer</a></li><li><a href="View.html">View</a></li></ul><h3>Events</h3><ul><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="Layer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="Layer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="Layer.html#event:visible-property-changed">visible-property-changed</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gpxUtils.html">gpxUtils</a></li></ul><h3>Classes</h3><ul><li><a href="Coordinates.html">Coordinates</a></li><li><a href="GlobeControls.html">GlobeControls</a></li><li><a href="GlobeView.html">GlobeView</a></li><li><a href="Layer.html">Layer</a></li></ul><h3>Events</h3><ul><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="Layer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="Layer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="Layer.html#event:visible-property-changed">visible-property-changed</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Sep 12 2017 10:00:12 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Oct 24 2017 09:12:42 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

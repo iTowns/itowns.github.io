@@ -1,4 +1,4 @@
-/* global itowns, document, renderer */
+/* global itowns, document, renderer, proj4 */
 // # Planar (EPSG:3946) viewer
 
 var extent;
@@ -6,7 +6,7 @@ var viewerDiv;
 var view;
 
 // Define projection that we will use (taken from https://epsg.io/3946, Proj4js section)
-itowns.proj4.defs('EPSG:3946',
+proj4.defs('EPSG:3946',
     '+proj=lcc +lat_1=45.25 +lat_2=46.75 +lat_0=46 +lon_0=3 +x_0=1700000 +y_0=5200000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
 
 // Define geographic extent: CRS, min/max X, min/max Y
@@ -32,9 +32,12 @@ view.addLayer({
     id: 'wms_imagery',
     name: 'Ortho2009_vue_ensemble_16cm_CC46',
     projection: 'EPSG:3946',
-    axisOrder: 'wsen',
     options: {
         mimetype: 'image/jpeg',
+    },
+    updateStrategy: {
+        type: itowns.STRATEGY_DICHOTOMY,
+        options: {},
     },
 });
 
@@ -44,11 +47,9 @@ view.addLayer({
     type: 'elevation',
     protocol: 'wms',
     networkOptions: { crossOrigin: 'anonymous' },
-    version: '1.3.0',
     id: 'wms_elevation',
     name: 'MNT2012_Altitude_10m_CC46',
     projection: 'EPSG:3946',
-    axisOrder: 'wsen',
     heightMapWidth: 256,
     options: {
         mimetype: 'image/jpeg',

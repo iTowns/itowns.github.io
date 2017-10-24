@@ -34,7 +34,6 @@ view.addLayer({
     projection: 'EPSG:3946',
     transparent: false,
     extent: extent,
-    axisOrder: 'wsen',
     options: {
         mimetype: 'image/jpeg',
     },
@@ -58,7 +57,7 @@ function colorFunctionLine(layer, node, featureCollection) {
     for (i = 0; i < featureCollection.features.length; i++) {
         featureProperties = featureCollection.features[i].properties;
 
-        rgb = featureProperties.properties.couleur.split(' ');
+        rgb = featureProperties.couleur.split(' ');
         colors.push(new itowns.THREE.Color(rgb[0] / 255, rgb[1] / 255, rgb[2] / 255));
     }
 
