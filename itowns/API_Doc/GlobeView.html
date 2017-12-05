@@ -289,7 +289,7 @@ The second one is the HTML div in wich the scene will be created.
     
 
     
-    <h4 class="name" id="addFrameRequester"><span class="type-signature"></span>addFrameRequester<span class="signature">(frameRequester)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addFrameRequester"><span class="type-signature"></span>addFrameRequester<span class="signature">(when, frameRequester)</span><span class="type-signature"></span></h4>
     
 
     
@@ -335,6 +335,30 @@ FrameRequesters can activate the MainLoop update by calling view.notifyChange.
 
         <tr>
             
+                <td class="name"><code>when</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">decide when the frameRequester should be called during
+the update cycle. Can be any of <a href="global.html#MAIN_LOOP_EVENTS">MAIN_LOOP_EVENTS</a>.</td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>frameRequester</code></td>
             
 
@@ -351,58 +375,9 @@ FrameRequesters can activate the MainLoop update by calling view.notifyChange.
 
             
 
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>update</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">update will be called at each
-MainLoop update with the time delta between last update, or 0 if the
-MainLoop has just been relaunched.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+            <td class="description last">this function will be called at each
+MainLoop update with the time delta between last update, or 0 if the MainLoop
+has just been relaunched.</td>
         </tr>
 
     
@@ -448,7 +423,7 @@ MainLoop has just been relaunched.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line398">line 398</a>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line409">line 409</a>
     </li></ul></dd>
     
 
@@ -643,7 +618,7 @@ the preprocessing operation is done. This promise is also returned by
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line284">line 284</a>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line282">line 282</a>
     </li></ul></dd>
     
 
@@ -725,6 +700,252 @@ var layer = view.addLayer({
 
 // One can also attach a callback to the same promise with a layer instance.
 layer.whenReady.then(() => { ... });</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="execFrameRequesters"><span class="type-signature"></span>execFrameRequesters<span class="signature">(when, dt, updateLoopRestarted, &hellip;args)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Execute a frameRequester.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>when</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">attach point of this (these) requester(s). Can be any
+of <a href="global.html#MAIN_LOOP_EVENTS">MAIN_LOOP_EVENTS</a>.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">delta between this update and the previous one</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>updateLoopRestarted</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">optional arguments</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="View.html#execFrameRequesters">View#execFrameRequesters</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line441">line 441</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -843,7 +1064,7 @@ The filter method will be called with 2 args:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line351">line 351</a>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line349">line 349</a>
     </li></ul></dd>
     
 
@@ -1040,7 +1261,7 @@ non-interactive events (e.g: texture loaded)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line327">line 327</a>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line325">line 325</a>
     </li></ul></dd>
     
 
@@ -1074,7 +1295,7 @@ non-interactive events (e.g: texture loaded)
     
 
     
-    <h4 class="name" id="removeFrameRequester"><span class="type-signature"></span>removeFrameRequester<span class="signature">(frameRequester)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="removeFrameRequester"><span class="type-signature"></span>removeFrameRequester<span class="signature">(when, frameRequester)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1114,6 +1335,30 @@ non-interactive events (e.g: texture loaded)
     </thead>
 
     <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>when</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">attach point of this requester. Can be any of
+<a href="global.html#MAIN_LOOP_EVENTS">MAIN_LOOP_EVENTS</a>.</td>
+        </tr>
+
     
 
         <tr>
@@ -1180,7 +1425,7 @@ non-interactive events (e.g: texture loaded)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line407">line 407</a>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line428">line 428</a>
     </li></ul></dd>
     
 
@@ -1315,7 +1560,7 @@ non-interactive events (e.g: texture loaded)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Prefab_GlobeView.js.html">Core/Prefab/GlobeView.js</a>, <a href="Core_Prefab_GlobeView.js.html#line321">line 321</a>
+        <a href="Core_Prefab_GlobeView.js.html">Core/Prefab/GlobeView.js</a>, <a href="Core_Prefab_GlobeView.js.html#line319">line 319</a>
     </li></ul></dd>
     
 
@@ -2406,13 +2651,13 @@ non-interactive events (e.g: texture loaded)
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gpxUtils.html">gpxUtils</a></li></ul><h3>Classes</h3><ul><li><a href="Coordinates.html">Coordinates</a></li><li><a href="GlobeControls.html">GlobeControls</a></li><li><a href="GlobeView.html">GlobeView</a></li><li><a href="Layer.html">Layer</a></li><li><a href="View.html">View</a></li></ul><h3>Events</h3><ul><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="Layer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="Layer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="Layer.html#event:visible-property-changed">visible-property-changed</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gpxUtils.html">gpxUtils</a></li></ul><h3>Classes</h3><ul><li><a href="Coordinates.html">Coordinates</a></li><li><a href="GlobeControls.html">GlobeControls</a></li><li><a href="GlobeView.html">GlobeView</a></li><li><a href="Layer.html">Layer</a></li><li><a href="View.html">View</a></li></ul><h3>Events</h3><ul><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="Layer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="Layer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="Layer.html#event:visible-property-changed">visible-property-changed</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#FrameRequester">FrameRequester</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#MAIN_LOOP_EVENTS">MAIN_LOOP_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 05 2017 14:42:45 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 05 2017 17:42:15 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

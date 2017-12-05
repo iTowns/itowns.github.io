@@ -263,7 +263,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Renderer_ThreeExtended_GlobeControls.js.html">Renderer/ThreeExtended/GlobeControls.js</a>, <a href="Renderer_ThreeExtended_GlobeControls.js.html#line325">line 325</a>
+        <a href="Renderer_ThreeExtended_GlobeControls.js.html">Renderer/ThreeExtended/GlobeControls.js</a>, <a href="Renderer_ThreeExtended_GlobeControls.js.html#line326">line 326</a>
     </li></ul></dd>
     
 
@@ -463,10 +463,518 @@
 
 
         
+            
+<h4 class="name" id="MAIN_LOOP_EVENTS"><span class="type-signature">(constant) </span>MAIN_LOOP_EVENTS<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    MainLoop's update events list that are fired using
+<a href="View.html#execFrameRequesters">View#execFrameRequesters</a>.
+</div>
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>UPDATE_START</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">fired at the start of the update</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>BEFORE_CAMERA_UPDATE</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">fired before the camera update</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>AFTER_CAMERA_UPDATE</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">fired after the camera update</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>BEFORE_LAYER_UPDATE</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">fired before the layer update</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>AFTER_LAYER_UPDATE</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">fired after the layer update</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>BEFORE_RENDER</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">fired before the render</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>AFTER_RENDER</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">fired after the render</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>UPDATE_END</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">fired at the end of the update</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_MainLoop.js.html">Core/MainLoop.js</a>, <a href="Core_MainLoop.js.html#line20">line 20</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
     
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="FrameRequester"><span class="type-signature"></span>FrameRequester<span class="signature">(dt, updateLoopRestarted, &hellip;args)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Method that will be called each time the <code>MainLoop</code> updates. This
+function will be given as parameter the delta (in ms) between this update and
+the previous one, and whether or not we just started to render again. This
+update is considered as the "next" update if <code>view.notifyChange</code>
+was called during a precedent update. If <code>view.notifyChange</code> has
+been called by something else (other micro/macrotask, UI events etc...), then
+this update is considered as being the "first". It can also receive optional
+arguments, depending on the attach point of this function.  Currently only
+<code>BEFORE_LAYER_UPDATE / AFTER_LAYER_UPDATE</code> attach points provide
+an additional argument: the layer being updated.
+<br><br>
+
+This means that if a <code>frameRequester</code> function wants to animate something, it
+should keep on calling <code>view.notifyChange</code> until its task is done.
+<br><br>
+
+Implementors of <code>frameRequester</code> should keep in mind that this
+function will be potentially called at each frame, thus care should be given
+about performance.
+<br><br>
+
+Typical frameRequesters are controls, module wanting to animate moves or UI
+elements etc... Basically anything that would want to call
+requestAnimationFrame.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>dt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>updateLoopRestarted</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line364">line 364</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
             
@@ -988,144 +1496,6 @@
 
         
                 
-<h4 class="name" id="FrameRequester">FrameRequester</h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>update</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Method that will be called each
-time the MainLoop updates. This function will be given as parameter the
-delta (in ms) between this update and the previous one, and whether or not
-we just started to render again. This update is considered as the "next"
-update if view.notifyChange was called during a precedent update. If
-view.notifyChange has been called by something else (other micro/macrotask,
-UI events etc...), then this update is considered as being the "first".
-
-This means that if a FrameRequester.update function wants to animate
-something, it should keep on calling view.notifyChange until its task is
-done.
-
-Implementors of FrameRequester.update should keep in mind that this function
-will be potentially called at each frame, thus care should be given about
-performance.
-
-Typical FrameRequesters are controls, module wanting to animate moves or UI
-elements etc... Basically anything that would want to call
-requestAnimationFrame.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line366">line 366</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-            
-                
 <h4 class="name" id="LayerOptions">LayerOptions</h4>
 
 
@@ -1369,7 +1739,7 @@ requestAnimationFrame.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line227">line 227</a>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line225">line 225</a>
     </li></ul></dd>
     
 
@@ -1514,7 +1884,7 @@ value is directly assigned to the crossorigin property of html tags.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line218">line 218</a>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line216">line 216</a>
     </li></ul></dd>
     
 
@@ -1707,7 +2077,7 @@ value is directly assigned to the crossorigin property of html tags.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line190">line 190</a>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line188">line 188</a>
     </li></ul></dd>
     
 
@@ -2263,7 +2633,7 @@ value is directly assigned to the crossorigin property of html tags.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line199">line 199</a>
+        <a href="Core_View.js.html">Core/View.js</a>, <a href="Core_View.js.html#line197">line 197</a>
     </li></ul></dd>
     
 
@@ -2293,13 +2663,13 @@ value is directly assigned to the crossorigin property of html tags.</td>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gpxUtils.html">gpxUtils</a></li></ul><h3>Classes</h3><ul><li><a href="Coordinates.html">Coordinates</a></li><li><a href="GlobeControls.html">GlobeControls</a></li><li><a href="GlobeView.html">GlobeView</a></li><li><a href="Layer.html">Layer</a></li><li><a href="View.html">View</a></li></ul><h3>Events</h3><ul><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="Layer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="Layer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="Layer.html#event:visible-property-changed">visible-property-changed</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gpxUtils.html">gpxUtils</a></li></ul><h3>Classes</h3><ul><li><a href="Coordinates.html">Coordinates</a></li><li><a href="GlobeControls.html">GlobeControls</a></li><li><a href="GlobeView.html">GlobeView</a></li><li><a href="Layer.html">Layer</a></li><li><a href="View.html">View</a></li></ul><h3>Events</h3><ul><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="Layer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="Layer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="Layer.html#event:visible-property-changed">visible-property-changed</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#FrameRequester">FrameRequester</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#MAIN_LOOP_EVENTS">MAIN_LOOP_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 05 2017 14:42:45 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 05 2017 17:42:15 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>
