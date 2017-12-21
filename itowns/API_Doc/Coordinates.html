@@ -2,24 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Coordinates</title>
+    <title>iTowns API : Coordinates</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="./doc.css">
 </head>
 
 <body>
 
-<div id="main">
+    <div id="main">
 
-    <h1 class="page-title">Class: Coordinates</h1>
+        <p></p>
+        <div class="page-title"><img src="https://raw.githubusercontent.com/iTowns/itowns.github.io/master/images/itowns_logo_300x134.png" /></div>
 
-    
+        
 
 
 
@@ -28,7 +31,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Coordinates<span class="signature">(crs, &hellip;coordinates)</span><span class="type-signature"></span></h2>
+        <h2>
+        Coordinates
+        </h2>
         
     
 </header>
@@ -40,11 +45,54 @@
 
     
 
-    
     <h4 class="name" id="Coordinates"><span class="type-signature"></span>new Coordinates<span class="signature">(crs, &hellip;coordinates)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line228">line 228</a>
+    </li></ul></dd>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -58,6 +106,15 @@ If crs = 'EPSG:4978', coordinates must be in geocentric system.
 
 
 
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>new Coordinates('EPSG:4978', 20885167, 849862, 23385912); //Geocentric coordinates
+// or
+new Coordinates('EPSG:4326', 2.33, 48.24, 24999549); //Geographic coordinates</code></pre>
 
 
 
@@ -325,45 +382,6 @@ If crs = 'EPSG:4978', coordinates must be in geocentric system.
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line228">line 228</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -371,21 +389,6 @@ If crs = 'EPSG:4978', coordinates must be in geocentric system.
 
 
 
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>new Coordinates('EPSG:4978', 20885167, 849862, 23385912); //Geocentric coordinates
-// or
-new Coordinates('EPSG:4326', 2.33, 48.24, 24999549); //Geographic coordinates</code></pre>
 
 
 
@@ -398,9 +401,7 @@ new Coordinates('EPSG:4326', 2.33, 48.24, 24999549); //Geographic coordinates</c
 
     
 
-    
-
-    
+     
 
     
 
@@ -414,11 +415,54 @@ new Coordinates('EPSG:4326', 2.33, 48.24, 24999549); //Geographic coordinates</c
 
     
 
-    
     <h4 class="name" id="altitude"><span class="type-signature"></span>altitude<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line366">line 366</a>
+    </li></ul></dd>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -434,49 +478,23 @@ new Coordinates('EPSG:4326', 2.33, 48.24, 24999549); //Geographic coordinates</c
 
 
 
-
-
-
-
-<dl class="details">
-
+    <h5>Example</h5>
     
+    <pre class="prettyprint"><code>const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
+const coordinates = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
+coordinates.altitude(); // Altitude in geographic system
+// returns : 24999549
 
-    
+// or
 
-    
+const position = { x: 20885167, y: 849862, z: 23385912 };
+const coords = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
+const coordinates = coords.as('EPSG:4326');  // Geographic system
+coordinates.altitude(); // Altitude in geographic system
+// returns : 24999548.046711832</code></pre>
 
-    
 
-    
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line366">line 366</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -499,7 +517,7 @@ new Coordinates('EPSG:4326', 2.33, 48.24, 24999549); //Geographic coordinates</c
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -514,35 +532,59 @@ new Coordinates('EPSG:4326', 2.33, 48.24, 24999549); //Geographic coordinates</c
     
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
-const coordinates = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
-coordinates.altitude(); // Altitude in geographic system
-// returns : 24999549
-
-// or
-
-const position = { x: 20885167, y: 849862, z: 23385912 };
-const coords = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
-const coordinates = coords.as('EPSG:4326');  // Geographic system
-coordinates.altitude(); // Altitude in geographic system
-// returns : 24999548.046711832</code></pre>
-
-
-
         
             
 
     
 
-    
     <h4 class="name" id="as"><span class="type-signature"></span>as<span class="signature">(crs)</span><span class="type-signature"> &rarr; {Position}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line516">line 516</a>
+    </li></ul></dd>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -554,6 +596,29 @@ coordinates.altitude(); // Altitude in geographic system
 
 
 
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
+const coords = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
+const coordinates = coords.as('EPSG:4978'); // Geocentric system
+
+// or
+
+const position = { x: 20885167, y: 849862, z: 23385912 };
+const coords = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
+const coordinates = coords.as('EPSG:4326');  // Geographic system
+
+//or
+
+new Coordinates('EPSG:4326', longitude: 2.33, latitude: 48.24, altitude: 24999549).as('EPSG:4978'); // Geocentric system
+
+// or
+
+new Coordinates('EPSG:4978', x: 20885167, y: 849862, z: 23385912).as('EPSG:4326'); // Geographic system</code></pre>
 
 
 
@@ -611,50 +676,6 @@ coordinates.altitude(); // Altitude in geographic system
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line516">line 516</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -672,7 +693,7 @@ coordinates.altitude(); // Altitude in geographic system
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -687,40 +708,59 @@ coordinates.altitude(); // Altitude in geographic system
     
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
-const coords = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
-const coordinates = coords.as('EPSG:4978'); // Geocentric system
-
-// or
-
-const position = { x: 20885167, y: 849862, z: 23385912 };
-const coords = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
-const coordinates = coords.as('EPSG:4326');  // Geographic system
-
-//or
-
-new Coordinates('EPSG:4326', longitude: 2.33, latitude: 48.24, altitude: 24999549).as('EPSG:4978'); // Geocentric system
-
-// or
-
-new Coordinates('EPSG:4978', x: 20885167, y: 849862, z: 23385912).as('EPSG:4326'); // Geographic system</code></pre>
-
-
-
         
             
 
     
 
-    
     <h4 class="name" id="latitude"><span class="type-signature"></span>latitude<span class="signature">(unit<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line341">line 341</a>
+    </li></ul></dd>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -732,6 +772,24 @@ new Coordinates('EPSG:4978', x: 20885167, y: 849862, z: 23385912).as('EPSG:4326'
 
 
 
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
+const coordinates = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
+coordinates.latitude(); // Latitude in geographic system
+// returns : 48.24
+
+// or
+
+const position = { x: 20885167, y: 849862, z: 23385912 };
+const coords = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
+const coordinates = coords.as('EPSG:4326');  // Geographic system
+coordinates.latitude(); // Latitude in geographic system
+// returns : 48.24830764643365</code></pre>
 
 
 
@@ -796,50 +854,6 @@ new Coordinates('EPSG:4978', x: 20885167, y: 849862, z: 23385912).as('EPSG:4326'
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line341">line 341</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -862,7 +876,7 @@ new Coordinates('EPSG:4978', x: 20885167, y: 849862, z: 23385912).as('EPSG:4326'
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -877,35 +891,59 @@ new Coordinates('EPSG:4978', x: 20885167, y: 849862, z: 23385912).as('EPSG:4326'
     
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
-const coordinates = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
-coordinates.latitude(); // Latitude in geographic system
-// returns : 48.24
-
-// or
-
-const position = { x: 20885167, y: 849862, z: 23385912 };
-const coords = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
-const coordinates = coords.as('EPSG:4326');  // Geographic system
-coordinates.latitude(); // Latitude in geographic system
-// returns : 48.24830764643365</code></pre>
-
-
-
         
             
 
     
 
-    
     <h4 class="name" id="longitude"><span class="type-signature"></span>longitude<span class="signature">(unit<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line315">line 315</a>
+    </li></ul></dd>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -917,6 +955,24 @@ coordinates.latitude(); // Latitude in geographic system
 
 
 
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
+const coordinates = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
+coordinates.longitude(); // Longitude in geographic system
+// returns 2.33
+
+// or
+
+const position = { x: 20885167, y: 849862, z: 23385912 };
+const coords = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
+const coordinates = coords.as('EPSG:4326');  // Geographic system
+coordinates.longitude(); // Longitude in geographic system
+// returns 2.330201911389028</code></pre>
 
 
 
@@ -986,50 +1042,6 @@ coordinates.latitude(); // Latitude in geographic system
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line315">line 315</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1047,7 +1059,7 @@ coordinates.latitude(); // Latitude in geographic system
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1062,35 +1074,59 @@ coordinates.latitude(); // Latitude in geographic system
     
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
-const coordinates = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
-coordinates.longitude(); // Longitude in geographic system
-// returns 2.33
-
-// or
-
-const position = { x: 20885167, y: 849862, z: 23385912 };
-const coords = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
-const coordinates = coords.as('EPSG:4326');  // Geographic system
-coordinates.longitude(); // Longitude in geographic system
-// returns 2.330201911389028</code></pre>
-
-
-
         
             
 
     
 
-    
     <h4 class="name" id="offsetInExtent"><span class="type-signature"></span>offsetInExtent<span class="signature">(extent, target)</span><span class="type-signature"> &rarr; {Vector2}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line530">line 530</a>
+    </li></ul></dd>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -1098,6 +1134,8 @@ coordinates.longitude(); // Longitude in geographic system
     Returns the normalized offset from top-left in extent of this Coordinates
 e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
 </div>
+
+
 
 
 
@@ -1183,50 +1221,6 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line530">line 530</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1244,7 +1238,7 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1259,19 +1253,59 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
     
 
 
-
-
-
         
             
 
     
 
-    
     <h4 class="name" id="setAltitude"><span class="type-signature"></span>setAltitude<span class="signature">(altitude)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line377">line 377</a>
+    </li></ul></dd>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -1283,6 +1317,13 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
 
 
 
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>coordinates.setAltitude(number)</code></pre>
 
 
 
@@ -1340,37 +1381,59 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
 
 
 
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="x"><span class="type-signature"></span>x<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line377">line 377</a>
+        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line402">line 402</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -1381,37 +1444,6 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
 </dl>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>coordinates.setAltitude(number)</code></pre>
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="x"><span class="type-signature"></span>x<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
-
-    
 
 
 
@@ -1427,49 +1459,23 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
 
 
 
-
-
-
-
-<dl class="details">
-
+    <h5>Example</h5>
     
+    <pre class="prettyprint"><code>const position = { x: 20885167, y: 849862, z: 23385912 };
+const coordinates = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
+coordinates.x();  // Geocentric system
+// returns : 20885167
 
-    
+// or
 
-    
+const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
+const coords = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
+const coordinates = coords.as('EPSG:4978'); // Geocentric system
+coordinates.x(); // Geocentric system
+// returns : 20888561.0301258</code></pre>
 
-    
 
-    
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line402">line 402</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -1492,7 +1498,7 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1507,79 +1513,19 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
     
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>const position = { x: 20885167, y: 849862, z: 23385912 };
-const coordinates = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
-coordinates.x();  // Geocentric system
-// returns : 20885167
-
-// or
-
-const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
-const coords = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
-const coordinates = coords.as('EPSG:4978'); // Geocentric system
-coordinates.x(); // Geocentric system
-// returns : 20888561.0301258</code></pre>
-
-
-
         
             
 
     
 
-    
     <h4 class="name" id="xyz"><span class="type-signature"></span>xyz<span class="signature">()</span><span class="type-signature"> &rarr; {Position}</span></h4>
-    
 
     
-
-
-
-<div class="description">
-    Returns a position in cartesian coordinates. Coordinates must be in geocentric system (can be converted by using <code>as()</code> ).
-</div>
-
-
-
-
-
-
-
-
-
 
 
 
 
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
@@ -1593,42 +1539,44 @@ coordinates.x(); // Geocentric system
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </dl>
 
 
 
 
 
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    - position
+<div class="description">
+    Returns a position in cartesian coordinates. Coordinates must be in geocentric system (can be converted by using <code>as()</code> ).
 </div>
 
 
 
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Position</span>
 
 
-    </dd>
-</dl>
-
-    
 
 
 
@@ -1656,16 +1604,96 @@ coordinates.xyz(); // Geocentric system
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - position
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Position</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
         
             
 
     
 
-    
     <h4 class="name" id="y"><span class="type-signature"></span>y<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line427">line 427</a>
+    </li></ul></dd>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -1681,49 +1709,23 @@ coordinates.xyz(); // Geocentric system
 
 
 
-
-
-
-
-<dl class="details">
-
+    <h5>Example</h5>
     
+    <pre class="prettyprint"><code>const position = { x: 20885167, y: 849862, z: 23385912 };
+const coordinates = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
+coordinates.y();  // Geocentric system
+// returns : 849862
 
-    
+// or
 
-    
+const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
+const coords = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
+const coordinates = coords.as('EPSG:4978'); // Geocentric system
+coordinates.y(); // Geocentric system
+// returns : 849926.376770819</code></pre>
 
-    
 
-    
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line427">line 427</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -1746,7 +1748,7 @@ coordinates.xyz(); // Geocentric system
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1761,35 +1763,59 @@ coordinates.xyz(); // Geocentric system
     
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>const position = { x: 20885167, y: 849862, z: 23385912 };
-const coordinates = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
-coordinates.y();  // Geocentric system
-// returns : 849862
-
-// or
-
-const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
-const coords = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
-const coordinates = coords.as('EPSG:4978'); // Geocentric system
-coordinates.y(); // Geocentric system
-// returns : 849926.376770819</code></pre>
-
-
-
         
             
 
     
 
-    
     <h4 class="name" id="z"><span class="type-signature"></span>z<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line452">line 452</a>
+    </li></ul></dd>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -1805,49 +1831,23 @@ coordinates.y(); // Geocentric system
 
 
 
-
-
-
-
-<dl class="details">
-
+    <h5>Example</h5>
     
+    <pre class="prettyprint"><code>const position = { x: 20885167, y: 849862, z: 23385912 };
+const coordinates = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
+coordinates.z();  // Geocentric system
+// returns : 23385912
 
-    
+// or
 
-    
+const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
+const coords = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
+const coordinates = coords.as('EPSG:4978'); // Geocentric system
+coordinates.z(); // Geocentric system
+// returns : 23382883.536591515</code></pre>
 
-    
 
-    
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Geographic_Coordinates.js.html">Core/Geographic/Coordinates.js</a>, <a href="Core_Geographic_Coordinates.js.html#line452">line 452</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -1870,7 +1870,7 @@ coordinates.y(); // Geocentric system
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1883,25 +1883,6 @@ coordinates.y(); // Geocentric system
 </dl>
 
     
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>const position = { x: 20885167, y: 849862, z: 23385912 };
-const coordinates = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
-coordinates.z();  // Geocentric system
-// returns : 23385912
-
-// or
-
-const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
-const coords = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
-const coordinates = coords.as('EPSG:4978'); // Geocentric system
-coordinates.z(); // Geocentric system
-// returns : 23382883.536591515</code></pre>
-
 
 
         
@@ -1917,19 +1898,19 @@ coordinates.z(); // Geocentric system
 
 
 
-</div>
+    </div>
 
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-gpxUtils.html">gpxUtils</a></li></ul><h3>Classes</h3><ul><li><a href="Coordinates.html">Coordinates</a></li><li><a href="GlobeControls.html">GlobeControls</a></li><li><a href="GlobeView.html">GlobeView</a></li><li><a href="Layer.html">Layer</a></li><li><a href="View.html">View</a></li></ul><h3>Events</h3><ul><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="Layer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="Layer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="Layer.html#event:visible-property-changed">visible-property-changed</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#FrameRequester">FrameRequester</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#MAIN_LOOP_EVENTS">MAIN_LOOP_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
-</nav>
+    <nav>
+        <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coordinates.html">Coordinates</a><ul class='methods'><li data-type='method'><a href="Coordinates.html#altitude">altitude</a></li><li data-type='method'><a href="Coordinates.html#as">as</a></li><li data-type='method'><a href="Coordinates.html#latitude">latitude</a></li><li data-type='method'><a href="Coordinates.html#longitude">longitude</a></li><li data-type='method'><a href="Coordinates.html#offsetInExtent">offsetInExtent</a></li><li data-type='method'><a href="Coordinates.html#setAltitude">setAltitude</a></li><li data-type='method'><a href="Coordinates.html#x">x</a></li><li data-type='method'><a href="Coordinates.html#xyz">xyz</a></li><li data-type='method'><a href="Coordinates.html#y">y</a></li><li data-type='method'><a href="Coordinates.html#z">z</a></li></ul></li><li><a href="GlobeControls.html">GlobeControls</a><ul class='methods'><li data-type='method'><a href="GlobeControls.html#getCameraLocation">getCameraLocation</a></li><li data-type='method'><a href="GlobeControls.html#getCameraOrientation">getCameraOrientation</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetGeoPosition">getCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetPosition">getCameraTargetPosition</a></li><li data-type='method'><a href="GlobeControls.html#getHeading">getHeading</a></li><li data-type='method'><a href="GlobeControls.html#getRange">getRange</a></li><li data-type='method'><a href="GlobeControls.html#getScale">getScale</a></li><li data-type='method'><a href="GlobeControls.html#getTilt">getTilt</a></li><li data-type='method'><a href="GlobeControls.html#getZoom">getZoom</a></li><li data-type='method'><a href="GlobeControls.html#isAnimationEnabled">isAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#metersToPixels">metersToPixels</a></li><li data-type='method'><a href="GlobeControls.html#pan">pan</a></li><li data-type='method'><a href="GlobeControls.html#pickGeoPosition">pickGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToDegrees">pixelsToDegrees</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToMeters">pixelsToMeters</a></li><li data-type='method'><a href="GlobeControls.html#setAnimationEnabled">setAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPosition">setCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPositionAdvanced">setCameraTargetGeoPositionAdvanced</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetPosition">setCameraTargetPosition</a></li><li data-type='method'><a href="GlobeControls.html#setHeading">setHeading</a></li><li data-type='method'><a href="GlobeControls.html#setOrbitalPosition">setOrbitalPosition</a></li><li data-type='method'><a href="GlobeControls.html#setRange">setRange</a></li><li data-type='method'><a href="GlobeControls.html#setScale">setScale</a></li><li data-type='method'><a href="GlobeControls.html#setTilt">setTilt</a></li><li data-type='method'><a href="GlobeControls.html#setZoom">setZoom</a></li></ul></li><li><a href="GlobeView.html">GlobeView</a><ul class='methods'><li data-type='method'><a href="GlobeView.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#addLayer">addLayer</a></li><li data-type='method'><a href="GlobeView.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="GlobeView.html#getLayers">getLayers</a></li><li data-type='method'><a href="GlobeView.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="GlobeView.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#removeLayer">removeLayer</a></li></ul></li><li><a href="Layer.html">Layer</a></li><li><a href="View.html">View</a><ul class='methods'><li data-type='method'><a href="View.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="View.html#addLayer">addLayer</a></li><li data-type='method'><a href="View.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="View.html#getLayers">getLayers</a></li><li data-type='method'><a href="View.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="View.html#removeFrameRequester">removeFrameRequester</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-gpxUtils.html">gpxUtils</a><ul class='methods'><li data-type='method'><a href="module-gpxUtils.html#~load">load</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="Layer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="Layer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="Layer.html#event:visible-property-changed">visible-property-changed</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#FrameRequester">FrameRequester</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#MAIN_LOOP_EVENTS">MAIN_LOOP_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
+    </nav>
 
-<br class="clear">
+    <br class="clear">
 
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Dec 21 2017 11:20:48 GMT+0000 (UTC)
-</footer>
+    <footer>
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Dec 21 2017 11:44:09 GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+    <script> prettyPrint(); </script>
+    <script src="scripts/linenumber.js"> </script>
 </body>
 </html>
