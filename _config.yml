@@ -3,7 +3,7 @@ title: iTowns
 email: sysadmin+itowns@oslandia.com
 description: > # this means to ignore newlines until "baseurl:"
     iTowns is a JS/WebGL framework for 3D geospatial data visualization
-baseurl: "" # the subpath of your site, e.g. /blog/
+baseurl: "/itowns.github.io" # the subpath of your site, e.g. /blog/
 url: "http://www.itowns-project.org" # the base hostname & protocol for your site
 twitter_username: jekyllrb
 github_username: jekyll
