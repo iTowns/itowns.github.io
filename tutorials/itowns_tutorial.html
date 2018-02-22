@@ -1,0 +1,387 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>itowns Tutorial18.md</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#itowns-tutorial">iTowns Tutorial</a></li>
+<li><a href="#plan">Plan</a>
+<ul>
+<li><a href="#what-is-it">1. What is it?</a></li>
+<li><a href="#quick-start">2. Quick start</a></li>
+<li><a href="#using-the-api">3. Using the API</a>
+<ul>
+<li></li>
+</ul>
+</li>
+<li><a href="#architecture">4. Architecture</a></li>
+<li><a href="#going-further">5. Going Further</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <p><img src="https://raw.githubusercontent.com/iTowns/itowns.github.io/master/images/itownsReleaseXS.jpg" alt="iTowns screenshot"></p>
+<h1 id="itowns-tutorial">iTowns Tutorial</h1>
+<p>Hello and welcome to iTowns community!</p>
+<p>This tutorial can be useful for <strong>beginners</strong> in iTowns and Javascript but also for more <strong>experienced users</strong>. We start from scratch with basic setups, then we show how to use the API to display what we want with just few lines of code. Then the last part covers some more evolved visualisation/interaction. Let’s start!</p>
+<h1 id="plan">Plan</h1>
+<ol>
+<li>What is it ? | 2. Quick start | 3. Architecture | 4. Using the API | 5. Going Further</li>
+</ol>
+<h2 id="what-is-it">1. What is it?</h2>
+<p>iTowns is a Three.js-based framework written in Javascript/WebGL for visualizing <strong>3D geospatial data.</strong></p>
+<p>It can connect to WMS/WMTS/TMS servers including elevation data and load many different data formats (3dTiles, gpx, KML and much much more).</p>
+<p>iTowns has been redesigned from this <a href="https://github.com/iTowns/itowns-legacy">early version</a>.</p>
+<h2 id="quick-start">2. Quick start</h2>
+<p>The whole rendering of iTowns relies on WebGL to get the power of the GPU. So the first thing you can do is to verify that your browser supports WebGL. An easy way to do this is to check this iTowns example:
+<a href="http://www.itowns-project.org/itowns/examples/globe.html">http://www.itowns-project.org/itowns/examples/globe.html</a></p>
+<p><em>If it doesn’t work, try to update your browser (It works best on Chrome but it works also fine on Firefox) and your graphic card drivers. You can also check <a href="https://get.webgl.org/">https://get.webgl.org/</a> to get more information</em>.</p>
+<p>Here we present 3 possible ways to get/use iTowns. You can:</p>
+<ol>
+<li>Get it through npm  -&gt; getting directly itowns as a module</li>
+<li>Download a bundle from our github release page -&gt; getting directly itowns as a script JS</li>
+<li>Get the source and run in using npm  -&gt; the developer way</li>
+</ol>
+<hr>
+<h3 id="get-it-through-npm----getting-directly-itowns-as-a-module">1. Get it through npm  -&gt; getting directly itowns as a module</h3>
+<p>For this solution, you need to get <a href="https://nodejs.org">Node.js</a> (it comes with its Node Package Manager). Be careful if you are behind a proxy to specify it (<a href="https://medium.com/@patdhlk/node-js-and-npm-behind-a-proxy-111708b82718">https://medium.com/@patdhlk/node-js-and-npm-behind-a-proxy-111708b82718</a>)</p>
+<p>In your project root directory:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">npm</span> <span class="token function">install</span> --save itowns
+</code></pre>
+<p>This package contains the ES6-compatible sources of Itowns.</p>
+<p>If you’re using a module bundler (like wepback), you can directly require(‘itowns’) in your code.</p>
+<h3 id="download-a-bundle-from-our-github-release-page---getting-directly-itowns-as-a-script-js">2. Download a bundle from our github release page -&gt; getting directly itowns as a script JS</h3>
+<p>We provide a bundle on our <a href="https://github.com/iTowns/itowns/releases">release page</a> that you can directly include in your html files that exposes itowns in window:</p>
+<pre class=" language-html"><code class="prism  language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>node_modules/itowns/dist/itowns.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+<p><strong>/!\ Please note that this bundle also contains the dependencies</strong>.</p>
+<h3 id="get-the-source-and-run-it-using-npm---the-developer-way">3. Get the source and run it using npm -&gt; the developer way</h3>
+<p>For this solution, you need to get <a href="https://nodejs.org">Node.js</a> (it comes with its Node Package Manager). Be careful if you are behind a proxy to specify it (<a href="https://medium.com/@patdhlk/node-js-and-npm-behind-a-proxy-111708b82718">https://medium.com/@patdhlk/node-js-and-npm-behind-a-proxy-111708b82718</a>)</p>
+<p>This solution has some advantages as it provides you with the most recent code (last master) and also allows you to code in iTowns with automatic compilation and refresh of your browser.</p>
+<p>If you have git :</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">git</span> clone https://github.com/iTowns/itowns
+</code></pre>
+<p>Or you can directly download the zip containing the source code at <a href="https://github.com/iTowns/itowns/archive/master.zip">https://github.com/iTowns/itowns/archive/master.zip</a></p>
+<p><strong>Install dependencies</strong></p>
+<p>In your chosen root directory of iTowns:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">npm</span> <span class="token function">install</span>
+<span class="token function">npm</span> start
+</code></pre>
+<p>Using npm start is very practical because it’ll restart automatically the application everytime you save the sources on modifications</p>
+<hr>
+<p>You need a webserver to test iTowns locally on your computer. NPM can do it for you but you can also use Apache or Python simple http server or anything else you prefer :)</p>
+<h2 id="using-the-api">3. Using the API</h2>
+<h4 id="supported-data-types">Supported data types</h4>
+<ul>
+<li>Aerial imagery</li>
+<li>Elevation model</li>
+<li>Vector</li>
+<li>Meshes</li>
+</ul>
+<h4 id="suppported-protocols">Suppported protocols</h4>
+<ul>
+<li>WMS</li>
+<li>WMTS</li>
+<li>TMS</li>
+<li>WFS</li>
+</ul>
+<h4 id="supported-data-files-formats">Supported data files formats</h4>
+<ul>
+<li>Images:
+– jpg
+– png</li>
+<li>Data:
+– Json
+– GeoJson
+– XML
+– KML
+– GPX</li>
+</ul>
+<h4 id="api-documentation-and-demo">API documentation and demo</h4>
+<p>You can find an API documentation <a href="http://www.itowns-project.org/itowns/API_Doc/">here</a>
+If you want to play with a demonstration, please click <a href="http://www.itowns-project.org/itowns/">here</a></p>
+<h4 id="lets-start-with-a-simple-example">Let’s start with a simple example</h4>
+<p>We are going to have a look on the <em>index.html</em>.</p>
+<p>You can launch the <em>index.html</em> sample code by accessing your localhost directly. For example, in itowns root directory:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token comment" spellcheck="true"># if you use npm as a server</span>
+<span class="token function">npm</span> start
+</code></pre>
+<p>Then open your browser with localhost as url (precise the port, default :8080), you should see this:</p>
+<p><img src="http://stereopolis.ign.fr/videos/tutorial/tuto.jpg" alt="enter image description here">
+A globe with 4 different imagery layers and 2 layers for the elevation. Let’s now look at the code producing this visualization: <em>/itowns/index.html</em></p>
+<p><img src="http://stereopolis.ign.fr/videos/tutorial/tutoCodeIndex" alt="enter image description here"></p>
+<p>You can see that we import 4 external scripts. Only <strong>itowns.js</strong> is mandatory</p>
+<pre class=" language-html"><code class="prism  language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>examples/GUI/dat.gui/dat.gui.min.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>examples/GUI/GuiTools.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dist/itowns.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dist/debug.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+<ul>
+<li><em>dat.gui.min.js</em> : Source code for the menu.</li>
+<li><em>GuiTools.js</em>: Some itowns specific code related to the menu</li>
+<li><em>itowns.js</em>: <strong>itowns source code</strong></li>
+<li><em>debug.js</em>: Some optional debug functions</li>
+</ul>
+<p><strong>Minimal code</strong>: If we would like to show just the globe without a menu and debug functions and only two layers it would look like this more <strong>simple snippet</strong>:</p>
+<pre class=" language-html"><code class="prism  language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">&gt;</span></span>
+	    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text/css<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token style language-css">
+	        <span class="token selector">html </span><span class="token punctuation">{</span><span class="token property">height</span><span class="token punctuation">:</span> <span class="token number">100%</span><span class="token punctuation">}</span>
+	        <span class="token selector">body </span><span class="token punctuation">{</span> <span class="token property">margin</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token property">overflow</span><span class="token punctuation">:</span>hidden<span class="token punctuation">;</span> <span class="token property">height</span><span class="token punctuation">:</span><span class="token number">100%</span><span class="token punctuation">}</span>
+            <span class="token selector"><span class="token id">#viewerDiv</span> </span><span class="token punctuation">{</span><span class="token property">margin</span> <span class="token punctuation">:</span> auto auto<span class="token punctuation">;</span> <span class="token property">width</span><span class="token punctuation">:</span> <span class="token number">100%</span><span class="token punctuation">;</span> <span class="token property">height</span><span class="token punctuation">:</span> <span class="token number">100%</span><span class="token punctuation">;</span> <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token punctuation">}</span>
+	    </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>viewerDiv<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dist/itowns.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript">
+            <span class="token comment" spellcheck="true">/* global itowns,document,GuiTools*/</span>
+            <span class="token keyword">var</span> positionOnGlobe <span class="token operator">=</span> <span class="token punctuation">{</span> longitude<span class="token punctuation">:</span> <span class="token number">2.351323</span><span class="token punctuation">,</span> latitude<span class="token punctuation">:</span> <span class="token number">48.856712</span><span class="token punctuation">,</span> altitude<span class="token punctuation">:</span> <span class="token number">25000000</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// iTowns namespace defined here</span>
+            <span class="token keyword">var</span> viewerDiv <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'viewerDiv'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">var</span> globeView <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">itowns<span class="token punctuation">.</span>GlobeView</span><span class="token punctuation">(</span>viewerDiv<span class="token punctuation">,</span> positionOnGlobe<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            itowns<span class="token punctuation">.</span>Fetcher<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token string">'examples/layers/JSONLayers/Ortho.json'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> globeView<span class="token punctuation">.</span><span class="token function">addLayer</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            itowns<span class="token punctuation">.</span>Fetcher<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token string">'examples/layers/JSONLayers/WORLD_DTM.json'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> globeView<span class="token punctuation">.</span><span class="token function">addLayer</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+<p><strong>Line by line explanation</strong></p>
+<p>First step is to create a HTML div where iTowns will be displayed:</p>
+<pre class=" language-html"><code class="prism  language-html"> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>viewerDiv<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+<p>We then import itowns source code (<em>dist/</em> is the default directory if used npm run build):</p>
+<pre class=" language-html"><code class="prism  language-html"> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dist/itowns.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+<p>Then we enter the code to show the globe. We specify a position to initialize camera position:</p>
+<pre class=" language-html"><code class="prism  language-html"> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+            /* global itowns,document,GuiTools*/
+            var positionOnGlobe = { longitude: 2.351323, latitude: 48.856712, altitude: 25000000 };
+</code></pre>
+<p>We create a GlobeView and specify where to render it (viewerDiv) and the initial camera position (positionOnGlobe):</p>
+<pre class=" language-javascript"><code class="prism  language-javascript"><span class="token keyword">const</span> viewerDiv <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'viewerDiv'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> globeView <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">itowns<span class="token punctuation">.</span>GlobeView</span><span class="token punctuation">(</span>viewerDiv<span class="token punctuation">,</span> positionOnGlobe<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Finally we tell itowns <em>GlobeView</em> what data we want do display. Here we specify two WMTS providers, one for aerial imagery (<em>ortho.json</em>) and the other for elevation data (<em>WORLD_DTM.json</em>)</p>
+<pre class=" language-javascript"><code class="prism  language-javascript">itowns<span class="token punctuation">.</span>Fetcher<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token string">'examples/layers/JSONLayers/Ortho.json'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> globeView<span class="token punctuation">.</span><span class="token function">addLayer</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+itowns<span class="token punctuation">.</span>Fetcher<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token string">'examples/layers/JSONLayers/WORLD_DTM.json'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> globeView<span class="token punctuation">.</span><span class="token function">addLayer</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Those two JSON comes with others to access specific data. You can play with the few json samples that you can find here: <em>examples/layers/JSONLayers/</em></p>
+<p><img src="http://stereopolis.ign.fr/videos/tutorial/tutoJSONS.jpg" alt="iTowns screenshot"></p>
+<p>For the WMTS as for the WMS protocol, the description is standard. Here is the example to display the ortho imagery WMTS from IGN: (Keep in mind that it will work in localhost with the given key but you will need a geoportal key to make it work on a distant server. You create your own key for IGN services <a href="http://professionnels.ign.fr/user">here</a>)</p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span> 
+	 <span class="token string">"type"</span><span class="token punctuation">:</span> <span class="token string">"color"</span><span class="token punctuation">,</span>
+    <span class="token string">"protocol"</span><span class="token punctuation">:</span>   <span class="token string">"wmts"</span><span class="token punctuation">,</span>
+    <span class="token string">"id"</span><span class="token punctuation">:</span>         <span class="token string">"Ortho"</span><span class="token punctuation">,</span>
+    <span class="token string">"url"</span><span class="token punctuation">:</span>        <span class="token string">"http://wxs.ign.fr/(your_geoportal_key)/geoportail/wmts"</span><span class="token punctuation">,</span>
+    <span class="token string">"networkOptions"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token string">"crossOrigin"</span><span class="token punctuation">:</span> <span class="token string">"anonymous"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">"updateStrategy"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token string">"type"</span><span class="token punctuation">:</span> <span class="token string">"0"</span><span class="token punctuation">,</span>
+        <span class="token string">"options"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">"options"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token string">"attribution"</span> <span class="token punctuation">:</span> <span class="token punctuation">{</span>
+            <span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"IGN"</span><span class="token punctuation">,</span>
+            <span class="token string">"url"</span><span class="token punctuation">:</span><span class="token string">"http://www.ign.fr/"</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"ORTHOIMAGERY.ORTHOPHOTOS"</span><span class="token punctuation">,</span>
+        <span class="token string">"mimetype"</span><span class="token punctuation">:</span> <span class="token string">"image/jpeg"</span><span class="token punctuation">,</span>
+        <span class="token string">"tileMatrixSet"</span><span class="token punctuation">:</span> <span class="token string">"PM"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><em>tileMatrixSetLimits</em> are optional.</p>
+<p>We also incorporated an example for OpenStreetMap (<em>examples/layers/JSONLayers/OPENSM.json</em>), even if not following the usual url for wmts, you can use a custom url:</p>
+<pre class=" language-javascript"><code class="prism  language-javascript">  <span class="token string">"customUrl"</span><span class="token punctuation">:</span> <span class="token string">"http://a.basemaps.cartocdn.com/dark_all/%TILEMATRIX/%COL/%ROW.png"</span>
+</code></pre>
+<p><img src="http://stereopolis.ign.fr/videos/tutorial/osm.jpg" alt="iTowns screenshot"></p>
+<p>From the <em>index.html</em> you can do many things using the API. You can check the documented functions <a href="http://www.itowns-project.org/itowns/API_Doc/">here</a></p>
+<p>We try to create demos that represent different functionalities of iTowns so feel free to check some of them <a href="http://www.itowns-project.org/itowns/examples/index.html">here</a></p>
+<h2 id="architecture">4. Architecture</h2>
+<p>Let’s have a look on iTowns architecture. We give here a view with 3 diagrams showing how the code is organized.</p>
+<p><strong>Core</strong></p>
+<p><a href="http://stereopolis.ign.fr/videos/tutorial/core.png"><em>original image size</em></a>
+<img src="http://stereopolis.ign.fr/videos/tutorial/core.png" alt="iTowns screenshot"></p>
+<p><strong>Process</strong></p>
+<p><a href="http://stereopolis.ign.fr/videos/tutorial/process.png"><em>original image</em></a></p>
+<p><img src="http://stereopolis.ign.fr/videos/tutorial/process.png" alt="iTowns screenshot"></p>
+<p><strong>Renderer</strong></p>
+<p><a href="http://stereopolis.ign.fr/videos/tutorial/renderer.png"><em>original image</em></a>
+<img src="http://stereopolis.ign.fr/videos/tutorial/renderer.png" alt="iTowns screenshot"></p>
+<p>iTowns is using THREEJS as the graphic library. It is a very powerful library, well documented. Have a look on it here: <a href="https://github.com/mrdoob/three.js/">https://github.com/mrdoob/three.js/</a>
+This gives to iTowns a very strong usability and an <em>easy</em> start for 3D projects. iTowns is basically relying on THREEJS for all graphics computation, and adds specific algorithms to handle very large scale rendering such as RTC (Relative To Center) for example.</p>
+<h3 id="important-classes">Important classes:</h3>
+<p><strong>Renderer/c3DEngine.js</strong></p>
+<ul>
+<li>
+<p>This is the graphic engine of iTowns. It handles the rendering functions, RTC rendering, scene graph.<br>
+Attributes of this class uses some of THREE JS main objects such as:
+– <em>THREE.WebGLRenderer</em> -&gt; The main renderer
+– <em>THREE.WebGLRenderTarget</em> -&gt; for the picking (to get 3D position on click)</p>
+</li>
+<li>
+<p>This class is responsible for the render calls through <em>this.renderScene</em>. (Beware when coding that this function is called or you won’t see any of your added objects in the scene as iTowns doesn’t use a continuous render loop on <em>requestanimatedframe</em> for ex.)</p>
+</li>
+</ul>
+<p><strong>Renderer/ThreeExtended/GlobeControls.js</strong></p>
+<ul>
+<li>This class controls the camera with the mouse, the keyboard and functions, for example: rotation, tilt, heading etc. by doing <code>CRTL + Click</code> or by using functions such as <em>setTilt()</em>, <em>setRange()</em>, <em>setCameraTargetGeoPosition()</em>…</li>
+</ul>
+<p><strong>Core/View.js</strong></p>
+<ul>
+<li>This class creates an iTowns scene instance. It allows to add layers to the scene and to get layers from the scene.</li>
+</ul>
+<p><strong>Prefab/GlobeView.js</strong></p>
+<ul>
+<li>This class creates the viewer Globe (the globe of iTowns). It’s an extend of the <em>View</em> class. In addition of this last one, <em>GlobeView</em> allows to remove layers from the scene and dispatch events concerning these layers.</li>
+</ul>
+<p><strong>Geographic/Coordinates.js</strong></p>
+<ul>
+<li>This class allows to build a Coordinates object, given a crs and a number of coordinates value. Coordinates can be in geocentric system, geographic system or an instance of THREE.Vector3.</li>
+</ul>
+<p><strong>Scheduler/Providers/</strong></p>
+<ul>
+<li>This package is where sit the providers for the different data you want to access. For example:
+– <em>WMTS_Provider</em>
+– <em>WMS_Provider</em>
+– <em>3dTiles_Providers</em></li>
+<li>It also contains ioDrivers, ie, the low level classes to interpret data such as XBIL, a binary format for elevation tiles.</li>
+</ul>
+<h3 id="some-useful-api-functions">Some useful API functions</h3>
+<h4 id="example-removelayer">Example: removeLayer</h4>
+<p>To remove a layer you have to use the function <code>removeLayer(layerId)</code>:</p>
+<pre class=" language-javascript"><code class="prism  language-javascript">globeView<span class="token punctuation">.</span><span class="token function">removeLayer</span><span class="token punctuation">(</span><span class="token string">'layerId'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="example-change-layers-attributes-and-events">Example: Change layers attributes and events</h4>
+<p>To change the attributes of a layer, you must first get the layer on which you want to act</p>
+<pre class=" language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> myLayer <span class="token operator">=</span> globeView<span class="token punctuation">.</span><span class="token function">getLayers</span><span class="token punctuation">(</span>layer <span class="token operator">=</span><span class="token operator">&gt;</span> layer<span class="token punctuation">.</span>id <span class="token operator">===</span> <span class="token string">'layerId'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>You can then change the values of the attributes:</p>
+<pre class=" language-javascript"><code class="prism  language-javascript">myLayer<span class="token punctuation">.</span>visible <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// set the visibility at false</span>
+myLayer<span class="token punctuation">.</span>opacity <span class="token operator">=</span> <span class="token number">0.5</span> <span class="token comment" spellcheck="true">// opacity value must be between 0 and 1</span>
+myLayer<span class="token punctuation">.</span>sequence <span class="token comment" spellcheck="true">// return the index of the layer in the scene</span>
+</code></pre>
+<h3 id="control-functions">Control functions</h3>
+<p>Control functions are essentially functions to deal with the camera with different behaviour depending if looking a globe view or a planar view. You can use already existing controls from <a href="https://threejs.org/docs/">THREEJS</a> or the one we specifically created:</p>
+<ul>
+<li><strong>Renderer/ThreeExtended/PlanarControls.js</strong></li>
+<li><strong>Renderer/ThreeExtended/GlobeControls.js</strong></li>
+</ul>
+<p><strong>Regarding the globe view:</strong>
+functions are accessible via the object: <code>globeView.controls</code>.
+Every <code>set</code> functions have the optional <code>isAnimated</code> parameter: its allows to move the globe/camera with an animation when it is setted to <em>true</em>. By default, it is setted to <em>true</em>.</p>
+<h4 id="example-setcameratargetgeopositionposition-isanimated--getcameratargetgeoposition-center">Example: setCameraTargetGeoPosition(position, isAnimated) &amp; getCameraTargetGeoPosition() (Center)</h4>
+<pre class=" language-javascript"><code class="prism  language-javascript">globeView<span class="token punctuation">.</span>controls<span class="token punctuation">.</span><span class="token function">setCameraTargetGeoPosition</span><span class="token punctuation">(</span><span class="token punctuation">{</span>longitude<span class="token punctuation">:</span><span class="token number">60</span><span class="token punctuation">,</span> latitude<span class="token punctuation">:</span><span class="token number">40</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//return promise, change the position of the camera</span>
+globeView<span class="token punctuation">.</span>controls<span class="token punctuation">.</span><span class="token function">getCameraTargetGeoPosition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//return the center of the view (intersection between the globe and the aim of the camera)</span>
+</code></pre>
+<h4 id="example-setorbitalpositionposition-isanimated--getcameraorientation">Example: setOrbitalPosition(position, isAnimated) &amp;&amp; getCameraOrientation()</h4>
+<pre class=" language-javascript"><code class="prism  language-javascript">globeView<span class="token punctuation">.</span>controls<span class="token punctuation">.</span><span class="token function">setOrbitalPosition</span><span class="token punctuation">(</span><span class="token punctuation">{</span>heading<span class="token punctuation">:</span> <span class="token number">45</span><span class="token punctuation">,</span> tilt<span class="token punctuation">:</span> <span class="token number">50</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// return promise, change the orientation of the camera</span>
+globeView<span class="token punctuation">.</span>controls<span class="token punctuation">.</span><span class="token function">getCameraOrientation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// return the orientation of the camera</span>
+</code></pre>
+<p>For further functions, please see the documentation <a href="http://www.itowns-project.org/itowns/API_Doc/GlobeControls.html">here</a></p>
+<h3 id="using-itowns-global-functions">Using iTowns global functions</h3>
+<p>These functions are accessible via the object <code>itowns</code>, see <a href="http://www.itowns-project.org/itowns/API_Doc/global.html">documentation</a></p>
+<h4 id="example-movelayerdownview-layerid">Example: moveLayerDown(view, layerId)</h4>
+<pre class=" language-javascript"><code class="prism  language-javascript">itowns<span class="token punctuation">.</span>ColorLayersOrdering<span class="token punctuation">.</span><span class="token function">moveLayerDown</span><span class="token punctuation">(</span>globeView<span class="token punctuation">,</span> <span class="token string">'idLayerToDown'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="events">Events</h3>
+<h4 id="layers-events">Layers Events</h4>
+<p>Every layers events regarding layers are dispatched on the layer which has undergone the changes:</p>
+<pre class=" language-javascript"><code class="prism  language-javascript"><span class="token keyword">var</span> myLayer <span class="token operator">=</span> globeView<span class="token punctuation">.</span><span class="token function">getLayers</span><span class="token punctuation">(</span>layer <span class="token operator">=</span><span class="token operator">&gt;</span> layer<span class="token punctuation">.</span>id <span class="token operator">===</span> <span class="token string">'layerId'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// Visibility event : returns the previous value and the new value of the visibility</span>
+myLayer<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'visible-property-changed'</span><span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// Opacity event : returns the previous value and the new value of the opacity</span>
+myLayer<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'opacity-property-changed'</span><span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// Index event : returns the previous value and the new value of the index</span>
+myLayer<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'sequence-property-changed'</span><span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="controls-events">Controls Events</h4>
+<p>Every controls events are dispatched on the control object:</p>
+<pre class=" language-javascript"><code class="prism  language-javascript"><span class="token comment" spellcheck="true">// Center event  : returns the previous value and the new values of the center</span>
+globeView<span class="token punctuation">.</span><span class="token function">controls</span><span class="token punctuation">(</span><span class="token string">'camera-target-changed'</span><span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// Camera orientation event : returns the previous value and the new value of the oreintation</span>
+globeView<span class="token punctuation">.</span><span class="token function">controls</span><span class="token punctuation">(</span><span class="token string">'orientation-changed'</span><span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// Range event (fired when the distance between the camera and the globe has changed) : returns the previous value and the new value of the range</span>
+globeView<span class="token punctuation">.</span><span class="token function">controls</span><span class="token punctuation">(</span><span class="token string">'range-changed'</span><span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="globe-events">Globe Events</h4>
+<p>Every globe events are dispatched on the view (in our example, on <em>globeView</em>):</p>
+<pre class=" language-javascript"><code class="prism  language-javascript"><span class="token comment" spellcheck="true">// Globe initialisation event</span>
+globeView<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'initialized'</span><span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// When a layer is added in the view : return the of id of the layer</span>
+globeView<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'layer-added'</span><span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// When a layer is removed in the view : return the of id of the layer</span>
+globeView<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'layer-removed'</span><span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// When the order of the layers in the view has changed</span>
+globeView<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'layers-order-changed'</span><span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="going-further">5. Going Further</h2>
+<h3 id="show-building-boxes-using-a-wfs">Show Building Boxes using a WFS</h3>
+<p>Let’s have a look on the example providing buildings out of a WFS: <a href="http://www.itowns-project.org/itowns/examples/globe_wfs_extruded.html">http://www.itowns-project.org/itowns/examples/globe_wfs_extruded.html</a>
+<img src="http://stereopolis.ign.fr/videos/tutorial/wfsExample.jpg" alt="enter image description here"></p>
+<p>In your editor, open the main script : itowns/examples/globe_wfs_extruded.js</p>
+<ol>
+<li>Remove all the WFS layers but keep <em>wfsBuilding</em></li>
+<li>Change its level to 16 (zoom level at which it starts requesting through WFS).
+-&gt; It should be faster.</li>
+<li>Now let’s try to replace the aerial imagery layer with an OSM one using the DARK.json configuration file.</li>
+<li>Let’s make the buildings look darker. In colorBuildings() function, change to a darker color. (Remember that an easy way to use colors is with hexadecimal RGB: 0xRRGGBB. -&gt; 0xFFFFFF is white)</li>
+<li>Let’s center the view to Paris la Défense: longitude: 2.242259, latitude: 48.891927</li>
+</ol>
+<p>You should see something looking like this:</p>
+<p><img src="http://stereopolis.ign.fr/videos/tutorial/osmWFS.jpg" alt="enter image description here"></p>
+<h3 id="manipulate-shaders">Manipulate Shaders</h3>
+<p>Let’s see what’s happening with the existing shaders for the globe, how do we use elevation and imagery?</p>
+<p>The globe is composed of tile meshes. A tile is a scene object that have a geometry and a material. Tiles geometry surface are adapted to the level of details but the number of triangles of a tile geometry is constant. So if you look at the earth from far, a tile triangle might have a very large surface, and when you get close to the ground a triangle might have edges of 0.5 meters. iTowns applies the same principle as many 2D map rendering to 3D in order to handle efficiently tiles mapping:</p>
+<p><img src="http://stereopolis.ign.fr/videos/tutorial/webgl-earth2x.png" alt="iTowns screenshot"></p>
+<h3 id="debug-mode">Debug mode</h3>
+<p>iTowns offers a Debug mode which allows you to visualize the different tiles and also to display them in a wireframe mode:</p>
+<p>To display it, you can add the following lines in your <em>index.html</em>:</p>
+<pre class=" language-html"><code class="prism  language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dist/debug.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript">
+    <span class="token keyword">new</span> <span class="token class-name">debug<span class="token punctuation">.</span>Debug</span><span class="token punctuation">(</span>globeView<span class="token punctuation">,</span> viewerDiv<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    window<span class="token punctuation">.</span>globeView <span class="token operator">=</span> globeView<span class="token punctuation">;</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+<p><img src="http://stereopolis.ign.fr/videos/tutorial/tiles.jpg" alt="iTowns screenshot"></p>
+<h3 id="shader">Shader</h3>
+<p>In <em>src/Renderer/Shader</em> you can find the different shaders as a GLSL form used in iTowns.
+They can be written also in javascript after compilation, which is the case here as we mix glsl file with javascript declaration.</p>
+<p>The globe is, as we said previously, composed by tiles. Each tiles as a shadermaterial composed by a vertex and fragment shader: TileVS.glsl, TileFS.glsl.  Let’s have a look on the vertex shader first, which handles the geometry of the tile.</p>
+<h3 id="vertex-shader">Vertex Shader</h3>
+<p>The vertex shader receive a geometry which is a generic tile so without taking elevation into account. One of is job is to deform the geometry to reproduce the terrain. It does that using elevation texture coming out of WMTS elevation services. Each tile has one texture of encoded elevation. So it is straightforward to do some vertex displacement toward the normal using this altitude.</p>
+<pre class=" language-javascript"><code class="prism  language-javascript">  float   dv  <span class="token operator">=</span> <span class="token function">max</span><span class="token punctuation">(</span><span class="token function">texture2D</span><span class="token punctuation">(</span> dTextures_00<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> vVv <span class="token punctuation">)</span><span class="token punctuation">.</span>w<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// Read elevation value using the elevation texture</span>
+  vPosition   <span class="token operator">=</span> <span class="token function">vec4</span><span class="token punctuation">(</span> position <span class="token operator">+</span>  vNormal  <span class="token operator">*</span> dv <span class="token punctuation">,</span><span class="token number">1.0</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">// Get real terrain 3D position with elevation</span>
+</code></pre>
+<p>You can try to accentuate the elevation disparity addind a coefficient:</p>
+<pre class=" language-javascript"><code class="prism  language-javascript">vPosition   <span class="token operator">=</span> <span class="token function">vec4</span><span class="token punctuation">(</span> position <span class="token operator">+</span>  vNormal  <span class="token operator">*</span> dv <span class="token operator">*</span> <span class="token number">10</span><span class="token punctuation">.</span> <span class="token punctuation">,</span><span class="token number">1.0</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">// Get real terrain 3D position with elevation</span>
+</code></pre>
+<p>See the result:
+<img src="http://stereopolis.ign.fr/videos/tutorial/elevationAccentuate.jpg" alt="iTowns screenshot"></p>
+<hr>
+<p>We keep adding new documented examples regularly, so don’t forget to check the new ones here:
+<a href="http://www.itowns-project.org/itowns/examples/index.html">http://www.itowns-project.org/itowns/examples/index.html</a></p>
+<p>For any bug or improvements it happens here: <a href="https://github.com/iTowns/itowns/issues">https://github.com/iTowns/itowns/issues</a></p>
+<p>Have fun using itowns!</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
