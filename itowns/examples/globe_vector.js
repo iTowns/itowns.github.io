@@ -46,7 +46,6 @@ promises.push(globeView.addLayer({
     url: 'https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements/09-ariege/departement-09-ariege.geojson',
     protocol: 'rasterizer',
     id: 'ariege',
-    name: 'ariege',
     transparent: true,
     style: {
         fill: 'orange',
