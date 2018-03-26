@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : Layer</title>
+    <title>iTowns API : GeoJSON2Features</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -31,9 +31,6 @@
 
 <header>
     
-        <h2>
-        Layer
-        </h2>
         
     
 </header>
@@ -43,9 +40,31 @@
     
         
 
+        
+    
+    </div>
+
     
 
-    <h4 class="name" id="Layer"><span class="type-signature">(protected) </span>new Layer<span class="signature">(id)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".parse"><span class="type-signature">(static) </span>parse<span class="signature">(crsOut, json, filteringExtent<span class="signature-attributes">nullable</span>, options)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
 
     
 
@@ -57,7 +76,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Layer_Layer.js.html">Core/Layer/Layer.js</a>, <a href="Core_Layer_Layer.js.html#line127">line 127</a>
+        <a href="Renderer_ThreeExtended_GeoJSON2Features.js.html">Renderer/ThreeExtended/GeoJSON2Features.js</a>, <a href="Renderer_ThreeExtended_GeoJSON2Features.js.html#line270">line 270</a>
     </li></ul></dd>
     
 
@@ -97,8 +116,7 @@
 
 
 <div class="description">
-    Don't use directly constructor to instance a new Layer
-use addLayer in <a href="View.html">View</a>
+    Parses a geojson file and return a Feature or an array of Feature.
 </div>
 
 
@@ -109,31 +127,158 @@ use addLayer in <a href="View.html">View</a>
 
 
 
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// add and create a new Layer
-const newLayer = view.addLayer({options});
-
-// Change layer's visibilty
-const layerToChange = view.getLayers(layer => layer.id == 'idLayerToChange')[0];
-layerToChange.visible = false;
-view.notifyChange(true); // update viewer
-
-// Change layer's opacity
-const layerToChange = view.getLayers(layer => layer.id == 'idLayerToChange')[0];
-layerToChange.opacity = 0.5;
-view.notifyChange(true); // update viewer
-
-// Listen properties
-const layerToListen = view.getLayers(layer => layer.id == 'idLayerToListen')[0];
-layerToListen.addEventListener('visible-property-changed', (event) => console.log(event));
-layerToListen.addEventListener('opacity-property-changed', (event) => console.log(event));</code></pre>
-
-
 
 
     <h5>Parameters:</h5>
     
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>crsOut</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The CRS to convert the input coordinates to</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>json</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The GeoJSON file to parse</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>filteringExtent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Extent</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Optional filter to reject features
+outside of this extent.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">options controlling the parsing
+                <h6>Properties</h6>
+                
 
 <table class="params">
     <thead>
@@ -157,13 +302,13 @@ layerToListen.addEventListener('opacity-property-changed', (event) => console.lo
 
         <tr>
             
-                <td class="name"><code>id</code></td>
+                <td class="name"><code>crsIn</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 
 
             
@@ -173,7 +318,61 @@ layerToListen.addEventListener('opacity-property-changed', (event) => console.lo
 
             
 
-            <td class="description last"></td>
+            <td class="description last">override the data crs</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>buildExtent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">if true the geometry will
+have an extent property containing the area covered by the geom</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>filter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Filter function to remove features</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -193,38 +392,40 @@ layerToListen.addEventListener('opacity-property-changed', (event) => console.lo
 
 
 
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Events</h3>
+<h5>Returns:</h5>
 
         
-            
+<div class="param-desc">
+    - a Promise resolving with a Feature or an array of Feature
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
 
     
 
-    <h4 class="name" id="event:opacity-property-changed">opacity-property-changed</h4>
+
+        
+    
 
     
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id=".Feature">Feature</h4>
+
 
 
 
@@ -234,7 +435,7 @@ layerToListen.addEventListener('opacity-property-changed', (event) => console.lo
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Layer_Layer.js.html">Core/Layer/Layer.js</a>, <a href="Core_Layer_Layer.js.html#line14">line 14</a>
+        <a href="Renderer_ThreeExtended_GeoJSON2Features.js.html">Renderer/ThreeExtended/GeoJSON2Features.js</a>, <a href="Renderer_ThreeExtended_GeoJSON2Features.js.html#line249">line 249</a>
     </li></ul></dd>
     
 
@@ -297,7 +498,34 @@ layerToListen.addEventListener('opacity-property-changed', (event) => console.lo
 
         <tr>
             
-                <td class="name"><code>new</code></td>
+                <td class="name"><code>geometry</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">FeatureGeometry</span>
+|
+
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The feature's geometry. Can
+be a FeatureGeometry or an array of FeatureGeometry.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>properties</code></td>
             
 
             <td class="type">
@@ -313,172 +541,7 @@ layerToListen.addEventListener('opacity-property-changed', (event) => console.lo
 
             
 
-            <td class="description last">
-                <h6>Properties</h6>
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>opacity</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the new value of the layer opacity</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>previous</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <h6>Properties</h6>
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>opacity</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the previous value of the layer opacity</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>target</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Layer.html">Layer</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">dispatched on layer</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">opacity-property-changed</td>
+            <td class="description last">Properties of the features</td>
         </tr>
 
     
@@ -490,42 +553,27 @@ layerToListen.addEventListener('opacity-property-changed', (event) => console.lo
 
 
 
-<div class="description">
-    Fires when layer opacity change
-</div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+    <h5>Type:</h5>
+    <ul>
+        <li>
             
+<span class="param-type">object</span>
 
-    
 
-    <h4 class="name" id="event:sequence-property-changed">sequence-property-changed</h4>
+        </li>
+    </ul>
 
-    
+
+
+
+
+
+            
+                
+<h4 class="name" id="~FeatureGeometry">FeatureGeometry</h4>
+
 
 
 
@@ -535,7 +583,7 @@ layerToListen.addEventListener('opacity-property-changed', (event) => console.lo
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Layer_Layer.js.html">Core/Layer/Layer.js</a>, <a href="Core_Layer_Layer.js.html#line4">line 4</a>
+        <a href="Renderer_ThreeExtended_GeoJSON2Features.js.html">Renderer/ThreeExtended/GeoJSON2Features.js</a>, <a href="Renderer_ThreeExtended_GeoJSON2Features.js.html#line237">line 237</a>
     </li></ul></dd>
     
 
@@ -586,46 +634,7 @@ layerToListen.addEventListener('opacity-property-changed', (event) => console.lo
         <th>Type</th>
 
         
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>new</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <h6>Properties</h6>
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
+        <th>Attributes</th>
         
 
         
@@ -635,130 +644,6 @@ layerToListen.addEventListener('opacity-property-changed', (event) => console.lo
     </thead>
 
     <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>sequence</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the new value of the layer sequence</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>previous</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <h6>Properties</h6>
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>sequence</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the previous value of the layer sequence</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>target</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Layer.html">Layer</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">dispatched on layer</td>
-        </tr>
-
     
 
         <tr>
@@ -776,10 +661,140 @@ layerToListen.addEventListener('opacity-property-changed', (event) => console.lo
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">sequence-property-changed</td>
+            <td class="description last">Geometry type ('(multi)point', '(multi)linestring' or '(multi)polygon')</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>vertices</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Coordinates.html">Coordinates</a>></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">All the vertices of the geometry.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contour</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">If this geometry is a polygon, contour contains
+the indices that compose the contour (outer ring)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>holes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">If this geometry is a polygon, holes contains
+an array of indices representing holes in the polygon.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>extent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Extent</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The 2D extent containing all the geometries</td>
         </tr>
 
     
@@ -791,336 +806,26 @@ layerToListen.addEventListener('opacity-property-changed', (event) => console.lo
 
 
 
-<div class="description">
-    Fires when layer sequence change (meaning when the order of the layer changes in the view)
-</div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+    <h5>Type:</h5>
+    <ul>
+        <li>
             
-
-    
-
-    <h4 class="name" id="event:visible-property-changed">visible-property-changed</h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Layer_Layer.js.html">Core/Layer/Layer.js</a>, <a href="Core_Layer_Layer.js.html#line24">line 24</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>new</code></td>
-            
-
-            <td class="type">
-            
-                
 <span class="param-type">object</span>
 
 
-            
-            </td>
+        </li>
+    </ul>
+
+
+
+
+
 
             
-
-            
-
-            <td class="description last">
-                <h6>Properties</h6>
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
 
-        <tr>
-            
-                <td class="name"><code>visible</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the new value of the layer visibility</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>previous</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <h6>Properties</h6>
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>visible</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the previous value of the layer visibility</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>target</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Layer.html">Layer</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">dispatched on layer</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">visible-property-changed</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<div class="description">
-    Fires when layer visibility change
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
     
 </article>
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : Core/Scheduler/Providers/URLBuilder.js</title>
+    <title>iTowns API : Feature2Mesh</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -26,100 +26,304 @@
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @module URLBuilder
- */
-export default {
-    /**
-     * Builds an URL knowing the coordinates and the layer to query.
-     * &lt;br>&lt;br>
-     * The layer object needs to have an url property, which should have some
-     * specific strings that will be replaced by coordinates.
-     * &lt;ul>
-     * &lt;li>&lt;code>${x}&lt;/code> or &lt;code>%COL&lt;/code> will be replaced by
-     * &lt;code>coords.col&lt;/code>&lt;/li>
-     * &lt;li>&lt;code>${y}&lt;/code> or &lt;code>%ROW&lt;/code> will be replaced by
-     * &lt;code>coords.row&lt;/code>&lt;/li>
-     * &lt;li>&lt;code>${z}&lt;/code> or &lt;code>%TILEMATRIX&lt;/code> will be replaced by
-     * &lt;code>coords.zoom&lt;/code>&lt;/li>
-     * &lt;/ul>
-     *
-     * @example
-     * coords = new Coordinates('WMTS:WGS84', 12, 1410, 2072);
-     * layer.url = 'http://server.geo/wmts/SERVICE=WMTS&amp;TILEMATRIX=%TILEMATRIX&amp;TILEROW=%ROW&amp;TILECOL=%COL';
-     * url = URLBuilder.xyz(coords, layer);
-     *
-     * // The resulting url is:
-     * // http://server.geo/wmts/SERVICE=WMTS&amp;TILEMATRIX=12&amp;TILEROW=1410&amp;TILECOL=2072;
-     *
-     * @example
-     * coords = new Extent('TMS', 15, 2142, 3412);
-     * layer.url = 'http://server.geo/tms/${z}/${y}/${x}.jpg';
-     * url = URLBuilder.xyz(coords, layer);
-     *
-     * // The resulting url is:
-     * // http://server.geo/tms/15/2142/3412.jpg;
-     *
-     * @param {Extent} coords - the coordinates
-     * @param {Layer} layer
-     *
-     * @return {string} the formed url
-     */
-    xyz: function xyz(coords, layer) {
-        return layer.url.replace(/(\$\{z\}|%TILEMATRIX)/, coords.zoom)
-            .replace(/(\$\{y\}|%ROW)/, coords.row)
-            .replace(/(\$\{x\}|%COL)/, coords.col);
-    },
+        
+    
+</header>
 
-    /**
-     * Builds an URL knowing the bounding box and the layer to query.
-     * &lt;br>&lt;br>
-     * The layer object needs to have an url property, which should have the
-     * string &lt;code>%bbox&lt;/code> in it. This string will be replaced by the four
-     * cardinal points composing the bounding box.
-     * &lt;br>&lt;br>
-     * Order of the points can be specified in the &lt;code>axisOrder&lt;/code>
-     * property in layer, using the letters &lt;code>w, s, e, n&lt;/code> respectively
-     * for &lt;code>WEST, SOUTH, EAST, NORTH&lt;/code>. The default order is
-     * &lt;code>wsen&lt;/code>.
-     *
-     * @example
-     * extent = new Extent('EPSG:4326', 12, 14, 35, 46);
-     * layer.projection = 'EPSG:4326';
-     * layer.url = 'http://server.geo/wms/BBOX=%bbox&amp;FORMAT=jpg&amp;SERVICE=WMS';
-     * url = URLBuilder.bbox(extent, layer);
-     *
-     * // The resulting url is:
-     * // http://server.geo/wms/BBOX=12,35,14,46&amp;FORMAT=jpg&amp;SERVICE=WMS
-     *
-     * @param {Extent} bbox - the bounding box
-     * @param {Layer} layer
-     *
-     * @return {string} the formed url
-     */
-    bbox: function bbox(bbox, layer) {
-        const box = bbox.as(layer.projection);
-        const w = box.west();
-        const s = box.south();
-        const e = box.east();
-        const n = box.north();
+<article>
+    <div class="container-overview">
+    
+        
 
-        let bboxInUnit = layer.axisOrder || 'wsen';
-        bboxInUnit = bboxInUnit.replace('w', `${w},`)
-            .replace('s', `${s},`)
-            .replace('e', `${e},`)
-            .replace('n', `${n},`)
-            .slice(0, -1);
+        
+    
+    </div>
 
-        return layer.url.replace('%bbox', bboxInUnit);
-    },
-};
-</code></pre>
-        </article>
-    </section>
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".convert"><span class="type-signature">(static) </span>convert<span class="signature">(options)</span><span class="type-signature"> &rarr; {function}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Renderer_ThreeExtended_Feature2Mesh.js.html">Renderer/ThreeExtended/Feature2Mesh.js</a>, <a href="Renderer_ThreeExtended_Feature2Mesh.js.html#line431">line 431</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Return a function that converts [Feature]s<a href="module-GeoJSON2Features.html">module:GeoJSON2Features</a> to Meshes. Feature collection will be converted to a
+a THREE.Group.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">options controlling the conversion
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>altitude</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">define the base altitude of the mesh</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>extrude</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">if defined, polygons will be extruded by the specified amount</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">define per feature color</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
