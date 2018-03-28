@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : Core/Layer/Layer.js</title>
+    <title>iTowns API : GpxParser</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -26,194 +26,472 @@
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import { EventDispatcher } from 'three';
-import Picking from '../Picking';
+        
+    
+</header>
 
-/**
- * Fires when layer sequence change (meaning when the order of the layer changes in the view)
- * @event Layer#sequence-property-changed
- * @property new {object}
- * @property new.sequence {number} the new value of the layer sequence
- * @property previous {object}
- * @property previous.sequence {number} the previous value of the layer sequence
- * @property target {Layer} dispatched on layer
- * @property type {string} sequence-property-changed
-*/
-/**
- * Fires when layer opacity change
- * @event Layer#opacity-property-changed
- * @property new {object}
- * @property new.opacity {object} the new value of the layer opacity
- * @property previous {object}
- * @property previous.opacity {object} the previous value of the layer opacity
- * @property target {Layer} dispatched on layer
- * @property type {string} opacity-property-changed
-*/
-/**
- * Fires when layer visibility change
- * @event Layer#visible-property-changed
- * @property new {object}
- * @property new.visible {object} the new value of the layer visibility
- * @property previous {object}
- * @property previous.visible {object} the previous value of the layer visibility
- * @property target {Layer} dispatched on layer
- * @property type {string} visible-property-changed
-*/
+<article>
+    <div class="container-overview">
+    
+        
 
-export const defineLayerProperty = function defineLayerProperty(layer, propertyName, defaultValue, onChange) {
-    const existing = Object.getOwnPropertyDescriptor(layer, propertyName);
-    if (!existing || !existing.set) {
-        var property = layer[propertyName] == undefined ? defaultValue : layer[propertyName];
-        Object.defineProperty(layer,
-            propertyName,
-            { get: () => property,
-                set: (newValue) => {
-                    if (property !== newValue) {
-                        const event = { type: `${propertyName}-property-changed`, previous: {}, new: {} };
-                        event.previous[propertyName] = property;
-                        event.new[propertyName] = newValue;
-                        property = newValue;
-                        if (onChange) {
-                            onChange(layer, propertyName);
-                        }
-                        layer.dispatchEvent(event);
-                    }
-                } });
-    }
-};
+        
+    
+    </div>
 
-function GeometryLayer(id, object3d) {
-    if (!id) {
-        throw new Error('Missing id parameter (GeometryLayer must have a unique id defined)');
-    }
-    if (!object3d || !object3d.isObject3D) {
-        throw new Error('Missing/Invalid object3d parameter (must be a three.js Object3D instance)');
-    }
-    this._attachedLayers = [];
+    
 
-    if (object3d &amp;&amp; object3d.type === 'Group' &amp;&amp; object3d.name === '') {
-        object3d.name = id;
-    }
+    
 
-    Object.defineProperty(this, 'object3d', {
-        value: object3d,
-        writable: false,
-    });
+    
 
-    Object.defineProperty(this, 'id', {
-        value: id,
-        writable: false,
-    });
+     
 
-    // Setup default picking method
-    this.pickObjectsAt = (view, mouse) => Picking.pickObjectsAt(view, mouse, this.object3d);
+    
 
-    this.postUpdate = () => {};
-}
+    
 
-GeometryLayer.prototype = Object.create(EventDispatcher.prototype);
-GeometryLayer.prototype.constructor = GeometryLayer;
+    
+        <h3 class="subsection-title">Methods</h3>
 
-GeometryLayer.prototype.attach = function attach(layer) {
-    if (!layer.update) {
-        throw new Error(`Missing 'update' function -> can't attach layer ${layer.id}`);
-    }
-    this._attachedLayers.push(layer);
-};
+        
+            
 
-GeometryLayer.prototype.detach = function detach(layer) {
-    const count = this._attachedLayers.length;
-    this._attachedLayers = this._attachedLayers.filter(attached => attached.id != layer.id);
-    return this._attachedLayers.length &lt; count;
-};
+    
 
-/**
- * Don't use directly constructor to instance a new Layer
- * use addLayer in {@link View}
- * @example
- * // add and create a new Layer
- * const newLayer = view.addLayer({options});
- *
- * // Change layer's visibilty
- * const layerToChange = view.getLayers(layer => layer.id == 'idLayerToChange')[0];
- * layerToChange.visible = false;
- * view.notifyChange(true); // update viewer
- *
- * // Change layer's opacity
- * const layerToChange = view.getLayers(layer => layer.id == 'idLayerToChange')[0];
- * layerToChange.opacity = 0.5;
- * view.notifyChange(true); // update viewer
- *
- * // Listen properties
- * const layerToListen = view.getLayers(layer => layer.id == 'idLayerToListen')[0];
- * layerToListen.addEventListener('visible-property-changed', (event) => console.log(event));
- * layerToListen.addEventListener('opacity-property-changed', (event) => console.log(event));
- * @constructor
- * @protected
- * @param      {String}  id
- */
-function Layer(id) {
-    Object.defineProperty(this, 'id', {
-        value: id,
-        writable: false,
-    });
-}
+    <h4 class="name" id="~parse"><span class="type-signature">(inner) </span>parse<span class="signature">(file, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {THREE.Mesh}</span></h4>
 
-Layer.prototype = Object.create(EventDispatcher.prototype);
-Layer.prototype.constructor = Layer;
+    
 
-const ImageryLayers = {
-    // move layer to new index
-    // After the modification :
-    //      * the minimum sequence will always be 0
-    //      * the maximum sequence will always be layers.lenght - 1
-    // the ordering of all layers (Except that specified) doesn't change
-    moveLayerToIndex: function moveLayerToIndex(layer, newIndex, imageryLayers) {
-        newIndex = Math.min(newIndex, imageryLayers.length - 1);
-        newIndex = Math.max(newIndex, 0);
-        const oldIndex = layer.sequence;
 
-        for (const imagery of imageryLayers) {
-            if (imagery.id === layer.id) {
-                // change index of specified layer
-                imagery.sequence = newIndex;
-            } else if (imagery.sequence > oldIndex &amp;&amp; imagery.sequence &lt;= newIndex) {
-                // down all layers between the old index and new index (to compensate the deletion of the old index)
-                imagery.sequence--;
-            } else if (imagery.sequence >= newIndex &amp;&amp; imagery.sequence &lt; oldIndex) {
-                // up all layers between the new index and old index (to compensate the insertion of the new index)
-                imagery.sequence++;
-            }
-        }
-    },
 
-    moveLayerDown: function moveLayerDown(layer, imageryLayers) {
-        if (layer.sequence > 0) {
-            this.moveLayerToIndex(layer, layer.sequence - 1, imageryLayers);
-        }
-    },
 
-    moveLayerUp: function moveLayerUp(layer, imageryLayers) {
-        const m = imageryLayers.length - 1;
-        if (layer.sequence &lt; m) {
-            this.moveLayerToIndex(layer, layer.sequence + 1, imageryLayers);
-        }
-    },
+<dl class="details">
 
-    getColorLayersIdOrderedBySequence: function getColorLayersIdOrderedBySequence(imageryLayers) {
-        const copy = Array.from(imageryLayers);
-        copy.sort((a, b) => a.sequence - b.sequence);
-        return copy.map(l => l.id);
-    },
-};
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Parser_GpxParser.js.html">Parser/GpxParser.js</a>, <a href="Parser_GpxParser.js.html#line174">line 174</a>
+    </li></ul></dd>
+    
 
-export { GeometryLayer, Layer, ImageryLayers };
-</code></pre>
-        </article>
-    </section>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Parse gpx file and convert to THREE.Mesh
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// How to add a gpx object
+itowns.GpxParser.parse(file, { crs: viewer.referenceCrs }).then((gpx) => {
+     if (gpx) {
+        viewer.scene.add(gpx);
+        viewer.notifyChange(true);
+     }
+});</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>file</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">the gpx file or xml.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">additional properties.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>xml</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">set to true if file is actually a parsed xml.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>crs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">the default CRS of Three.js coordinates. Should be a cartesian CRS.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>enablePin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>true</code>
+                
+                </td>
+            
+
+            <td class="description last">draw pin for way points.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>networkOptions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#NetworkOptions">NetworkOptions</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">options for fetching resources over network.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lineWidth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>12</code>
+                
+                </td>
+            
+
+            <td class="description last">set line width to track line.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - a promise that resolves with a Three.js Mesh (see <a href="https://threejs.org/docs/#api/objects/Mesh">https://threejs.org/docs/#api/objects/Mesh</a>).
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">THREE.Mesh</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : Core/Layer/Layer.js</title>
+    <title>iTowns API : Provider/URLBuilder.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -29,188 +29,94 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { EventDispatcher } from 'three';
-import Picking from '../Picking';
-
-/**
- * Fires when layer sequence change (meaning when the order of the layer changes in the view)
- * @event Layer#sequence-property-changed
- * @property new {object}
- * @property new.sequence {number} the new value of the layer sequence
- * @property previous {object}
- * @property previous.sequence {number} the previous value of the layer sequence
- * @property target {Layer} dispatched on layer
- * @property type {string} sequence-property-changed
-*/
-/**
- * Fires when layer opacity change
- * @event Layer#opacity-property-changed
- * @property new {object}
- * @property new.opacity {object} the new value of the layer opacity
- * @property previous {object}
- * @property previous.opacity {object} the previous value of the layer opacity
- * @property target {Layer} dispatched on layer
- * @property type {string} opacity-property-changed
-*/
-/**
- * Fires when layer visibility change
- * @event Layer#visible-property-changed
- * @property new {object}
- * @property new.visible {object} the new value of the layer visibility
- * @property previous {object}
- * @property previous.visible {object} the previous value of the layer visibility
- * @property target {Layer} dispatched on layer
- * @property type {string} visible-property-changed
-*/
-
-export const defineLayerProperty = function defineLayerProperty(layer, propertyName, defaultValue, onChange) {
-    const existing = Object.getOwnPropertyDescriptor(layer, propertyName);
-    if (!existing || !existing.set) {
-        var property = layer[propertyName] == undefined ? defaultValue : layer[propertyName];
-        Object.defineProperty(layer,
-            propertyName,
-            { get: () => property,
-                set: (newValue) => {
-                    if (property !== newValue) {
-                        const event = { type: `${propertyName}-property-changed`, previous: {}, new: {} };
-                        event.previous[propertyName] = property;
-                        event.new[propertyName] = newValue;
-                        property = newValue;
-                        if (onChange) {
-                            onChange(layer, propertyName);
-                        }
-                        layer.dispatchEvent(event);
-                    }
-                } });
-    }
-};
-
-function GeometryLayer(id, object3d) {
-    if (!id) {
-        throw new Error('Missing id parameter (GeometryLayer must have a unique id defined)');
-    }
-    if (!object3d || !object3d.isObject3D) {
-        throw new Error('Missing/Invalid object3d parameter (must be a three.js Object3D instance)');
-    }
-    this._attachedLayers = [];
-
-    if (object3d &amp;&amp; object3d.type === 'Group' &amp;&amp; object3d.name === '') {
-        object3d.name = id;
-    }
-
-    Object.defineProperty(this, 'object3d', {
-        value: object3d,
-        writable: false,
-    });
-
-    Object.defineProperty(this, 'id', {
-        value: id,
-        writable: false,
-    });
-
-    // Setup default picking method
-    this.pickObjectsAt = (view, mouse) => Picking.pickObjectsAt(view, mouse, this.object3d);
-
-    this.postUpdate = () => {};
-}
-
-GeometryLayer.prototype = Object.create(EventDispatcher.prototype);
-GeometryLayer.prototype.constructor = GeometryLayer;
-
-GeometryLayer.prototype.attach = function attach(layer) {
-    if (!layer.update) {
-        throw new Error(`Missing 'update' function -> can't attach layer ${layer.id}`);
-    }
-    this._attachedLayers.push(layer);
-};
-
-GeometryLayer.prototype.detach = function detach(layer) {
-    const count = this._attachedLayers.length;
-    this._attachedLayers = this._attachedLayers.filter(attached => attached.id != layer.id);
-    return this._attachedLayers.length &lt; count;
-};
-
-/**
- * Don't use directly constructor to instance a new Layer
- * use addLayer in {@link View}
- * @example
- * // add and create a new Layer
- * const newLayer = view.addLayer({options});
- *
- * // Change layer's visibilty
- * const layerToChange = view.getLayers(layer => layer.id == 'idLayerToChange')[0];
- * layerToChange.visible = false;
- * view.notifyChange(true); // update viewer
- *
- * // Change layer's opacity
- * const layerToChange = view.getLayers(layer => layer.id == 'idLayerToChange')[0];
- * layerToChange.opacity = 0.5;
- * view.notifyChange(true); // update viewer
- *
- * // Listen properties
- * const layerToListen = view.getLayers(layer => layer.id == 'idLayerToListen')[0];
- * layerToListen.addEventListener('visible-property-changed', (event) => console.log(event));
- * layerToListen.addEventListener('opacity-property-changed', (event) => console.log(event));
- * @constructor
- * @protected
- * @param      {String}  id
+            <pre class="prettyprint source linenums"><code>/**
+ * @module URLBuilder
  */
-function Layer(id) {
-    Object.defineProperty(this, 'id', {
-        value: id,
-        writable: false,
-    });
-}
-
-Layer.prototype = Object.create(EventDispatcher.prototype);
-Layer.prototype.constructor = Layer;
-
-const ImageryLayers = {
-    // move layer to new index
-    // After the modification :
-    //      * the minimum sequence will always be 0
-    //      * the maximum sequence will always be layers.lenght - 1
-    // the ordering of all layers (Except that specified) doesn't change
-    moveLayerToIndex: function moveLayerToIndex(layer, newIndex, imageryLayers) {
-        newIndex = Math.min(newIndex, imageryLayers.length - 1);
-        newIndex = Math.max(newIndex, 0);
-        const oldIndex = layer.sequence;
-
-        for (const imagery of imageryLayers) {
-            if (imagery.id === layer.id) {
-                // change index of specified layer
-                imagery.sequence = newIndex;
-            } else if (imagery.sequence > oldIndex &amp;&amp; imagery.sequence &lt;= newIndex) {
-                // down all layers between the old index and new index (to compensate the deletion of the old index)
-                imagery.sequence--;
-            } else if (imagery.sequence >= newIndex &amp;&amp; imagery.sequence &lt; oldIndex) {
-                // up all layers between the new index and old index (to compensate the insertion of the new index)
-                imagery.sequence++;
-            }
-        }
+export default {
+    /**
+     * Builds an URL knowing the coordinates and the layer to query.
+     * &lt;br>&lt;br>
+     * The layer object needs to have an url property, which should have some
+     * specific strings that will be replaced by coordinates.
+     * &lt;ul>
+     * &lt;li>&lt;code>${x}&lt;/code> or &lt;code>%COL&lt;/code> will be replaced by
+     * &lt;code>coords.col&lt;/code>&lt;/li>
+     * &lt;li>&lt;code>${y}&lt;/code> or &lt;code>%ROW&lt;/code> will be replaced by
+     * &lt;code>coords.row&lt;/code>&lt;/li>
+     * &lt;li>&lt;code>${z}&lt;/code> or &lt;code>%TILEMATRIX&lt;/code> will be replaced by
+     * &lt;code>coords.zoom&lt;/code>&lt;/li>
+     * &lt;/ul>
+     *
+     * @example
+     * coords = new Coordinates('WMTS:WGS84', 12, 1410, 2072);
+     * layer.url = 'http://server.geo/wmts/SERVICE=WMTS&amp;TILEMATRIX=%TILEMATRIX&amp;TILEROW=%ROW&amp;TILECOL=%COL';
+     * url = URLBuilder.xyz(coords, layer);
+     *
+     * // The resulting url is:
+     * // http://server.geo/wmts/SERVICE=WMTS&amp;TILEMATRIX=12&amp;TILEROW=1410&amp;TILECOL=2072;
+     *
+     * @example
+     * coords = new Extent('TMS', 15, 2142, 3412);
+     * layer.url = 'http://server.geo/tms/${z}/${y}/${x}.jpg';
+     * url = URLBuilder.xyz(coords, layer);
+     *
+     * // The resulting url is:
+     * // http://server.geo/tms/15/2142/3412.jpg;
+     *
+     * @param {Extent} coords - the coordinates
+     * @param {Layer} layer
+     *
+     * @return {string} the formed url
+     */
+    xyz: function xyz(coords, layer) {
+        return layer.url.replace(/(\$\{z\}|%TILEMATRIX)/, coords.zoom)
+            .replace(/(\$\{y\}|%ROW)/, coords.row)
+            .replace(/(\$\{x\}|%COL)/, coords.col);
     },
 
-    moveLayerDown: function moveLayerDown(layer, imageryLayers) {
-        if (layer.sequence > 0) {
-            this.moveLayerToIndex(layer, layer.sequence - 1, imageryLayers);
-        }
-    },
+    /**
+     * Builds an URL knowing the bounding box and the layer to query.
+     * &lt;br>&lt;br>
+     * The layer object needs to have an url property, which should have the
+     * string &lt;code>%bbox&lt;/code> in it. This string will be replaced by the four
+     * cardinal points composing the bounding box.
+     * &lt;br>&lt;br>
+     * Order of the points can be specified in the &lt;code>axisOrder&lt;/code>
+     * property in layer, using the letters &lt;code>w, s, e, n&lt;/code> respectively
+     * for &lt;code>WEST, SOUTH, EAST, NORTH&lt;/code>. The default order is
+     * &lt;code>wsen&lt;/code>.
+     *
+     * @example
+     * extent = new Extent('EPSG:4326', 12, 14, 35, 46);
+     * layer.projection = 'EPSG:4326';
+     * layer.url = 'http://server.geo/wms/BBOX=%bbox&amp;FORMAT=jpg&amp;SERVICE=WMS';
+     * url = URLBuilder.bbox(extent, layer);
+     *
+     * // The resulting url is:
+     * // http://server.geo/wms/BBOX=12,35,14,46&amp;FORMAT=jpg&amp;SERVICE=WMS
+     *
+     * @param {Extent} bbox - the bounding box
+     * @param {Layer} layer
+     *
+     * @return {string} the formed url
+     */
+    bbox: function bbox(bbox, layer) {
+        const box = bbox.as(layer.projection);
+        const w = box.west();
+        const s = box.south();
+        const e = box.east();
+        const n = box.north();
 
-    moveLayerUp: function moveLayerUp(layer, imageryLayers) {
-        const m = imageryLayers.length - 1;
-        if (layer.sequence &lt; m) {
-            this.moveLayerToIndex(layer, layer.sequence + 1, imageryLayers);
-        }
-    },
+        let bboxInUnit = layer.axisOrder || 'wsen';
+        bboxInUnit = bboxInUnit.replace('w', `${w},`)
+            .replace('s', `${s},`)
+            .replace('e', `${e},`)
+            .replace('n', `${n},`)
+            .slice(0, -1);
 
-    getColorLayersIdOrderedBySequence: function getColorLayersIdOrderedBySequence(imageryLayers) {
-        const copy = Array.from(imageryLayers);
-        copy.sort((a, b) => a.sequence - b.sequence);
-        return copy.map(l => l.id);
+        return layer.url.replace('%bbox', bboxInUnit);
     },
 };
-
-export { GeometryLayer, Layer, ImageryLayers };
 </code></pre>
         </article>
     </section>

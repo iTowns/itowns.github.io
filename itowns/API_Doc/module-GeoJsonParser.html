@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : URLBuilder</title>
+    <title>iTowns API : GeoJsonParser</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -64,7 +64,7 @@
 
     
 
-    <h4 class="name" id=".bbox"><span class="type-signature">(static) </span>bbox<span class="signature">(bbox, layer)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".parse"><span class="type-signature">(static) </span>parse<span class="signature">(file, options)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
 
     
 
@@ -76,7 +76,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Provider_URLBuilder.js.html">Provider/URLBuilder.js</a>, <a href="Provider_URLBuilder.js.html#line72">line 72</a>
+        <a href="Parser_GeoJsonParser.js.html">Parser/GeoJsonParser.js</a>, <a href="Parser_GeoJsonParser.js.html#line271">line 271</a>
     </li></ul></dd>
     
 
@@ -116,16 +116,7 @@
 
 
 <div class="description">
-    Builds an URL knowing the bounding box and the layer to query.
-<br><br>
-The layer object needs to have an url property, which should have the
-string <code>%bbox</code> in it. This string will be replaced by the four
-cardinal points composing the bounding box.
-<br><br>
-Order of the points can be specified in the <code>axisOrder</code>
-property in layer, using the letters <code>w, s, e, n</code> respectively
-for <code>WEST, SOUTH, EAST, NORTH</code>. The default order is
-<code>wsen</code>.
+    Parse a GeoJSON file and return a Feature or an array of Features.
 </div>
 
 
@@ -134,17 +125,6 @@ for <code>WEST, SOUTH, EAST, NORTH</code>. The default order is
 
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>extent = new Extent('EPSG:4326', 12, 14, 35, 46);
-layer.projection = 'EPSG:4326';
-layer.url = 'http://server.geo/wms/BBOX=%bbox&amp;FORMAT=jpg&amp;SERVICE=WMS';
-url = URLBuilder.bbox(extent, layer);
-
-// The resulting url is:
-// http://server.geo/wms/BBOX=12,35,14,46&amp;FORMAT=jpg&amp;SERVICE=WMS</code></pre>
 
 
 
@@ -174,7 +154,185 @@ url = URLBuilder.bbox(extent, layer);
 
         <tr>
             
-                <td class="name"><code>bbox</code></td>
+                <td class="name"><code>file</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The GeoJSON file to parse.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">options controlling the parsing
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>json</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>false</code>
+                
+                </td>
+            
+
+            <td class="description last">set to true if file is actually a parsed json.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>crsOut</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">The CRS to convert the input coordinates to.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>crsIn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">override the data crs</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>filteringExtent</code></td>
             
 
             <td class="type">
@@ -187,33 +345,109 @@ url = URLBuilder.bbox(extent, layer);
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
 
+                
+
+                
+                </td>
             
 
-            <td class="description last">the bounding box</td>
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">Optional filter to reject features
+outside of this extent.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>layer</code></td>
+                <td class="name"><code>buildExtent</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Layer.html">Layer</a></span>
+<span class="param-type">boolean</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
 
+                
+
+                
+                </td>
             
 
-            <td class="description last"></td>
+            
+                <td class="default">
+                
+                    <code>false</code>
+                
+                </td>
+            
+
+            <td class="description last">if true the geometry will
+have an extent property containing the area covered by the geom</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>filter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">Filter function to remove features</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -237,7 +471,7 @@ url = URLBuilder.bbox(extent, layer);
 
         
 <div class="param-desc">
-    the formed url
+    - a promise resolving with a Feature or an array of Features
 </div>
 
 
@@ -248,7 +482,7 @@ url = URLBuilder.bbox(extent, layer);
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Promise</span>
 
 
     </dd>
@@ -258,13 +492,15 @@ url = URLBuilder.bbox(extent, layer);
 
 
         
-            
-
     
 
-    <h4 class="name" id=".xyz"><span class="type-signature">(static) </span>xyz<span class="signature">(coords, layer)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
     
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id=".Feature">Feature</h4>
+
 
 
 
@@ -274,7 +510,7 @@ url = URLBuilder.bbox(extent, layer);
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Provider_URLBuilder.js.html">Provider/URLBuilder.js</a>, <a href="Provider_URLBuilder.js.html#line40">line 40</a>
+        <a href="Parser_GeoJsonParser.js.html">Parser/GeoJsonParser.js</a>, <a href="Parser_GeoJsonParser.js.html#line249">line 249</a>
     </li></ul></dd>
     
 
@@ -311,54 +547,11 @@ url = URLBuilder.bbox(extent, layer);
 
 
 
+    <h5 class="subsection-title">Properties:</h5>
 
-
-<div class="description">
-    Builds an URL knowing the coordinates and the layer to query.
-<br><br>
-The layer object needs to have an url property, which should have some
-specific strings that will be replaced by coordinates.
-<ul>
-<li><code>${x}</code> or <code>%COL</code> will be replaced by
-<code>coords.col</code></li>
-<li><code>${y}</code> or <code>%ROW</code> will be replaced by
-<code>coords.row</code></li>
-<li><code>${z}</code> or <code>%TILEMATRIX</code> will be replaced by
-<code>coords.zoom</code></li>
-</ul>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>coords = new Coordinates('WMTS:WGS84', 12, 1410, 2072);
-layer.url = 'http://server.geo/wmts/SERVICE=WMTS&amp;TILEMATRIX=%TILEMATRIX&amp;TILEROW=%ROW&amp;TILECOL=%COL';
-url = URLBuilder.xyz(coords, layer);
-
-// The resulting url is:
-// http://server.geo/wmts/SERVICE=WMTS&amp;TILEMATRIX=12&amp;TILEROW=1410&amp;TILECOL=2072;</code></pre>
-
-    <pre class="prettyprint"><code>coords = new Extent('TMS', 15, 2142, 3412);
-layer.url = 'http://server.geo/tms/${z}/${y}/${x}.jpg';
-url = URLBuilder.xyz(coords, layer);
-
-// The resulting url is:
-// http://server.geo/tms/15/2142/3412.jpg;</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
     
 
-<table class="params">
+<table class="props">
     <thead>
     <tr>
         
@@ -380,13 +573,16 @@ url = URLBuilder.xyz(coords, layer);
 
         <tr>
             
-                <td class="name"><code>coords</code></td>
+                <td class="name"><code>geometry</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Extent</span>
+<span class="param-type">FeatureGeometry</span>
+|
+
+<span class="param-type">Array</span>
 
 
             
@@ -396,20 +592,21 @@ url = URLBuilder.xyz(coords, layer);
 
             
 
-            <td class="description last">the coordinates</td>
+            <td class="description last">The feature's geometry. Can
+be a FeatureGeometry or an array of FeatureGeometry.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>layer</code></td>
+                <td class="name"><code>properties</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Layer.html">Layer</a></span>
+<span class="param-type">object</span>
 
 
             
@@ -419,7 +616,7 @@ url = URLBuilder.xyz(coords, layer);
 
             
 
-            <td class="description last"></td>
+            <td class="description last">Properties of the features</td>
         </tr>
 
     
@@ -433,39 +630,275 @@ url = URLBuilder.xyz(coords, layer);
 
 
 
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
 
 
 
 
 
 
-<h5>Returns:</h5>
+            
+                
+<h4 class="name" id="~FeatureGeometry">FeatureGeometry</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Parser_GeoJsonParser.js.html">Parser/GeoJsonParser.js</a>, <a href="Parser_GeoJsonParser.js.html#line237">line 237</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
 
         
-<div class="param-desc">
-    the formed url
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
+        <th>Attributes</th>
         
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
 <span class="param-type">string</span>
 
 
-    </dd>
-</dl>
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Geometry type ('(multi)point', '(multi)linestring' or '(multi)polygon')</td>
+        </tr>
 
     
 
+        <tr>
+            
+                <td class="name"><code>vertices</code></td>
+            
 
-        
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Coordinates.html">Coordinates</a>></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">All the vertices of the geometry.</td>
+        </tr>
+
     
 
+        <tr>
+            
+                <td class="name"><code>contour</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">If this geometry is a polygon, contour contains
+the indices that compose the contour (outer ring)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>holes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">If this geometry is a polygon, holes contains
+an array of indices representing holes in the polygon.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>extent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Extent</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The 2D extent containing all the geometries</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
     
 
     
