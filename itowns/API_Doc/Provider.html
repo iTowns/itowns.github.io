@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : URLBuilder</title>
+    <title>iTowns API : Provider</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -31,6 +31,9 @@
 
 <header>
     
+        <h2>
+        Provider
+        </h2>
         
     
 </header>
@@ -38,6 +41,55 @@
 <article>
     <div class="container-overview">
     
+        
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Scheduler_Scheduler.js.html">Core/Scheduler/Scheduler.js</a>, <a href="Core_Scheduler_Scheduler.js.html#line167">line 167</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+        
+            <div class="description">A Provider has the responsability to handle protocols and datablobs. Given a
+data request (see <a href="Provider.html#executeCommand">Provider#executeCommand</a> for details about this
+request), it fetches serialized datasets, file content or even file chunks.</div>
         
 
         
@@ -64,7 +116,7 @@
 
     
 
-    <h4 class="name" id=".bbox"><span class="type-signature">(static) </span>bbox<span class="signature">(bbox, layer)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="executeCommand"><span class="type-signature"></span>executeCommand<span class="signature">(command)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
 
     
 
@@ -76,7 +128,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Provider_URLBuilder.js.html">Provider/URLBuilder.js</a>, <a href="Provider_URLBuilder.js.html#line72">line 72</a>
+        <a href="Core_Scheduler_Scheduler.js.html">Core/Scheduler/Scheduler.js</a>, <a href="Core_Scheduler_Scheduler.js.html#line190">line 190</a>
     </li></ul></dd>
     
 
@@ -116,16 +168,14 @@
 
 
 <div class="description">
-    Builds an URL knowing the bounding box and the layer to query.
+    In the <a href="Scheduler.html">Scheduler</a> loop, this function is called every time the layer
+needs new information about itself. For tiled layers, it gets the necessary
+tiles, given the current position of the camera on the map. For simple layers
+like a GPX trace, it gets the data once.
 <br><br>
-The layer object needs to have an url property, which should have the
-string <code>%bbox</code> in it. This string will be replaced by the four
-cardinal points composing the bounding box.
-<br><br>
-Order of the points can be specified in the <code>axisOrder</code>
-property in layer, using the letters <code>w, s, e, n</code> respectively
-for <code>WEST, SOUTH, EAST, NORTH</code>. The default order is
-<code>wsen</code>.
+It passes a <code>command</code> object as a parameter, with the
+<code>view</code> and the <code>layer</code> always present. The other
+parameters are optional.
 </div>
 
 
@@ -134,17 +184,6 @@ for <code>WEST, SOUTH, EAST, NORTH</code>. The default order is
 
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>extent = new Extent('EPSG:4326', 12, 14, 35, 46);
-layer.projection = 'EPSG:4326';
-layer.url = 'http://server.geo/wms/BBOX=%bbox&amp;FORMAT=jpg&amp;SERVICE=WMS';
-url = URLBuilder.bbox(extent, layer);
-
-// The resulting url is:
-// http://server.geo/wms/BBOX=12,35,14,46&amp;FORMAT=jpg&amp;SERVICE=WMS</code></pre>
 
 
 
@@ -174,13 +213,13 @@ url = URLBuilder.bbox(extent, layer);
 
         <tr>
             
-                <td class="name"><code>bbox</code></td>
+                <td class="name"><code>command</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Extent</span>
+<span class="param-type">Object</span>
 
 
             
@@ -190,7 +229,59 @@ url = URLBuilder.bbox(extent, layer);
 
             
 
-            <td class="description last">the bounding box</td>
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>view</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="View.html">View</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
         </tr>
 
     
@@ -210,10 +301,92 @@ url = URLBuilder.bbox(extent, layer);
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>requester</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">TileMesh</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Every layer is attached to a tile.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>targetLevel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The target level is used when there
+is a tiled layer, such as WMTS or TMS, but not in case like a GPX layer.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -237,7 +410,11 @@ url = URLBuilder.bbox(extent, layer);
 
         
 <div class="param-desc">
-    the formed url
+    The <a href="Scheduler.html">Scheduler</a> always expect a Promise as a result,
+resolving to an object containing sufficient information for the associated
+processing to the current layer. For example, see the
+<a href="https://github.com/iTowns/itowns/blob/master/src/Process/LayeredMaterialNodeProcessing.js">LayeredMaterialNodeProcessing#updateLayeredMaterialNodeElevation</a>
+class or other processing class.
 </div>
 
 
@@ -248,7 +425,7 @@ url = URLBuilder.bbox(extent, layer);
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Promise</span>
 
 
     </dd>
@@ -262,7 +439,7 @@ url = URLBuilder.bbox(extent, layer);
 
     
 
-    <h4 class="name" id=".xyz"><span class="type-signature">(static) </span>xyz<span class="signature">(coords, layer)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="preprocessDataLayer"><span class="type-signature"></span>preprocessDataLayer<span class="signature">(layer, view<span class="signature-attributes">opt</span>, scheduler<span class="signature-attributes">opt</span>, parentLayer<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -274,7 +451,7 @@ url = URLBuilder.bbox(extent, layer);
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Provider_URLBuilder.js.html">Provider/URLBuilder.js</a>, <a href="Provider_URLBuilder.js.html#line40">line 40</a>
+        <a href="Core_Scheduler_Scheduler.js.html">Core/Scheduler/Scheduler.js</a>, <a href="Core_Scheduler_Scheduler.js.html#line175">line 175</a>
     </li></ul></dd>
     
 
@@ -314,18 +491,10 @@ url = URLBuilder.bbox(extent, layer);
 
 
 <div class="description">
-    Builds an URL knowing the coordinates and the layer to query.
-<br><br>
-The layer object needs to have an url property, which should have some
-specific strings that will be replaced by coordinates.
-<ul>
-<li><code>${x}</code> or <code>%COL</code> will be replaced by
-<code>coords.col</code></li>
-<li><code>${y}</code> or <code>%ROW</code> will be replaced by
-<code>coords.row</code></li>
-<li><code>${z}</code> or <code>%TILEMATRIX</code> will be replaced by
-<code>coords.zoom</code></li>
-</ul>
+    When adding a layer to a view, some preprocessing can be done on it, before
+fetching or creating resources attached to it. For example, in the WMTS and
+WFS providers (included in iTowns), default options to the layer are added if
+some are missing.
 </div>
 
 
@@ -334,23 +503,6 @@ specific strings that will be replaced by coordinates.
 
 
 
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>coords = new Coordinates('WMTS:WGS84', 12, 1410, 2072);
-layer.url = 'http://server.geo/wmts/SERVICE=WMTS&amp;TILEMATRIX=%TILEMATRIX&amp;TILEROW=%ROW&amp;TILECOL=%COL';
-url = URLBuilder.xyz(coords, layer);
-
-// The resulting url is:
-// http://server.geo/wmts/SERVICE=WMTS&amp;TILEMATRIX=12&amp;TILEROW=1410&amp;TILECOL=2072;</code></pre>
-
-    <pre class="prettyprint"><code>coords = new Extent('TMS', 15, 2142, 3412);
-layer.url = 'http://server.geo/tms/${z}/${y}/${x}.jpg';
-url = URLBuilder.xyz(coords, layer);
-
-// The resulting url is:
-// http://server.geo/tms/15/2142/3412.jpg;</code></pre>
 
 
 
@@ -368,6 +520,8 @@ url = URLBuilder.xyz(coords, layer);
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -376,29 +530,6 @@ url = URLBuilder.xyz(coords, layer);
     </thead>
 
     <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>coords</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Extent</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">the coordinates</td>
-        </tr>
-
     
 
         <tr>
@@ -415,6 +546,113 @@ url = URLBuilder.xyz(coords, layer);
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>view</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="View.html">View</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>scheduler</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Scheduler.html">Scheduler</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parentLayer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Layer.html">Layer</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -439,28 +677,6 @@ url = URLBuilder.xyz(coords, layer);
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    the formed url
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
         
