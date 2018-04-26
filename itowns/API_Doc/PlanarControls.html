@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : GeoJsonParser</title>
+    <title>iTowns API : PlanarControls</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -31,6 +31,9 @@
 
 <header>
     
+        <h2>
+        PlanarControls
+        </h2>
         
     
 </header>
@@ -40,31 +43,9 @@
     
         
 
-        
-    
-    </div>
-
     
 
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".parse"><span class="type-signature">(static) </span>parse<span class="signature">(json, options)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id="PlanarControls"><span class="type-signature"></span>new PlanarControls<span class="signature">(view, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -76,7 +57,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Parser_GeoJsonParser.js.html">Parser/GeoJsonParser.js</a>, <a href="Parser_GeoJsonParser.js.html#line270">line 270</a>
+        <a href="Renderer_ThreeExtended_PlanarControls.js.html">Renderer/ThreeExtended/PlanarControls.js</a>, <a href="Renderer_ThreeExtended_PlanarControls.js.html#line103">line 103</a>
     </li></ul></dd>
     
 
@@ -116,7 +97,21 @@
 
 
 <div class="description">
-    Parse a GeoJSON file content and return a Feature or an array of Features.
+    Camera controls adapted for a planar view, with animated movements.
+Usage is as follow:
+<ul>
+ <li><b>Left mouse button:</b> drag the camera (translation on the (xy) world
+ plane).</li>
+ <li><b>Right mouse button:</b> pan the camera (translation on the vertical
+ (z) axis of the world plane).</li>
+ <li><b>CTRL + Left mouse button:</b> rotate the camera around the focus point.</li>
+ <li><b>Wheel scrolling:</b> zoom toward the cursor position.</li>
+ <li><b>Wheel clicking:</b> smart zoom toward the cursor position (animated).</li>
+ <li><b>Y key:</b> go to the starting view (animated).</li>
+ <li><b>T key:</b> go to the top view (animated).</li>
+</ul>
+
+This controls needs to be instantiated after the camera setup.
 </div>
 
 
@@ -125,6 +120,22 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// From the orthographic example
+new itowns.PlanarControls(view, {
+    // We do not want the user to zoom out too much
+    maxAltitude: 40000000,
+    // We want to keep the rotation disabled, to only have a view from the top
+    enableRotation: false,
+    // Faster zoom in/out speed
+    zoomInFactor: 0.5,
+    zoomOutFactor: 0.5,
+    // Don't zoom too much on smart zoom
+    smartZoomHeightMax: 100000,
+});</code></pre>
 
 
 
@@ -142,6 +153,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -154,23 +167,31 @@
 
         <tr>
             
-                <td class="name"><code>json</code></td>
+                <td class="name"><code>view</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">PlanarView</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">The GeoJSON file content to parse.</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -183,21 +204,123 @@
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type"><a href="PlanarControls.html#~PlanarControlsOptions">PlanarControls~PlanarControlsOptions</a></span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">options controlling the parsing
-                <h6>Properties</h6>
-                
+            <td class="description last"></td>
+        </tr>
 
-<table class="params">
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id="~PlanarControlsOptions">PlanarControlsOptions</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Renderer_ThreeExtended_PlanarControls.js.html">Renderer/ThreeExtended/PlanarControls.js</a>, <a href="Renderer_ThreeExtended_PlanarControls.js.html#line27">line 27</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
     <thead>
     <tr>
         
@@ -223,115 +346,7 @@
 
         <tr>
             
-                <td class="name"><code>crsOut</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">The CRS to convert the input coordinates to.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>crsIn</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">override the data crs</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>filteringExtent</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Extent</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">Optional filter to reject features
-outside of this extent.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>buildExtent</code></td>
+                <td class="name"><code>enableRotation</code></td>
             
 
             <td class="type">
@@ -350,6 +365,530 @@ outside of this extent.</td>
                 
 
                 
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>true</code>
+                
+                </td>
+            
+
+            <td class="description last">Enable the rotation with the
+<code>CTRL + Left mouse button</code> and in animations, like the smart zoom.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rotateSpeed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>2.0</code>
+                
+                </td>
+            
+
+            <td class="description last">Rotate speed.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxPanSpeed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>15</code>
+                
+                </td>
+            
+
+            <td class="description last">Pan speed when close to maxAltitude.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>minPanSpeed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>0.05</code>
+                
+                </td>
+            
+
+            <td class="description last">Pan speed when close to the ground.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>zoomTravelTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>0.2</code>
+                
+                </td>
+            
+
+            <td class="description last">Animation time when zooming.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>zoomInFactor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>0.25</code>
+                
+                </td>
+            
+
+            <td class="description last">Zoom movement is equal to the distance
+to the zoom target, multiplied by this factor when zooming in.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>zoomOutFactor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>0.4</code>
+                
+                </td>
+            
+
+            <td class="description last">Zoom movement is equal to the distance
+to the zoom target, multiplied by this factor when zooming out.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxAltitude</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>12000</code>
+                
+                </td>
+            
+
+            <td class="description last">Maximum altitude reachable when panning.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>groundLevel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>200</code>
+                
+                </td>
+            
+
+            <td class="description last">Minimum altitude reachable when panning.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>autoTravelTimeMin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>1.5</code>
+                
+                </td>
+            
+
+            <td class="description last">Minimum duration for animated
+travels with the <code>auto</code> parameter.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>autoTravelTimeMax</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>4</code>
+                
+                </td>
+            
+
+            <td class="description last">Maximum duration for animated
+travels with the <code>auto</code> parameter.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>autoTravelTimeDist</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>20000</code>
+                
+                </td>
+            
+
+            <td class="description last">Maximum travel distance for
+animated travel with the <code>auto</code> parameter.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>smartZoomHeightMin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>75</code>
+                
+                </td>
+            
+
+            <td class="description last">Minimum height above ground
+reachable after a smart zoom.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>smartZoomHeightMax</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>500</code>
+                
+                </td>
+            
+
+            <td class="description last">Maximum height above ground
+reachable after a smart zoom.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>instantTravel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
 
                 
                 </td>
@@ -363,21 +902,21 @@ outside of this extent.</td>
                 </td>
             
 
-            <td class="description last">if true the geometry will
-have an extent property containing the area covered by the geom</td>
+            <td class="description last">If set to true, animated travels
+will have no duration.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>filter</code></td>
+                <td class="name"><code>minZenithAngle</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">number</span>
 
 
             
@@ -390,6 +929,42 @@ have an extent property containing the area covered by the geom</td>
                 
 
                 
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>0</code>
+                
+                </td>
+            
+
+            <td class="description last">The minimum reachable zenith angle for
+a camera rotation, in degrees.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxZenithAngle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
 
                 
                 </td>
@@ -398,17 +973,126 @@ have an extent property containing the area covered by the geom</td>
             
                 <td class="default">
                 
+                    <code>82.5</code>
+                
                 </td>
             
 
-            <td class="description last">Filter function to remove features</td>
+            <td class="description last">The maximum reachable zenith angle
+for a camera rotation, in degrees.</td>
         </tr>
 
     
-    </tbody>
-</table>
 
+        <tr>
+            
+                <td class="name"><code>focusOnMouseOver</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
             </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>true</code>
+                
+                </td>
+            
+
+            <td class="description last">Set the focus on the canvas if
+hovered.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>focusOnMouseClick</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>true</code>
+                
+                </td>
+            
+
+            <td class="description last">Set the focus on the canvas if
+clicked.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>handleCollision</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>true</code>
+                
+                </td>
+            
+
+            <td class="description last"></td>
         </tr>
 
     
@@ -420,435 +1104,17 @@ have an extent property containing the area covered by the geom</td>
 
 
 
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    - a promise resolving with a Feature or an array of Features
+<div class="description">
+    Options for the instantiation of a <a href="PlanarControls.html">PlanarControls</a>.
 </div>
 
 
 
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-        
-    
-
-    
-        <h3 class="subsection-title">Type Definitions</h3>
-
-        
-                
-<h4 class="name" id=".Feature">Feature</h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Parser_GeoJsonParser.js.html">Parser/GeoJsonParser.js</a>, <a href="Parser_GeoJsonParser.js.html#line249">line 249</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>geometry</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">FeatureGeometry</span>
-|
-
-<span class="param-type">Array</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The feature's geometry. Can
-be a FeatureGeometry or an array of FeatureGeometry.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>properties</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Properties of the features</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
     <h5>Type:</h5>
     <ul>
         <li>
             
-<span class="param-type">object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-            
-                
-<h4 class="name" id="~FeatureGeometry">FeatureGeometry</h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Parser_GeoJsonParser.js.html">Parser/GeoJsonParser.js</a>, <a href="Parser_GeoJsonParser.js.html#line237">line 237</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Geometry type ('(multi)point', '(multi)linestring' or '(multi)polygon')</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>vertices</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Coordinates.html">Coordinates</a>></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">All the vertices of the geometry.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>contour</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;number></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-                </td>
-            
-
-            
-
-            <td class="description last">If this geometry is a polygon, contour contains
-the indices that compose the contour (outer ring)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>holes</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-                </td>
-            
-
-            
-
-            <td class="description last">If this geometry is a polygon, holes contains
-an array of indices representing holes in the polygon.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>extent</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Extent</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The 2D extent containing all the geometries</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">object</span>
+<span class="param-type">Object</span>
 
 
         </li>
