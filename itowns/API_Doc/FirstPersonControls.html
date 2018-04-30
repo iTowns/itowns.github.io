@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : Provider</title>
+    <title>iTowns API : FirstPersonControls</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -32,7 +32,7 @@
 <header>
     
         <h2>
-        Provider
+        FirstPersonControls
         </h2>
         
     
@@ -43,12 +43,21 @@
     
         
 
+    
+
+    <h4 class="name" id="FirstPersonControls"><span class="type-signature"></span>new FirstPersonControls<span class="signature">(view, options)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
 <dl class="details">
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Scheduler_Scheduler.js.html">Core/Scheduler/Scheduler.js</a>, <a href="Core_Scheduler_Scheduler.js.html#line167">line 167</a>
+        <a href="Renderer_ThreeExtended_FirstPersonControls.js.html">Renderer/ThreeExtended/FirstPersonControls.js</a>, <a href="Renderer_ThreeExtended_FirstPersonControls.js.html#line49">line 49</a>
     </li></ul></dd>
     
 
@@ -86,97 +95,6 @@
 
 
 
-        
-            <div class="description">A Provider has the responsability to handle protocols and datablobs. Given a
-data request (see <a href="Provider.html#executeCommand">Provider#executeCommand</a> for details about this
-request), it fetches serialized datasets, file content or even file chunks.</div>
-        
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id="executeCommand"><span class="type-signature"></span>executeCommand<span class="signature">(command)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Scheduler_Scheduler.js.html">Core/Scheduler/Scheduler.js</a>, <a href="Core_Scheduler_Scheduler.js.html#line190">line 190</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    In the <a href="Scheduler.html">Scheduler</a> loop, this function is called every time the layer
-needs new information about itself. For tiled layers, it gets the necessary
-tiles, given the current position of the camera on the map. For simple layers
-like a GPX trace, it gets the data once.
-<br><br>
-It passes a <code>command</code> object as a parameter, with the
-<code>view</code> and the <code>layer</code> always present. The other
-parameters are optional.
-</div>
 
 
 
@@ -213,13 +131,36 @@ parameters are optional.
 
         <tr>
             
-                <td class="name"><code>command</code></td>
+                <td class="name"><code>view</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type"><a href="View.html">View</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
 
 
             
@@ -243,8 +184,6 @@ parameters are optional.
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -257,102 +196,76 @@ parameters are optional.
 
         <tr>
             
-                <td class="name"><code>view</code></td>
+                <td class="name"><code>focusOnClick</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="View.html">View</a></span>
+<span class="param-type">boolean</span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"></td>
+            <td class="description last">whether or not to focus the renderer domElement on click</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>layer</code></td>
+                <td class="name"><code>focusOnMouseOver</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Layer.html">Layer</a></span>
+<span class="param-type">boolean</span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"></td>
+            <td class="description last">whether or not to focus when the mouse is over the domElement</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>requester</code></td>
+                <td class="name"><code>moveSpeed</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">TileMesh</span>
+<span class="param-type">boolean</span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last">Every layer is attached to a tile.</td>
+            <td class="description last">if > 0, pressing the arrow keys will move the camera</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>targetLevel</code></td>
+                <td class="name"><code>verticalFOV</code></td>
             
 
             <td class="type">
@@ -365,21 +278,59 @@ parameters are optional.
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
 
-                
+            
 
+            <td class="description last">define the max visible vertical angle of the scene in degrees (default 180)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>panoramaRatio</code></td>
+            
+
+            <td class="type">
+            
                 
-                </td>
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
             
 
             
 
-            <td class="description last">The target level is used when there
-is a tiled layer, such as WMTS or TMS, but not in case like a GPX layer.</td>
+            <td class="description last">alternative way to specify the max vertical angle when using a panorama.
+You can specify the panorama width/height ratio and the verticalFOV will be computed automatically</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>disableEventListeners</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">if true, the controls will not self listen to mouse/key events.
+You'll have to manually forward the events to the appropriate functions: onMouseDown, onMouseMove, onMouseUp,
+onKeyUp, onKeyDown and onMouseWheel.</td>
         </tr>
 
     
@@ -406,40 +357,32 @@ is a tiled layer, such as WMTS or TMS, but not in case like a GPX layer.</td>
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    The <a href="Scheduler.html">Scheduler</a> always expect a Promise as a result,
-resolving to an object containing sufficient information for the associated
-processing to the current layer. For example, see the
-<a href="https://github.com/iTowns/itowns/blob/master/src/Process/LayeredMaterialNodeProcessing.js">LayeredMaterialNodeProcessing#updateLayeredMaterialNodeElevation</a>
-class or other processing class.
-</div>
 
 
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise</span>
-
-
-    </dd>
-</dl>
+    
+    </div>
 
     
 
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
 
         
             
 
     
 
-    <h4 class="name" id="preprocessDataLayer"><span class="type-signature"></span>preprocessDataLayer<span class="signature">(layer, view<span class="signature-attributes">opt</span>, scheduler<span class="signature-attributes">opt</span>, parentLayer<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="reset"><span class="type-signature"></span>reset<span class="signature">(preserveRotationOnX)</span><span class="type-signature"></span></h4>
 
     
 
@@ -451,7 +394,7 @@ class or other processing class.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Core_Scheduler_Scheduler.js.html">Core/Scheduler/Scheduler.js</a>, <a href="Core_Scheduler_Scheduler.js.html#line175">line 175</a>
+        <a href="Renderer_ThreeExtended_FirstPersonControls.js.html">Renderer/ThreeExtended/FirstPersonControls.js</a>, <a href="Renderer_ThreeExtended_FirstPersonControls.js.html#line114">line 114</a>
     </li></ul></dd>
     
 
@@ -491,10 +434,8 @@ class or other processing class.
 
 
 <div class="description">
-    When adding a layer to a view, some preprocessing can be done on it, before
-fetching or creating resources attached to it. For example, in the WMTS and
-WFS providers (included in iTowns), default options to the layer are added if
-some are missing.
+    Resets the controls internal state to match the camera' state.
+This must be called when manually modifying the camera's position or rotation.
 </div>
 
 
@@ -520,7 +461,148 @@ some are missing.
         <th>Type</th>
 
         
-        <th>Attributes</th>
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>preserveRotationOnX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    <code>false</code>
+                
+                </td>
+            
+
+            <td class="description last">if true, the look up/down rotation will
+not be copied from the camera</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(dt, updateLoopRestarted, force)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Renderer_ThreeExtended_FirstPersonControls.js.html">Renderer/ThreeExtended/FirstPersonControls.js</a>, <a href="Renderer_ThreeExtended_FirstPersonControls.js.html#line141">line 141</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Updates the camera position / rotation based on occured input events.
+This is done automatically when needed but can also be done if needed.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
         
 
         
@@ -534,130 +616,70 @@ some are missing.
 
         <tr>
             
-                <td class="name"><code>layer</code></td>
+                <td class="name"><code>dt</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Layer.html">Layer</a></span>
+<span class="param-type">number</span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"></td>
+            <td class="description last">ellpased time since last update in seconds</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>view</code></td>
+                <td class="name"><code>updateLoopRestarted</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="View.html">View</a></span>
+<span class="param-type">boolean</span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"></td>
+            <td class="description last">true if itowns' update loop just restarted</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>scheduler</code></td>
+                <td class="name"><code>force</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Scheduler.html">Scheduler</a></span>
+<span class="param-type">boolean</span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>parentLayer</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Layer.html">Layer</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"></td>
+            <td class="description last">set to true if you want to force the update, even if it
+appears unneeded.</td>
         </tr>
 
     

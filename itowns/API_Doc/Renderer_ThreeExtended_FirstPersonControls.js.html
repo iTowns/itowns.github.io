@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : Core/MainLoop.js</title>
+    <title>iTowns API : Renderer/ThreeExtended/FirstPersonControls.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -29,179 +29,252 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { EventDispatcher } from 'three';
+            <pre class="prettyprint source linenums"><code>import * as THREE from 'three';
+import { MAIN_LOOP_EVENTS } from '../../Core/MainLoop';
 
-export const RENDERING_PAUSED = 0;
-export const RENDERING_SCHEDULED = 1;
+// Note: we could use existing three.js controls (like https://github.com/mrdoob/three.js/blob/dev/examples/js/controls/FirstPersonControls.js)
+// but including these controls in itowns allows use to integrate them tightly with itowns.
+// Especially the existing controls are expecting a continuous update loop while we have a pausable one (so our controls use .notifyChange when needed)
 
-/**
- * MainLoop's update events list that are fired using
- * {@link View#execFrameRequesters}.
- *
- * @property UPDATE_START {string} fired at the start of the update
- * @property BEFORE_CAMERA_UPDATE {string} fired before the camera update
- * @property AFTER_CAMERA_UPDATE {string} fired after the camera update
- * @property BEFORE_LAYER_UPDATE {string} fired before the layer update
- * @property AFTER_LAYER_UPDATE {string} fired after the layer update
- * @property BEFORE_RENDER {string} fired before the render
- * @property AFTER_RENDER {string} fired after the render
- * @property UPDATE_END {string} fired at the end of the update
- */
-
-export const MAIN_LOOP_EVENTS = {
-    UPDATE_START: 'update_start',
-    BEFORE_CAMERA_UPDATE: 'before_camera_update',
-    AFTER_CAMERA_UPDATE: 'after_camera_update',
-    BEFORE_LAYER_UPDATE: 'before_layer_update',
-    AFTER_LAYER_UPDATE: 'after_layer_update',
-    BEFORE_RENDER: 'before_render',
-    AFTER_RENDER: 'after_render',
-    UPDATE_END: 'update_end',
-};
-
-function MainLoop(scheduler, engine) {
-    this.renderingState = RENDERING_PAUSED;
-    this.needsRedraw = false;
-    this.scheduler = scheduler;
-    this.gfxEngine = engine; // TODO: remove me
-    this._updateLoopRestarted = true;
+function limitRotation(camera3D, rot, verticalFOV) {
+    // Limit vertical rotation (look up/down) to make sure the user cannot see
+    // outside of the cone defined by verticalFOV
+    const limit = THREE.Math.degToRad(verticalFOV - camera3D.fov) * 0.5;
+    return THREE.Math.clamp(rot, -limit, limit);
 }
 
-MainLoop.prototype = Object.create(EventDispatcher.prototype);
-MainLoop.prototype.constructor = MainLoop;
+function applyRotation(view, camera3D, state) {
+    camera3D.quaternion.setFromUnitVectors(
+        new THREE.Vector3(0, 1, 0), camera3D.up);
 
-MainLoop.prototype.scheduleViewUpdate = function scheduleViewUpdate(view, forceRedraw) {
-    this.needsRedraw |= forceRedraw;
+    camera3D.rotateY(state.rotateY);
+    camera3D.rotateX(state.rotateX);
 
-    if (this.renderingState !== RENDERING_SCHEDULED) {
-        this.renderingState = RENDERING_SCHEDULED;
+    view.notifyChange(true, camera3D);
+}
 
-        if (__DEBUG__) {
-            document.title += ' ⌛';
-        }
-
-        requestAnimationFrame((timestamp) => { this._step(view, timestamp); });
-    }
+const MOVEMENTS = {
+    38: { method: 'translateZ', sign: -1 }, // FORWARD: up key
+    40: { method: 'translateZ', sign: 1 }, // BACKWARD: down key
+    37: { method: 'translateX', sign: -1 }, // STRAFE_LEFT: left key
+    39: { method: 'translateX', sign: 1 }, // STRAFE_RIGHT: right key
+    33: { method: 'translateY', sign: 1 }, // UP: PageUp key
+    34: { method: 'translateY', sign: -1 }, // DOWN: PageDown key
 };
 
-function updateElements(context, geometryLayer, elements) {
-    if (!elements) {
-        return;
-    }
-    for (const element of elements) {
-        // update element
-        // TODO find a way to notify attachedLayers when geometryLayer deletes some elements
-        // and then update Debug.js:addGeometryLayerDebugFeatures
-        const newElementsToUpdate = geometryLayer.update(context, geometryLayer, element);
+class FirstPersonControls extends THREE.EventDispatcher {
+    /**
+     * @Constructor
+     * @param {View} view
+     * @param {object} options
+     * @param {boolean} options.focusOnClick - whether or not to focus the renderer domElement on click
+     * @param {boolean} options.focusOnMouseOver - whether or not to focus when the mouse is over the domElement
+     * @param {boolean} options.moveSpeed - if > 0, pressing the arrow keys will move the camera
+     * @param {number} options.verticalFOV - define the max visible vertical angle of the scene in degrees (default 180)
+     * @param {number} options.panoramaRatio - alternative way to specify the max vertical angle when using a panorama.
+     * You can specify the panorama width/height ratio and the verticalFOV will be computed automatically
+     * @param {boolean} options.disableEventListeners - if true, the controls will not self listen to mouse/key events.
+     * You'll have to manually forward the events to the appropriate functions: onMouseDown, onMouseMove, onMouseUp,
+     * onKeyUp, onKeyDown and onMouseWheel.
+     */
+    constructor(view, options = {}) {
+        super();
+        this.camera = view.camera.camera3D;
+        this.view = view;
+        this.moves = new Set();
+        if (options.panoramaRatio) {
+            const radius = (options.panoramaRatio * 200) / (2 * Math.PI);
+            options.verticalFOV =
+                options.panoramaRatio == 2 ? 180 : THREE.Math.radToDeg(2 * Math.atan(200 / (2 * radius)));
+        }
+        options.verticalFOV = options.verticalFOV || 180;
+        options.moveSpeed = options.moveSpeed === undefined ? 10 : options.moveSpeed; // backward or forward move speed in m/s
+        this.options = options;
 
-        // update attached layers
-        for (const attachedLayer of geometryLayer._attachedLayers) {
-            if (attachedLayer.ready) {
-                attachedLayer.update(context, attachedLayer, element);
+        this._isMouseDown = false;
+        this._onMouseDownMouseX = 0;
+        this._onMouseDownMouseY = 0;
+
+        this._state = {
+            rotateX: 0,
+            rotateY: 0,
+            snapshot() {
+                return {
+                    rotateX: this.rotateX,
+                    rotateY: this.rotateY,
+                };
+            },
+        };
+        this.reset();
+
+        const domElement = view.mainLoop.gfxEngine.renderer.domElement;
+        if (!options.disableEventListeners) {
+            domElement.addEventListener('mousedown', this.onMouseDown.bind(this), false);
+            domElement.addEventListener('touchstart', this.onMouseDown.bind(this), false);
+            domElement.addEventListener('mousemove', this.onMouseMove.bind(this), false);
+            domElement.addEventListener('touchmove', this.onMouseMove.bind(this), false);
+            domElement.addEventListener('mouseup', this.onMouseUp.bind(this), false);
+            domElement.addEventListener('touchend', this.onMouseUp.bind(this), false);
+            domElement.addEventListener('keyup', this.onKeyUp.bind(this), true);
+            domElement.addEventListener('keydown', this.onKeyDown.bind(this), true);
+            domElement.addEventListener('mousewheel', this.onMouseWheel.bind(this), false);
+            domElement.addEventListener('DOMMouseScroll', this.onMouseWheel.bind(this), false); // firefox
+        }
+
+        this.view.addFrameRequester(MAIN_LOOP_EVENTS.AFTER_CAMERA_UPDATE, this.update.bind(this));
+
+        // focus policy
+        if (options.focusOnMouseOver) {
+            domElement.addEventListener('mouseover', () => domElement.focus());
+        }
+        if (options.focusOnClick) {
+            domElement.addEventListener('click', () => domElement.focus());
+        }
+    }
+
+    isUserInteracting() {
+        return this.moves.size !== 0 &amp;&amp; !this._isMouseDown;
+    }
+
+    /**
+     * Resets the controls internal state to match the camera' state.
+     * This must be called when manually modifying the camera's position or rotation.
+     * @param {boolean} preserveRotationOnX - if true, the look up/down rotation will
+     * not be copied from the camera
+     */
+    reset(preserveRotationOnX = false) {
+        // Compute the correct init state, given the calculus in applyRotation:
+        // cam.quaternion = q * r
+        // => r = inverse(q) * cam.quaterion
+        // q is the quaternion derived from the up vector
+        const q = new THREE.Quaternion().setFromUnitVectors(
+            new THREE.Vector3(0, 1, 0), this.camera.up);
+        q.inverse();
+        // compute r
+        const r = this.camera.quaternion.clone().premultiply(q);
+        // tranform it to euler
+        const e = new THREE.Euler(0, 0, 0, 'YXZ').setFromQuaternion(r);
+
+        if (!preserveRotationOnX) {
+            this._state.rotateX = e.x;
+        }
+        this._state.rotateY = e.y;
+    }
+
+    /**
+     * Updates the camera position / rotation based on occured input events.
+     * This is done automatically when needed but can also be done if needed.
+     * @param {number} dt - ellpased time since last update in seconds
+     * @param {boolean} updateLoopRestarted - true if itowns' update loop just restarted
+     * @param {boolean} force - set to true if you want to force the update, even if it
+     * appears unneeded.
+     */
+    update(dt, updateLoopRestarted, force) {
+        // dt will not be relevant when we just started rendering, we consider a 1-frame move in this case
+        if (updateLoopRestarted) {
+            dt = 16;
+        }
+
+        for (const move of this.moves) {
+            if (move.method === 'translateY') {
+                this.camera.position.z += move.sign * this.options.moveSpeed * dt / 1000;
+            } else {
+                this.camera[move.method](move.sign * this.options.moveSpeed * dt / 1000);
             }
         }
-        updateElements(context, geometryLayer, newElementsToUpdate);
+
+        if (this._isMouseDown === true || force === true) {
+            applyRotation(this.view, this.camera, this._state);
+        }
+
+        if (this.moves.size || this._isMouseDown) {
+            this.view.notifyChange(true);
+        }
+    }
+
+    // Event callback functions
+    // Mouse movement handling
+    onMouseDown(event) {
+        event.preventDefault();
+        this._isMouseDown = true;
+
+        const coords = this.view.eventToViewCoords(event);
+        this._onMouseDownMouseX = coords.x;
+        this._onMouseDownMouseY = coords.y;
+
+        this._stateOnMouseDown = this._state.snapshot();
+    }
+
+    onMouseUp() {
+        this._isMouseDown = false;
+    }
+
+    onMouseMove(event) {
+        if (this._isMouseDown === true) {
+            // in rigor we have tan(theta) = tan(cameraFOV) * deltaH / H
+            // (where deltaH is the vertical amount we moved, and H the renderer height)
+            // we loosely approximate tan(x) by x
+            const pxToAngleRatio = THREE.Math.degToRad(this.camera.fov) / this.view.mainLoop.gfxEngine.height;
+
+            const coords = this.view.eventToViewCoords(event);
+
+            // update state based on pointer movement
+            this._state.rotateY = ((coords.x - this._onMouseDownMouseX) * pxToAngleRatio) + this._stateOnMouseDown.rotateY;
+            this._state.rotateX = limitRotation(
+                this.camera,
+                ((coords.y - this._onMouseDownMouseY) * pxToAngleRatio) + this._stateOnMouseDown.rotateX,
+            this.options.verticalFOV);
+
+            applyRotation(this.view, this.camera, this._state);
+        }
+    }
+
+    // Mouse wheel
+    onMouseWheel(event) {
+        let delta = 0;
+        if (event.wheelDelta !== undefined) {
+            delta = -event.wheelDelta;
+        // Firefox
+        } else if (event.detail !== undefined) {
+            delta = event.detail;
+        }
+
+        this.camera.fov =
+            THREE.Math.clamp(this.camera.fov + Math.sign(delta),
+                10,
+                Math.min(100, this.options.verticalFOV));
+
+        this.camera.updateProjectionMatrix();
+
+        this._state.rotateX = limitRotation(
+            this.camera,
+            this._state.rotateX,
+            this.options.verticalFOV);
+
+        applyRotation(this.view, this.camera, this._state);
+    }
+
+    // Keyboard handling
+    onKeyUp(e) {
+        const move = MOVEMENTS[e.keyCode];
+        if (move) {
+            this.moves.delete(move);
+            this.view.notifyChange(true);
+            e.preventDefault();
+        }
+    }
+
+    onKeyDown(e) {
+        const move = MOVEMENTS[e.keyCode];
+        if (move) {
+            this.moves.add(move);
+            this.view.notifyChange(false);
+            e.preventDefault();
+        }
     }
 }
 
-MainLoop.prototype._update = function _update(view, updateSources, dt) {
-    const context = {
-        camera: view.camera,
-        engine: this.gfxEngine,
-        scheduler: this.scheduler,
-        view,
-    };
-
-    for (const geometryLayer of view.getLayers((x, y) => !y)) {
-        context.geometryLayer = geometryLayer;
-        if (geometryLayer.ready &amp;&amp; geometryLayer.visible &amp;&amp; !geometryLayer.frozen) {
-            view.execFrameRequesters(MAIN_LOOP_EVENTS.BEFORE_LAYER_UPDATE, dt, this._updateLoopRestarted, geometryLayer);
-
-            // `preUpdate` returns an array of elements to update
-            const elementsToUpdate = geometryLayer.preUpdate(context, geometryLayer, updateSources);
-            // `update` is called in `updateElements`.
-            updateElements(context, geometryLayer, elementsToUpdate);
-            // `postUpdate` is called when this geom layer update process is finished
-            geometryLayer.postUpdate(context, geometryLayer, updateSources);
-
-            view.execFrameRequesters(MAIN_LOOP_EVENTS.AFTER_LAYER_UPDATE, dt, this._updateLoopRestarted, geometryLayer);
-        }
-    }
-};
-
-MainLoop.prototype._step = function _step(view, timestamp) {
-    const dt = timestamp - this._lastTimestamp;
-    view.execFrameRequesters(MAIN_LOOP_EVENTS.UPDATE_START, dt, this._updateLoopRestarted);
-
-    const willRedraw = this.needsRedraw;
-    this._lastTimestamp = timestamp;
-
-    // Reset internal state before calling _update (so future calls to View.notifyChange()
-    // can properly change it)
-    this.needsRedraw = false;
-    this.renderingState = RENDERING_PAUSED;
-    const updateSources = new Set(view._changeSources);
-    view._changeSources.clear();
-
-    // update camera
-    const dim = this.gfxEngine.getWindowSize();
-
-    view.execFrameRequesters(MAIN_LOOP_EVENTS.BEFORE_CAMERA_UPDATE, dt, this._updateLoopRestarted);
-    view.camera.update(dim.x, dim.y);
-    view.execFrameRequesters(MAIN_LOOP_EVENTS.AFTER_CAMERA_UPDATE, dt, this._updateLoopRestarted);
-
-    // Disable camera's matrix auto update to make sure the camera's
-    // world matrix is never updated mid-update.
-    // Otherwise inconsistencies can appear because object visibility
-    // testing and object drawing could be performed using different
-    // camera matrixWorld.
-    // Note: this is required at least because WEBGLRenderer calls
-    // camera.updateMatrixWorld()
-    const oldAutoUpdate = view.camera.camera3D.matrixAutoUpdate;
-    view.camera.camera3D.matrixAutoUpdate = false;
-
-    // update data-structure
-    this._update(view, updateSources, dt);
-
-    if (this.scheduler.commandsWaitingExecutionCount() == 0) {
-        this.dispatchEvent({ type: 'command-queue-empty' });
-    }
-
-    // Redraw *only* if needed.
-    // (redraws only happen when this.needsRedraw is true, which in turn only happens when
-    // view.notifyChange() is called with redraw=true)
-    // As such there's no continuous update-loop, instead we use a ad-hoc update/render
-    // mechanism.
-    if (willRedraw) {
-        this._renderView(view, dt);
-    }
-
-    // next time, we'll consider that we've just started the loop if we are still PAUSED now
-    this._updateLoopRestarted = this.renderingState === RENDERING_PAUSED;
-
-    if (__DEBUG__) {
-        document.title = document.title.substr(0, document.title.length - 2);
-    }
-
-    view.camera.camera3D.matrixAutoUpdate = oldAutoUpdate;
-
-    view.execFrameRequesters(MAIN_LOOP_EVENTS.UPDATE_END, dt, this._updateLoopRestarted);
-};
-
-MainLoop.prototype._renderView = function _renderView(view, dt) {
-    view.execFrameRequesters(MAIN_LOOP_EVENTS.BEFORE_RENDER, dt, this._updateLoopRestarted);
-
-    if (view.render) {
-        view.render();
-    } else {
-        // use default rendering method
-        this.gfxEngine.renderView(view);
-    }
-
-    view.execFrameRequesters(MAIN_LOOP_EVENTS.AFTER_RENDER, dt, this._updateLoopRestarted);
-};
-
-export default MainLoop;
+export default FirstPersonControls;
 </code></pre>
         </article>
     </section>
