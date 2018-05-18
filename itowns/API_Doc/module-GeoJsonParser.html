@@ -32,6 +32,8 @@
 <header>
     
         
+            
+        
     
 </header>
 
@@ -39,6 +41,84 @@
     <div class="container-overview">
     
         
+            <div class="description">The GeoJsonParser module provide a <a href="module-GeoJsonParser.html#.parse">parse</a>
+method that takes a GeoJSON in and gives an object formatted for iTowns
+containing all necessary informations to display this GeoJSON.</div>
+        
+
+        
+            
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Parser_GeoJsonParser.js.html">Parser/GeoJsonParser.js</a>, <a href="Parser_GeoJsonParser.js.html#line225">line 225</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
     
@@ -76,7 +156,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Parser_GeoJsonParser.js.html">Parser/GeoJsonParser.js</a>, <a href="Parser_GeoJsonParser.js.html#line270">line 270</a>
+        <a href="Parser_GeoJsonParser.js.html">Parser/GeoJsonParser.js</a>, <a href="Parser_GeoJsonParser.js.html#line288">line 288</a>
     </li></ul></dd>
     
 
@@ -116,7 +196,7 @@
 
 
 <div class="description">
-    Parse a GeoJSON file content and return a Feature or an array of Features.
+    Parse a GeoJSON file content and return a <a href="module-GeoJsonParser.html#~Feature">Feature</a> or an array of Features.
 </div>
 
 
@@ -183,7 +263,7 @@
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">Object</span>
 
 
             
@@ -193,7 +273,7 @@
 
             
 
-            <td class="description last">options controlling the parsing
+            <td class="description last">Options controlling the parsing.
                 <h6>Properties</h6>
                 
 
@@ -251,7 +331,8 @@
                 </td>
             
 
-            <td class="description last">The CRS to convert the input coordinates to.</td>
+            <td class="description last">The CRS to convert the input coordinates
+to.</td>
         </tr>
 
     
@@ -286,7 +367,7 @@
                 </td>
             
 
-            <td class="description last">override the data crs</td>
+            <td class="description last">Override the data CRS.</td>
         </tr>
 
     
@@ -323,8 +404,8 @@
                 </td>
             
 
-            <td class="description last">Optional filter to reject features
-outside of this extent.</td>
+            <td class="description last">Optional filter to reject
+features outside of this extent.</td>
         </tr>
 
     
@@ -363,7 +444,7 @@ outside of this extent.</td>
                 </td>
             
 
-            <td class="description last">if true the geometry will
+            <td class="description last">If true the geometry will
 have an extent property containing the area covered by the geom</td>
         </tr>
 
@@ -432,7 +513,7 @@ have an extent property containing the area covered by the geom</td>
 
         
 <div class="param-desc">
-    - a promise resolving with a Feature or an array of Features
+    A promise resolving with a <a href="module-GeoJsonParser.html#~Feature">Feature</a> or an array of Features.
 </div>
 
 
@@ -460,7 +541,7 @@ have an extent property containing the area covered by the geom</td>
 
         
                 
-<h4 class="name" id=".Feature">Feature</h4>
+<h4 class="name" id="~Feature">Feature</h4>
 
 
 
@@ -471,7 +552,7 @@ have an extent property containing the area covered by the geom</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Parser_GeoJsonParser.js.html">Parser/GeoJsonParser.js</a>, <a href="Parser_GeoJsonParser.js.html#line249">line 249</a>
+        <a href="Parser_GeoJsonParser.js.html">Parser/GeoJsonParser.js</a>, <a href="Parser_GeoJsonParser.js.html#line256">line 256</a>
     </li></ul></dd>
     
 
@@ -543,7 +624,7 @@ have an extent property containing the area covered by the geom</td>
 <span class="param-type">FeatureGeometry</span>
 |
 
-<span class="param-type">Array</span>
+<span class="param-type">Array.&lt;FeatureGeometry></span>
 
 
             
@@ -553,8 +634,8 @@ have an extent property containing the area covered by the geom</td>
 
             
 
-            <td class="description last">The feature's geometry. Can
-be a FeatureGeometry or an array of FeatureGeometry.</td>
+            <td class="description last">The feature's
+geometry. Can be a <a href="module-GeoJsonParser.html#~FeatureGeometry">FeatureGeometry</a> or an array of FeatureGeometry.</td>
         </tr>
 
     
@@ -567,7 +648,7 @@ be a FeatureGeometry or an array of FeatureGeometry.</td>
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">Object</span>
 
 
             
@@ -577,7 +658,9 @@ be a FeatureGeometry or an array of FeatureGeometry.</td>
 
             
 
-            <td class="description last">Properties of the features</td>
+            <td class="description last">Properties of the features. It can be
+anything specified in the GeoJSON under the <code>properties</code>
+property.</td>
         </tr>
 
     
@@ -589,13 +672,17 @@ be a FeatureGeometry or an array of FeatureGeometry.</td>
 
 
 
+<div class="description">
+    Similar to a feature in a GeoJSON, but adapted to iTowns.
+</div>
+
 
 
     <h5>Type:</h5>
     <ul>
         <li>
             
-<span class="param-type">object</span>
+<span class="param-type">Object</span>
 
 
         </li>
@@ -619,7 +706,7 @@ be a FeatureGeometry or an array of FeatureGeometry.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Parser_GeoJsonParser.js.html">Parser/GeoJsonParser.js</a>, <a href="Parser_GeoJsonParser.js.html#line237">line 237</a>
+        <a href="Parser_GeoJsonParser.js.html">Parser/GeoJsonParser.js</a>, <a href="Parser_GeoJsonParser.js.html#line233">line 233</a>
     </li></ul></dd>
     
 
@@ -706,7 +793,10 @@ be a FeatureGeometry or an array of FeatureGeometry.</td>
 
             
 
-            <td class="description last">Geometry type ('(multi)point', '(multi)linestring' or '(multi)polygon')</td>
+            <td class="description last">Geometry type, can be <code>point</code>,
+<code>multipoint</code>, <code>linestring</code>,
+<code>multilinestring</code>, <code>polygon</code> or
+<code>multipolygon</code>.</td>
         </tr>
 
     
@@ -766,8 +856,9 @@ be a FeatureGeometry or an array of FeatureGeometry.</td>
 
             
 
-            <td class="description last">If this geometry is a polygon, contour contains
-the indices that compose the contour (outer ring)</td>
+            <td class="description last">If this geometry is a
+<code>polygon</code>, <code>contour</code> contains the indices that
+compose the contour (outer ring).</td>
         </tr>
 
     
@@ -798,8 +889,9 @@ the indices that compose the contour (outer ring)</td>
 
             
 
-            <td class="description last">If this geometry is a polygon, holes contains
-an array of indices representing holes in the polygon.</td>
+            <td class="description last">If this geometry is a <code>polygon</code>,
+<code>holes</code> contains an array of indices representing holes in the
+polygon.</td>
         </tr>
 
     
@@ -830,7 +922,7 @@ an array of indices representing holes in the polygon.</td>
 
             
 
-            <td class="description last">The 2D extent containing all the geometries</td>
+            <td class="description last">The 2D extent containing all the geometries.</td>
         </tr>
 
     
@@ -842,13 +934,20 @@ an array of indices representing holes in the polygon.</td>
 
 
 
+<div class="description">
+    Similar to the geometry of a feature in a GeoJSON, but adapted to iTowns.
+The difference is that coordinates are stored as <a href="Coordinates.html">Coordinates</a>
+instead of raw values. If needed (especially if the geometry is a
+<code>polygon</code>), more information is provided.
+</div>
+
 
 
     <h5>Type:</h5>
     <ul>
         <li>
             
-<span class="param-type">object</span>
+<span class="param-type">Object</span>
 
 
         </li>
@@ -879,7 +978,7 @@ an array of indices representing holes in the polygon.</td>
     <br class="clear">
 
     <footer>
-        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed May 16 2018 07:08:51 GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri May 18 2018 11:39:41 GMT+0000 (UTC) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
     </footer>
 
     <script> prettyPrint(); </script>
