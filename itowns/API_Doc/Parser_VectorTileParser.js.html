@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : Core/MainLoop.js</title>
+    <title>iTowns API : Parser/VectorTileParser.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -29,241 +29,84 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { EventDispatcher } from 'three';
-import { GeometryLayer, Layer } from './Layer/Layer';
-import Cache from '../Core/Scheduler/Cache';
+            <pre class="prettyprint source linenums"><code>import Protobuf from 'pbf';
+import { VectorTile } from '@mapbox/vector-tile';
+import GeoJsonParser from './GeoJsonParser';
 
-export const RENDERING_PAUSED = 0;
-export const RENDERING_SCHEDULED = 1;
+function readPBF(file, options) {
+    const vectorTile = new VectorTile(new Protobuf(file));
 
-/**
- * MainLoop's update events list that are fired using
- * {@link View#execFrameRequesters}.
- *
- * @property UPDATE_START {string} fired at the start of the update
- * @property BEFORE_CAMERA_UPDATE {string} fired before the camera update
- * @property AFTER_CAMERA_UPDATE {string} fired after the camera update
- * @property BEFORE_LAYER_UPDATE {string} fired before the layer update
- * @property AFTER_LAYER_UPDATE {string} fired after the layer update
- * @property BEFORE_RENDER {string} fired before the render
- * @property AFTER_RENDER {string} fired after the render
- * @property UPDATE_END {string} fired at the end of the update
- */
+    const layers = Object.keys(vectorTile.layers);
 
-export const MAIN_LOOP_EVENTS = {
-    UPDATE_START: 'update_start',
-    BEFORE_CAMERA_UPDATE: 'before_camera_update',
-    AFTER_CAMERA_UPDATE: 'after_camera_update',
-    BEFORE_LAYER_UPDATE: 'before_layer_update',
-    AFTER_LAYER_UPDATE: 'after_layer_update',
-    BEFORE_RENDER: 'before_render',
-    AFTER_RENDER: 'after_render',
-    UPDATE_END: 'update_end',
-};
+    if (layers.length &lt; 1) return;
 
-function MainLoop(scheduler, engine) {
-    this.renderingState = RENDERING_PAUSED;
-    this.needsRedraw = false;
-    this.scheduler = scheduler;
-    this.gfxEngine = engine; // TODO: remove me
-    this._updateLoopRestarted = true;
-}
-
-MainLoop.prototype = Object.create(EventDispatcher.prototype);
-MainLoop.prototype.constructor = MainLoop;
-
-MainLoop.prototype.scheduleViewUpdate = function scheduleViewUpdate(view, forceRedraw) {
-    this.needsRedraw |= forceRedraw;
-
-    if (this.renderingState !== RENDERING_SCHEDULED) {
-        this.renderingState = RENDERING_SCHEDULED;
-
-        if (__DEBUG__) {
-            document.title += ' ⌛';
-        }
-
-        requestAnimationFrame((timestamp) => { this._step(view, timestamp); });
-    }
-};
-
-function updateElements(context, geometryLayer, elements) {
-    if (!elements) {
-        return;
-    }
-    for (const element of elements) {
-        // update element
-        // TODO find a way to notify attachedLayers when geometryLayer deletes some elements
-        // and then update Debug.js:addGeometryLayerDebugFeatures
-        const newElementsToUpdate = geometryLayer.update(context, geometryLayer, element);
-
-        const sub = geometryLayer.getObjectToUpdateForAttachedLayers(element);
-
-        if (sub) {
-            if (sub.element) {
-                if (__DEBUG__) {
-                    if (!(sub.element.isObject3D)) {
-                        throw new Error(`
-                            Invalid object for attached layer to update.
-                            Must be a THREE.Object and have a THREE.Material`);
-                    }
-                }
-                // update attached layers
-                for (const attachedLayer of geometryLayer._attachedLayers) {
-                    if (attachedLayer.ready) {
-                        attachedLayer.update(context, attachedLayer, sub.element, sub.parent);
-                    }
-                }
-            } else if (sub.elements) {
-                for (let i = 0; i &lt; sub.elements.length; i++) {
-                    if (!(sub.elements[i].isObject3D)) {
-                        throw new Error(`
-                            Invalid object for attached layer to update.
-                            Must be a THREE.Object and have a THREE.Material`);
-                    }
-                    // update attached layers
-                    for (const attachedLayer of geometryLayer._attachedLayers) {
-                        if (attachedLayer.ready) {
-                            attachedLayer.update(context, attachedLayer, sub.elements[i], sub.parent);
-                        }
-                    }
-                }
-            }
-        }
-        updateElements(context, geometryLayer, newElementsToUpdate);
-    }
-}
-
-function filterChangeSources(updateSources, geometryLayer) {
-    let fullUpdate = false;
-    const filtered = new Set();
-    updateSources.forEach((src) => {
-        if (src === geometryLayer || src.isCamera) {
-            fullUpdate = true;
-        } else if (src.layer === geometryLayer) {
-            filtered.add(src);
-        }
-    });
-    return fullUpdate ? new Set([geometryLayer]) : filtered;
-}
-
-MainLoop.prototype._update = function _update(view, updateSources, dt) {
-    const context = {
-        camera: view.camera,
-        engine: this.gfxEngine,
-        scheduler: this.scheduler,
-        view,
+    // We need to create a featureCollection as VectorTile does no support it
+    const geojson = {
+        type: 'FeatureCollection',
+        features: [],
+        crs: { type: 'EPSG', properties: { code: 4326 } },
+        extent: options.extent,
     };
 
-    // replace layer with their parent where needed
-    updateSources.forEach((src) => {
-        const layer = src.layer || src;
-        if (layer instanceof Layer) {
-            if (!(layer instanceof GeometryLayer)) {
-                // add the parent layer to update sources
-                updateSources.add(view.getParentLayer(layer));
+    layers.forEach((layer_id) => {
+        const l = vectorTile.layers[layer_id];
+
+        for (let i = 0; i &lt; l.length; i++) {
+            let feature;
+            // We need to move from TMS to Google/Bing/OSM coordinates
+            // https://alastaira.wordpress.com/2011/07/06/converting-tms-tile-coordinates-to-googlebingosm-tile-coordinates/
+            // Only if the layer.origin is top
+            if (options.origin == 'top') {
+                feature = l.feature(i).toGeoJSON(options.coords.col, options.coords.row, options.coords.zoom);
+            } else {
+                const y = 1 &lt;&lt; options.coords.zoom;
+                feature = l.feature(i).toGeoJSON(options.coords.col, y - options.coords.row - 1, options.coords.zoom);
             }
+            if (layers.length > 1) {
+                feature.properties.vt_layer = layer_id;
+            }
+
+            geojson.features.push(feature);
         }
     });
 
-    for (const geometryLayer of view.getLayers((x, y) => !y)) {
-        context.geometryLayer = geometryLayer;
-        if (geometryLayer.ready &amp;&amp; geometryLayer.visible &amp;&amp; !geometryLayer.frozen) {
-            view.execFrameRequesters(MAIN_LOOP_EVENTS.BEFORE_LAYER_UPDATE, dt, this._updateLoopRestarted, geometryLayer);
+    return GeoJsonParser.parse(geojson, {
+        crsOut: options.extent.crs(),
+        filteringExtent: options.filteringExtent,
+        filter: options.filter,
+        buildExtent: true,
+    });
+}
 
-            // Filter updateSources that are relevant for the geometryLayer
-            const srcs = filterChangeSources(updateSources, geometryLayer);
-            if (srcs.size > 0) {
-                // `preUpdate` returns an array of elements to update
-                const elementsToUpdate = geometryLayer.preUpdate(context, geometryLayer, srcs);
-                // `update` is called in `updateElements`.
-                updateElements(context, geometryLayer, elementsToUpdate);
-                // `postUpdate` is called when this geom layer update process is finished
-                geometryLayer.postUpdate(context, geometryLayer, updateSources);
-            }
-
-            view.execFrameRequesters(MAIN_LOOP_EVENTS.AFTER_LAYER_UPDATE, dt, this._updateLoopRestarted, geometryLayer);
-        }
-    }
+/**
+ * @module VectorTileParser
+ */
+export default {
+    /**
+     * Parse a vector tile file and return a [Feature]{@link module:GeoJsonParser.Feature}
+     * or an array of Features. While multiple formats of vector tile are
+     * available, the only one supported for the moment is the
+     * [Mapbox Vector Tile]{@link https://www.mapbox.com/vector-tiles/specification/}.
+     *
+     * @param {ArrayBuffer} file - The vector tile file to parse.
+     * @param {Object} options - Options controlling the parsing.
+     * @param {Extent} options.extent - The Extent to convert the input coordinates to.
+     * @param {Extent} options.coords - Coordinates of the layer.
+     * @param {Extent=} options.filteringExtent - Optional filter to reject features
+     * outside of this extent.
+     * @param {function=} options.filter - Filter function to remove features.
+     * @param {string=} options.origin - This option is to be set to the correct
+     * value, bottom or top (default being bottom), if the computation of the
+     * coordinates needs to be inverted to same scheme as OSM, Google Maps or
+     * other system. See [this link]{@link https://alastaira.wordpress.com/2011/07/06/converting-tms-tile-coordinates-to-googlebingosm-tile-coordinates} for more informations.
+     *
+     * @return {Promise} A Promise resolving with a Feature or an array a
+     * Features.
+     */
+    parse(file, options) {
+        return Promise.resolve(readPBF(file, options));
+    },
 };
-
-MainLoop.prototype._step = function _step(view, timestamp) {
-    const dt = timestamp - this._lastTimestamp;
-    view._executeFrameRequestersRemovals();
-
-    view.execFrameRequesters(MAIN_LOOP_EVENTS.UPDATE_START, dt, this._updateLoopRestarted);
-
-    const willRedraw = this.needsRedraw;
-    this._lastTimestamp = timestamp;
-
-    // Reset internal state before calling _update (so future calls to View.notifyChange()
-    // can properly change it)
-    this.needsRedraw = false;
-    this.renderingState = RENDERING_PAUSED;
-    const updateSources = new Set(view._changeSources);
-    view._changeSources.clear();
-
-    // update camera
-    const dim = this.gfxEngine.getWindowSize();
-
-    view.execFrameRequesters(MAIN_LOOP_EVENTS.BEFORE_CAMERA_UPDATE, dt, this._updateLoopRestarted);
-    view.camera.update(dim.x, dim.y);
-    view.execFrameRequesters(MAIN_LOOP_EVENTS.AFTER_CAMERA_UPDATE, dt, this._updateLoopRestarted);
-
-    // Disable camera's matrix auto update to make sure the camera's
-    // world matrix is never updated mid-update.
-    // Otherwise inconsistencies can appear because object visibility
-    // testing and object drawing could be performed using different
-    // camera matrixWorld.
-    // Note: this is required at least because WEBGLRenderer calls
-    // camera.updateMatrixWorld()
-    const oldAutoUpdate = view.camera.camera3D.matrixAutoUpdate;
-    view.camera.camera3D.matrixAutoUpdate = false;
-
-    // update data-structure
-    this._update(view, updateSources, dt);
-
-    if (this.scheduler.commandsWaitingExecutionCount() == 0) {
-        this.dispatchEvent({ type: 'command-queue-empty' });
-    }
-
-    // Redraw *only* if needed.
-    // (redraws only happen when this.needsRedraw is true, which in turn only happens when
-    // view.notifyChange() is called with redraw=true)
-    // As such there's no continuous update-loop, instead we use a ad-hoc update/render
-    // mechanism.
-    if (willRedraw) {
-        this._renderView(view, dt);
-    }
-
-    // next time, we'll consider that we've just started the loop if we are still PAUSED now
-    this._updateLoopRestarted = this.renderingState === RENDERING_PAUSED;
-
-    if (__DEBUG__) {
-        document.title = document.title.substr(0, document.title.length - 2);
-    }
-
-    view.camera.camera3D.matrixAutoUpdate = oldAutoUpdate;
-
-    // Clear the cache of expired resources
-    Cache.flush();
-
-    view.execFrameRequesters(MAIN_LOOP_EVENTS.UPDATE_END, dt, this._updateLoopRestarted);
-};
-
-MainLoop.prototype._renderView = function _renderView(view, dt) {
-    view.execFrameRequesters(MAIN_LOOP_EVENTS.BEFORE_RENDER, dt, this._updateLoopRestarted);
-
-    if (view.render) {
-        view.render();
-    } else {
-        // use default rendering method
-        this.gfxEngine.renderView(view);
-    }
-
-    view.execFrameRequesters(MAIN_LOOP_EVENTS.AFTER_RENDER, dt, this._updateLoopRestarted);
-};
-
-export default MainLoop;
 </code></pre>
         </article>
     </section>
