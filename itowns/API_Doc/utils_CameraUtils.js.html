@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>iTowns API : utils/CameraUtils.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="./doc.css">
+</head>
+
+<body>
+
+    <div id="main">
+
+        <p></p>
+        <div class="page-title"><img src="https://raw.githubusercontent.com/iTowns/itowns.github.io/master/images/itowns_logo_300x134.png" /></div>
+
+        
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import * as THREE from 'three';
+import TWEEN from '@tweenjs/tween.js';
+import DEMUtils from './DEMUtils';
+import { MAIN_LOOP_EVENTS } from '../Core/MainLoop';
+import Coordinates, { ellipsoidSizes } from '../Core/Geographic/Coordinates';
+import Ellipsoid from '../Core/Math/Ellipsoid';
+
+THREE.Object3D.DefaultUp.set(0, 0, 1);
+const targetPosition = new THREE.Vector3();
+const targetCoord = new Coordinates('EPSG:4326', 0, 0, 0);
+const ellipsoid = new Ellipsoid(ellipsoidSizes());
+const rigs = [];
+const slerp = [];
+
+const deferred = () => {
+    let resolve;
+    let reject;
+    return { promise: new Promise((re, rej) => { resolve = re; reject = rej; }), resolve, reject };
+};
+
+// Wrap angle in degrees to [-180 180]
+function wrapTo180(angle) {
+    return angle - Math.floor((angle + 180.0) / 360) * 360;
+}
+
+function tileLayer(view) {
+    return view.getLayers(l => l.protocol == 'tile')[0];
+}
+
+function getLookAtFromMath(view, camera) {
+    const direction = new THREE.Vector3(0, 0, 0.5);
+    direction.unproject(camera);
+    direction.sub(camera.position).normalize();
+    if (view.referenceCrs == 'EPSG:4978') {
+        // Intersect Ellispoid
+        return ellipsoid.intersection({ direction, origin: camera.position });
+    } else {
+        // Intersect plane
+        const distance = camera.position.z / direction.z;
+        return direction.multiplyScalar(distance).add(camera.position);
+    }
+}
+
+function getGroundTargetFromCamera(view, camera, target) {
+    camera.updateMatrixWorld(true);
+    const pickedPosition = view.getPickingPositionFromDepth() || getLookAtFromMath(view, camera);
+    const range = pickedPosition &amp;&amp; !isNaN(pickedPosition.x) ? camera.position.distanceTo(pickedPosition) : 100;
+    camera.localToWorld(target.set(0, 0, -range));
+}
+
+function proxyProperty(view, camera, rig, key) {
+    rig.proxy.position[key] = camera.position[key];
+    Object.defineProperty(camera.position, key, {
+        get: () => rig.proxy.position[key],
+        set: (newValue) => {
+            rig.removeProxy(view, camera);
+            camera.position[key] = newValue;
+        },
+    });
+}
+
+// the rig is used to manipulate the camera
+// It consists of a tree of 3D objects, each element is assigned a task
+//
+//                      Transformation
+//
+// rig                  position on Coordinate  (for the globe is rotation)
+// |
+// └── sealevel         position on altitude zero
+//     |
+//     └── target       position on DEM, and rotation (pitch and heading)
+//         |
+//         └── camera   distance to target
+//
+// When all transformations are calculated,
+// this.camera's transformation is applied to view.camera.camera
+class CameraRig extends THREE.Object3D {
+    constructor() {
+        super();
+        // seaLevel is on rig's z axis, it's at altitude zero
+        this.seaLevel = new THREE.Object3D();
+        // target is on seaLevel's z axis and target.position.z is the DEM altitude
+        this.target = new THREE.Object3D();
+        this.target.rotation.order = 'ZXY';
+        // camera look at target
+        this.camera = new THREE.Camera();
+        this.add(this.seaLevel);
+        this.seaLevel.add(this.target);
+        this.target.add(this.camera);
+        // sea level's geograohic coordinate
+        this.coord = new Coordinates('EPSG:4978', 0, 0);
+        // sea level's worldPoistion
+        this.targetWorldPosition = new THREE.Vector3();
+        this.removeAll = () => {};
+    }
+
+    // apply rig.camera's transformation to camera
+    applyTransformToCamera(view, camera) {
+        if (this.proxy) {
+            camera.quaternion.onChange(() => {});
+            this.camera.matrixWorld.decompose(this.proxy.position, camera.quaternion, camera.scale);
+            camera.quaternion.onChange(() => this.removeProxy(view, camera));
+        } else {
+            this.camera.matrixWorld.decompose(camera.position, camera.quaternion, camera.scale);
+        }
+    }
+
+    setProxy(view, camera) {
+        if (!this.proxy &amp;&amp; view &amp;&amp; camera) {
+            this.proxy = { position: new THREE.Vector3() };
+            Object.keys(camera.position).forEach(key => proxyProperty(view, camera, this, key));
+            camera.quaternion.onChange(() => this.removeProxy(view, camera));
+        }
+    }
+
+    removeProxy(view, camera) {
+        this.stop(view);
+        if (this.proxy &amp;&amp; view &amp;&amp; camera) {
+            Object.keys(camera.position).forEach(key => Object.defineProperty(camera.position, key, { value: this.proxy.position[key], writable: true }));
+            camera.quaternion.onChange(() => {});
+            this.proxy = null;
+        }
+    }
+
+    setTargetFromCoordinate(view, coord) {
+        // clamp altitude to seaLevel
+        coord.as(tileLayer(view).extent.crs(), this.coord);
+        const altitude = Math.max(0, this.coord._values[2]);
+        this.coord._values[2] = altitude;
+        // adjust target's position with clamped altitude
+        this.coord.as(view.referenceCrs).xyz(targetPosition);
+        if (view.referenceCrs == 'EPSG:4978') {
+            // ellipsoid geocentric projection
+            this.lookAt(targetPosition);
+            this.seaLevel.position.set(0, 0, targetPosition.length() - altitude);
+        } else {
+            // planar projection
+            this.position.set(targetPosition.x, targetPosition.y, 0);
+            this.seaLevel.position.set(0, 0, 0);
+        }
+        // place camera's target
+        this.target.position.set(0, 0, altitude);
+    }
+
+    // set rig's objects transformation from camera's position and target's position
+    setFromPositions(view, cameraPosition, targetPosition) {
+        this.setTargetFromCoordinate(view, new Coordinates(view.referenceCrs, targetPosition));
+        this.target.rotation.set(0, 0, 0);
+        this.updateMatrixWorld(true);
+        this.camera.position.copy(cameraPosition);
+        this.target.worldToLocal(this.camera.position);
+        const range = this.camera.position.length();
+        this.target.rotation.x = Math.asin(this.camera.position.z / range);
+        const cosPlanXY = THREE.Math.clamp(this.camera.position.y / (Math.cos(this.target.rotation.x) * range), -1, 1);
+        this.target.rotation.z = Math.sign(-this.camera.position.x) * Math.acos(cosPlanXY);
+        this.camera.position.set(0, range, 0);
+    }
+
+    // set from target's coordinate, rotation and range between target and camera
+    applyParams(view, params) {
+        if (params.coord) {
+            this.setTargetFromCoordinate(view, params.coord);
+        }
+        if (params.tilt != undefined) {
+            this.target.rotation.x = THREE.Math.degToRad(params.tilt);
+        }
+        if (params.heading != undefined) {
+            this.target.rotation.z = THREE.Math.degToRad(wrapTo180(params.heading + 180));
+        }
+        if (params.range) {
+            this.camera.position.set(0, params.range, 0);
+        }
+        this.camera.rotation.set(-Math.PI * 0.5, 0, Math.PI);
+        this.updateMatrixWorld(true);
+        this.targetWorldPosition.setFromMatrixPosition(this.seaLevel.matrixWorld);
+    }
+
+    getParams() {
+        return {
+            coord: this.coord.clone(),
+            tilt: this.tilt,
+            heading: this.heading,
+            range: this.range,
+            targetWorldPosition: this.targetWorldPosition,
+        };
+    }
+
+    setfromCamera(view, camera) {
+        getGroundTargetFromCamera(view, camera, targetPosition);
+        this.setFromPositions(view, camera.position, targetPosition);
+    }
+
+    copyObject3D(rig) {
+        this.copy(rig, false);
+        this.seaLevel.copy(rig.seaLevel, false);
+        this.target.copy(rig.target, false);
+        this.camera.copy(rig.camera);
+        return this;
+    }
+
+    animateCameraToLookAtTarget(view, camera, params) {
+        params.easing = params.easing || TWEEN.Easing.Quartic.InOut;
+        this.setfromCamera(view, camera);
+        const tweenGroup = new TWEEN.Group();
+        this.start = (this.start || new CameraRig()).copyObject3D(this);
+        this.end = (this.end || new CameraRig()).copyObject3D(this);
+        const time = params.time || 2500;
+        const factor = { t: 0 };
+        const animations = [];
+        const def = deferred();
+
+        this.addPlaceTargetOnGround(view, camera, params.coord, factor);
+        this.end.applyParams(view, params);
+
+        animations.push(new TWEEN.Tween(factor, tweenGroup).to({ t: 1 }, time)
+            .easing(params.easing)
+            .onUpdate((d) => {
+                // rotate to coord destination in geocentric projection
+                if (view.referenceCrs == 'EPSG:4978') {
+                    THREE.Quaternion.slerpFlat(slerp, 0, this.start.quaternion.toArray(), 0, this.end.quaternion.toArray(), 0, d.t);
+                    this.quaternion.fromArray(slerp);
+                }
+                // camera rotation
+                THREE.Quaternion.slerpFlat(slerp, 0, this.start.camera.quaternion.toArray(), 0, this.end.camera.quaternion.toArray(), 0, d.t);
+                this.camera.quaternion.fromArray(slerp);
+                // camera's target rotation
+                this.target.rotation.set(0, 0, 0);
+                this.target.rotateZ(THREE.Math.lerp(this.start.target.rotation.z, this.end.target.rotation.z, d.t));
+                this.target.rotateX(THREE.Math.lerp(this.start.target.rotation.x, this.end.target.rotation.x, d.t));
+            }));
+
+        // translate to coordinate destination in planar projection
+        if (view.referenceCrs != 'EPSG:4978') {
+            animations.push(new TWEEN.Tween(this.position, tweenGroup)
+            .to(this.end.position, time)
+            .easing(params.easing));
+        }
+
+        // translate to altitude zero
+        animations.push(new TWEEN.Tween(this.seaLevel.position, tweenGroup)
+            .to(this.end.seaLevel.position, time)
+            .easing(params.easing));
+
+        // translate camera position
+        animations.push(new TWEEN.Tween(this.camera.position, tweenGroup)
+            .to(this.end.camera.position, time)
+            .easing(params.easing));
+
+        // update animations, transformation and view
+        this.animationFrameRequester = () => {
+            tweenGroup.update();
+            this.updateMatrixWorld(true);
+            this.applyTransformToCamera(view, camera);
+            this.targetWorldPosition.setFromMatrixPosition(this.seaLevel.matrixWorld);
+            if (params.callback) {
+                params.callback(this);
+            }
+            targetCoord.set(view.referenceCrs, this.targetWorldPosition).as(tileLayer(view).extent.crs(), this.coord);
+            view.notifyChange(camera);
+        };
+
+        this.removeAll = function removeAll(o) {
+            this.removeAll = () => {};
+            tweenGroup.removeAll();
+            if (this.animationFrameRequester) {
+                view.removeFrameRequester(MAIN_LOOP_EVENTS.BEFORE_RENDER, this.animationFrameRequester);
+            }
+            def.resolve(o ? o.t == 1.0 : false);
+            this.animationFrameRequester = null;
+        };
+
+        // Waiting last animation complete,
+        // we assume that the animation that completes last is the one that was started last
+        animations[animations.length - 1].onComplete(this.removeAll);
+        animations.forEach(anim => anim.start());
+
+        view.addFrameRequester(MAIN_LOOP_EVENTS.BEFORE_RENDER, this.animationFrameRequester);
+        view.notifyChange(camera);
+
+        return def;
+    }
+
+    stop(view) {
+        this.removePlaceTargetOnGround(view);
+        this.removeAll();
+    }
+
+    // update target position to coordinate's altitude
+    addPlaceTargetOnGround(view, camera, coord, options = { t: 1.0 }) {
+        this.removePlaceTargetOnGround(view);
+        if (view &amp;&amp; camera) {
+            const startAltitude = this.target.position.z;
+            this.placeTargetOnGround = () => {
+                const result = DEMUtils.getElevationValueAt(tileLayer(view), coord || this.coord, DEMUtils.PRECISE_READ_Z);
+                const altitude = Math.max(0, result ? result.z : 0);
+                this.target.position.z = startAltitude * (1.0 - options.t) + altitude * options.t;
+                this.target.updateMatrixWorld(true);
+                this.applyTransformToCamera(view, camera);
+            };
+            this.placeTargetOnGround();
+            view.addFrameRequester(MAIN_LOOP_EVENTS.BEFORE_RENDER, this.placeTargetOnGround);
+        }
+    }
+
+    removePlaceTargetOnGround(view) {
+        if (view &amp;&amp; this.placeTargetOnGround) {
+            view.removeFrameRequester(MAIN_LOOP_EVENTS.BEFORE_RENDER, this.placeTargetOnGround);
+            this.placeTargetOnGround = null;
+        }
+    }
+
+    get tilt() { return THREE.Math.radToDeg(this.target.rotation.x); }
+
+    get heading() { return wrapTo180((THREE.Math.radToDeg(this.target.rotation.z) + 180)); }
+
+    get range() { return this.camera.position.y; }
+}
+
+function getRig(camera) {
+    rigs[camera.uuid] = rigs[camera.uuid] || new CameraRig(camera);
+    return rigs[camera.uuid];
+}
+
+/**
+ * @typedef {Object} cameraTransformOptions
+ * @property {Coordinate} [coordinate=currentCoordinate] Camera look at coordinate
+ * @property {Number} [tilt=currentTilt] camera's tilt, in degree
+ * @property {Number} [heading=currentHeading] camera's heading, in degree
+ * @property {Number} [range=currentRange] camera distance to target coordinate, in meter
+ * @property {Number} [time=2500] duration of the animation, in ms
+ * @property {boolean} [proxy=true] use proxy to handling camera's transformation. if proxy == true, other camera's transformation stops rig's transformation
+ * @property {Number} [easing=TWEEN.Easing.Quartic.InOut] in and out easing animation
+ * @property {function} [callback] callback call each animation's frame (params are current cameraTransform and worldTargetPosition)
+ */
+/**
+ * @module CameraUtils
+ */
+export default {
+    Easing: TWEEN.Easing,
+    /**
+     * Stop camera's animation
+     *
+     * @param      {View}  view    The camera view
+     * @param      {Camera}  camera  The camera to stop animation
+     */
+    stop(view, camera) {
+        getRig(camera).stop(view);
+    },
+    /**
+     * Gets the current parameters transform camera looking at target.
+     *
+     * @param      {View}  view    The camera view
+     * @param      {Camera}  camera  The camera to get transform
+     * @return     {cameraTransformOptions}  The transform camera looking at target
+     */
+    getTransformCameraLookingAtTarget(view, camera) {
+        const rig = getRig(camera);
+        rig.setfromCamera(view, camera);
+        return rig.getParams();
+    },
+    /**
+     * Apply transform to camera
+     *
+     * @param      {View}  view    The camera view
+     * @param      {Camera}  camera  The camera to transform
+     * @param      {cameraTransformOptions}  params  The parameters
+     * @return     {Promise} promise with resolve final cameraTransformOptions
+     */
+    transformCameraToLookAtTarget(view, camera, params = {}) {
+        params.proxy = params.proxy === undefined || params.proxy;
+        const rig = getRig(camera);
+        rig.stop(view);
+        rig.setfromCamera(view, camera);
+        if (params.proxy) {
+            rig.setProxy(view, camera);
+        }
+        rig.applyParams(view, params);
+        rig.addPlaceTargetOnGround(view, camera, params.coord);
+        rig.applyTransformToCamera(view, camera);
+        view.notifyChange(camera);
+        return Promise.resolve(rig.getParams());
+    },
+    /**
+     * Apply transform to camera with animation
+     *
+     * @param      {View}  view    The camera view
+     * @param      {Camera}  camera  The camera to animate
+     * @param      {cameraTransformOptions}  params  The parameters
+     * @return     {Promise} promise with resolve final cameraTransformOptions
+     */
+    animateCameraToLookAtTarget(view, camera, params = {}) {
+        params.proxy = params.proxy === undefined || params.proxy;
+        const rig = getRig(camera);
+        rig.stop(view);
+        if (params.proxy) {
+            rig.setProxy(view, camera);
+        }
+        return rig.animateCameraToLookAtTarget(view, camera, params).promise.then((finished) => {
+            const params = rig.getParams();
+            params.finished = finished;
+            return params;
+        });
+    },
+
+    /**
+     * chain animation transform to camera
+     *
+     * @param      {View}  view    The camera view
+     * @param      {Camera}  camera  The camera to animate
+     * @param      {cameraTransformOptions[]}  params  array parameters, each parameters transforms are apply to camera, in serial
+     * @return     {Promise} promise with resolve final cameraTransformOptions
+     */
+    sequenceAnimationsToLookAtTarget(view, camera, params = [{}]) {
+        const promiseSerial = funcs =>
+            funcs.reduce((promise, func) => promise.then((result) => {
+                const finished = result.length ? result[result.length - 1].finished : true;
+                if (finished) {
+                    return func().then(Array.prototype.concat.bind(result));
+                } else {
+                    return Promise.resolve([{ finished: false }]);
+                }
+            }),
+            Promise.resolve([]));
+
+        // convert each param to a function
+        const funcs = params.map(param => () => this.animateCameraToLookAtTarget(view, camera, param));
+
+        // execute Promises in serial
+        return promiseSerial(funcs);
+    },
+
+    /**
+     * Gets the difference camera transformation
+     *
+     * @param      {cameraTransformOptions}  first  param to compare with the second
+     * @param      {cameraTransformOptions}  second param to compare with the first
+     * @return     {object} The difference parameters
+     */
+    getDiffParams(first, second) {
+        if (!first || !second) {
+            return;
+        }
+        let diff;
+        if (Math.abs(first.range - second.range) / first.range > 0.001) {
+            diff = diff || {};
+            diff.range = {
+                previous: first.range,
+                new: second.range,
+            };
+        }
+        if (Math.abs(first.tilt - second.tilt) > 0.1) {
+            diff = diff || {};
+            diff.tilt = {
+                previous: first.tilt,
+                new: second.tilt,
+            };
+        }
+        if (Math.abs(first.heading - second.heading) > 0.1) {
+            diff = diff || {};
+            diff.heading = {
+                previous: first.heading,
+                new: second.heading,
+            };
+        }
+
+        if (Math.abs(first.coord._values[0] - second.coord._values[0]) > 0.1 ||
+            Math.abs(first.coord._values[1] - second.coord._values[1] > 0.1)) {
+            diff = diff || {};
+            diff.coord = {
+                previous: first.coord,
+                new: second.coord,
+            };
+        }
+        return diff;
+    },
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    </div>
+
+    <nav>
+        <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ColorLayer.html">ColorLayer</a><ul class='methods'><li data-type='method'><a href="ColorLayer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="Coordinates.html">Coordinates</a><ul class='methods'><li data-type='method'><a href="Coordinates.html#altitude">altitude</a></li><li data-type='method'><a href="Coordinates.html#as">as</a></li><li data-type='method'><a href="Coordinates.html#latitude">latitude</a></li><li data-type='method'><a href="Coordinates.html#longitude">longitude</a></li><li data-type='method'><a href="Coordinates.html#offsetInExtent">offsetInExtent</a></li><li data-type='method'><a href="Coordinates.html#setAltitude">setAltitude</a></li><li data-type='method'><a href="Coordinates.html#x">x</a></li><li data-type='method'><a href="Coordinates.html#xyz">xyz</a></li><li data-type='method'><a href="Coordinates.html#y">y</a></li><li data-type='method'><a href="Coordinates.html#z">z</a></li></ul></li><li><a href="ElevationLayer.html">ElevationLayer</a><ul class='methods'><li data-type='method'><a href="ElevationLayer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="FirstPersonControls.html">FirstPersonControls</a><ul class='methods'><li data-type='method'><a href="FirstPersonControls.html#reset">reset</a></li><li data-type='method'><a href="FirstPersonControls.html#update">update</a></li></ul></li><li><a href="GeometryLayer.html">GeometryLayer</a><ul class='methods'><li data-type='method'><a href="GeometryLayer.html#attach">attach</a></li><li data-type='method'><a href="GeometryLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="GeometryLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="GeometryLayer.html#detach">detach</a></li><li data-type='method'><a href="GeometryLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="GlobeControls.html">GlobeControls</a><ul class='methods'><li data-type='method'><a href="GlobeControls.html#getCameraCoordinate">getCameraCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#getCameraOrientation">getCameraOrientation</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetGeoPosition">getCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetPosition">getCameraTargetPosition</a></li><li data-type='method'><a href="GlobeControls.html#getHeading">getHeading</a></li><li data-type='method'><a href="GlobeControls.html#getLookAtCoordinate">getLookAtCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#getRange">getRange</a></li><li data-type='method'><a href="GlobeControls.html#getScale">getScale</a></li><li data-type='method'><a href="GlobeControls.html#getTilt">getTilt</a></li><li data-type='method'><a href="GlobeControls.html#getZoom">getZoom</a></li><li data-type='method'><a href="GlobeControls.html#isAnimationEnabled">isAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#lookAtCoordinate">lookAtCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#metersToPixels">metersToPixels</a></li><li data-type='method'><a href="GlobeControls.html#pan">pan</a></li><li data-type='method'><a href="GlobeControls.html#pickGeoPosition">pickGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToDegrees">pixelsToDegrees</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToMeters">pixelsToMeters</a></li><li data-type='method'><a href="GlobeControls.html#setAnimationEnabled">setAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPosition">setCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPositionAdvanced">setCameraTargetGeoPositionAdvanced</a></li><li data-type='method'><a href="GlobeControls.html#setHeading">setHeading</a></li><li data-type='method'><a href="GlobeControls.html#setOrbitalPosition">setOrbitalPosition</a></li><li data-type='method'><a href="GlobeControls.html#setRange">setRange</a></li><li data-type='method'><a href="GlobeControls.html#setScale">setScale</a></li><li data-type='method'><a href="GlobeControls.html#setTilt">setTilt</a></li><li data-type='method'><a href="GlobeControls.html#setZoom">setZoom</a></li></ul></li><li><a href="GlobeLayer.html">GlobeLayer</a><ul class='methods'><li data-type='method'><a href="GlobeLayer.html#attach">attach</a></li><li data-type='method'><a href="GlobeLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="GlobeLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="GlobeLayer.html#detach">detach</a></li><li data-type='method'><a href="GlobeLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="GlobeView.html">GlobeView</a><ul class='methods'><li data-type='method'><a href="GlobeView.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#addLayer">addLayer</a></li><li data-type='method'><a href="GlobeView.html#eventToNormalizedCoords">eventToNormalizedCoords</a></li><li data-type='method'><a href="GlobeView.html#eventToViewCoords">eventToViewCoords</a></li><li data-type='method'><a href="GlobeView.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="GlobeView.html#getLayers">getLayers</a></li><li data-type='method'><a href="GlobeView.html#getParentLayer">getParentLayer</a></li><li data-type='method'><a href="GlobeView.html#getPickingPositionFromDepth">getPickingPositionFromDepth</a></li><li data-type='method'><a href="GlobeView.html#normalizedToViewCoords">normalizedToViewCoords</a></li><li data-type='method'><a href="GlobeView.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="GlobeView.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="GlobeView.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#removeLayer">removeLayer</a></li><li data-type='method'><a href="GlobeView.html#viewToNormalizedCoords">viewToNormalizedCoords</a></li></ul></li><li><a href="Layer.html">Layer</a><ul class='methods'><li data-type='method'><a href="Layer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="PanoramaLayer.html">PanoramaLayer</a><ul class='methods'><li data-type='method'><a href="PanoramaLayer.html#attach">attach</a></li><li data-type='method'><a href="PanoramaLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="PanoramaLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="PanoramaLayer.html#detach">detach</a></li><li data-type='method'><a href="PanoramaLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="PlanarControls.html">PlanarControls</a></li><li><a href="PlanarLayer.html">PlanarLayer</a><ul class='methods'><li data-type='method'><a href="PlanarLayer.html#attach">attach</a></li><li data-type='method'><a href="PlanarLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="PlanarLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="PlanarLayer.html#detach">detach</a></li><li data-type='method'><a href="PlanarLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="Scheduler.html">Scheduler</a><ul class='methods'><li data-type='method'><a href="Scheduler.html#addProtocolProvider">addProtocolProvider</a></li><li data-type='method'><a href="Scheduler.html#getProtocolProvider">getProtocolProvider</a></li></ul></li><li><a href="StateControl.html">StateControl</a><ul class='methods'><li data-type='method'><a href="StateControl.html#inputToState">inputToState</a></li><li data-type='method'><a href="StateControl.html#touchToState">touchToState</a></li></ul></li><li><a href="TiledGeometryLayer.html">TiledGeometryLayer</a><ul class='methods'><li data-type='method'><a href="TiledGeometryLayer.html#.hasEnoughTexturesToSubdivide">hasEnoughTexturesToSubdivide</a></li><li data-type='method'><a href="TiledGeometryLayer.html#attach">attach</a></li><li data-type='method'><a href="TiledGeometryLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="TiledGeometryLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="TiledGeometryLayer.html#detach">detach</a></li><li data-type='method'><a href="TiledGeometryLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="View.html">View</a><ul class='methods'><li data-type='method'><a href="View.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="View.html#addLayer">addLayer</a></li><li data-type='method'><a href="View.html#eventToNormalizedCoords">eventToNormalizedCoords</a></li><li data-type='method'><a href="View.html#eventToViewCoords">eventToViewCoords</a></li><li data-type='method'><a href="View.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="View.html#getLayers">getLayers</a></li><li data-type='method'><a href="View.html#getParentLayer">getParentLayer</a></li><li data-type='method'><a href="View.html#normalizedToViewCoords">normalizedToViewCoords</a></li><li data-type='method'><a href="View.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="View.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="View.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="View.html#viewToNormalizedCoords">viewToNormalizedCoords</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-Cache.html">Cache</a><ul class='methods'><li data-type='method'><a href="module-Cache.html#.clear">clear</a></li><li data-type='method'><a href="module-Cache.html#.delete">delete</a></li><li data-type='method'><a href="module-Cache.html#.flush">flush</a></li><li data-type='method'><a href="module-Cache.html#.get">get</a></li><li data-type='method'><a href="module-Cache.html#.set">set</a></li></ul></li><li><a href="module-CameraUtils.html">CameraUtils</a><ul class='methods'><li data-type='method'><a href="module-CameraUtils.html#.animateCameraToLookAtTarget">animateCameraToLookAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.getDiffParams">getDiffParams</a></li><li data-type='method'><a href="module-CameraUtils.html#.getTransformCameraLookingAtTarget">getTransformCameraLookingAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.sequenceAnimationsToLookAtTarget">sequenceAnimationsToLookAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.stop">stop</a></li><li data-type='method'><a href="module-CameraUtils.html#.transformCameraToLookAtTarget">transformCameraToLookAtTarget</a></li></ul></li><li><a href="module-Feature2Mesh.html">Feature2Mesh</a><ul class='methods'><li data-type='method'><a href="module-Feature2Mesh.html#.convert">convert</a></li></ul></li><li><a href="module-GeoJsonParser.html">GeoJsonParser</a><ul class='methods'><li data-type='method'><a href="module-GeoJsonParser.html#.parse">parse</a></li></ul></li><li><a href="module-GpxParser.html">GpxParser</a><ul class='methods'><li data-type='method'><a href="module-GpxParser.html#~parse">parse</a></li></ul></li><li><a href="module-URLBuilder.html">URLBuilder</a><ul class='methods'><li data-type='method'><a href="module-URLBuilder.html#.bbox">bbox</a></li><li data-type='method'><a href="module-URLBuilder.html#.xyz">xyz</a></li></ul></li><li><a href="module-VectorTileHelper.html">VectorTileHelper</a><ul class='methods'><li data-type='method'><a href="module-VectorTileHelper.html#.getVectorTileByUrl">getVectorTileByUrl</a></li><li data-type='method'><a href="module-VectorTileHelper.html#.getVectorTileTextureByUrl">getVectorTileTextureByUrl</a></li></ul></li><li><a href="module-VectorTileParser.html">VectorTileParser</a><ul class='methods'><li data-type='method'><a href="module-VectorTileParser.html#.parse">parse</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="ColorLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="ColorLayer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="ColorLayer.html#event:visible-property-changed">visible-property-changed</a></li><li><a href="GeometryLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-initialized">layers-initialized</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="PanoramaLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="PlanarLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="TiledGeometryLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="View.html#event:layers-initialized">layers-initialized</a></li></ul><h3>Interfaces</h3><ul><li><a href="Provider.html">Provider</a><ul class='methods'><li data-type='method'><a href="Provider.html#executeCommand">executeCommand</a></li><li data-type='method'><a href="Provider.html#preprocessDataLayer">preprocessDataLayer</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#featureToMesh">featureToMesh</a></li><li><a href="global.html#FrameRequester">FrameRequester</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#MAIN_LOOP_EVENTS">MAIN_LOOP_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
+    </nav>
+
+    <br class="clear">
+
+    <footer>
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Aug 20 2018 10:22:22 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    </footer>
+
+    <script> prettyPrint(); </script>
+    <script src="scripts/linenumber.js"> </script>
+</body>
+</html>

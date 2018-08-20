@@ -37,17 +37,11 @@ import { COLOR_LAYERS_ORDER_CHANGED } from '../../Renderer/ColorLayersOrdering';
 import RendererConstant from '../../Renderer/RendererConstant';
 import GlobeControls from '../../Renderer/ThreeExtended/GlobeControls';
 
-import { GeometryLayer } from '../Layer/Layer';
-
+import GlobeLayer from './Globe/GlobeLayer';
 import Atmosphere from './Globe/Atmosphere';
 import CoordStars from '../Geographic/CoordStars';
 
 import Coordinates, { C, ellipsoidSizes } from '../Geographic/Coordinates';
-import { processTiledGeometryNode } from '../../Process/TiledNodeProcessing';
-import { globeCulling, preGlobeUpdate, globeSubdivisionControl, globeSchemeTileWMTS, globeSchemeTile1 } from '../../Process/GlobeTileProcessing';
-import BuilderEllipsoidTile from './Globe/BuilderEllipsoidTile';
-import SubdivisionControl from '../../Process/SubdivisionControl';
-import Picking from '../Picking';
 
 /**
  * Fires when the view is completely loaded. Controls and view's functions can be called then.
@@ -102,91 +96,9 @@ export const GLOBE_VIEW_EVENTS = {
     COLOR_LAYERS_ORDER_CHANGED,
 };
 
-export function createGlobeLayer(id, options) {
-    // Configure tiles
-    const nodeInitFn = function nodeInitFn(layer, parent, node) {
-        node.material.setLightingOn(layer.lighting.enable);
-        node.material.uniforms.lightPosition.value = layer.lighting.position;
-        if (layer.noTextureColor) {
-            node.material.uniforms.noTextureColor.value.copy(layer.noTextureColor);
-        }
-
-        if (__DEBUG__) {
-            node.material.uniforms.showOutline = { value: layer.showOutline || false };
-            node.material.wireframe = layer.wireframe || false;
-        }
-    };
-
-    const wgs84TileLayer = new GeometryLayer(id, options.object3d || new THREE.Group());
-    wgs84TileLayer.schemeTile = globeSchemeTileWMTS(globeSchemeTile1);
-    wgs84TileLayer.extent = wgs84TileLayer.schemeTile[0].clone();
-    for (let i = 1; i &lt; wgs84TileLayer.schemeTile.length; i++) {
-        wgs84TileLayer.extent.union(wgs84TileLayer.schemeTile[i]);
-    }
-    wgs84TileLayer.preUpdate = (context, layer, changeSources) => {
-        SubdivisionControl.preUpdate(context, layer);
-
-        if (__DEBUG__) {
-            layer._latestUpdateStartingLevel = 0;
-        }
-
-        preGlobeUpdate(context, layer);
-
-        let commonAncestor;
-        for (const source of changeSources.values()) {
-            if (source.isCamera) {
-                // if the change is caused by a camera move, no need to bother
-                // to find common ancestor: we need to update the whole tree:
-                // some invisible tiles may now be visible
-                return layer.level0Nodes;
-            }
-            if (source.layer === layer) {
-                if (!commonAncestor) {
-                    commonAncestor = source;
-                } else {
-                    commonAncestor = source.findCommonAncestor(commonAncestor);
-                    if (!commonAncestor) {
-                        return layer.level0Nodes;
-                    }
-                }
-                if (commonAncestor.material == null) {
-                    commonAncestor = undefined;
-                }
-            }
-        }
-        if (commonAncestor) {
-            if (__DEBUG__) {
-                layer._latestUpdateStartingLevel = commonAncestor.level;
-            }
-            return [commonAncestor];
-        } else {
-            return layer.level0Nodes;
-        }
-    };
-
-    function subdivision(context, layer, node) {
-        if (SubdivisionControl.hasEnoughTexturesToSubdivide(context, layer, node)) {
-            return globeSubdivisionControl(2,
-                options.maxSubdivisionLevel || 18,
-                options.sseSubdivisionThreshold || 1.0,
-                options.maxDeltaElevationLevel || 4)(context, layer, node);
-        }
-        return false;
-    }
-
-    wgs84TileLayer.update = processTiledGeometryNode(globeCulling(2), subdivision);
-    wgs84TileLayer.builder = new BuilderEllipsoidTile();
-    wgs84TileLayer.onTileCreated = nodeInitFn;
-    wgs84TileLayer.protocol = 'tile';
-    wgs84TileLayer.visible = true;
-    wgs84TileLayer.lighting = {
-        enable: false,
-        position: { x: -0.5, y: 0.0, z: 1.0 },
-    };
-    // provide custom pick function
-    wgs84TileLayer.pickObjectsAt = (_view, mouse, radius = 5) => Picking.pickTilesAt(_view, mouse, radius, wgs84TileLayer);
-
-    return wgs84TileLayer;
+export function createGlobeLayer(id, options = {}) {
+    console.warn('createGlobeLayer is deprecated, use the GlobeLayer class instead.');
+    return new GlobeLayer(id, options.object3d, options);
 }
 
 /**
@@ -213,14 +125,10 @@ function GlobeView(viewerDiv, coordCarto, options = {}) {
         coordCarto.latitude,
         coordCarto.altitude);
 
-    this.camera.setPosition(positionCamera);
-    this.camera.camera3D.lookAt({ x: 0, y: 0, z: 0 });
     this.camera.camera3D.near = Math.max(15.0, 0.000002352 * size);
     this.camera.camera3D.far = size * 10;
-    this.camera.camera3D.updateProjectionMatrix();
-    this.camera.camera3D.updateMatrixWorld(true);
 
-    const wgs84TileLayer = createGlobeLayer('globe', options);
+    const wgs84TileLayer = new GlobeLayer('globe', options.object3d);
 
     const sun = new THREE.DirectionalLight();
     sun.position.set(-0.5, 0, 1);
@@ -245,9 +153,10 @@ function GlobeView(viewerDiv, coordCarto, options = {}) {
     positionTargetCamera.setAltitude(0);
 
     if (options.noControls) {
+        this.camera.setPosition(positionCamera);
         this.camera.camera3D.lookAt(positionTargetCamera.as('EPSG:4978').xyz());
     } else {
-        this.controls = new GlobeControls(this, positionTargetCamera.as('EPSG:4978').xyz(), size);
+        this.controls = new GlobeControls(this, positionTargetCamera, coordCarto.altitude, size);
         this.controls.handleCollision = typeof (options.handleCollision) !== 'undefined' ? options.handleCollision : true;
     }
 
@@ -419,6 +328,10 @@ const direction = new THREE.Vector3();
  */
 
 GlobeView.prototype.getPickingPositionFromDepth = function getPickingPositionFromDepth(mouse, target = new THREE.Vector3()) {
+    if (!this.wgs84TileLayer || this.wgs84TileLayer.level0Nodes.length == 0) {
+        target = undefined;
+        return;
+    }
     const l = this.mainLoop;
     const viewPaused = l.scheduler.commandsWaitingExecutionCount() == 0 &amp;&amp; l.renderingState == RENDERING_PAUSED;
     const g = l.gfxEngine;
@@ -521,13 +434,13 @@ export default GlobeView;
     </div>
 
     <nav>
-        <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coordinates.html">Coordinates</a><ul class='methods'><li data-type='method'><a href="Coordinates.html#altitude">altitude</a></li><li data-type='method'><a href="Coordinates.html#as">as</a></li><li data-type='method'><a href="Coordinates.html#latitude">latitude</a></li><li data-type='method'><a href="Coordinates.html#longitude">longitude</a></li><li data-type='method'><a href="Coordinates.html#offsetInExtent">offsetInExtent</a></li><li data-type='method'><a href="Coordinates.html#setAltitude">setAltitude</a></li><li data-type='method'><a href="Coordinates.html#x">x</a></li><li data-type='method'><a href="Coordinates.html#xyz">xyz</a></li><li data-type='method'><a href="Coordinates.html#y">y</a></li><li data-type='method'><a href="Coordinates.html#z">z</a></li></ul></li><li><a href="FirstPersonControls.html">FirstPersonControls</a><ul class='methods'><li data-type='method'><a href="FirstPersonControls.html#reset">reset</a></li><li data-type='method'><a href="FirstPersonControls.html#update">update</a></li></ul></li><li><a href="GlobeControls.html">GlobeControls</a><ul class='methods'><li data-type='method'><a href="GlobeControls.html#getCameraLocation">getCameraLocation</a></li><li data-type='method'><a href="GlobeControls.html#getCameraOrientation">getCameraOrientation</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetGeoPosition">getCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetPosition">getCameraTargetPosition</a></li><li data-type='method'><a href="GlobeControls.html#getHeading">getHeading</a></li><li data-type='method'><a href="GlobeControls.html#getRange">getRange</a></li><li data-type='method'><a href="GlobeControls.html#getScale">getScale</a></li><li data-type='method'><a href="GlobeControls.html#getTilt">getTilt</a></li><li data-type='method'><a href="GlobeControls.html#getZoom">getZoom</a></li><li data-type='method'><a href="GlobeControls.html#isAnimationEnabled">isAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#metersToPixels">metersToPixels</a></li><li data-type='method'><a href="GlobeControls.html#pan">pan</a></li><li data-type='method'><a href="GlobeControls.html#pickGeoPosition">pickGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToDegrees">pixelsToDegrees</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToMeters">pixelsToMeters</a></li><li data-type='method'><a href="GlobeControls.html#setAnimationEnabled">setAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPosition">setCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPositionAdvanced">setCameraTargetGeoPositionAdvanced</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetPosition">setCameraTargetPosition</a></li><li data-type='method'><a href="GlobeControls.html#setHeading">setHeading</a></li><li data-type='method'><a href="GlobeControls.html#setOrbitalPosition">setOrbitalPosition</a></li><li data-type='method'><a href="GlobeControls.html#setRange">setRange</a></li><li data-type='method'><a href="GlobeControls.html#setScale">setScale</a></li><li data-type='method'><a href="GlobeControls.html#setTilt">setTilt</a></li><li data-type='method'><a href="GlobeControls.html#setZoom">setZoom</a></li></ul></li><li><a href="GlobeView.html">GlobeView</a><ul class='methods'><li data-type='method'><a href="GlobeView.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#addLayer">addLayer</a></li><li data-type='method'><a href="GlobeView.html#eventToNormalizedCoords">eventToNormalizedCoords</a></li><li data-type='method'><a href="GlobeView.html#eventToViewCoords">eventToViewCoords</a></li><li data-type='method'><a href="GlobeView.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="GlobeView.html#getLayers">getLayers</a></li><li data-type='method'><a href="GlobeView.html#getParentLayer">getParentLayer</a></li><li data-type='method'><a href="GlobeView.html#getPickingPositionFromDepth">getPickingPositionFromDepth</a></li><li data-type='method'><a href="GlobeView.html#normalizedToViewCoords">normalizedToViewCoords</a></li><li data-type='method'><a href="GlobeView.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="GlobeView.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="GlobeView.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#removeLayer">removeLayer</a></li><li data-type='method'><a href="GlobeView.html#viewToNormalizedCoords">viewToNormalizedCoords</a></li></ul></li><li><a href="Layer.html">Layer</a></li><li><a href="PlanarControls.html">PlanarControls</a></li><li><a href="Scheduler.html">Scheduler</a><ul class='methods'><li data-type='method'><a href="Scheduler.html#addProtocolProvider">addProtocolProvider</a></li><li data-type='method'><a href="Scheduler.html#getProtocolProvider">getProtocolProvider</a></li></ul></li><li><a href="View.html">View</a><ul class='methods'><li data-type='method'><a href="View.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="View.html#addLayer">addLayer</a></li><li data-type='method'><a href="View.html#eventToNormalizedCoords">eventToNormalizedCoords</a></li><li data-type='method'><a href="View.html#eventToViewCoords">eventToViewCoords</a></li><li data-type='method'><a href="View.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="View.html#getLayers">getLayers</a></li><li data-type='method'><a href="View.html#getParentLayer">getParentLayer</a></li><li data-type='method'><a href="View.html#normalizedToViewCoords">normalizedToViewCoords</a></li><li data-type='method'><a href="View.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="View.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="View.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="View.html#viewToNormalizedCoords">viewToNormalizedCoords</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-Cache.html">Cache</a><ul class='methods'><li data-type='method'><a href="module-Cache.html#.clear">clear</a></li><li data-type='method'><a href="module-Cache.html#.delete">delete</a></li><li data-type='method'><a href="module-Cache.html#.flush">flush</a></li><li data-type='method'><a href="module-Cache.html#.get">get</a></li><li data-type='method'><a href="module-Cache.html#.set">set</a></li></ul></li><li><a href="module-Feature2Mesh.html">Feature2Mesh</a><ul class='methods'><li data-type='method'><a href="module-Feature2Mesh.html#.convert">convert</a></li></ul></li><li><a href="module-GeoJsonParser.html">GeoJsonParser</a><ul class='methods'><li data-type='method'><a href="module-GeoJsonParser.html#.parse">parse</a></li></ul></li><li><a href="module-GpxParser.html">GpxParser</a><ul class='methods'><li data-type='method'><a href="module-GpxParser.html#~parse">parse</a></li></ul></li><li><a href="module-URLBuilder.html">URLBuilder</a><ul class='methods'><li data-type='method'><a href="module-URLBuilder.html#.bbox">bbox</a></li><li data-type='method'><a href="module-URLBuilder.html#.xyz">xyz</a></li></ul></li><li><a href="module-VectorTileHelper.html">VectorTileHelper</a><ul class='methods'><li data-type='method'><a href="module-VectorTileHelper.html#.getVectorTileByUrl">getVectorTileByUrl</a></li><li data-type='method'><a href="module-VectorTileHelper.html#.getVectorTileTextureByUrl">getVectorTileTextureByUrl</a></li></ul></li><li><a href="module-VectorTileParser.html">VectorTileParser</a><ul class='methods'><li data-type='method'><a href="module-VectorTileParser.html#.parse">parse</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-initialized">layers-initialized</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="Layer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="Layer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="Layer.html#event:visible-property-changed">visible-property-changed</a></li><li><a href="View.html#event:layers-initialized">layers-initialized</a></li></ul><h3>Interfaces</h3><ul><li><a href="Provider.html">Provider</a><ul class='methods'><li data-type='method'><a href="Provider.html#executeCommand">executeCommand</a></li><li data-type='method'><a href="Provider.html#preprocessDataLayer">preprocessDataLayer</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#featureToMesh">featureToMesh</a></li><li><a href="global.html#FrameRequester">FrameRequester</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#MAIN_LOOP_EVENTS">MAIN_LOOP_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
+        <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ColorLayer.html">ColorLayer</a><ul class='methods'><li data-type='method'><a href="ColorLayer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="Coordinates.html">Coordinates</a><ul class='methods'><li data-type='method'><a href="Coordinates.html#altitude">altitude</a></li><li data-type='method'><a href="Coordinates.html#as">as</a></li><li data-type='method'><a href="Coordinates.html#latitude">latitude</a></li><li data-type='method'><a href="Coordinates.html#longitude">longitude</a></li><li data-type='method'><a href="Coordinates.html#offsetInExtent">offsetInExtent</a></li><li data-type='method'><a href="Coordinates.html#setAltitude">setAltitude</a></li><li data-type='method'><a href="Coordinates.html#x">x</a></li><li data-type='method'><a href="Coordinates.html#xyz">xyz</a></li><li data-type='method'><a href="Coordinates.html#y">y</a></li><li data-type='method'><a href="Coordinates.html#z">z</a></li></ul></li><li><a href="ElevationLayer.html">ElevationLayer</a><ul class='methods'><li data-type='method'><a href="ElevationLayer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="FirstPersonControls.html">FirstPersonControls</a><ul class='methods'><li data-type='method'><a href="FirstPersonControls.html#reset">reset</a></li><li data-type='method'><a href="FirstPersonControls.html#update">update</a></li></ul></li><li><a href="GeometryLayer.html">GeometryLayer</a><ul class='methods'><li data-type='method'><a href="GeometryLayer.html#attach">attach</a></li><li data-type='method'><a href="GeometryLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="GeometryLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="GeometryLayer.html#detach">detach</a></li><li data-type='method'><a href="GeometryLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="GlobeControls.html">GlobeControls</a><ul class='methods'><li data-type='method'><a href="GlobeControls.html#getCameraCoordinate">getCameraCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#getCameraOrientation">getCameraOrientation</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetGeoPosition">getCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetPosition">getCameraTargetPosition</a></li><li data-type='method'><a href="GlobeControls.html#getHeading">getHeading</a></li><li data-type='method'><a href="GlobeControls.html#getLookAtCoordinate">getLookAtCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#getRange">getRange</a></li><li data-type='method'><a href="GlobeControls.html#getScale">getScale</a></li><li data-type='method'><a href="GlobeControls.html#getTilt">getTilt</a></li><li data-type='method'><a href="GlobeControls.html#getZoom">getZoom</a></li><li data-type='method'><a href="GlobeControls.html#isAnimationEnabled">isAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#lookAtCoordinate">lookAtCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#metersToPixels">metersToPixels</a></li><li data-type='method'><a href="GlobeControls.html#pan">pan</a></li><li data-type='method'><a href="GlobeControls.html#pickGeoPosition">pickGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToDegrees">pixelsToDegrees</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToMeters">pixelsToMeters</a></li><li data-type='method'><a href="GlobeControls.html#setAnimationEnabled">setAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPosition">setCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPositionAdvanced">setCameraTargetGeoPositionAdvanced</a></li><li data-type='method'><a href="GlobeControls.html#setHeading">setHeading</a></li><li data-type='method'><a href="GlobeControls.html#setOrbitalPosition">setOrbitalPosition</a></li><li data-type='method'><a href="GlobeControls.html#setRange">setRange</a></li><li data-type='method'><a href="GlobeControls.html#setScale">setScale</a></li><li data-type='method'><a href="GlobeControls.html#setTilt">setTilt</a></li><li data-type='method'><a href="GlobeControls.html#setZoom">setZoom</a></li></ul></li><li><a href="GlobeLayer.html">GlobeLayer</a><ul class='methods'><li data-type='method'><a href="GlobeLayer.html#attach">attach</a></li><li data-type='method'><a href="GlobeLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="GlobeLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="GlobeLayer.html#detach">detach</a></li><li data-type='method'><a href="GlobeLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="GlobeView.html">GlobeView</a><ul class='methods'><li data-type='method'><a href="GlobeView.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#addLayer">addLayer</a></li><li data-type='method'><a href="GlobeView.html#eventToNormalizedCoords">eventToNormalizedCoords</a></li><li data-type='method'><a href="GlobeView.html#eventToViewCoords">eventToViewCoords</a></li><li data-type='method'><a href="GlobeView.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="GlobeView.html#getLayers">getLayers</a></li><li data-type='method'><a href="GlobeView.html#getParentLayer">getParentLayer</a></li><li data-type='method'><a href="GlobeView.html#getPickingPositionFromDepth">getPickingPositionFromDepth</a></li><li data-type='method'><a href="GlobeView.html#normalizedToViewCoords">normalizedToViewCoords</a></li><li data-type='method'><a href="GlobeView.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="GlobeView.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="GlobeView.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#removeLayer">removeLayer</a></li><li data-type='method'><a href="GlobeView.html#viewToNormalizedCoords">viewToNormalizedCoords</a></li></ul></li><li><a href="Layer.html">Layer</a><ul class='methods'><li data-type='method'><a href="Layer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="PanoramaLayer.html">PanoramaLayer</a><ul class='methods'><li data-type='method'><a href="PanoramaLayer.html#attach">attach</a></li><li data-type='method'><a href="PanoramaLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="PanoramaLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="PanoramaLayer.html#detach">detach</a></li><li data-type='method'><a href="PanoramaLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="PlanarControls.html">PlanarControls</a></li><li><a href="PlanarLayer.html">PlanarLayer</a><ul class='methods'><li data-type='method'><a href="PlanarLayer.html#attach">attach</a></li><li data-type='method'><a href="PlanarLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="PlanarLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="PlanarLayer.html#detach">detach</a></li><li data-type='method'><a href="PlanarLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="Scheduler.html">Scheduler</a><ul class='methods'><li data-type='method'><a href="Scheduler.html#addProtocolProvider">addProtocolProvider</a></li><li data-type='method'><a href="Scheduler.html#getProtocolProvider">getProtocolProvider</a></li></ul></li><li><a href="StateControl.html">StateControl</a><ul class='methods'><li data-type='method'><a href="StateControl.html#inputToState">inputToState</a></li><li data-type='method'><a href="StateControl.html#touchToState">touchToState</a></li></ul></li><li><a href="TiledGeometryLayer.html">TiledGeometryLayer</a><ul class='methods'><li data-type='method'><a href="TiledGeometryLayer.html#.hasEnoughTexturesToSubdivide">hasEnoughTexturesToSubdivide</a></li><li data-type='method'><a href="TiledGeometryLayer.html#attach">attach</a></li><li data-type='method'><a href="TiledGeometryLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="TiledGeometryLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="TiledGeometryLayer.html#detach">detach</a></li><li data-type='method'><a href="TiledGeometryLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="View.html">View</a><ul class='methods'><li data-type='method'><a href="View.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="View.html#addLayer">addLayer</a></li><li data-type='method'><a href="View.html#eventToNormalizedCoords">eventToNormalizedCoords</a></li><li data-type='method'><a href="View.html#eventToViewCoords">eventToViewCoords</a></li><li data-type='method'><a href="View.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="View.html#getLayers">getLayers</a></li><li data-type='method'><a href="View.html#getParentLayer">getParentLayer</a></li><li data-type='method'><a href="View.html#normalizedToViewCoords">normalizedToViewCoords</a></li><li data-type='method'><a href="View.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="View.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="View.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="View.html#viewToNormalizedCoords">viewToNormalizedCoords</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-Cache.html">Cache</a><ul class='methods'><li data-type='method'><a href="module-Cache.html#.clear">clear</a></li><li data-type='method'><a href="module-Cache.html#.delete">delete</a></li><li data-type='method'><a href="module-Cache.html#.flush">flush</a></li><li data-type='method'><a href="module-Cache.html#.get">get</a></li><li data-type='method'><a href="module-Cache.html#.set">set</a></li></ul></li><li><a href="module-CameraUtils.html">CameraUtils</a><ul class='methods'><li data-type='method'><a href="module-CameraUtils.html#.animateCameraToLookAtTarget">animateCameraToLookAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.getDiffParams">getDiffParams</a></li><li data-type='method'><a href="module-CameraUtils.html#.getTransformCameraLookingAtTarget">getTransformCameraLookingAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.sequenceAnimationsToLookAtTarget">sequenceAnimationsToLookAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.stop">stop</a></li><li data-type='method'><a href="module-CameraUtils.html#.transformCameraToLookAtTarget">transformCameraToLookAtTarget</a></li></ul></li><li><a href="module-Feature2Mesh.html">Feature2Mesh</a><ul class='methods'><li data-type='method'><a href="module-Feature2Mesh.html#.convert">convert</a></li></ul></li><li><a href="module-GeoJsonParser.html">GeoJsonParser</a><ul class='methods'><li data-type='method'><a href="module-GeoJsonParser.html#.parse">parse</a></li></ul></li><li><a href="module-GpxParser.html">GpxParser</a><ul class='methods'><li data-type='method'><a href="module-GpxParser.html#~parse">parse</a></li></ul></li><li><a href="module-URLBuilder.html">URLBuilder</a><ul class='methods'><li data-type='method'><a href="module-URLBuilder.html#.bbox">bbox</a></li><li data-type='method'><a href="module-URLBuilder.html#.xyz">xyz</a></li></ul></li><li><a href="module-VectorTileHelper.html">VectorTileHelper</a><ul class='methods'><li data-type='method'><a href="module-VectorTileHelper.html#.getVectorTileByUrl">getVectorTileByUrl</a></li><li data-type='method'><a href="module-VectorTileHelper.html#.getVectorTileTextureByUrl">getVectorTileTextureByUrl</a></li></ul></li><li><a href="module-VectorTileParser.html">VectorTileParser</a><ul class='methods'><li data-type='method'><a href="module-VectorTileParser.html#.parse">parse</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="ColorLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="ColorLayer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="ColorLayer.html#event:visible-property-changed">visible-property-changed</a></li><li><a href="GeometryLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-initialized">layers-initialized</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="PanoramaLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="PlanarLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="TiledGeometryLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="View.html#event:layers-initialized">layers-initialized</a></li></ul><h3>Interfaces</h3><ul><li><a href="Provider.html">Provider</a><ul class='methods'><li data-type='method'><a href="Provider.html#executeCommand">executeCommand</a></li><li data-type='method'><a href="Provider.html#preprocessDataLayer">preprocessDataLayer</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#featureToMesh">featureToMesh</a></li><li><a href="global.html#FrameRequester">FrameRequester</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#MAIN_LOOP_EVENTS">MAIN_LOOP_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
     </nav>
 
     <br class="clear">
 
     <footer>
-        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 09 2018 13:05:17 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Aug 20 2018 10:22:22 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
     </footer>
 
     <script> prettyPrint(); </script>

@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>iTowns API : PlanarLayer</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="./doc.css">
+</head>
+
+<body>
+
+    <div id="main">
+
+        <p></p>
+        <div class="page-title"><img src="https://raw.githubusercontent.com/iTowns/itowns.github.io/master/images/itowns_logo_300x134.png" /></div>
+
+        
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        PlanarLayer
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="PlanarLayer"><span class="type-signature"></span>new PlanarLayer<span class="signature">(id, extent, object3d<span class="signature-attributes">opt</span>, config<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Core_Prefab_Planar_PlanarLayer.js.html">Core/Prefab/Planar/PlanarLayer.js</a>, <a href="Core_Prefab_Planar_PlanarLayer.js.html#line37">line 37</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    A <a href="TiledGeometryLayer.html">TiledGeometryLayer</a> to use with a PlanarView. It has
+specific method for updating and subdivising its grid.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">The id of the layer, that should be unique. It is
+not mandatory, but an error will be emitted if this layer is added a
+<a href="View.html">View</a> that already has a layer going by that id.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>extent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Extent</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">The extent to define the layer within.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>object3d</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">THREE.Object3d</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>THREE.Group</code>
+                
+                </td>
+            
+
+            <td class="description last">The object3d used to
+contain the geometry of the TiledGeometryLayer. It is usually a
+<code>THREE.Group</code>, but it can be anything inheriting from a
+<code>THREE.Object3d</code>.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">Optional configuration, all elements in it
+will be merged as is in the layer. For example, if the configuration
+contains three elements <code>name, protocol, extent</code>, these
+elements will be available using <code>layer.name</code> or something
+else depending on the property name.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>maxSubdivisionLevel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>5</code>
+                
+                </td>
+            
+
+            <td class="description last">Maximum subdivision
+level for this tiled layer.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxDeltaElevationLevel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>4</code>
+                
+                </td>
+            
+
+            <td class="description last">Maximum delta between
+two elevations tile.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <code>object3d</code> must be a valid
+<code>THREE.Object3d</code>.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="TiledGeometryLayer.html">TiledGeometryLayer</a></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="attach"><span class="type-signature"></span>attach<span class="signature">(layer)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Layer_GeometryLayer.js.html">Layer/GeometryLayer.js</a>, <a href="Layer_GeometryLayer.js.html#line112">line 112</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="GeometryLayer.html#attach">GeometryLayer#attach</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Attach another layer to this one. Layers attached to a GeometryLayer will
+be available in <code>geometryLayer.attachedLayers</code>.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>layer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Layer.html">Layer</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The layer to attach, that must have an
+<code>update</code> method.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="changeOpacity"><span class="type-signature"></span>changeOpacity<span class="signature">(object)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Layer_GeometryLayer.js.html">Layer/GeometryLayer.js</a>, <a href="Layer_GeometryLayer.js.html#line157">line 157</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="GeometryLayer.html#changeOpacity">GeometryLayer#changeOpacity</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Change the opacity of an object, according to the value of the
+<code>opacity</code> property of this layer.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>object</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The object to change the opacity from. It is
+usually a <code>THREE.Object3d</code> or an implementation of it.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="defineLayerProperty"><span class="type-signature"></span>defineLayerProperty<span class="signature">(propertyName, defaultValue, onChange<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Layer_Layer.js.html">Layer/Layer.js</a>, <a href="Layer_Layer.js.html#line115">line 115</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Layer.html#defineLayerProperty">Layer#defineLayerProperty</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Defines a property for this layer, with a default value and a callback
+executed when the property changes.
+<br><br>
+When changing the property, it also emits an event, named following this
+convention: <code>${propertyName}-property-changed</code>, with
+<code>${propertyName}</code> being replaced by the name of the property.
+For example, if the added property name is <code>frozen</code>, it will
+emit a <code>frozen-property-changed</code>.
+<br><br>
+The emitted event has some properties assigned to it:
+<pre>
+event = {
+    new: {
+        ${propertyName}: * // the new value of the property
+    },
+    previous: {
+        ${propertyName}: * // the previous value of the property
+    },
+    target: Layer // the layer it has been dispatched from
+    type: string // the name of the emitted event
+}
+</pre>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>propertyName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The name of the property, also used in
+the emitted event name.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>defaultValue</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The default set value.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onChange</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The function executed when the property is
+changed. Parameters are the layer the property is defined on, and the
+name of the property.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="detach"><span class="type-signature"></span>detach<span class="signature">(layer)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Layer_GeometryLayer.js.html">Layer/GeometryLayer.js</a>, <a href="Layer_GeometryLayer.js.html#line128">line 128</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="GeometryLayer.html#detach">GeometryLayer#detach</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Detach a layer attached to this one. See attach to learn how to
+attach a layer.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>layer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Layer.html">Layer</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The layer to detach.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Confirmation of the detachment of the layer.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="pickObjectsAt"><span class="type-signature"></span>pickObjectsAt<span class="signature">(view, coordinates, radius)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Layer_TiledGeometryLayer.js.html">Layer/TiledGeometryLayer.js</a>, <a href="Layer_TiledGeometryLayer.js.html#line50">line 50</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="TiledGeometryLayer.html#pickObjectsAt">TiledGeometryLayer#pickObjectsAt</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Picking method for this layer. It uses the Picking#pickTilesAt
+method.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>view</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="View.html">View</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The view instance.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>coordinates</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The coordinates to pick in the view. It
+should have at least <code>x</code> and <code>y</code> properties.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Radius of the picking circle.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    An array containing all targets picked under the
+specified coordinates.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+    
+
+    
+
+    
+        <h3 class="subsection-title">Events</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="event:opacity-property-changed">opacity-property-changed</h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Layer_GeometryLayer.js.html">Layer/GeometryLayer.js</a>, <a href="Layer_GeometryLayer.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="GeometryLayer.html#event:opacity-property-changed">GeometryLayer#event:opacity-property-changed</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Fires when the opacity of the layer has changed.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+</article>
+
+</section>
+
+
+
+
+    </div>
+
+    <nav>
+        <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ColorLayer.html">ColorLayer</a><ul class='methods'><li data-type='method'><a href="ColorLayer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="Coordinates.html">Coordinates</a><ul class='methods'><li data-type='method'><a href="Coordinates.html#altitude">altitude</a></li><li data-type='method'><a href="Coordinates.html#as">as</a></li><li data-type='method'><a href="Coordinates.html#latitude">latitude</a></li><li data-type='method'><a href="Coordinates.html#longitude">longitude</a></li><li data-type='method'><a href="Coordinates.html#offsetInExtent">offsetInExtent</a></li><li data-type='method'><a href="Coordinates.html#setAltitude">setAltitude</a></li><li data-type='method'><a href="Coordinates.html#x">x</a></li><li data-type='method'><a href="Coordinates.html#xyz">xyz</a></li><li data-type='method'><a href="Coordinates.html#y">y</a></li><li data-type='method'><a href="Coordinates.html#z">z</a></li></ul></li><li><a href="ElevationLayer.html">ElevationLayer</a><ul class='methods'><li data-type='method'><a href="ElevationLayer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="FirstPersonControls.html">FirstPersonControls</a><ul class='methods'><li data-type='method'><a href="FirstPersonControls.html#reset">reset</a></li><li data-type='method'><a href="FirstPersonControls.html#update">update</a></li></ul></li><li><a href="GeometryLayer.html">GeometryLayer</a><ul class='methods'><li data-type='method'><a href="GeometryLayer.html#attach">attach</a></li><li data-type='method'><a href="GeometryLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="GeometryLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="GeometryLayer.html#detach">detach</a></li><li data-type='method'><a href="GeometryLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="GlobeControls.html">GlobeControls</a><ul class='methods'><li data-type='method'><a href="GlobeControls.html#getCameraCoordinate">getCameraCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#getCameraOrientation">getCameraOrientation</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetGeoPosition">getCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetPosition">getCameraTargetPosition</a></li><li data-type='method'><a href="GlobeControls.html#getHeading">getHeading</a></li><li data-type='method'><a href="GlobeControls.html#getLookAtCoordinate">getLookAtCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#getRange">getRange</a></li><li data-type='method'><a href="GlobeControls.html#getScale">getScale</a></li><li data-type='method'><a href="GlobeControls.html#getTilt">getTilt</a></li><li data-type='method'><a href="GlobeControls.html#getZoom">getZoom</a></li><li data-type='method'><a href="GlobeControls.html#isAnimationEnabled">isAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#lookAtCoordinate">lookAtCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#metersToPixels">metersToPixels</a></li><li data-type='method'><a href="GlobeControls.html#pan">pan</a></li><li data-type='method'><a href="GlobeControls.html#pickGeoPosition">pickGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToDegrees">pixelsToDegrees</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToMeters">pixelsToMeters</a></li><li data-type='method'><a href="GlobeControls.html#setAnimationEnabled">setAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPosition">setCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPositionAdvanced">setCameraTargetGeoPositionAdvanced</a></li><li data-type='method'><a href="GlobeControls.html#setHeading">setHeading</a></li><li data-type='method'><a href="GlobeControls.html#setOrbitalPosition">setOrbitalPosition</a></li><li data-type='method'><a href="GlobeControls.html#setRange">setRange</a></li><li data-type='method'><a href="GlobeControls.html#setScale">setScale</a></li><li data-type='method'><a href="GlobeControls.html#setTilt">setTilt</a></li><li data-type='method'><a href="GlobeControls.html#setZoom">setZoom</a></li></ul></li><li><a href="GlobeLayer.html">GlobeLayer</a><ul class='methods'><li data-type='method'><a href="GlobeLayer.html#attach">attach</a></li><li data-type='method'><a href="GlobeLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="GlobeLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="GlobeLayer.html#detach">detach</a></li><li data-type='method'><a href="GlobeLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="GlobeView.html">GlobeView</a><ul class='methods'><li data-type='method'><a href="GlobeView.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#addLayer">addLayer</a></li><li data-type='method'><a href="GlobeView.html#eventToNormalizedCoords">eventToNormalizedCoords</a></li><li data-type='method'><a href="GlobeView.html#eventToViewCoords">eventToViewCoords</a></li><li data-type='method'><a href="GlobeView.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="GlobeView.html#getLayers">getLayers</a></li><li data-type='method'><a href="GlobeView.html#getParentLayer">getParentLayer</a></li><li data-type='method'><a href="GlobeView.html#getPickingPositionFromDepth">getPickingPositionFromDepth</a></li><li data-type='method'><a href="GlobeView.html#normalizedToViewCoords">normalizedToViewCoords</a></li><li data-type='method'><a href="GlobeView.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="GlobeView.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="GlobeView.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#removeLayer">removeLayer</a></li><li data-type='method'><a href="GlobeView.html#viewToNormalizedCoords">viewToNormalizedCoords</a></li></ul></li><li><a href="Layer.html">Layer</a><ul class='methods'><li data-type='method'><a href="Layer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="PanoramaLayer.html">PanoramaLayer</a><ul class='methods'><li data-type='method'><a href="PanoramaLayer.html#attach">attach</a></li><li data-type='method'><a href="PanoramaLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="PanoramaLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="PanoramaLayer.html#detach">detach</a></li><li data-type='method'><a href="PanoramaLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="PlanarControls.html">PlanarControls</a></li><li><a href="PlanarLayer.html">PlanarLayer</a><ul class='methods'><li data-type='method'><a href="PlanarLayer.html#attach">attach</a></li><li data-type='method'><a href="PlanarLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="PlanarLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="PlanarLayer.html#detach">detach</a></li><li data-type='method'><a href="PlanarLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="Scheduler.html">Scheduler</a><ul class='methods'><li data-type='method'><a href="Scheduler.html#addProtocolProvider">addProtocolProvider</a></li><li data-type='method'><a href="Scheduler.html#getProtocolProvider">getProtocolProvider</a></li></ul></li><li><a href="StateControl.html">StateControl</a><ul class='methods'><li data-type='method'><a href="StateControl.html#inputToState">inputToState</a></li><li data-type='method'><a href="StateControl.html#touchToState">touchToState</a></li></ul></li><li><a href="TiledGeometryLayer.html">TiledGeometryLayer</a><ul class='methods'><li data-type='method'><a href="TiledGeometryLayer.html#.hasEnoughTexturesToSubdivide">hasEnoughTexturesToSubdivide</a></li><li data-type='method'><a href="TiledGeometryLayer.html#attach">attach</a></li><li data-type='method'><a href="TiledGeometryLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="TiledGeometryLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="TiledGeometryLayer.html#detach">detach</a></li><li data-type='method'><a href="TiledGeometryLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="View.html">View</a><ul class='methods'><li data-type='method'><a href="View.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="View.html#addLayer">addLayer</a></li><li data-type='method'><a href="View.html#eventToNormalizedCoords">eventToNormalizedCoords</a></li><li data-type='method'><a href="View.html#eventToViewCoords">eventToViewCoords</a></li><li data-type='method'><a href="View.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="View.html#getLayers">getLayers</a></li><li data-type='method'><a href="View.html#getParentLayer">getParentLayer</a></li><li data-type='method'><a href="View.html#normalizedToViewCoords">normalizedToViewCoords</a></li><li data-type='method'><a href="View.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="View.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="View.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="View.html#viewToNormalizedCoords">viewToNormalizedCoords</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-Cache.html">Cache</a><ul class='methods'><li data-type='method'><a href="module-Cache.html#.clear">clear</a></li><li data-type='method'><a href="module-Cache.html#.delete">delete</a></li><li data-type='method'><a href="module-Cache.html#.flush">flush</a></li><li data-type='method'><a href="module-Cache.html#.get">get</a></li><li data-type='method'><a href="module-Cache.html#.set">set</a></li></ul></li><li><a href="module-CameraUtils.html">CameraUtils</a><ul class='methods'><li data-type='method'><a href="module-CameraUtils.html#.animateCameraToLookAtTarget">animateCameraToLookAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.getDiffParams">getDiffParams</a></li><li data-type='method'><a href="module-CameraUtils.html#.getTransformCameraLookingAtTarget">getTransformCameraLookingAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.sequenceAnimationsToLookAtTarget">sequenceAnimationsToLookAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.stop">stop</a></li><li data-type='method'><a href="module-CameraUtils.html#.transformCameraToLookAtTarget">transformCameraToLookAtTarget</a></li></ul></li><li><a href="module-Feature2Mesh.html">Feature2Mesh</a><ul class='methods'><li data-type='method'><a href="module-Feature2Mesh.html#.convert">convert</a></li></ul></li><li><a href="module-GeoJsonParser.html">GeoJsonParser</a><ul class='methods'><li data-type='method'><a href="module-GeoJsonParser.html#.parse">parse</a></li></ul></li><li><a href="module-GpxParser.html">GpxParser</a><ul class='methods'><li data-type='method'><a href="module-GpxParser.html#~parse">parse</a></li></ul></li><li><a href="module-URLBuilder.html">URLBuilder</a><ul class='methods'><li data-type='method'><a href="module-URLBuilder.html#.bbox">bbox</a></li><li data-type='method'><a href="module-URLBuilder.html#.xyz">xyz</a></li></ul></li><li><a href="module-VectorTileHelper.html">VectorTileHelper</a><ul class='methods'><li data-type='method'><a href="module-VectorTileHelper.html#.getVectorTileByUrl">getVectorTileByUrl</a></li><li data-type='method'><a href="module-VectorTileHelper.html#.getVectorTileTextureByUrl">getVectorTileTextureByUrl</a></li></ul></li><li><a href="module-VectorTileParser.html">VectorTileParser</a><ul class='methods'><li data-type='method'><a href="module-VectorTileParser.html#.parse">parse</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="ColorLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="ColorLayer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="ColorLayer.html#event:visible-property-changed">visible-property-changed</a></li><li><a href="GeometryLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-initialized">layers-initialized</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="PanoramaLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="PlanarLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="TiledGeometryLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="View.html#event:layers-initialized">layers-initialized</a></li></ul><h3>Interfaces</h3><ul><li><a href="Provider.html">Provider</a><ul class='methods'><li data-type='method'><a href="Provider.html#executeCommand">executeCommand</a></li><li data-type='method'><a href="Provider.html#preprocessDataLayer">preprocessDataLayer</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#featureToMesh">featureToMesh</a></li><li><a href="global.html#FrameRequester">FrameRequester</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#MAIN_LOOP_EVENTS">MAIN_LOOP_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
+    </nav>
+
+    <br class="clear">
+
+    <footer>
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Aug 20 2018 10:22:22 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    </footer>
+
+    <script> prettyPrint(); </script>
+    <script src="scripts/linenumber.js"> </script>
+</body>
+</html>
