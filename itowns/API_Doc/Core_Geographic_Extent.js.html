@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>iTowns API : Core/Geographic/Extent.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="./doc.css">
+</head>
+
+<body>
+
+    <div id="main">
+
+        <p></p>
+        <div class="page-title"><img src="https://raw.githubusercontent.com/iTowns/itowns.github.io/master/images/itowns_logo_300x134.png" /></div>
+
+        
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import * as THREE from 'three';
+import Coordinates, { crsIsGeographic, assertCrsIsValid, reasonnableEpsilonForCRS, is4326 } from '../Geographic/Coordinates';
+import Projection from '../Geographic/Projection';
+
+/**
+ * Extent is a SIG-area (so 2D)
+ * It can use explicit coordinates (e.g: lon/lat) or implicit (WMTS coordinates)
+ */
+
+const CARDINAL = {
+    WEST: 0,
+    EAST: 1,
+    SOUTH: 2,
+    NORTH: 3,
+};
+
+/**
+ * @class      Extent
+ * @param      {string}          crs     projection crs (ex: 'EPSG:4326')
+ * @param      {(Array|object|Number)}  values  west, east, south and north values
+ */
+function Extent(crs, ...values) {
+    this._crs = crs;
+
+    if (this.isTiledCrs()) {
+        if (values.length == 3) {
+            this.zoom = values[0];
+            this.row = values[1];
+            this.col = values[2];
+
+            if (this.zoom &lt; 0) {
+                throw new Error(`invlid WTMS values ${values}`);
+            }
+        } else {
+            throw new Error(`Unsupported constructor args '${values}'`);
+        }
+    } else if (values.length === 2 &amp;&amp;
+        values[0] instanceof Coordinates &amp;&amp;
+        values[1] instanceof Coordinates) {
+        this._values = new Float64Array(4);
+        this._values[CARDINAL.WEST] = values[0]._values[0];
+        this._values[CARDINAL.EAST] = values[1]._values[0];
+        this._values[CARDINAL.SOUTH] = values[0]._values[1];
+        this._values[CARDINAL.NORTH] = values[1]._values[1];
+    } else if (values.length == 1 &amp;&amp; values[0].west != undefined) {
+        this._values = new Float64Array(4);
+        this._values[CARDINAL.WEST] = values[0].west;
+        this._values[CARDINAL.EAST] = values[0].east;
+        this._values[CARDINAL.SOUTH] = values[0].south;
+        this._values[CARDINAL.NORTH] = values[0].north;
+    } else if (values.length == 4) {
+        this._values = new Float64Array(4);
+        Object.keys(CARDINAL).forEach((key) => {
+            const cardinal = CARDINAL[key];
+            this._values[cardinal] = values[cardinal];
+        });
+    } else {
+        throw new Error(`Unsupported constructor args '${values}'`);
+    }
+}
+
+Extent.prototype.clone = function clone() {
+    if (this.isTiledCrs()) {
+        return new Extent(this._crs, this.zoom, this.row, this.col);
+    } else {
+        const result = new Extent(this._crs, ...this._values);
+        return result;
+    }
+};
+
+Extent.prototype.isTiledCrs = function fnIsTiledCrs() {
+    return this._crs.indexOf('WMTS:') == 0 || this._crs == 'TMS';
+};
+
+Extent.prototype.as = function as(crs) {
+    assertCrsIsValid(crs);
+
+    if (this.isTiledCrs()) {
+        if (this._crs == 'WMTS:PM' || this._crs == 'TMS') {
+            // Convert this to the requested crs by using 4326 as an intermediate state.
+            const nbCol = Math.pow(2, this.zoom);
+            const size = 360 / nbCol;
+            // convert column PM to longitude EPSG:4326 degree
+            const west = 180 - size * (nbCol - this.col);
+            const east = 180 - size * (nbCol - (this.col + 1));
+            const nbRow = nbCol;
+            const sizeRow = 1.0 / nbRow;
+            // convert row PM to Y PM
+            const Yn = 1 - sizeRow * (nbRow - (this.row));
+            const Ys = 1 - sizeRow * (nbRow - (this.row + 1));
+            // convert Y PM to latitude EPSG:4326 degree
+            const north = Projection.YToWGS84(Yn);
+            const south = Projection.YToWGS84(Ys);
+            // create intermediate EPSG:4326 and convert in new crs
+            return new Extent('EPSG:4326', { west, east, south, north }).as(crs);
+        } else if (this._crs == 'WMTS:WGS84G' &amp;&amp; crs == 'EPSG:4326') {
+            const nbRow = Math.pow(2, this.zoom);
+            const size = 180 / nbRow;
+            const north = size * (nbRow - this.row) - 90;
+            const south = size * (nbRow - (this.row + 1)) - 90;
+            const west = 180 - size * (2 * nbRow - this.col);
+            const east = 180 - size * (2 * nbRow - (this.col + 1));
+
+            return new Extent(crs, { west, east, south, north });
+        } else {
+            throw new Error('Unsupported yet');
+        }
+    }
+
+    if (this._crs != crs &amp;&amp; !(is4326(this._crs) &amp;&amp; is4326(crs))) {
+        // Compute min/max in x/y by projecting 8 cardinal points,
+        // and then taking the min/max of each coordinates.
+        const cardinals = [];
+        const c = this.center();
+        cardinals.push(new Coordinates(this._crs, this.west(), this.north()));
+        cardinals.push(new Coordinates(this._crs, c._values[0], this.north()));
+        cardinals.push(new Coordinates(this._crs, this.east(), this.north()));
+        cardinals.push(new Coordinates(this._crs, this.east(), c._values[1]));
+        cardinals.push(new Coordinates(this._crs, this.east(), this.south()));
+        cardinals.push(new Coordinates(this._crs, c._values[0], this.south()));
+        cardinals.push(new Coordinates(this._crs, this.west(), this.south()));
+        cardinals.push(new Coordinates(this._crs, this.west(), c._values[1]));
+
+        let north = -Infinity;
+        let south = Infinity;
+        let east = -Infinity;
+        let west = Infinity;
+        // loop over the coordinates
+        for (let i = 0; i &lt; cardinals.length; i++) {
+            // convert the coordinate.
+            cardinals[i] = cardinals[i].as(crs);
+            north = Math.max(north, cardinals[i]._values[1]);
+            south = Math.min(south, cardinals[i]._values[1]);
+            east = Math.max(east, cardinals[i]._values[0]);
+            west = Math.min(west, cardinals[i]._values[0]);
+        }
+        return new Extent(crs, { north, south, east, west });
+    }
+
+    return new Extent(crs, {
+        west: this.west(),
+        east: this.east(),
+        north: this.north(),
+        south: this.south(),
+    });
+};
+
+Extent.prototype.offsetToParent = function offsetToParent(other, target = new THREE.Vector4()) {
+    if (this.crs() != other.crs()) {
+        throw new Error('unsupported mix');
+    }
+    if (this.isTiledCrs()) {
+        const diffLevel = this.zoom - other.zoom;
+        const diff = Math.pow(2, diffLevel);
+        const invDiff = 1 / diff;
+
+        const r = (this.row - (this.row % diff)) * invDiff;
+        const c = (this.col - (this.col % diff)) * invDiff;
+
+        return target.set(
+            this.col * invDiff - c,
+            this.row * invDiff - r,
+            invDiff, invDiff);
+    }
+
+    const dimension = {
+        x: Math.abs(other.east() - other.west()),
+        y: Math.abs(other.north() - other.south()),
+    };
+
+    const originX =
+        (this.west() - other.west()) / dimension.x;
+    const originY =
+        (other.north() - this.north()) / dimension.y;
+
+    const scaleX =
+        Math.abs(
+            this.east() - this.west()) / dimension.x;
+
+    const scaleY =
+        Math.abs(
+            this.north() - this.south()) / dimension.y;
+
+    return target.set(originX, originY, scaleX, scaleY);
+};
+
+Extent.prototype.west = function west() {
+    return this._values[CARDINAL.WEST];
+};
+
+Extent.prototype.east = function east() {
+    return this._values[CARDINAL.EAST];
+};
+
+Extent.prototype.north = function north() {
+    return this._values[CARDINAL.NORTH];
+};
+
+Extent.prototype.south = function south() {
+    return this._values[CARDINAL.SOUTH];
+};
+
+Extent.prototype.crs = function crs() {
+    return this._crs;
+};
+
+Extent.prototype.center = function center(target) {
+    if (this.isTiledCrs()) {
+        throw new Error('Invalid operation for WMTS bbox');
+    }
+    let c;
+    if (target) {
+        Coordinates.call(target, this._crs, this._values[0], this._values[2]);
+        c = target;
+    } else {
+        c = new Coordinates(this._crs, this._values[0], this._values[2]);
+    }
+    const dim = this.dimensions();
+    c._values[0] += dim.x * 0.5;
+    c._values[1] += dim.y * 0.5;
+    return c;
+};
+
+Extent.prototype.dimensions = function dimensions(target) {
+    target = target || { x: 0, y: 0 };
+    target.x = Math.abs(this.east() - this.west());
+    target.y = Math.abs(this.north() - this.south());
+    return target;
+};
+
+/**
+ * Return true if coord is inside the bounding box.
+ *
+ * @param {Coordinates} coord
+ * @param {number} epsilon coord is inside the extent (+/- epsilon)
+ * @return {boolean}
+ */
+Extent.prototype.isPointInside = function isPointInside(coord, epsilon = 0) {
+    const c = (this.crs() == coord.crs) ? coord : coord.as(this.crs());
+    // TODO this ignores altitude
+    if (crsIsGeographic(this.crs())) {
+        return c.longitude() &lt;= this.east() + epsilon &amp;&amp;
+               c.longitude() >= this.west() - epsilon &amp;&amp;
+               c.latitude() &lt;= this.north() + epsilon &amp;&amp;
+               c.latitude() >= this.south() - epsilon;
+    } else {
+        return c.x() &lt;= this.east() + epsilon &amp;&amp;
+               c.x() >= this.west() - epsilon &amp;&amp;
+               c.y() &lt;= this.north() + epsilon &amp;&amp;
+               c.y() >= this.south() - epsilon;
+    }
+};
+
+Extent.prototype.isInside = function isInside(other, epsilon) {
+    if (this.isTiledCrs()) {
+        if (this.zoom == other.zoom) {
+            return this.row == other.row &amp;&amp;
+                this.col == other.col;
+        } else if (this.zoom &lt; other.zoom) {
+            return false;
+        } else {
+            const diffLevel = this.zoom - other.zoom;
+            const diff = Math.pow(2, diffLevel);
+            const invDiff = 1 / diff;
+
+            const r = (this.row - (this.row % diff)) * invDiff;
+            const c = (this.col - (this.col % diff)) * invDiff;
+            return r == other.row &amp;&amp; c == other.col;
+        }
+    } else {
+        const o = other.as(this._crs);
+        epsilon = epsilon == undefined ? reasonnableEpsilonForCRS(this._crs) : epsilon;
+        return this.east() - o.east() &lt;= epsilon &amp;&amp;
+               o.west() - this.west() &lt;= epsilon &amp;&amp;
+               this.north() - o.north() &lt;= epsilon &amp;&amp;
+               o.south() - this.south() &lt;= epsilon;
+    }
+};
+
+Extent.prototype.offsetScale = function offsetScale(bbox) {
+    if (bbox.crs() != this.crs()) {
+        throw new Error('unsupported offscale between 2 diff crs');
+    }
+
+    const dimension = {
+        x: Math.abs(this.east() - this.west()),
+        y: Math.abs(this.north() - this.south()),
+    };
+
+    var originX = (bbox.west() - this.west()) / dimension.x;
+    var originY = (bbox.north() - this.north()) / dimension.y;
+
+    var scaleX = Math.abs(bbox.east() - bbox.west()) / dimension.x;
+    var scaleY = Math.abs(bbox.north() - bbox.south()) / dimension.y;
+
+    return new THREE.Vector4(originX, originY, scaleX, scaleY);
+};
+
+/**
+ * @documentation: Return true if this bounding box intersect with the bouding box parameter
+ * @param {type} bbox
+ * @returns {Boolean}
+ */
+Extent.prototype.intersectsExtent = function intersectsExtent(bbox) {
+    const other = bbox.as(this.crs());
+    return !(this.west() >= other.east() ||
+             this.east() &lt;= other.west() ||
+             this.south() >= other.north() ||
+             this.north() &lt;= other.south());
+};
+
+/**
+ * @documentation: Return the intersection of this extent with another one
+ * @param {type} other
+ * @returns {Boolean}
+ */
+Extent.prototype.intersect = function intersect(other) {
+    if (!this.intersectsExtent(other)) {
+        return new Extent(this.crs(), 0, 0, 0, 0);
+    }
+    if (other.crs() != this.crs()) {
+        other = other.as(this.crs());
+    }
+    const extent = new Extent(this.crs(),
+        Math.max(this.west(), other.west()),
+        Math.min(this.east(), other.east()),
+        Math.max(this.south(), other.south()),
+        Math.min(this.north(), other.north()));
+
+    return extent;
+};
+
+
+Extent.prototype.set = function set(...values) {
+    if (this.isTiledCrs()) {
+        this.zoom = values[0];
+        this.row = values[1];
+        this.col = values[2];
+    } else {
+        Object.keys(CARDINAL).forEach((key) => {
+            const cardinal = CARDINAL[key];
+            this._values[cardinal] = values[cardinal];
+        });
+    }
+    return this;
+};
+
+Extent.prototype.union = function union(extent) {
+    if (extent.crs() != this.crs()) {
+        throw new Error('unsupported union between 2 diff crs');
+    }
+    const west = extent.west();
+    if (west &lt; this.west()) {
+        this._values[CARDINAL.WEST] = west;
+    }
+
+    const east = extent.east();
+    if (east > this.east()) {
+        this._values[CARDINAL.EAST] = east;
+    }
+
+    const south = extent.south();
+    if (south &lt; this.south()) {
+        this._values[CARDINAL.SOUTH] = south;
+    }
+
+    const north = extent.north();
+    if (north > this.north()) {
+        this._values[CARDINAL.NORTH] = north;
+    }
+};
+
+/**
+ * expandByPoint perfoms the minimal extension
+ * for the point to belong to this Extent object
+ * @param {Coordinates} coordinates  The coordinates to belong
+ */
+Extent.prototype.expandByPoint = function expandByPoint(coordinates) {
+    const coords = coordinates.as(this.crs());
+    const we = coords._values[0];
+    if (we &lt; this.west()) {
+        this._values[CARDINAL.WEST] = we;
+    }
+    if (we > this.east()) {
+        this._values[CARDINAL.EAST] = we;
+    }
+    const sn = coords._values[1];
+    if (sn &lt; this.south()) {
+        this._values[CARDINAL.SOUTH] = sn;
+    }
+    if (sn > this.north()) {
+        this._values[CARDINAL.NORTH] = sn;
+    }
+};
+
+Extent.fromBox3 = function fromBox3(crs, box) {
+    return new Extent(crs, {
+        west: box.min.x,
+        east: box.max.x,
+        south: box.min.y,
+        north: box.max.y,
+    });
+};
+
+Extent.prototype.extentParent = function extentParent(levelParent) {
+    if (this.isTiledCrs()) {
+        if (levelParent &amp;&amp; levelParent &lt; this.zoom) {
+            const diffLevel = this.zoom - levelParent;
+            const diff = Math.pow(2, diffLevel);
+            const invDiff = 1 / diff;
+
+            const r = (this.row - (this.row % diff)) * invDiff;
+            const c = (this.col - (this.col % diff)) * invDiff;
+
+            return new Extent(this.crs(), levelParent, r, c);
+        } else {
+            return this;
+        }
+    }
+};
+
+Extent.prototype.toString = function toString(separator = '') {
+    if (this.isTiledCrs()) {
+        return `${this.zoom}${separator}${this.row}${separator}${this.col}`;
+    } else {
+        return `${this.east()}${separator}${this.north()}${separator}${this.west()}${separator}${this.south()}`;
+    }
+};
+
+export default Extent;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    </div>
+
+    <nav>
+        <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ColorLayer.html">ColorLayer</a><ul class='methods'><li data-type='method'><a href="ColorLayer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="Coordinates.html">Coordinates</a><ul class='methods'><li data-type='method'><a href="Coordinates.html#altitude">altitude</a></li><li data-type='method'><a href="Coordinates.html#as">as</a></li><li data-type='method'><a href="Coordinates.html#latitude">latitude</a></li><li data-type='method'><a href="Coordinates.html#longitude">longitude</a></li><li data-type='method'><a href="Coordinates.html#offsetInExtent">offsetInExtent</a></li><li data-type='method'><a href="Coordinates.html#setAltitude">setAltitude</a></li><li data-type='method'><a href="Coordinates.html#x">x</a></li><li data-type='method'><a href="Coordinates.html#xyz">xyz</a></li><li data-type='method'><a href="Coordinates.html#y">y</a></li><li data-type='method'><a href="Coordinates.html#z">z</a></li></ul></li><li><a href="ElevationLayer.html">ElevationLayer</a><ul class='methods'><li data-type='method'><a href="ElevationLayer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="Extent.html">Extent</a><ul class='methods'><li data-type='method'><a href="Extent.html#expandByPoint">expandByPoint</a></li><li data-type='method'><a href="Extent.html#intersect">intersect</a></li><li data-type='method'><a href="Extent.html#intersectsExtent">intersectsExtent</a></li><li data-type='method'><a href="Extent.html#isPointInside">isPointInside</a></li></ul></li><li><a href="FileSource.html">FileSource</a><ul class='methods'><li data-type='method'><a href="FileSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="FileSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="FileSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="FirstPersonControls.html">FirstPersonControls</a><ul class='methods'><li data-type='method'><a href="FirstPersonControls.html#reset">reset</a></li><li data-type='method'><a href="FirstPersonControls.html#update">update</a></li></ul></li><li><a href="GeometryLayer.html">GeometryLayer</a><ul class='methods'><li data-type='method'><a href="GeometryLayer.html#attach">attach</a></li><li data-type='method'><a href="GeometryLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="GeometryLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="GeometryLayer.html#detach">detach</a></li><li data-type='method'><a href="GeometryLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="GlobeControls.html">GlobeControls</a><ul class='methods'><li data-type='method'><a href="GlobeControls.html#getCameraCoordinate">getCameraCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#getCameraOrientation">getCameraOrientation</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetGeoPosition">getCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetPosition">getCameraTargetPosition</a></li><li data-type='method'><a href="GlobeControls.html#getHeading">getHeading</a></li><li data-type='method'><a href="GlobeControls.html#getLookAtCoordinate">getLookAtCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#getRange">getRange</a></li><li data-type='method'><a href="GlobeControls.html#getScale">getScale</a></li><li data-type='method'><a href="GlobeControls.html#getTilt">getTilt</a></li><li data-type='method'><a href="GlobeControls.html#getZoom">getZoom</a></li><li data-type='method'><a href="GlobeControls.html#isAnimationEnabled">isAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#lookAtCoordinate">lookAtCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#metersToPixels">metersToPixels</a></li><li data-type='method'><a href="GlobeControls.html#pan">pan</a></li><li data-type='method'><a href="GlobeControls.html#pickGeoPosition">pickGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToDegrees">pixelsToDegrees</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToMeters">pixelsToMeters</a></li><li data-type='method'><a href="GlobeControls.html#setAnimationEnabled">setAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPosition">setCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPositionAdvanced">setCameraTargetGeoPositionAdvanced</a></li><li data-type='method'><a href="GlobeControls.html#setHeading">setHeading</a></li><li data-type='method'><a href="GlobeControls.html#setOrbitalPosition">setOrbitalPosition</a></li><li data-type='method'><a href="GlobeControls.html#setRange">setRange</a></li><li data-type='method'><a href="GlobeControls.html#setScale">setScale</a></li><li data-type='method'><a href="GlobeControls.html#setTilt">setTilt</a></li><li data-type='method'><a href="GlobeControls.html#setZoom">setZoom</a></li></ul></li><li><a href="GlobeLayer.html">GlobeLayer</a><ul class='methods'><li data-type='method'><a href="GlobeLayer.html#attach">attach</a></li><li data-type='method'><a href="GlobeLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="GlobeLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="GlobeLayer.html#detach">detach</a></li><li data-type='method'><a href="GlobeLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="GlobeView.html">GlobeView</a><ul class='methods'><li data-type='method'><a href="GlobeView.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#addLayer">addLayer</a></li><li data-type='method'><a href="GlobeView.html#eventToNormalizedCoords">eventToNormalizedCoords</a></li><li data-type='method'><a href="GlobeView.html#eventToViewCoords">eventToViewCoords</a></li><li data-type='method'><a href="GlobeView.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="GlobeView.html#getLayers">getLayers</a></li><li data-type='method'><a href="GlobeView.html#getParentLayer">getParentLayer</a></li><li data-type='method'><a href="GlobeView.html#getPickingPositionFromDepth">getPickingPositionFromDepth</a></li><li data-type='method'><a href="GlobeView.html#normalizedToViewCoords">normalizedToViewCoords</a></li><li data-type='method'><a href="GlobeView.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="GlobeView.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="GlobeView.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#removeLayer">removeLayer</a></li><li data-type='method'><a href="GlobeView.html#viewToNormalizedCoords">viewToNormalizedCoords</a></li></ul></li><li><a href="Layer.html">Layer</a><ul class='methods'><li data-type='method'><a href="Layer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="PanoramaLayer.html">PanoramaLayer</a><ul class='methods'><li data-type='method'><a href="PanoramaLayer.html#attach">attach</a></li><li data-type='method'><a href="PanoramaLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="PanoramaLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="PanoramaLayer.html#detach">detach</a></li><li data-type='method'><a href="PanoramaLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="PlanarControls.html">PlanarControls</a></li><li><a href="PlanarLayer.html">PlanarLayer</a><ul class='methods'><li data-type='method'><a href="PlanarLayer.html#attach">attach</a></li><li data-type='method'><a href="PlanarLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="PlanarLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="PlanarLayer.html#detach">detach</a></li><li data-type='method'><a href="PlanarLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="Scheduler.html">Scheduler</a><ul class='methods'><li data-type='method'><a href="Scheduler.html#addProtocolProvider">addProtocolProvider</a></li><li data-type='method'><a href="Scheduler.html#getProtocolProvider">getProtocolProvider</a></li></ul></li><li><a href="Source.html">Source</a><ul class='methods'><li data-type='method'><a href="Source.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="Source.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="Source.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="StateControl.html">StateControl</a><ul class='methods'><li data-type='method'><a href="StateControl.html#inputToState">inputToState</a></li><li data-type='method'><a href="StateControl.html#touchToState">touchToState</a></li></ul></li><li><a href="StaticSource.html">StaticSource</a><ul class='methods'><li data-type='method'><a href="StaticSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="StaticSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="StaticSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="TiledGeometryLayer.html">TiledGeometryLayer</a><ul class='methods'><li data-type='method'><a href="TiledGeometryLayer.html#.hasEnoughTexturesToSubdivide">hasEnoughTexturesToSubdivide</a></li><li data-type='method'><a href="TiledGeometryLayer.html#attach">attach</a></li><li data-type='method'><a href="TiledGeometryLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="TiledGeometryLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="TiledGeometryLayer.html#detach">detach</a></li><li data-type='method'><a href="TiledGeometryLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="TMSSource.html">TMSSource</a><ul class='methods'><li data-type='method'><a href="TMSSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="TMSSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="TMSSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="View.html">View</a><ul class='methods'><li data-type='method'><a href="View.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="View.html#addLayer">addLayer</a></li><li data-type='method'><a href="View.html#eventToNormalizedCoords">eventToNormalizedCoords</a></li><li data-type='method'><a href="View.html#eventToViewCoords">eventToViewCoords</a></li><li data-type='method'><a href="View.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="View.html#getLayers">getLayers</a></li><li data-type='method'><a href="View.html#getParentLayer">getParentLayer</a></li><li data-type='method'><a href="View.html#normalizedToViewCoords">normalizedToViewCoords</a></li><li data-type='method'><a href="View.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="View.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="View.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="View.html#viewToNormalizedCoords">viewToNormalizedCoords</a></li></ul></li><li><a href="WFSSource.html">WFSSource</a><ul class='methods'><li data-type='method'><a href="WFSSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="WFSSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="WFSSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="WMSSource.html">WMSSource</a><ul class='methods'><li data-type='method'><a href="WMSSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="WMSSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="WMSSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="WMTSSource.html">WMTSSource</a><ul class='methods'><li data-type='method'><a href="WMTSSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="WMTSSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="WMTSSource.html#urlFromExtent">urlFromExtent</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-Cache.html">Cache</a><ul class='methods'><li data-type='method'><a href="module-Cache.html#.clear">clear</a></li><li data-type='method'><a href="module-Cache.html#.delete">delete</a></li><li data-type='method'><a href="module-Cache.html#.flush">flush</a></li><li data-type='method'><a href="module-Cache.html#.get">get</a></li><li data-type='method'><a href="module-Cache.html#.set">set</a></li></ul></li><li><a href="module-CameraUtils.html">CameraUtils</a><ul class='methods'><li data-type='method'><a href="module-CameraUtils.html#.animateCameraToLookAtTarget">animateCameraToLookAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.getDiffParams">getDiffParams</a></li><li data-type='method'><a href="module-CameraUtils.html#.getTransformCameraLookingAtTarget">getTransformCameraLookingAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.sequenceAnimationsToLookAtTarget">sequenceAnimationsToLookAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.stop">stop</a></li><li data-type='method'><a href="module-CameraUtils.html#.transformCameraToLookAtTarget">transformCameraToLookAtTarget</a></li></ul></li><li><a href="module-Feature2Mesh.html">Feature2Mesh</a><ul class='methods'><li data-type='method'><a href="module-Feature2Mesh.html#.convert">convert</a></li></ul></li><li><a href="module-GeoJsonParser.html">GeoJsonParser</a><ul class='methods'><li data-type='method'><a href="module-GeoJsonParser.html#.parse">parse</a></li></ul></li><li><a href="module-GpxParser.html">GpxParser</a><ul class='methods'><li data-type='method'><a href="module-GpxParser.html#~parse">parse</a></li></ul></li><li><a href="module-URLBuilder.html">URLBuilder</a><ul class='methods'><li data-type='method'><a href="module-URLBuilder.html#.bbox">bbox</a></li><li data-type='method'><a href="module-URLBuilder.html#.xyz">xyz</a></li></ul></li><li><a href="module-VectorTileHelper.html">VectorTileHelper</a><ul class='methods'><li data-type='method'><a href="module-VectorTileHelper.html#.getVectorTileByUrl">getVectorTileByUrl</a></li><li data-type='method'><a href="module-VectorTileHelper.html#.getVectorTileTextureByUrl">getVectorTileTextureByUrl</a></li></ul></li><li><a href="module-VectorTileParser.html">VectorTileParser</a><ul class='methods'><li data-type='method'><a href="module-VectorTileParser.html#.parse">parse</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="ColorLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="ColorLayer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="ColorLayer.html#event:visible-property-changed">visible-property-changed</a></li><li><a href="GeometryLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-initialized">layers-initialized</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="PanoramaLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="PlanarLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="TiledGeometryLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="View.html#event:layers-initialized">layers-initialized</a></li></ul><h3>Interfaces</h3><ul><li><a href="Provider.html">Provider</a><ul class='methods'><li data-type='method'><a href="Provider.html#executeCommand">executeCommand</a></li><li data-type='method'><a href="Provider.html#preprocessDataLayer">preprocessDataLayer</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#CARDINAL">CARDINAL</a></li><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#featureToMesh">featureToMesh</a></li><li><a href="global.html#FrameRequester">FrameRequester</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#MAIN_LOOP_EVENTS">MAIN_LOOP_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
+    </nav>
+
+    <br class="clear">
+
+    <footer>
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Aug 23 2018 16:49:22 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    </footer>
+
+    <script> prettyPrint(); </script>
+    <script src="scripts/linenumber.js"> </script>
+</body>
+</html>
