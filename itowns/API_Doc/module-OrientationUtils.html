@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : Layer/ElevationLayer.js</title>
+    <title>iTowns API : OrientationUtils</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -26,73 +26,888 @@
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import Layer from './Layer';
-import { updateLayeredMaterialNodeElevation } from '../Process/LayeredMaterialNodeProcessing';
-import textureConverter from '../Parser/textureConverter';
+        
+    
+</header>
 
-class ElevationLayer extends Layer {
-    /**
-     * A simple layer, managing an elevation texture to add some reliefs on the
-     * plane or globe view for example.
-     *
-     * @constructor
-     * @extends Layer
-     *
-     * @param {string} id - The id of the layer, that should be unique. It is
-     * not mandatory, but an error will be emitted if this layer is added a
-     * {@link View} that already has a layer going by that id.
-     * @param {Object} [config] - Optional configuration, all elements in it
-     * will be merged as is in the layer. For example, if the configuration
-     * contains three elements &lt;code>name, protocol, extent&lt;/code>, these
-     * elements will be available using &lt;code>layer.name&lt;/code> or something
-     * else depending on the property name.
-     * @param {WMTSSource|WMSSource|WFSSource|TMSSource|FileSource} [config.source] data source
-     *
-     * @example
-     * // Create an ElevationLayer
-     * const elevation = new ElevationLayer('IGN_MNT', {
-     *      source: {
-     *          url: 'http://server.geo/wmts/SERVICE=WMTS&amp;TILEMATRIX=%TILEMATRIX&amp;TILEROW=%ROW&amp;TILECOL=%COL',
-     *          protocol: 'wmts',
-     *          format: 'image/x-bil;bits=32',
-     *      },
-     * });
-     *
-     * // Add the layer
-     * view.addLayer(elevation);
-     *
-     * @example
-     * // Add and create an ElevationLayer
-     * view.addLayer({
-     *     id: 'IGN_MNT',
-     *     type: 'elevation',
-     *     source: {
-     *          url: 'http://server.geo/wmts/SERVICE=WMTS&amp;TILEMATRIX=%TILEMATRIX&amp;TILEROW=%ROW&amp;TILECOL=%COL',
-     *          protocol: 'wmts',
-     *          format: 'image/x-bil;bits=32',
-     *     },
-     * });
-     */
-    constructor(id, config = {}) {
-        super(id, 'elevation', config);
-    }
+<article>
+    <div class="container-overview">
+    
+        
 
-    update(context, layer, node, parent) {
-        return updateLayeredMaterialNodeElevation(context, this, node, parent);
-    }
+        
+    
+    </div>
 
-    convert(data, extentDestination) {
-        return textureConverter.convert(data, extentDestination, this);
-    }
-}
+    
 
-export default ElevationLayer;
-</code></pre>
-        </article>
-    </section>
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="~globeQuaternionFromAttitude"><span class="type-signature">(inner) </span>globeQuaternionFromAttitude<span class="signature">(attitude, coordinate, target)</span><span class="type-signature"> &rarr; {THREE.Quaternion}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_OrientationUtils.js.html">utils/OrientationUtils.js</a>, <a href="utils_OrientationUtils.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>attitude</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Attitude</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Attitude
+with properties: (omega, phi, kappa), (roll, pitch, heading) or none.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>coordinate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Coordinates.html">Coordinates</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">position on the globe</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">THREE.Quaternion</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Quaternion to set</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Quaternion representing the rotation
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">THREE.Quaternion</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~localQuaternionFromAttitude"><span class="type-signature">(inner) </span>localQuaternionFromAttitude<span class="signature">(attitude, target)</span><span class="type-signature"> &rarr; {THREE.Quaternion}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_OrientationUtils.js.html">utils/OrientationUtils.js</a>, <a href="utils_OrientationUtils.js.html#line70">line 70</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>attitude</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Attitude</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Attitude
+with properties: (omega, phi, kappa), (roll, pitch, heading) or none.
+Note that convergence of the meridians is not taken into account.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">THREE.Quaternion</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Quaternion to set</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Quaternion representing the rotation
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">THREE.Quaternion</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~quaternionFromAttitude"><span class="type-signature">(inner) </span>quaternionFromAttitude<span class="signature">(attitude, coordinate, needsENUFromGeodesicNormal, target)</span><span class="type-signature"> &rarr; {THREE.Quaternion}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_OrientationUtils.js.html">utils/OrientationUtils.js</a>, <a href="utils_OrientationUtils.js.html#line103">line 103</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Read rotation information (roll pitch heading or omega phi kappa),
+Create a ThreeJs quaternion representing a rotation.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>attitude</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Attitude</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Attitude</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>coordinate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Coordinates.html">Coordinates</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">position the oject (used to apply another rotation on Globe CRS)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>needsENUFromGeodesicNormal</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">should be true on globe CRS.
+If true, we will apply another rotation : The rotation use to create ENU local space at coordinate parameter position.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">THREE.Quaternion</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Quaternion to set</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Quaternion representing the rotation
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">THREE.Quaternion</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id="~Attitude">Attitude</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_OrientationUtils.js.html">utils/OrientationUtils.js</a>, <a href="utils_OrientationUtils.js.html#line52">line 52</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>omega</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">angle in degrees</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>phi</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">angle in degrees</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>kappa</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">angle in degrees</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>roll</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">angle in degrees</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pitch</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">angle in degrees</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>heading</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">angle in degrees</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -106,7 +921,7 @@ export default ElevationLayer;
     <br class="clear">
 
     <footer>
-        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Aug 24 2018 15:10:55 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Aug 24 2018 15:10:56 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
     </footer>
 
     <script> prettyPrint(); </script>
