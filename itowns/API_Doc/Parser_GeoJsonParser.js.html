@@ -32,14 +32,6 @@
             <pre class="prettyprint source linenums"><code>import Coordinates from '../Core/Geographic/Coordinates';
 import Extent from '../Core/Geographic/Extent';
 
-function applyOffset(indices, offset) {
-    for (const indice of indices) {
-        indice.offset += offset;
-    }
-
-    return indices;
-}
-
 function readCRS(json) {
     if (json.crs) {
         if (json.crs.type.toLowerCase() == 'epsg') {
@@ -60,37 +52,55 @@ function readCRS(json) {
     return 'EPSG:4326';
 }
 
-const coords = new Coordinates('EPSG:4978', 0, 0, 0);
-function readCoordinates(crsIn, crsOut, coordinates, extent, target) {
+const coordIn = new Coordinates('EPSG:4978', 0, 0, 0);
+const coordOut = new Coordinates('EPSG:4978', 0, 0, 0);
+function readCoordinates(crsIn, crsOut, coordinates, extent, target, normals, size) {
     // coordinates is a list of pair [[x1, y1], [x2, y2], ..., [xn, yn]]
     let offset = 0;
+    // let cIn = coordIn;
+    let cOut = coordOut;
     if (target) {
         offset = target.length;
-        target.length += coordinates.length;
+        const count = coordinates.length * size;
+        target.length += count;
+        if (normals) {
+            normals.length += count;
+        }
     }
-    const out = target || new Array(coordinates.length);
-
-    let i = 0;
-    // TODO: 1 is a default z value, makes this configurable
-    let z = 1;
+    target = target || new Array(coordinates.length);
+    let z = 0;
     for (const pair of coordinates) {
-        if (typeof pair[2] == 'number') {
+        if (size == 3 &amp;&amp; typeof pair[2] == 'number') {
             z = pair[2];
         }
 
-        if (crsIn === crsOut) {
-            out[offset + i] = new Coordinates(crsIn, pair[0], pair[1], z);
+        coordIn.set(crsIn, pair[0], pair[1], z);
+        if (crsIn !== crsOut) {
+            coordIn.as(crsOut, coordOut);
         } else {
-            coords.set(crsIn, pair[0], pair[1], z);
-            out[offset + i] = coords.as(crsOut);
+            cOut = coordIn;
         }
+        if (normals) {
+            cOut.geodesicNormal.toArray(normals, offset);
+        }
+
+        target[offset] = cOut._values[0];
+        target[offset + 1] = cOut._values[1];
+        if (size == 3) {
+            target[offset + 2] = cOut._values[2];
+        }
+
         // expand extent if present
         if (extent) {
-            extent.expandByPoint(out[offset + i]);
+            if (extent.crs() == crsIn) {
+                extent.expandByPoint(coordIn);
+            } else {
+                extent.expandByPoint(cOut);
+            }
         }
-        ++i;
+        offset += size;
     }
-    return out;
+    return target;
 }
 
 // Helper struct that returns an object { type: "", coordinates: [...], extent}:
@@ -98,80 +108,80 @@ function readCoordinates(crsIn, crsOut, coordinates, extent, target) {
 // - Coordinates is an array of Coordinate
 // - extent is optional, it's coordinates's extent
 // Multi-* geometry types are merged in one.
+const coords = new Coordinates('EPSG:4978', 0, 0, 0);
+// filter with the first point
+const firstPtIsOut = (extent, aCoords, crs) => {
+    const first = aCoords[0];
+    coords.set(crs, first[0], first[1], 0);
+    return !extent.isPointInside(coords);
+};
 const GeometryToCoordinates = {
     point(feature, crsIn, crsOut, coordsIn, filteringExtent, options) {
-        const extent = options.buildExtent ? new Extent(crsOut, Infinity, -Infinity, Infinity, -Infinity) : undefined;
-        let coordinates = readCoordinates(crsIn, crsOut, coordsIn, extent);
-        if (filteringExtent) {
-            coordinates = coordinates.filter(c => filteringExtent.isPointInside(c));
+        // filtering
+        if (filteringExtent &amp;&amp; firstPtIsOut(filteringExtent, coordsIn, crsIn)) {
+            return;
         }
 
-        feature.vertices = feature.vertices.concat(coordinates);
-        feature.geometry.push({ extent });
+        const extent = options.buildExtent ? new Extent(crsOut, Infinity, -Infinity, Infinity, -Infinity) : undefined;
+        const offset = feature.vertices.length / feature.size;
+        readCoordinates(crsIn, crsOut, coordsIn, extent, feature.vertices, feature.normals, feature.size);
 
+        feature.geometry.push({ extent, indices: [{ offset, count: 1 }] });
         return feature;
     },
     polygon(feature, crsIn, crsOut, coordsIn, filteringExtent, options) {
-        const extent = options.buildExtent ? new Extent(crsOut, Infinity, -Infinity, Infinity, -Infinity) : undefined;
-        // read contour first
-        const coordinates = readCoordinates(crsIn, crsOut, coordsIn[0], extent);
-        if (filteringExtent &amp;&amp; !filteringExtent.isPointInside(coordinates[0])) {
+        // filtering
+        if (filteringExtent &amp;&amp; firstPtIsOut(filteringExtent, coordsIn[0], crsIn)) {
             return;
         }
-        const indices = [{ offset: 0, count: coordinates.length }];
-        let offset = coordinates.length;
+
+        const extent = options.buildExtent ? new Extent(crsOut, Infinity, -Infinity, Infinity, -Infinity) : undefined;
+        let offset = feature.vertices.length / feature.size;
+        // read contour first
+        readCoordinates(crsIn, crsOut, coordsIn[0], extent, feature.vertices, feature.normals, feature.size);
+
+        const indices = [{ offset, count: coordsIn[0].length }];
+        offset += coordsIn[0].length;
         // Then read optional holes
         for (let i = 1; i &lt; coordsIn.length; i++) {
-            readCoordinates(crsIn, crsOut, coordsIn[i], extent, coordinates);
-            const count = coordinates.length - offset;
+            readCoordinates(crsIn, crsOut, coordsIn[i], extent, feature.vertices, feature.normals, feature.size);
+            const count = coordsIn[i].length;
             indices.push({ offset, count });
             offset += count;
         }
 
-        feature.vertices = feature.vertices.concat(coordinates);
         feature.geometry.push({ extent, indices });
-
         return feature;
     },
     lineString(feature, crsIn, crsOut, coordsIn, filteringExtent, options) {
-        const extent = options.buildExtent ? new Extent(crsOut, Infinity, -Infinity, Infinity, -Infinity) : undefined;
-        const coordinates = readCoordinates(crsIn, crsOut, coordsIn, extent);
-        if (filteringExtent &amp;&amp; !filteringExtent.isPointInside(coordinates[0])) {
+        // filtering
+        if (filteringExtent &amp;&amp; firstPtIsOut(filteringExtent, coordsIn, crsIn)) {
             return;
         }
-        const indices = [{ offset: 0, count: coordinates.length }];
 
-        feature.vertices = feature.vertices.concat(coordinates);
+        const extent = options.buildExtent ? new Extent(crsOut, Infinity, -Infinity, Infinity, -Infinity) : undefined;
+        const offset = feature.vertices.length / feature.size;
+        readCoordinates(crsIn, crsOut, coordsIn, extent, feature.vertices, feature.normals, feature.size);
+
+        const indices = [{ offset, count: feature.vertices.length / feature.size - offset }];
         feature.geometry.push({ extent, indices });
 
         return feature;
     },
     multi(type, feature, crsIn, crsOut, coordsIn, filteringExtent, options) {
-        if (coordsIn.length == 1) {
-            return this[type](feature, crsIn, crsOut, coordsIn[0], filteringExtent, options);
-        }
-
-        let globalOffset = 0;
-        let indices;
-
         for (const coords of coordsIn) {
-            if (this[type](feature, crsIn, crsOut, coords, filteringExtent, options)) {
-                indices = feature.geometry[feature.geometry.length - 1].indices;
-                applyOffset(indices, globalOffset);
-                const lastIndice = indices[indices.length - 1];
-                globalOffset = lastIndice.offset + lastIndice.count;
-            }
+            this[type](feature, crsIn, crsOut, coords, filteringExtent, options);
         }
 
         return feature;
     },
 };
 
-function readGeometry(feature, crsIn, crsOut, geometry, filteringExtent, options) {
+function readGeometry(type, feature, crsIn, crsOut, geometry, filteringExtent, options) {
     if (geometry.length == 0) {
         return;
     }
-    switch (feature.type) {
+    switch (type) {
         case 'point':
             return GeometryToCoordinates.point(feature, crsIn, crsOut, [geometry], filteringExtent, options);
         case 'multipoint':
@@ -190,58 +200,121 @@ function readGeometry(feature, crsIn, crsOut, geometry, filteringExtent, options
     }
 }
 
-function readFeature(crsIn, crsOut, json, filteringExtent, options) {
+function mergeType(type) {
+    switch (type) {
+        case 'point':
+        case 'multipoint':
+            return 'multipoint';
+        case 'linestring':
+        case 'multilinestring':
+            return 'multilinestring';
+        case 'polygon':
+        case 'multipolygon':
+            return 'multipolygon';
+        case 'geometrycollection':
+        default:
+            throw new Error(`Unhandled geometry type ${type}`);
+    }
+}
+
+const keyProperties = ['type', 'geometry', 'properties'];
+function readFeature(crsIn, crsOut, json, filteringExtent, options, featureMerge = {}) {
     if (options.filter &amp;&amp; !options.filter(json.properties, json.geometry)) {
         return;
     }
-    const feature = {
-        type: json.geometry.type.toLowerCase(),
+
+    const jsonType = json.geometry.type.toLowerCase();
+    const type = options.mergeFeatures ? mergeType(jsonType) : jsonType;
+
+    const feature = featureMerge[type] || {
+        type,
         geometry: [],
         vertices: [],
+        normals: options.withNormal ? [] : undefined,
+        crs: crsOut,
+        size: options.withAltitude ? 3 : 2,
     };
 
-    readGeometry(feature, crsIn, crsOut, json.geometry.coordinates, filteringExtent, options);
+    const offset = feature.geometry.length;
+    readGeometry(jsonType, feature, crsIn, crsOut, json.geometry.coordinates, filteringExtent, options);
 
-    if (feature.geometry.length == 0) {
+    if (feature.geometry.length == offset) {
         return;
     }
 
-    if (options.buildExtent) {
-        for (const g of feature.geometry) {
-            feature.extent = feature.extent || g.extent;
-            feature.extent.union(g.extent);
+    const properties = json.properties || {};
+
+    // copy other properties
+    for (const key of Object.keys(json)) {
+        if (keyProperties.indexOf(key.toLowerCase()) &lt; 0) {
+            properties[key] = json[key];
         }
     }
 
-    feature.properties = json.properties || {};
-    // copy other properties
-    for (const key of Object.keys(json)) {
-        if (['type', 'geometry', 'properties'].indexOf(key.toLowerCase()) &lt; 0) {
-            feature.properties[key] = json[key];
+    for (let i = offset; i &lt; feature.geometry.length; i++) {
+        const g = feature.geometry[i];
+        if (options.buildExtent) {
+            feature.extent = feature.extent || g.extent;
+            feature.extent.union(g.extent);
         }
+        g.properties = properties;
     }
 
     return feature;
 }
 
+const mergeExtent = (res, extent) => {
+    if (res.extent) {
+        res.extent.union(extent);
+    } else {
+        res.extent = extent.clone();
+    }
+};
+
+const mergesType = ['multipolygon', 'multilinestring', 'multipoint'];
 function readFeatures(crsIn, crsOut, features, filteringExtent, options) {
     const res = {
         features: [],
     };
 
+    const featuresMerge = {};
+    if (options.mergeFeatures) {
+        for (const type of mergesType) {
+            featuresMerge[type] = {
+                type,
+                geometry: [],
+                vertices: [],
+                normals: options.withNormal ? [] : undefined,
+                crs: crsOut,
+                size: options.withAltitude ? 3 : 2,
+            };
+        }
+    }
+
     for (const feature of features) {
-        const f = readFeature(crsIn, crsOut, feature, filteringExtent, options);
-        if (f) {
+        const f = readFeature(crsIn, crsOut, feature, filteringExtent, options, featuresMerge);
+        if (f &amp;&amp; !options.mergeFeatures) {
             if (options.buildExtent) {
-                if (res.extent) {
-                    res.extent.union(f.extent);
-                } else {
-                    res.extent = f.extent.clone();
-                }
+                mergeExtent(res, f.extent);
             }
             res.features.push(f);
         }
     }
+
+    if (options.mergeFeatures) {
+        for (const type of mergesType) {
+            const f = featuresMerge[type];
+            if (f.geometry.length) {
+                f.vertices.crs = crsOut;
+                res.features.push(f);
+                if (options.buildExtent) {
+                    mergeExtent(res, f.extent);
+                }
+            }
+        }
+    }
+
+    res.crs = crsOut;
     res.isFeature = true;
     return res;
 }
@@ -256,8 +329,7 @@ function readFeatures(crsIn, crsOut, features, filteringExtent, options) {
 export default {
     /**
      * Similar to the geometry of a feature in a GeoJSON, but adapted to iTowns.
-     * The difference is that coordinates are stored as {@link Coordinates}
-     * instead of raw values. If needed, more information is provided.
+     * The difference is that coordinates are stored in unique Array of number
      *
      * @typedef FeatureGeometry
      * @type {Object}
@@ -269,6 +341,10 @@ export default {
      * that define the geometry. Objects stored in this array have two
      * properties, an &lt;code>offset&lt;/code> and a &lt;code>count&lt;/code>. The offset
      * is related to the overall number of vertices in the Feature.
+     *
+     * @property {Object} properties - Properties of the geometry. It can be
+     * anything specified in the GeoJSON under the &lt;code>properties&lt;/code>
+     * property.
      */
 
     /**
@@ -281,12 +357,13 @@ export default {
      * &lt;code>multipoint&lt;/code>, &lt;code>linestring&lt;/code>,
      * &lt;code>multilinestring&lt;/code>, &lt;code>polygon&lt;/code> or
      * &lt;code>multipolygon&lt;/code>.
-     * @property {Coordinates[]} vertices - All the vertices of the geometry.
+     * @property {number[]} vertices - All the vertices of the geometry.
+     * @property {number[]} normals - All the normals of the geometry.
+     * @property {number} size - the number of values of the array that should be associated with a coordinates.
+     * The size is 3 with altitude and 2 without altitude.
+     * @property {string} crs - Geographic or Geocentric coordinates system.
      * @property {FeatureGeometry[]} geometry - The feature's geometry, as an
      * array of [FeatureGeometry]{@link module:GeoJsonParser~FeatureGeometry}.
-     * @property {Object} properties - Properties of the features. It can be
-     * anything specified in the GeoJSON under the &lt;code>properties&lt;/code>
-     * property.
      * @property {Extent?} extent - The 2D extent containing all the geometries
      * composing the feature.
      */
@@ -302,6 +379,8 @@ export default {
      * collection.
      * @property {Extent?} extent - The 2D extent containing all the features
      * composing the collection.
+     * @property {string} crs - Geographic or Geocentric coordinates system.
+     * @property {boolean} isFeature - Used to check whether this is FeatureCollection.
      */
 
     /**
@@ -318,6 +397,9 @@ export default {
      * @param {boolean} [options.buildExtent=false] - If true the geometry will
      * have an extent property containing the area covered by the geom
      * @param {function} [options.filter] - Filter function to remove features
+     * @param {boolean} [options.mergeFeatures=true] - If true all geometries are merged by type and multi-type
+     * @param {boolean} [options.withNormal=true] - If true each coordinate normal is computed
+     * @param {boolean} [options.withAltitude=true] - If true each coordinate altitude is kept
      *
      * @return {Promise} A promise resolving with a [FeatureCollection]{@link
      * module:GeoJsonParser~FeatureCollection}.
@@ -328,7 +410,12 @@ export default {
         if (typeof (json) === 'string') {
             json = JSON.parse(json);
         }
+
         options.crsIn = options.crsIn || readCRS(json);
+        options.mergeFeatures = options.mergeFeatures == undefined ? true : options.mergeFeatures;
+        options.withNormal = options.withNormal == undefined ? true : options.withNormal;
+        options.withAltitude = options.withAltitude == undefined ? true : options.withAltitude;
+
         switch (json.type.toLowerCase()) {
             case 'featurecollection':
                 return Promise.resolve(readFeatures(options.crsIn, crsOut, json.features, filteringExtent, options));
@@ -349,13 +436,13 @@ export default {
     </div>
 
     <nav>
-        <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ColorLayer.html">ColorLayer</a><ul class='methods'><li data-type='method'><a href="ColorLayer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="Coordinates.html">Coordinates</a><ul class='methods'><li data-type='method'><a href="Coordinates.html#altitude">altitude</a></li><li data-type='method'><a href="Coordinates.html#as">as</a></li><li data-type='method'><a href="Coordinates.html#latitude">latitude</a></li><li data-type='method'><a href="Coordinates.html#longitude">longitude</a></li><li data-type='method'><a href="Coordinates.html#offsetInExtent">offsetInExtent</a></li><li data-type='method'><a href="Coordinates.html#setAltitude">setAltitude</a></li><li data-type='method'><a href="Coordinates.html#x">x</a></li><li data-type='method'><a href="Coordinates.html#xyz">xyz</a></li><li data-type='method'><a href="Coordinates.html#y">y</a></li><li data-type='method'><a href="Coordinates.html#z">z</a></li></ul></li><li><a href="ElevationLayer.html">ElevationLayer</a><ul class='methods'><li data-type='method'><a href="ElevationLayer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="Extent.html">Extent</a><ul class='methods'><li data-type='method'><a href="Extent.html#intersect">intersect</a></li><li data-type='method'><a href="Extent.html#intersectsExtent">intersectsExtent</a></li><li data-type='method'><a href="Extent.html#isPointInside">isPointInside</a></li><li data-type='method'><a href="Extent.html#subdivision">subdivision</a></li></ul></li><li><a href="FileSource.html">FileSource</a><ul class='methods'><li data-type='method'><a href="FileSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="FileSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="FileSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="FirstPersonControls.html">FirstPersonControls</a><ul class='methods'><li data-type='method'><a href="FirstPersonControls.html#reset">reset</a></li><li data-type='method'><a href="FirstPersonControls.html#update">update</a></li></ul></li><li><a href="GeometryLayer.html">GeometryLayer</a><ul class='methods'><li data-type='method'><a href="GeometryLayer.html#attach">attach</a></li><li data-type='method'><a href="GeometryLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="GeometryLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="GeometryLayer.html#detach">detach</a></li><li data-type='method'><a href="GeometryLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="GlobeControls.html">GlobeControls</a><ul class='methods'><li data-type='method'><a href="GlobeControls.html#getCameraCoordinate">getCameraCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#getCameraOrientation">getCameraOrientation</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetGeoPosition">getCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetPosition">getCameraTargetPosition</a></li><li data-type='method'><a href="GlobeControls.html#getHeading">getHeading</a></li><li data-type='method'><a href="GlobeControls.html#getLookAtCoordinate">getLookAtCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#getRange">getRange</a></li><li data-type='method'><a href="GlobeControls.html#getScale">getScale</a></li><li data-type='method'><a href="GlobeControls.html#getTilt">getTilt</a></li><li data-type='method'><a href="GlobeControls.html#getZoom">getZoom</a></li><li data-type='method'><a href="GlobeControls.html#isAnimationEnabled">isAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#lookAtCoordinate">lookAtCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#metersToPixels">metersToPixels</a></li><li data-type='method'><a href="GlobeControls.html#pan">pan</a></li><li data-type='method'><a href="GlobeControls.html#pickGeoPosition">pickGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToDegrees">pixelsToDegrees</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToMeters">pixelsToMeters</a></li><li data-type='method'><a href="GlobeControls.html#setAnimationEnabled">setAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPosition">setCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPositionAdvanced">setCameraTargetGeoPositionAdvanced</a></li><li data-type='method'><a href="GlobeControls.html#setHeading">setHeading</a></li><li data-type='method'><a href="GlobeControls.html#setOrbitalPosition">setOrbitalPosition</a></li><li data-type='method'><a href="GlobeControls.html#setRange">setRange</a></li><li data-type='method'><a href="GlobeControls.html#setScale">setScale</a></li><li data-type='method'><a href="GlobeControls.html#setTilt">setTilt</a></li><li data-type='method'><a href="GlobeControls.html#setZoom">setZoom</a></li></ul></li><li><a href="GlobeLayer.html">GlobeLayer</a><ul class='methods'><li data-type='method'><a href="GlobeLayer.html#attach">attach</a></li><li data-type='method'><a href="GlobeLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="GlobeLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="GlobeLayer.html#detach">detach</a></li><li data-type='method'><a href="GlobeLayer.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="GlobeLayer.html#preUpdate">preUpdate</a></li><li data-type='method'><a href="GlobeLayer.html#subdivideNode">subdivideNode</a></li><li data-type='method'><a href="GlobeLayer.html#subdivision">subdivision</a></li><li data-type='method'><a href="GlobeLayer.html#update">update</a></li></ul></li><li><a href="GlobeView.html">GlobeView</a><ul class='methods'><li data-type='method'><a href="GlobeView.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#addLayer">addLayer</a></li><li data-type='method'><a href="GlobeView.html#eventToNormalizedCoords">eventToNormalizedCoords</a></li><li data-type='method'><a href="GlobeView.html#eventToViewCoords">eventToViewCoords</a></li><li data-type='method'><a href="GlobeView.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="GlobeView.html#getLayers">getLayers</a></li><li data-type='method'><a href="GlobeView.html#getParentLayer">getParentLayer</a></li><li data-type='method'><a href="GlobeView.html#getPickingPositionFromDepth">getPickingPositionFromDepth</a></li><li data-type='method'><a href="GlobeView.html#normalizedToViewCoords">normalizedToViewCoords</a></li><li data-type='method'><a href="GlobeView.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="GlobeView.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="GlobeView.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#removeLayer">removeLayer</a></li><li data-type='method'><a href="GlobeView.html#viewToNormalizedCoords">viewToNormalizedCoords</a></li></ul></li><li><a href="Layer.html">Layer</a><ul class='methods'><li data-type='method'><a href="Layer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="PanoramaLayer.html">PanoramaLayer</a><ul class='methods'><li data-type='method'><a href="PanoramaLayer.html#attach">attach</a></li><li data-type='method'><a href="PanoramaLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="PanoramaLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="PanoramaLayer.html#detach">detach</a></li><li data-type='method'><a href="PanoramaLayer.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="PanoramaLayer.html#preUpdate">preUpdate</a></li><li data-type='method'><a href="PanoramaLayer.html#subdivideNode">subdivideNode</a></li><li data-type='method'><a href="PanoramaLayer.html#subdivision">subdivision</a></li><li data-type='method'><a href="PanoramaLayer.html#update">update</a></li></ul></li><li><a href="PlanarControls.html">PlanarControls</a></li><li><a href="PlanarLayer.html">PlanarLayer</a><ul class='methods'><li data-type='method'><a href="PlanarLayer.html#attach">attach</a></li><li data-type='method'><a href="PlanarLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="PlanarLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="PlanarLayer.html#detach">detach</a></li><li data-type='method'><a href="PlanarLayer.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="PlanarLayer.html#preUpdate">preUpdate</a></li><li data-type='method'><a href="PlanarLayer.html#subdivideNode">subdivideNode</a></li><li data-type='method'><a href="PlanarLayer.html#subdivision">subdivision</a></li><li data-type='method'><a href="PlanarLayer.html#update">update</a></li></ul></li><li><a href="Scheduler.html">Scheduler</a><ul class='methods'><li data-type='method'><a href="Scheduler.html#addProtocolProvider">addProtocolProvider</a></li><li data-type='method'><a href="Scheduler.html#getProtocolProvider">getProtocolProvider</a></li></ul></li><li><a href="Source.html">Source</a><ul class='methods'><li data-type='method'><a href="Source.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="Source.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="Source.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="StateControl.html">StateControl</a><ul class='methods'><li data-type='method'><a href="StateControl.html#inputToState">inputToState</a></li><li data-type='method'><a href="StateControl.html#touchToState">touchToState</a></li></ul></li><li><a href="StaticSource.html">StaticSource</a><ul class='methods'><li data-type='method'><a href="StaticSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="StaticSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="StaticSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="TiledGeometryLayer.html">TiledGeometryLayer</a><ul class='methods'><li data-type='method'><a href="TiledGeometryLayer.html#.hasEnoughTexturesToSubdivide">hasEnoughTexturesToSubdivide</a></li><li data-type='method'><a href="TiledGeometryLayer.html#attach">attach</a></li><li data-type='method'><a href="TiledGeometryLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="TiledGeometryLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="TiledGeometryLayer.html#detach">detach</a></li><li data-type='method'><a href="TiledGeometryLayer.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="TiledGeometryLayer.html#preUpdate">preUpdate</a></li><li data-type='method'><a href="TiledGeometryLayer.html#subdivideNode">subdivideNode</a></li><li data-type='method'><a href="TiledGeometryLayer.html#update">update</a></li></ul></li><li><a href="TMSSource.html">TMSSource</a><ul class='methods'><li data-type='method'><a href="TMSSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="TMSSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="TMSSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="View.html">View</a><ul class='methods'><li data-type='method'><a href="View.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="View.html#addLayer">addLayer</a></li><li data-type='method'><a href="View.html#eventToNormalizedCoords">eventToNormalizedCoords</a></li><li data-type='method'><a href="View.html#eventToViewCoords">eventToViewCoords</a></li><li data-type='method'><a href="View.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="View.html#getLayers">getLayers</a></li><li data-type='method'><a href="View.html#getParentLayer">getParentLayer</a></li><li data-type='method'><a href="View.html#getPickingPositionFromDepth">getPickingPositionFromDepth</a></li><li data-type='method'><a href="View.html#normalizedToViewCoords">normalizedToViewCoords</a></li><li data-type='method'><a href="View.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="View.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="View.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="View.html#viewToNormalizedCoords">viewToNormalizedCoords</a></li></ul></li><li><a href="WFSSource.html">WFSSource</a><ul class='methods'><li data-type='method'><a href="WFSSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="WFSSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="WFSSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="WMSSource.html">WMSSource</a><ul class='methods'><li data-type='method'><a href="WMSSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="WMSSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="WMSSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="WMTSSource.html">WMTSSource</a><ul class='methods'><li data-type='method'><a href="WMTSSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="WMTSSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="WMTSSource.html#urlFromExtent">urlFromExtent</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-Cache.html">Cache</a><ul class='methods'><li data-type='method'><a href="module-Cache.html#.clear">clear</a></li><li data-type='method'><a href="module-Cache.html#.delete">delete</a></li><li data-type='method'><a href="module-Cache.html#.flush">flush</a></li><li data-type='method'><a href="module-Cache.html#.get">get</a></li><li data-type='method'><a href="module-Cache.html#.set">set</a></li></ul></li><li><a href="module-CameraUtils.html">CameraUtils</a><ul class='methods'><li data-type='method'><a href="module-CameraUtils.html#.animateCameraToLookAtTarget">animateCameraToLookAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.getDiffParams">getDiffParams</a></li><li data-type='method'><a href="module-CameraUtils.html#.getTransformCameraLookingAtTarget">getTransformCameraLookingAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.sequenceAnimationsToLookAtTarget">sequenceAnimationsToLookAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.stop">stop</a></li><li data-type='method'><a href="module-CameraUtils.html#.transformCameraToLookAtTarget">transformCameraToLookAtTarget</a></li></ul></li><li><a href="module-Feature2Mesh.html">Feature2Mesh</a><ul class='methods'><li data-type='method'><a href="module-Feature2Mesh.html#.convert">convert</a></li></ul></li><li><a href="module-GeoJsonParser.html">GeoJsonParser</a><ul class='methods'><li data-type='method'><a href="module-GeoJsonParser.html#.parse">parse</a></li></ul></li><li><a href="module-GpxParser.html">GpxParser</a><ul class='methods'><li data-type='method'><a href="module-GpxParser.html#~parse">parse</a></li></ul></li><li><a href="module-OrientationUtils.html">OrientationUtils</a><ul class='methods'><li data-type='method'><a href="module-OrientationUtils.html#~globeQuaternionFromAttitude">globeQuaternionFromAttitude</a></li><li data-type='method'><a href="module-OrientationUtils.html#~localQuaternionFromAttitude">localQuaternionFromAttitude</a></li><li data-type='method'><a href="module-OrientationUtils.html#~quaternionFromAttitude">quaternionFromAttitude</a></li></ul></li><li><a href="module-URLBuilder.html">URLBuilder</a><ul class='methods'><li data-type='method'><a href="module-URLBuilder.html#.bbox">bbox</a></li><li data-type='method'><a href="module-URLBuilder.html#.xyz">xyz</a></li></ul></li><li><a href="module-VectorTileHelper.html">VectorTileHelper</a><ul class='methods'><li data-type='method'><a href="module-VectorTileHelper.html#.getVectorTileByUrl">getVectorTileByUrl</a></li><li data-type='method'><a href="module-VectorTileHelper.html#.getVectorTileTextureByUrl">getVectorTileTextureByUrl</a></li></ul></li><li><a href="module-VectorTileParser.html">VectorTileParser</a><ul class='methods'><li data-type='method'><a href="module-VectorTileParser.html#.parse">parse</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="ColorLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="ColorLayer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="ColorLayer.html#event:visible-property-changed">visible-property-changed</a></li><li><a href="GeometryLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-initialized">layers-initialized</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="PanoramaLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="PlanarLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="TiledGeometryLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="View.html#event:layers-initialized">layers-initialized</a></li></ul><h3>Interfaces</h3><ul><li><a href="Provider.html">Provider</a><ul class='methods'><li data-type='method'><a href="Provider.html#executeCommand">executeCommand</a></li><li data-type='method'><a href="Provider.html#preprocessDataLayer">preprocessDataLayer</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#c">c</a></li><li><a href="global.html#CARDINAL">CARDINAL</a></li><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#featureToMesh">featureToMesh</a></li><li><a href="global.html#FrameRequester">FrameRequester</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#MAIN_LOOP_EVENTS">MAIN_LOOP_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
+        <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ColorLayer.html">ColorLayer</a><ul class='methods'><li data-type='method'><a href="ColorLayer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="Coordinates.html">Coordinates</a><ul class='methods'><li data-type='method'><a href="Coordinates.html#altitude">altitude</a></li><li data-type='method'><a href="Coordinates.html#as">as</a></li><li data-type='method'><a href="Coordinates.html#latitude">latitude</a></li><li data-type='method'><a href="Coordinates.html#longitude">longitude</a></li><li data-type='method'><a href="Coordinates.html#offsetInExtent">offsetInExtent</a></li><li data-type='method'><a href="Coordinates.html#setAltitude">setAltitude</a></li><li data-type='method'><a href="Coordinates.html#x">x</a></li><li data-type='method'><a href="Coordinates.html#xyz">xyz</a></li><li data-type='method'><a href="Coordinates.html#y">y</a></li><li data-type='method'><a href="Coordinates.html#z">z</a></li></ul></li><li><a href="ElevationLayer.html">ElevationLayer</a><ul class='methods'><li data-type='method'><a href="ElevationLayer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="Extent.html">Extent</a><ul class='methods'><li data-type='method'><a href="Extent.html#intersect">intersect</a></li><li data-type='method'><a href="Extent.html#intersectsExtent">intersectsExtent</a></li><li data-type='method'><a href="Extent.html#isPointInside">isPointInside</a></li><li data-type='method'><a href="Extent.html#subdivision">subdivision</a></li></ul></li><li><a href="FileSource.html">FileSource</a><ul class='methods'><li data-type='method'><a href="FileSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="FileSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="FileSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="FirstPersonControls.html">FirstPersonControls</a><ul class='methods'><li data-type='method'><a href="FirstPersonControls.html#reset">reset</a></li><li data-type='method'><a href="FirstPersonControls.html#update">update</a></li></ul></li><li><a href="GeometryLayer.html">GeometryLayer</a><ul class='methods'><li data-type='method'><a href="GeometryLayer.html#attach">attach</a></li><li data-type='method'><a href="GeometryLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="GeometryLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="GeometryLayer.html#detach">detach</a></li><li data-type='method'><a href="GeometryLayer.html#pickObjectsAt">pickObjectsAt</a></li></ul></li><li><a href="GlobeControls.html">GlobeControls</a><ul class='methods'><li data-type='method'><a href="GlobeControls.html#getCameraCoordinate">getCameraCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#getCameraOrientation">getCameraOrientation</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetGeoPosition">getCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#getCameraTargetPosition">getCameraTargetPosition</a></li><li data-type='method'><a href="GlobeControls.html#getHeading">getHeading</a></li><li data-type='method'><a href="GlobeControls.html#getLookAtCoordinate">getLookAtCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#getRange">getRange</a></li><li data-type='method'><a href="GlobeControls.html#getScale">getScale</a></li><li data-type='method'><a href="GlobeControls.html#getTilt">getTilt</a></li><li data-type='method'><a href="GlobeControls.html#getZoom">getZoom</a></li><li data-type='method'><a href="GlobeControls.html#isAnimationEnabled">isAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#lookAtCoordinate">lookAtCoordinate</a></li><li data-type='method'><a href="GlobeControls.html#metersToPixels">metersToPixels</a></li><li data-type='method'><a href="GlobeControls.html#pan">pan</a></li><li data-type='method'><a href="GlobeControls.html#pickGeoPosition">pickGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToDegrees">pixelsToDegrees</a></li><li data-type='method'><a href="GlobeControls.html#pixelsToMeters">pixelsToMeters</a></li><li data-type='method'><a href="GlobeControls.html#setAnimationEnabled">setAnimationEnabled</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPosition">setCameraTargetGeoPosition</a></li><li data-type='method'><a href="GlobeControls.html#setCameraTargetGeoPositionAdvanced">setCameraTargetGeoPositionAdvanced</a></li><li data-type='method'><a href="GlobeControls.html#setHeading">setHeading</a></li><li data-type='method'><a href="GlobeControls.html#setOrbitalPosition">setOrbitalPosition</a></li><li data-type='method'><a href="GlobeControls.html#setRange">setRange</a></li><li data-type='method'><a href="GlobeControls.html#setScale">setScale</a></li><li data-type='method'><a href="GlobeControls.html#setTilt">setTilt</a></li><li data-type='method'><a href="GlobeControls.html#setZoom">setZoom</a></li></ul></li><li><a href="GlobeLayer.html">GlobeLayer</a><ul class='methods'><li data-type='method'><a href="GlobeLayer.html#attach">attach</a></li><li data-type='method'><a href="GlobeLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="GlobeLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="GlobeLayer.html#detach">detach</a></li><li data-type='method'><a href="GlobeLayer.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="GlobeLayer.html#preUpdate">preUpdate</a></li><li data-type='method'><a href="GlobeLayer.html#subdivideNode">subdivideNode</a></li><li data-type='method'><a href="GlobeLayer.html#subdivision">subdivision</a></li><li data-type='method'><a href="GlobeLayer.html#update">update</a></li></ul></li><li><a href="GlobeView.html">GlobeView</a><ul class='methods'><li data-type='method'><a href="GlobeView.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#addLayer">addLayer</a></li><li data-type='method'><a href="GlobeView.html#eventToNormalizedCoords">eventToNormalizedCoords</a></li><li data-type='method'><a href="GlobeView.html#eventToViewCoords">eventToViewCoords</a></li><li data-type='method'><a href="GlobeView.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="GlobeView.html#getLayers">getLayers</a></li><li data-type='method'><a href="GlobeView.html#getParentLayer">getParentLayer</a></li><li data-type='method'><a href="GlobeView.html#getPickingPositionFromDepth">getPickingPositionFromDepth</a></li><li data-type='method'><a href="GlobeView.html#normalizedToViewCoords">normalizedToViewCoords</a></li><li data-type='method'><a href="GlobeView.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="GlobeView.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="GlobeView.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="GlobeView.html#removeLayer">removeLayer</a></li><li data-type='method'><a href="GlobeView.html#viewToNormalizedCoords">viewToNormalizedCoords</a></li></ul></li><li><a href="Layer.html">Layer</a><ul class='methods'><li data-type='method'><a href="Layer.html#defineLayerProperty">defineLayerProperty</a></li></ul></li><li><a href="PanoramaLayer.html">PanoramaLayer</a><ul class='methods'><li data-type='method'><a href="PanoramaLayer.html#attach">attach</a></li><li data-type='method'><a href="PanoramaLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="PanoramaLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="PanoramaLayer.html#detach">detach</a></li><li data-type='method'><a href="PanoramaLayer.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="PanoramaLayer.html#preUpdate">preUpdate</a></li><li data-type='method'><a href="PanoramaLayer.html#subdivideNode">subdivideNode</a></li><li data-type='method'><a href="PanoramaLayer.html#subdivision">subdivision</a></li><li data-type='method'><a href="PanoramaLayer.html#update">update</a></li></ul></li><li><a href="PlanarControls.html">PlanarControls</a></li><li><a href="PlanarLayer.html">PlanarLayer</a><ul class='methods'><li data-type='method'><a href="PlanarLayer.html#attach">attach</a></li><li data-type='method'><a href="PlanarLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="PlanarLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="PlanarLayer.html#detach">detach</a></li><li data-type='method'><a href="PlanarLayer.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="PlanarLayer.html#preUpdate">preUpdate</a></li><li data-type='method'><a href="PlanarLayer.html#subdivideNode">subdivideNode</a></li><li data-type='method'><a href="PlanarLayer.html#subdivision">subdivision</a></li><li data-type='method'><a href="PlanarLayer.html#update">update</a></li></ul></li><li><a href="Scheduler.html">Scheduler</a><ul class='methods'><li data-type='method'><a href="Scheduler.html#addProtocolProvider">addProtocolProvider</a></li><li data-type='method'><a href="Scheduler.html#getProtocolProvider">getProtocolProvider</a></li></ul></li><li><a href="Source.html">Source</a><ul class='methods'><li data-type='method'><a href="Source.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="Source.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="Source.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="StateControl.html">StateControl</a><ul class='methods'><li data-type='method'><a href="StateControl.html#inputToState">inputToState</a></li><li data-type='method'><a href="StateControl.html#touchToState">touchToState</a></li></ul></li><li><a href="StaticSource.html">StaticSource</a><ul class='methods'><li data-type='method'><a href="StaticSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="StaticSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="StaticSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="TiledGeometryLayer.html">TiledGeometryLayer</a><ul class='methods'><li data-type='method'><a href="TiledGeometryLayer.html#.hasEnoughTexturesToSubdivide">hasEnoughTexturesToSubdivide</a></li><li data-type='method'><a href="TiledGeometryLayer.html#attach">attach</a></li><li data-type='method'><a href="TiledGeometryLayer.html#changeOpacity">changeOpacity</a></li><li data-type='method'><a href="TiledGeometryLayer.html#defineLayerProperty">defineLayerProperty</a></li><li data-type='method'><a href="TiledGeometryLayer.html#detach">detach</a></li><li data-type='method'><a href="TiledGeometryLayer.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="TiledGeometryLayer.html#preUpdate">preUpdate</a></li><li data-type='method'><a href="TiledGeometryLayer.html#subdivideNode">subdivideNode</a></li><li data-type='method'><a href="TiledGeometryLayer.html#update">update</a></li></ul></li><li><a href="TMSSource.html">TMSSource</a><ul class='methods'><li data-type='method'><a href="TMSSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="TMSSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="TMSSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="View.html">View</a><ul class='methods'><li data-type='method'><a href="View.html#addFrameRequester">addFrameRequester</a></li><li data-type='method'><a href="View.html#addLayer">addLayer</a></li><li data-type='method'><a href="View.html#eventToNormalizedCoords">eventToNormalizedCoords</a></li><li data-type='method'><a href="View.html#eventToViewCoords">eventToViewCoords</a></li><li data-type='method'><a href="View.html#execFrameRequesters">execFrameRequesters</a></li><li data-type='method'><a href="View.html#getLayers">getLayers</a></li><li data-type='method'><a href="View.html#getParentLayer">getParentLayer</a></li><li data-type='method'><a href="View.html#getPickingPositionFromDepth">getPickingPositionFromDepth</a></li><li data-type='method'><a href="View.html#normalizedToViewCoords">normalizedToViewCoords</a></li><li data-type='method'><a href="View.html#notifyChange">notifyChange</a></li><li data-type='method'><a href="View.html#pickObjectsAt">pickObjectsAt</a></li><li data-type='method'><a href="View.html#removeFrameRequester">removeFrameRequester</a></li><li data-type='method'><a href="View.html#viewToNormalizedCoords">viewToNormalizedCoords</a></li></ul></li><li><a href="WFSSource.html">WFSSource</a><ul class='methods'><li data-type='method'><a href="WFSSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="WFSSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="WFSSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="WMSSource.html">WMSSource</a><ul class='methods'><li data-type='method'><a href="WMSSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="WMSSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="WMSSource.html#urlFromExtent">urlFromExtent</a></li></ul></li><li><a href="WMTSSource.html">WMTSSource</a><ul class='methods'><li data-type='method'><a href="WMTSSource.html#extentInsideLimit">extentInsideLimit</a></li><li data-type='method'><a href="WMTSSource.html#extentsInsideLimit">extentsInsideLimit</a></li><li data-type='method'><a href="WMTSSource.html#urlFromExtent">urlFromExtent</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-Cache.html">Cache</a><ul class='methods'><li data-type='method'><a href="module-Cache.html#.clear">clear</a></li><li data-type='method'><a href="module-Cache.html#.delete">delete</a></li><li data-type='method'><a href="module-Cache.html#.flush">flush</a></li><li data-type='method'><a href="module-Cache.html#.get">get</a></li><li data-type='method'><a href="module-Cache.html#.set">set</a></li></ul></li><li><a href="module-CameraUtils.html">CameraUtils</a><ul class='methods'><li data-type='method'><a href="module-CameraUtils.html#.animateCameraToLookAtTarget">animateCameraToLookAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.getDiffParams">getDiffParams</a></li><li data-type='method'><a href="module-CameraUtils.html#.getTransformCameraLookingAtTarget">getTransformCameraLookingAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.sequenceAnimationsToLookAtTarget">sequenceAnimationsToLookAtTarget</a></li><li data-type='method'><a href="module-CameraUtils.html#.stop">stop</a></li><li data-type='method'><a href="module-CameraUtils.html#.transformCameraToLookAtTarget">transformCameraToLookAtTarget</a></li></ul></li><li><a href="module-Feature2Mesh.html">Feature2Mesh</a><ul class='methods'><li data-type='method'><a href="module-Feature2Mesh.html#.convert">convert</a></li></ul></li><li><a href="module-GeoJsonParser.html">GeoJsonParser</a><ul class='methods'><li data-type='method'><a href="module-GeoJsonParser.html#.parse">parse</a></li></ul></li><li><a href="module-GpxParser.html">GpxParser</a><ul class='methods'><li data-type='method'><a href="module-GpxParser.html#~parse">parse</a></li></ul></li><li><a href="module-OrientationUtils.html">OrientationUtils</a><ul class='methods'><li data-type='method'><a href="module-OrientationUtils.html#~globeQuaternionFromAttitude">globeQuaternionFromAttitude</a></li><li data-type='method'><a href="module-OrientationUtils.html#~localQuaternionFromAttitude">localQuaternionFromAttitude</a></li><li data-type='method'><a href="module-OrientationUtils.html#~quaternionFromAttitude">quaternionFromAttitude</a></li></ul></li><li><a href="module-URLBuilder.html">URLBuilder</a><ul class='methods'><li data-type='method'><a href="module-URLBuilder.html#.bbox">bbox</a></li><li data-type='method'><a href="module-URLBuilder.html#.xyz">xyz</a></li></ul></li><li><a href="module-VectorTileParser.html">VectorTileParser</a><ul class='methods'><li data-type='method'><a href="module-VectorTileParser.html#.parse">parse</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="ColorLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="ColorLayer.html#event:sequence-property-changed">sequence-property-changed</a></li><li><a href="ColorLayer.html#event:visible-property-changed">visible-property-changed</a></li><li><a href="GeometryLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="GlobeControls.html#event:camera-target-changed">camera-target-changed</a></li><li><a href="GlobeControls.html#event:orientation-changed">orientation-changed</a></li><li><a href="GlobeControls.html#event:pan-changed">pan-changed</a></li><li><a href="GlobeControls.html#event:range-changed">range-changed</a></li><li><a href="GlobeLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="GlobeView.html#event:initialized">initialized</a></li><li><a href="GlobeView.html#event:layer-added">layer-added</a></li><li><a href="GlobeView.html#event:layer-removed">layer-removed</a></li><li><a href="GlobeView.html#event:layers-initialized">layers-initialized</a></li><li><a href="GlobeView.html#event:layers-order-changed">layers-order-changed</a></li><li><a href="PanoramaLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="PlanarLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="TiledGeometryLayer.html#event:opacity-property-changed">opacity-property-changed</a></li><li><a href="View.html#event:layers-initialized">layers-initialized</a></li></ul><h3>Interfaces</h3><ul><li><a href="Provider.html">Provider</a><ul class='methods'><li data-type='method'><a href="Provider.html#executeCommand">executeCommand</a></li><li data-type='method'><a href="Provider.html#preprocessDataLayer">preprocessDataLayer</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#c">c</a></li><li><a href="global.html#CARDINAL">CARDINAL</a></li><li><a href="global.html#CONTROL_EVENTS">CONTROL_EVENTS</a></li><li><a href="global.html#coord">coord</a></li><li><a href="global.html#featureToMesh">featureToMesh</a></li><li><a href="global.html#FrameRequester">FrameRequester</a></li><li><a href="global.html#GLOBE_VIEW_EVENTS">GLOBE_VIEW_EVENTS</a></li><li><a href="global.html#MAIN_LOOP_EVENTS">MAIN_LOOP_EVENTS</a></li><li><a href="global.html#moveLayerDown">moveLayerDown</a></li><li><a href="global.html#moveLayerToIndex">moveLayerToIndex</a></li><li><a href="global.html#moveLayerUp">moveLayerUp</a></li></ul>
     </nav>
 
     <br class="clear">
 
     <footer>
-        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 10 2018 12:56:48 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 15 2018 15:33:38 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
     </footer>
 
     <script> prettyPrint(); </script>
