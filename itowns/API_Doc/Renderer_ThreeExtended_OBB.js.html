@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : utils/OrientationUtils.js</title>
+    <title>iTowns API : Renderer/ThreeExtended/OBB.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -30,126 +30,173 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import * as THREE from 'three';
+import TileGeometry from '../../Core/TileGeometry';
+import BuilderEllipsoidTile from '../../Core/Prefab/Globe/BuilderEllipsoidTile';
 
-/** @module OrientationUtils */
+// get oriented bounding box of tile
+const builder = new BuilderEllipsoidTile();
 
-const DEG2RAD = THREE.Math.DEG2RAD;
-
-// The transform from world to local is  RotationZ(heading).RotationX(pitch).RotationY(roll)
-// The transform from local to world is (RotationZ(heading).RotationX(pitch).RotationY(roll)).transpose()
-function quaternionFromRollPitchHeading(roll = 0, pitch = 0, heading = 0, target) {
-    roll *= DEG2RAD;
-    pitch *= DEG2RAD;
-    heading *= DEG2RAD;
-    // return this.setFromEuler(new THREE.Euler(pitch, roll, heading , 'ZXY')).conjugate();
-    return target.setFromEuler(new THREE.Euler(-pitch, -roll, -heading, 'YXZ')); // optimized version of above
-}
-
-// From DocMicMac, the transform from local to world is:
-// RotationX(omega).RotationY(phi).RotationZ(kappa).RotationX(PI)
-// RotationX(PI) = Scale(1, -1, -1) converts between the 2 conventions for the camera local frame:
-//  X right, Y bottom, Z front : convention in webGL, threejs and computer vision
-//  X right, Y top,    Z back  : convention in photogrammetry
-function quaternionFromOmegaPhiKappa(omega = 0, phi = 0, kappa = 0, target) {
-    omega *= DEG2RAD;
-    phi *= DEG2RAD;
-    kappa *= DEG2RAD;
-    target.setFromEuler(new THREE.Euler(omega, phi, kappa, 'XYZ'));
-    // target.setFromRotationMatrix(new THREE.Matrix4().makeRotationFromQuaternion(target).scale(new THREE.Vector3(1, -1, -1)));
-    target.set(target.w, target.z, -target.y, -target.x); // optimized version of above
-    return target;
-}
-
-// Set East North Up Orientation from geodesic normal
-// target - the quaternion to set
-// up - the normalized geodetic normal to the ellipsoid (given by Coordinates.geodeticNormal)
-var quaternionENUFromGeodesicNormal = (() => {
-    const matrix = new THREE.Matrix4();
-    const elements = matrix.elements;
-    const north = new THREE.Vector3();
-    const east = new THREE.Vector3();
-    return function setENUFromGeodesicNormal(up, target = new THREE.Quaternion()) {
-        // this is an optimized version of matrix.lookAt(up, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 1));
-        east.set(-up.y, up.x, 0);
-        east.normalize();
-        north.crossVectors(up, east);
-        elements[0] = east.x; elements[4] = north.x; elements[8] = up.x;
-        elements[1] = east.y; elements[5] = north.y; elements[9] = up.y;
-        elements[2] = east.z; elements[6] = north.z; elements[10] = up.z;
-        return target.setFromRotationMatrix(matrix);
-    };
-})();
-
-/**
- *
- * @typedef Attitude
- * @type {Object}
- *
- * @property {Number} omega - angle in degrees
- * @property {Number} phi - angle in degrees
- * @property {Number} kappa - angle in degrees
- * @property {Number} roll - angle in degrees
- * @property {Number} pitch - angle in degrees
- * @property {Number} heading - angle in degrees
- */
-
-
-const ENUQuat = new THREE.Quaternion();
-
-export default {
+class OBB extends THREE.Object3D {
+    /**
+     * Oriented bounding box
+     * @constructor
+     * @extends THREE.Object3D
+     * @param {THREE.Vector3}  min representing the lower (x, y, z) boundary of the box. Default is ( + Infinity, + Infinity, + Infinity ).
+     * @param {THREE.Vector3}  max representing the lower upper (x, y, z) boundary of the box. Default is ( - Infinity, - Infinity, - Infinity ).
+     */
+    constructor(min = new THREE.Vector3(+Infinity, +Infinity, +Infinity), max = new THREE.Vector3(-Infinity, -Infinity, -Infinity)) {
+        super();
+        this.box3D = new THREE.Box3(min.clone(), max.clone());
+        this.natBox = this.box3D.clone();
+        this.z = { min: 0, max: 0 };
+        this.topPointsWorld = [
+            new THREE.Vector3(),
+            new THREE.Vector3(),
+            new THREE.Vector3(),
+            new THREE.Vector3(),
+        ];
+        this.update();
+    }
 
     /**
-     * @function localQuaternionFromAttitude
-     * @param {Attitude} attitude - [Attitude]{@link module:OrientationParser~Attitude}
-     * with properties: (omega, phi, kappa), (roll, pitch, heading) or none.
-     * Note that convergence of the meridians is not taken into account.
-     * @param {THREE.Quaternion} target Quaternion to set
-     * @returns {THREE.Quaternion} Quaternion representing the rotation
-     */
-    localQuaternionFromAttitude(attitude, target = new THREE.Quaternion()) {
-        if ((attitude.roll !== undefined) || (attitude.pitch !== undefined) || (attitude.heading !== undefined)) {
-            return quaternionFromRollPitchHeading(attitude.roll, attitude.pitch, attitude.heading, target);
-        }
-        if ((attitude.omega !== undefined) || (attitude.phi !== undefined) || (attitude.kappa !== undefined)) {
-            return quaternionFromOmegaPhiKappa(attitude.omega, attitude.phi, attitude.kappa, target);
-        }
-        return target.set(0, 0, 0, 1);
-    },
-
-    /**
-     * @function globeQuaternionFromAttitude
-     * @param {Attitude} attitude - [Attitude]{@link module:OrientationParser~Attitude}
-     * with properties: (omega, phi, kappa), (roll, pitch, heading) or none.
-     * @param {Coordinates} coordinate position on the globe
-     * @param {THREE.Quaternion} target Quaternion to set
-     * @returns {THREE.Quaternion} Quaternion representing the rotation
-     */
-    globeQuaternionFromAttitude(attitude, coordinate, target = new THREE.Quaternion()) {
-        quaternionENUFromGeodesicNormal(coordinate.geodesicNormal, ENUQuat);
-        this.localQuaternionFromAttitude(attitude, target);
-        target.premultiply(ENUQuat);
-        return target;
-    },
-
-    /** Read rotation information (roll pitch heading or omega phi kappa),
-     * Create a ThreeJs quaternion representing a rotation.
+     * Creates a new instance of the object with same properties than original.
      *
-     * @function quaternionFromAttitude
-     * @param {Attitude} attitude - [Attitude]{@link module:OrientationParser~Attitude}
-     * @param {Coordinates} coordinate position the oject (used to apply another rotation on Globe CRS)
-     * @param {Boolean} needsENUFromGeodesicNormal should be true on globe CRS.
-     * If true, we will apply another rotation : The rotation use to create ENU local space at coordinate parameter position.
-     * @param {THREE.Quaternion} target Quaternion to set
-     * @returns {THREE.Quaternion} Quaternion representing the rotation
+     * @return     {OBB}  Copy of this object.
      */
-    quaternionFromAttitude(attitude, coordinate, needsENUFromGeodesicNormal, target = new THREE.Quaternion()) {
-        if (needsENUFromGeodesicNormal) {
-            return this.globeQuaternionFromAttitude(attitude, coordinate, target);
-        } else {
-            return this.localQuaternionFromAttitude(attitude, target);
+    clone() {
+        return new OBB().copy(this);
+    }
+
+    /**
+     * Copy the property of OBB
+     *
+     * @param      {OBB}  cOBB OBB to copy
+     * @return     {OBB}  the copy
+     */
+    copy(cOBB) {
+        super.copy(cOBB);
+        this.box3D.copy(cOBB.box3D);
+        this.natBox.copy(cOBB.natBox);
+        this.z.min = cOBB.z.min;
+        this.z.max = cOBB.z.max;
+        for (let i = 0, max = this.topPointsWorld.length; i &lt; max; i++) {
+            this.topPointsWorld[i].copy(cOBB.topPointsWorld[i]);
         }
-    },
-};
+        return this;
+    }
+
+    /**
+     * Update the top point world
+     *
+     * @return {Array&lt;THREE.Vector3>} the top point world
+     */
+    update() {
+        this.updateMatrixWorld(true);
+        this.toPoints(this.topPointsWorld);
+
+        for (let i = 0, max = this.topPointsWorld.length; i &lt; max; i++) {
+            this.topPointsWorld[i].applyMatrix4(this.matrixWorld);
+        }
+
+        return this.topPointsWorld;
+    }
+
+    /**
+     * Update z min and z max of oriented bounding box
+     *
+     * @param {number}  min The minimum of oriented bounding box
+     * @param {number}  max The maximum of oriented bounding box
+     */
+    updateZ(min, max) {
+        this.z = { min, max };
+        this.box3D.min.z = this.natBox.min.z + min;
+        this.box3D.max.z = this.natBox.max.z + max;
+        this.update();
+    }
+
+    /**
+     * Set bouding box value to points
+     *
+     * @param      {Array&lt;THREE.Vector3>}  points  The points to set
+     * @return     {Array&lt;THREE.Vector3>}  The points seted
+     */
+    toPoints(points) {
+        // top points of bounding box
+        points[0].set(this.box3D.max.x, this.box3D.max.y, this.box3D.max.z);
+        points[1].set(this.box3D.min.x, this.box3D.max.y, this.box3D.max.z);
+        points[2].set(this.box3D.min.x, this.box3D.min.y, this.box3D.max.z);
+        points[3].set(this.box3D.max.x, this.box3D.min.y, this.box3D.max.z);
+        // bottom points of bounding box
+        if (points.length > 4) {
+            points[4].set(this.box3D.max.x, this.box3D.max.y, this.box3D.min.z);
+            points[5].set(this.box3D.min.x, this.box3D.max.y, this.box3D.min.z);
+            points[6].set(this.box3D.min.x, this.box3D.min.y, this.box3D.min.z);
+            points[7].set(this.box3D.max.x, this.box3D.min.y, this.box3D.min.z);
+        }
+
+        return points;
+    }
+
+    /**
+     * Determines if the sphere is above the XY space of the box
+     *
+     * @param      {Sphere}   sphere  The sphere
+     * @return     {boolean}  True if sphere is above the XY space of the box, False otherwise.
+     */
+    isSphereAboveXYBox(sphere) {
+        const localSpherePosition = this.worldToLocal(sphere.position);
+        // get obb closest point to sphere center by clamping
+        const x = Math.max(this.box3D.min.x, Math.min(localSpherePosition.x, this.box3D.max.x));
+        const y = Math.max(this.box3D.min.y, Math.min(localSpherePosition.y, this.box3D.max.y));
+
+        // this is the same as isPointInsideSphere.position
+        const distance = Math.sqrt((x - localSpherePosition.x) * (x - localSpherePosition.x) +
+                               (y - localSpherePosition.y) * (y - localSpherePosition.y));
+
+        return distance &lt; sphere.radius;
+    }
+
+    /**
+     * Compute OBB from extent.
+     * The OBB resulted can be only in the system 'EPSG:3946'.
+     *
+     * @param      {Extent}        extent     The extent (with crs 'EPSG:4326') to compute oriented bounding box
+     * @param      {number}        minHeight  The minimum height of OBB
+     * @param      {number}        maxHeight  The maximum height of OBB
+     * @param      {OBB}  obb      The obb to copy result
+     * @return     {TileGeometry}  { description_of_the_return_value }
+     */
+    static extentToOBB(extent, minHeight = 0, maxHeight = 0, obb) {
+        if (extent._crs != 'EPSG:4326') {
+            throw new Error('The extent crs is not a Geographic Coordinates (EPSG:4326)');
+        }
+
+        const { sharableExtent, quaternion, position } = builder.computeSharableExtent(extent);
+        const paramsGeometry = {
+            extent: sharableExtent,
+            level: 0,
+            segment: 2,
+            disableSkirt: true,
+        };
+
+        const geometry = new TileGeometry(paramsGeometry, builder);
+        if (obb instanceof OBB) {
+            obb.copy(geometry.OBB);
+        } else {
+            obb = geometry.OBB;
+        }
+
+        obb.updateZ(minHeight, maxHeight);
+        obb.position.copy(position);
+        obb.quaternion.copy(quaternion);
+        obb.update();
+
+        // Calling geometry.dispose() is not needed since this geometry never gets rendered
+        return obb;
+    }
+}
+
+export default OBB;
 </code></pre>
         </article>
     </section>
