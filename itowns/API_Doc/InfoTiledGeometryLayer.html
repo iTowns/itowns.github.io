@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : ColorLayer</title>
+    <title>iTowns API : InfoTiledGeometryLayer</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -28,7 +28,7 @@
 <header>
     
         <h2>
-        ColorLayer
+        InfoTiledGeometryLayer
         </h2>
         
     
@@ -42,7 +42,7 @@
 
     
 
-    <h4 class="name" id="ColorLayer"><span class="type-signature"></span>new ColorLayer<span class="signature">(id, config<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="InfoTiledGeometryLayer"><span class="type-signature"></span>new InfoTiledGeometryLayer<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
@@ -54,7 +54,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Layer_ColorLayer.js.html">Layer/ColorLayer.js</a>, <a href="Layer_ColorLayer.js.html#line64">line 64</a>
+        <a href="Layer_InfoLayer.js.html">Layer/InfoLayer.js</a>, <a href="Layer_InfoLayer.js.html#line14">line 14</a>
     </li></ul></dd>
     
 
@@ -91,12 +91,158 @@
 
 
 
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>displayed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>layers</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Layer.html">Layer</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Displayed <a href="ColorLayer.html">ColorLayer</a> and <a href="ElevationLayer.html">ElevationLayer</a>.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>extent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Extent.html">Extent</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><a href="Extent.html">Extent</a> of displayed tiles.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tiles</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Set</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Set of displayed tiles.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
 
 
 <div class="description">
-    A simple layer, usually managing a texture to display on a view. For example,
-it can be an aerial view of the ground or a simple transparent layer with the
-roads displayed.
+    InfoTiledGeometryLayer that provides some states layer informations.
+These informations are displayed tiles, displayed <a href="ColorLayer.html">ColorLayer</a> and <a href="ElevationLayer.html">ElevationLayer</a> and
+extent of displayed tiles;
 </div>
 
 
@@ -107,205 +253,6 @@ roads displayed.
 
 
 
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>// Create a ColorLayer
-const color = new ColorLayer('roads', {
-    source: {
-         protocol: 'wmts',
-         url: 'http://server.geo/wmts/SERVICE=WMTS&amp;TILEMATRIX=%TILEMATRIX&amp;TILEROW=%ROW&amp;TILECOL=%COL',
-         format: 'image/png',
-    }
-    transparent: true
-});
-
-// Add the layer
-view.addLayer(color);</code></pre>
-
-    <pre class="prettyprint"><code>// Add and create a ColorLayer
-view.addLayer({
-    id: 'roads',
-    type: 'color',
-    source: {
-         url: 'http://server.geo/wmts/SERVICE=WMTS&amp;TILEMATRIX=%TILEMATRIX&amp;TILEROW=%ROW&amp;TILECOL=%COL',
-         protocol: 'wmts',
-         format: 'image/png',
-    }
-    transparent: true
-});</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The id of the layer, that should be unique. It is
-not mandatory, but an error will be emitted if this layer is added a
-<a href="View.html">View</a> that already has a layer going by that id.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>config</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Optional configuration, all elements in it
-will be merged as is in the layer. For example, if the configuration
-contains three elements <code>name, protocol, extent</code>, these
-elements will be available using <code>layer.name</code> or something
-else depending on the property name.
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>source</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="WMTSSource.html">WMTSSource</a></span>
-|
-
-<span class="param-type"><a href="WMSSource.html">WMSSource</a></span>
-|
-
-<span class="param-type"><a href="WFSSource.html">WFSSource</a></span>
-|
-
-<span class="param-type"><a href="TMSSource.html">TMSSource</a></span>
-|
-
-<span class="param-type"><a href="FileSource.html">FileSource</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">data source</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -327,17 +274,6 @@ else depending on the property name.
     
 
     
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li><a href="Layer.html">Layer</a></li>
-    </ul>
-
-
-    
 
     
 
@@ -350,509 +286,9 @@ else depending on the property name.
     
 
     
-        <h3 class="subsection-title">Methods</h3>
 
-        
-            
-
-    
-
-    <h4 class="name" id="defineLayerProperty"><span class="type-signature"></span>defineLayerProperty<span class="signature">(propertyName, defaultValue, onChange<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Layer_Layer.js.html">Layer/Layer.js</a>, <a href="Layer_Layer.js.html#line117">line 117</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Layer.html#defineLayerProperty">Layer#defineLayerProperty</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Defines a property for this layer, with a default value and a callback
-executed when the property changes.
-<br><br>
-When changing the property, it also emits an event, named following this
-convention: <code>${propertyName}-property-changed</code>, with
-<code>${propertyName}</code> being replaced by the name of the property.
-For example, if the added property name is <code>frozen</code>, it will
-emit a <code>frozen-property-changed</code>.
-<br><br>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-        <p class="code-caption">The emitted event has some properties assigned to it</p>
-    
-    <pre class="prettyprint"><code>event = {
-    new: {
-        ${propertyName}: * // the new value of the property
-    },
-    previous: {
-        ${propertyName}: * // the previous value of the property
-    },
-    target: Layer // the layer it has been dispatched from
-    type: string // the name of the emitted event
-}</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>propertyName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The name of the property, also used in
-the emitted event name.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>defaultValue</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The default set value.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>onChange</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The function executed when the property is
-changed. Parameters are the layer the property is defined on, and the
-name of the property.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-        <h3 class="subsection-title">Events</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id="event:opacity-property-changed">opacity-property-changed</h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Layer_ColorLayer.js.html">Layer/ColorLayer.js</a>, <a href="Layer_ColorLayer.js.html#line9">line 9</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Fires when the opacity of the layer has changed.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="event:sequence-property-changed">sequence-property-changed</h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Layer_ColorLayer.js.html">Layer/ColorLayer.js</a>, <a href="Layer_ColorLayer.js.html#line13">line 13</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Fires when the sequence of the layer has changed, meaning that the order of
-the layer changed in the view it is attached to.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="event:visible-property-changed">visible-property-changed</h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Layer_ColorLayer.js.html">Layer/ColorLayer.js</a>, <a href="Layer_ColorLayer.js.html#line5">line 5</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Fires when the visiblity of the layer has changed.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
-        
     
 </article>
 
