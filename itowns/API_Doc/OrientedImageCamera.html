@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : Layer/Layer.js</title>
+    <title>iTowns API : OrientedImageCamera</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -22,199 +22,361 @@
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import * as THREE from 'three';
-import { STRATEGY_MIN_NETWORK_TRAFFIC } from './LayerUpdateStrategy';
+        <h2>
+        OrientedImageCamera
+        </h2>
+        
+            <div class="class-description">OrientedImageCamera is a ThreeJs camera adapted to photogrammetric description.
+So we can build a ThreeJs perspective camera from size and focal information.</div>
+        
+    
+</header>
 
-class Layer extends THREE.EventDispatcher {
-    /**
-     * Don't use directly constructor to instance a new Layer. Instead, use
-     * another available type of Layer, implement a new one inheriting from this
-     * one or use {@link View#addLayer}.
-     *
-     * @constructor
-     * @protected
-     *
-     * @param {string} id - The id of the layer, that should be unique. It is
-     * not mandatory, but an error will be emitted if this layer is added a
-     * {@link View} that already has a layer going by that id.
-     * @param {string} type - The type of the layer, used to determine
-     * operations to do on a layer later in the rendering loop. There are three
-     * type of layers in itowns:
-     * &lt;ul>
-     *  &lt;li>&lt;code>color&lt;/code>, used for simple layer containing a texture&lt;/li>
-     *  &lt;li>&lt;code>elevation&lt;/code>, used for adding an elevation to the globe or
-     *  plane the layer is attached to&lt;/li>
-     *  &lt;li>&lt;code>geometry&lt;/code>, used for complex layer containing meshes,
-     *  like a WFS layer with extruded buildings&lt;/li>
-     * &lt;ul>
-     * @param {Object} [config] - Optional configuration, all elements in it
-     * will be merged as is in the layer. For example, if the configuration
-     * contains three elements &lt;code>name, protocol, extent&lt;/code>, these
-     * elements will be available using &lt;code>layer.name&lt;/code> or something
-     * else depending on the property name.
-     *
-     * @example
-     * // Add and create a new Layer
-     * const newLayer = view.addLayer({options});
-     *
-     * // Change layer's visibilty
-     * const layerToChange = view.getLayers(layer => layer.id == 'idLayerToChange')[0];
-     * layerToChange.visible = false;
-     * view.notifyChange(); // update viewer
-     *
-     * // Change layer's opacity
-     * const layerToChange = view.getLayers(layer => layer.id == 'idLayerToChange')[0];
-     * layerToChange.opacity = 0.5;
-     * view.notifyChange(); // update viewer
-     *
-     * // Listen properties
-     * const layerToListen = view.getLayers(layer => layer.id == 'idLayerToListen')[0];
-     * layerToListen.addEventListener('visible-property-changed', (event) => console.log(event));
-     * layerToListen.addEventListener('opacity-property-changed', (event) => console.log(event));
-     */
-    constructor(id, type, config = {}) {
-        super();
+<article>
+    
+        <div class="container-overview">
+        
+            
 
-        Object.assign(this, config);
+    
+    <h2>Constructor</h2>
+    
 
-        Object.defineProperty(this, 'id', {
-            value: id,
-            writable: false,
-        });
+    <h4 class="name" id="OrientedImageCamera"><span class="type-signature"></span>new OrientedImageCamera<span class="signature">(size, focal, center, near, far, skew, aspect)</span><span class="type-signature"></span></h4>
 
-        Object.defineProperty(this, 'type', {
-            value: type,
-            writable: false,
-        });
+    
 
-        // Default properties
-        this.options = config.options || {};
 
-        if (!this.updateStrategy) {
-            this.updateStrategy = {
-                type: STRATEGY_MIN_NETWORK_TRAFFIC,
-                options: {},
-            };
-        }
 
-        // TODO remove this warning and fallback after the release following v2.3.0
-        if (!this.format &amp;&amp; this.options.mimetype) {
-            console.warn('layer.options.mimetype is deprecated, please use layer.format');
-            this.format = this.options.mimetype;
-        }
 
-        this.defineLayerProperty('frozen', false);
-    }
+<dl class="details">
 
-    /**
-     * Defines a property for this layer, with a default value and a callback
-     * executed when the property changes.
-     * &lt;br>&lt;br>
-     * When changing the property, it also emits an event, named following this
-     * convention: &lt;code>${propertyName}-property-changed&lt;/code>, with
-     * &lt;code>${propertyName}&lt;/code> being replaced by the name of the property.
-     * For example, if the added property name is &lt;code>frozen&lt;/code>, it will
-     * emit a &lt;code>frozen-property-changed&lt;/code>.
-     * &lt;br>&lt;br>
-     * @example &lt;caption>The emitted event has some properties assigned to it&lt;/caption>
-     * event = {
-     *     new: {
-     *         ${propertyName}: * // the new value of the property
-     *     },
-     *     previous: {
-     *         ${propertyName}: * // the previous value of the property
-     *     },
-     *     target: Layer // the layer it has been dispatched from
-     *     type: string // the name of the emitted event
-     * }
-     *
-     * @param {string} propertyName - The name of the property, also used in
-     * the emitted event name.
-     * @param {*} defaultValue - The default set value.
-     * @param {function} [onChange] - The function executed when the property is
-     * changed. Parameters are the layer the property is defined on, and the
-     * name of the property.
-     */
-    defineLayerProperty(propertyName, defaultValue, onChange) {
-        const existing = Object.getOwnPropertyDescriptor(this, propertyName);
-        if (!existing || !existing.set) {
-            let property = this[propertyName] == undefined ? defaultValue : this[propertyName];
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Renderer_OrientedImageCamera.js.html">Renderer/OrientedImageCamera.js</a>, <a href="Renderer_OrientedImageCamera.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
 
-            Object.defineProperty(
-                this,
-                propertyName,
-                {
-                    get: () => property,
-                    set: (newValue) => {
-                        if (property !== newValue) {
-                            const event = { type: `${propertyName}-property-changed`, previous: {}, new: {} };
-                            event.previous[propertyName] = property;
-                            event.new[propertyName] = newValue;
-                            property = newValue;
-                            if (onChange) {
-                                onChange(this, propertyName);
-                            }
-                            this.dispatchEvent(event);
-                        }
-                    },
-                });
-        }
-    }
-}
+    
 
-export default Layer;
+    
 
-export const ImageryLayers = {
-    // move this to new index
-    // After the modification :
-    //      * the minimum sequence will always be 0
-    //      * the maximum sequence will always be layers.lenght - 1
-    // the ordering of all layers (Except that specified) doesn't change
-    moveLayerToIndex: function moveLayerToIndex(layer, newIndex, imageryLayers) {
-        newIndex = Math.min(newIndex, imageryLayers.length - 1);
-        newIndex = Math.max(newIndex, 0);
-        const oldIndex = layer.sequence;
+    
 
-        for (const imagery of imageryLayers) {
-            if (imagery.id === layer.id) {
-                // change index of specified layer
-                imagery.sequence = newIndex;
-            } else if (imagery.sequence > oldIndex &amp;&amp; imagery.sequence &lt;= newIndex) {
-                // down all layers between the old index and new index (to compensate the deletion of the old index)
-                imagery.sequence--;
-            } else if (imagery.sequence >= newIndex &amp;&amp; imagery.sequence &lt; oldIndex) {
-                // up all layers between the new index and old index (to compensate the insertion of the new index)
-                imagery.sequence++;
-            }
-        }
-    },
+    
 
-    moveLayerDown: function moveLayerDown(layer, imageryLayers) {
-        if (layer.sequence > 0) {
-            this.moveLayerToIndex(layer, layer.sequence - 1, imageryLayers);
-        }
-    },
+    
 
-    moveLayerUp: function moveLayerUp(layer, imageryLayers) {
-        const m = imageryLayers.length - 1;
-        if (layer.sequence &lt; m) {
-            this.moveLayerToIndex(layer, layer.sequence + 1, imageryLayers);
-        }
-    },
+    
 
-    getColorLayersIdOrderedBySequence: function getColorLayersIdOrderedBySequence(imageryLayers) {
-        const copy = Array.from(imageryLayers);
-        copy.sort((a, b) => a.sequence - b.sequence);
-        return copy.map(l => l.id);
-    },
-};
+    
 
-</code></pre>
-        </article>
-    </section>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">Vector2</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    <code>1024</code>
+                
+                </td>
+            
+
+            <td class="description last">image size in pixels (default: x=1024, y=x)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>focal</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">Vector2</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    <code>1024</code>
+                
+                </td>
+            
+
+            <td class="description last">focal length in pixels (default: x=1024, y=x)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>center</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Vector2</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">principal point in pixels (default: size/2)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>near</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    <code>0.1</code>
+                
+                </td>
+            
+
+            <td class="description last">Camera frustum near plane (default: see THREE.PerspectiveCamera).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>far</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    <code>1000</code>
+                
+                </td>
+            
+
+            <td class="description last">Camera frustum far plane (default: see THREE.PerspectiveCamera).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>skew</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">shear transform parameter (default: 0)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>aspect</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">aspect ratio of the camera (default: size.x/size.y).</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

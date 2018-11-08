@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : Layer/Layer.js</title>
+    <title>iTowns API : CameraCalibrationParser</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -22,199 +22,911 @@
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import * as THREE from 'three';
-import { STRATEGY_MIN_NETWORK_TRAFFIC } from './LayerUpdateStrategy';
+        
+            
+        
+    
+</header>
 
-class Layer extends THREE.EventDispatcher {
-    /**
-     * Don't use directly constructor to instance a new Layer. Instead, use
-     * another available type of Layer, implement a new one inheriting from this
-     * one or use {@link View#addLayer}.
-     *
-     * @constructor
-     * @protected
-     *
-     * @param {string} id - The id of the layer, that should be unique. It is
-     * not mandatory, but an error will be emitted if this layer is added a
-     * {@link View} that already has a layer going by that id.
-     * @param {string} type - The type of the layer, used to determine
-     * operations to do on a layer later in the rendering loop. There are three
-     * type of layers in itowns:
-     * &lt;ul>
-     *  &lt;li>&lt;code>color&lt;/code>, used for simple layer containing a texture&lt;/li>
-     *  &lt;li>&lt;code>elevation&lt;/code>, used for adding an elevation to the globe or
-     *  plane the layer is attached to&lt;/li>
-     *  &lt;li>&lt;code>geometry&lt;/code>, used for complex layer containing meshes,
-     *  like a WFS layer with extruded buildings&lt;/li>
-     * &lt;ul>
-     * @param {Object} [config] - Optional configuration, all elements in it
-     * will be merged as is in the layer. For example, if the configuration
-     * contains three elements &lt;code>name, protocol, extent&lt;/code>, these
-     * elements will be available using &lt;code>layer.name&lt;/code> or something
-     * else depending on the property name.
-     *
-     * @example
-     * // Add and create a new Layer
-     * const newLayer = view.addLayer({options});
-     *
-     * // Change layer's visibilty
-     * const layerToChange = view.getLayers(layer => layer.id == 'idLayerToChange')[0];
-     * layerToChange.visible = false;
-     * view.notifyChange(); // update viewer
-     *
-     * // Change layer's opacity
-     * const layerToChange = view.getLayers(layer => layer.id == 'idLayerToChange')[0];
-     * layerToChange.opacity = 0.5;
-     * view.notifyChange(); // update viewer
-     *
-     * // Listen properties
-     * const layerToListen = view.getLayers(layer => layer.id == 'idLayerToListen')[0];
-     * layerToListen.addEventListener('visible-property-changed', (event) => console.log(event));
-     * layerToListen.addEventListener('opacity-property-changed', (event) => console.log(event));
-     */
-    constructor(id, type, config = {}) {
-        super();
+<article>
+    
+        <div class="container-overview">
+        
+            
+                <div class="description">The CameraCalibrationParser module provide a <a href="module-CameraCalibrationParser.html#.parse">parse</a>
+method that takes a JSON array of camera calibrations in and yields an array of <a href="OrientedImageCamera.html">OrientedImageCamera</a></div>
+            
 
-        Object.assign(this, config);
+            
+                
 
-        Object.defineProperty(this, 'id', {
-            value: id,
-            writable: false,
-        });
 
-        Object.defineProperty(this, 'type', {
-            value: type,
-            writable: false,
-        });
 
-        // Default properties
-        this.options = config.options || {};
 
-        if (!this.updateStrategy) {
-            this.updateStrategy = {
-                type: STRATEGY_MIN_NETWORK_TRAFFIC,
-                options: {},
-            };
-        }
+<dl class="details">
 
-        // TODO remove this warning and fallback after the release following v2.3.0
-        if (!this.format &amp;&amp; this.options.mimetype) {
-            console.warn('layer.options.mimetype is deprecated, please use layer.format');
-            this.format = this.options.mimetype;
-        }
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Parser_CameraCalibrationParser.js.html">Parser/CameraCalibrationParser.js</a>, <a href="Parser_CameraCalibrationParser.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
 
-        this.defineLayerProperty('frozen', false);
-    }
+    
 
-    /**
-     * Defines a property for this layer, with a default value and a callback
-     * executed when the property changes.
-     * &lt;br>&lt;br>
-     * When changing the property, it also emits an event, named following this
-     * convention: &lt;code>${propertyName}-property-changed&lt;/code>, with
-     * &lt;code>${propertyName}&lt;/code> being replaced by the name of the property.
-     * For example, if the added property name is &lt;code>frozen&lt;/code>, it will
-     * emit a &lt;code>frozen-property-changed&lt;/code>.
-     * &lt;br>&lt;br>
-     * @example &lt;caption>The emitted event has some properties assigned to it&lt;/caption>
-     * event = {
-     *     new: {
-     *         ${propertyName}: * // the new value of the property
-     *     },
-     *     previous: {
-     *         ${propertyName}: * // the previous value of the property
-     *     },
-     *     target: Layer // the layer it has been dispatched from
-     *     type: string // the name of the emitted event
-     * }
-     *
-     * @param {string} propertyName - The name of the property, also used in
-     * the emitted event name.
-     * @param {*} defaultValue - The default set value.
-     * @param {function} [onChange] - The function executed when the property is
-     * changed. Parameters are the layer the property is defined on, and the
-     * name of the property.
-     */
-    defineLayerProperty(propertyName, defaultValue, onChange) {
-        const existing = Object.getOwnPropertyDescriptor(this, propertyName);
-        if (!existing || !existing.set) {
-            let property = this[propertyName] == undefined ? defaultValue : this[propertyName];
+    
 
-            Object.defineProperty(
-                this,
-                propertyName,
-                {
-                    get: () => property,
-                    set: (newValue) => {
-                        if (property !== newValue) {
-                            const event = { type: `${propertyName}-property-changed`, previous: {}, new: {} };
-                            event.previous[propertyName] = property;
-                            event.new[propertyName] = newValue;
-                            property = newValue;
-                            if (onChange) {
-                                onChange(this, propertyName);
-                            }
-                            this.dispatchEvent(event);
-                        }
-                    },
-                });
-        }
-    }
-}
+    
 
-export default Layer;
+    
 
-export const ImageryLayers = {
-    // move this to new index
-    // After the modification :
-    //      * the minimum sequence will always be 0
-    //      * the maximum sequence will always be layers.lenght - 1
-    // the ordering of all layers (Except that specified) doesn't change
-    moveLayerToIndex: function moveLayerToIndex(layer, newIndex, imageryLayers) {
-        newIndex = Math.min(newIndex, imageryLayers.length - 1);
-        newIndex = Math.max(newIndex, 0);
-        const oldIndex = layer.sequence;
+    
 
-        for (const imagery of imageryLayers) {
-            if (imagery.id === layer.id) {
-                // change index of specified layer
-                imagery.sequence = newIndex;
-            } else if (imagery.sequence > oldIndex &amp;&amp; imagery.sequence &lt;= newIndex) {
-                // down all layers between the old index and new index (to compensate the deletion of the old index)
-                imagery.sequence--;
-            } else if (imagery.sequence >= newIndex &amp;&amp; imagery.sequence &lt; oldIndex) {
-                // up all layers between the new index and old index (to compensate the insertion of the new index)
-                imagery.sequence++;
-            }
-        }
-    },
+    
 
-    moveLayerDown: function moveLayerDown(layer, imageryLayers) {
-        if (layer.sequence > 0) {
-            this.moveLayerToIndex(layer, layer.sequence - 1, imageryLayers);
-        }
-    },
+    
 
-    moveLayerUp: function moveLayerUp(layer, imageryLayers) {
-        const m = imageryLayers.length - 1;
-        if (layer.sequence &lt; m) {
-            this.moveLayerToIndex(layer, layer.sequence + 1, imageryLayers);
-        }
-    },
+    
 
-    getColorLayersIdOrderedBySequence: function getColorLayersIdOrderedBySequence(imageryLayers) {
-        const copy = Array.from(imageryLayers);
-        copy.sort((a, b) => a.sequence - b.sequence);
-        return copy.map(l => l.id);
-    },
-};
+    
 
-</code></pre>
-        </article>
-    </section>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".parse"><span class="type-signature">(static) </span>parse<span class="signature">(json, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Parser_CameraCalibrationParser.js.html">Parser/CameraCalibrationParser.js</a>, <a href="Parser_CameraCalibrationParser.js.html#line93">line 93</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    Parser a JSON array of camera calibrations and return an array of <a href="OrientedImageCamera.html">OrientedImageCamera</a>.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>json</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">JSON</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">the json content of the calibration file.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>{}</code>
+                
+                </td>
+            
+
+            <td class="description last">Options controlling the parsing.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>near</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>0.1</code>
+                
+                </td>
+            
+
+            <td class="description last">Near of the created cameras. Default value comes from created <a href="OrientedImageCamera.html">OrientedImageCamera</a></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>far</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>1000</code>
+                
+                </td>
+            
+
+            <td class="description last">Far of the created cameras. Default value comes from created <a href="OrientedImageCamera.html">OrientedImageCamera</a></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - A promise resolving with an array of <a href="OrientedImageCamera.html">OrientedImageCamera</a>.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id="~CameraCalibrationJson">CameraCalibrationJson</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Parser_CameraCalibrationParser.js.html">Parser/CameraCalibrationParser.js</a>, <a href="Parser_CameraCalibrationParser.js.html#line68">line 68</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>projection</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">projection matrix,</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">image size in pixel.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>position</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">position of the camera.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rotation</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">rotation matrix</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>distorsion</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>{}</code>
+                
+                </td>
+            
+
+            <td class="description last">distorsion
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>pps</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>poly357</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>limit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>l1l2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>etat</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description">
+    Description of a camera calibration in a JSON file.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+    
+
+    
+</article>
+
+</section>
 
 
 

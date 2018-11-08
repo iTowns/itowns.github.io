@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : Layer/Layer.js</title>
+    <title>iTowns API : Renderer/OrientedImageCamera.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -26,192 +26,82 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import * as THREE from 'three';
-import { STRATEGY_MIN_NETWORK_TRAFFIC } from './LayerUpdateStrategy';
 
-class Layer extends THREE.EventDispatcher {
+/**
+ * @classdesc OrientedImageCamera is a ThreeJs camera adapted to photogrammetric description.
+ * So we can build a ThreeJs perspective camera from size and focal information.
+ */
+class OrientedImageCamera extends THREE.PerspectiveCamera {
     /**
-     * Don't use directly constructor to instance a new Layer. Instead, use
-     * another available type of Layer, implement a new one inheriting from this
-     * one or use {@link View#addLayer}.
-     *
      * @constructor
-     * @protected
-     *
-     * @param {string} id - The id of the layer, that should be unique. It is
-     * not mandatory, but an error will be emitted if this layer is added a
-     * {@link View} that already has a layer going by that id.
-     * @param {string} type - The type of the layer, used to determine
-     * operations to do on a layer later in the rendering loop. There are three
-     * type of layers in itowns:
-     * &lt;ul>
-     *  &lt;li>&lt;code>color&lt;/code>, used for simple layer containing a texture&lt;/li>
-     *  &lt;li>&lt;code>elevation&lt;/code>, used for adding an elevation to the globe or
-     *  plane the layer is attached to&lt;/li>
-     *  &lt;li>&lt;code>geometry&lt;/code>, used for complex layer containing meshes,
-     *  like a WFS layer with extruded buildings&lt;/li>
-     * &lt;ul>
-     * @param {Object} [config] - Optional configuration, all elements in it
-     * will be merged as is in the layer. For example, if the configuration
-     * contains three elements &lt;code>name, protocol, extent&lt;/code>, these
-     * elements will be available using &lt;code>layer.name&lt;/code> or something
-     * else depending on the property name.
-     *
-     * @example
-     * // Add and create a new Layer
-     * const newLayer = view.addLayer({options});
-     *
-     * // Change layer's visibilty
-     * const layerToChange = view.getLayers(layer => layer.id == 'idLayerToChange')[0];
-     * layerToChange.visible = false;
-     * view.notifyChange(); // update viewer
-     *
-     * // Change layer's opacity
-     * const layerToChange = view.getLayers(layer => layer.id == 'idLayerToChange')[0];
-     * layerToChange.opacity = 0.5;
-     * view.notifyChange(); // update viewer
-     *
-     * // Listen properties
-     * const layerToListen = view.getLayers(layer => layer.id == 'idLayerToListen')[0];
-     * layerToListen.addEventListener('visible-property-changed', (event) => console.log(event));
-     * layerToListen.addEventListener('opacity-property-changed', (event) => console.log(event));
+     * @param {number|Vector2} size - image size in pixels (default: x=1024, y=x)
+     * @param {number|Vector2} focal - focal length in pixels (default: x=1024, y=x)
+     * @param {Vector2} center - principal point in pixels (default: size/2)
+     * @param {number} near - Camera frustum near plane (default: see THREE.PerspectiveCamera).
+     * @param {number} far - Camera frustum far plane (default: see THREE.PerspectiveCamera).
+     * @param {number} skew - shear transform parameter (default: 0)
+     * @param {number} aspect - aspect ratio of the camera (default: size.x/size.y).
      */
-    constructor(id, type, config = {}) {
-        super();
-
-        Object.assign(this, config);
-
-        Object.defineProperty(this, 'id', {
-            value: id,
-            writable: false,
+    constructor(size = 1024, focal = 1024, center, near = 0.1, far = 1000, skew, aspect) {
+        size = size.isVector2 ? size : new THREE.Vector2(size, size);
+        aspect = aspect || size.x / size.y;
+        super(undefined, aspect, near, far);
+        this.size = size;
+        this.focal = focal.isVector2 ? focal : new THREE.Vector2(focal, focal);
+        this.center = center || size.clone().multiplyScalar(0.5);
+        this.skew = skew || 0;
+        Object.defineProperty(this, 'fov', {
+            get: () => Math.atan2(this.size.y, 2 * this.focal.y) * 360 / Math.PI,
+            // setting the fov overwrites focal.x and focal.y
+            set: (fov) => {
+                var focal = 0.5 * this.size.y / Math.tan(fov * Math.PI / 360);
+                this.focal.x = focal;
+                this.focal.y = focal;
+            },
         });
-
-        Object.defineProperty(this, 'type', {
-            value: type,
-            writable: false,
-        });
-
-        // Default properties
-        this.options = config.options || {};
-
-        if (!this.updateStrategy) {
-            this.updateStrategy = {
-                type: STRATEGY_MIN_NETWORK_TRAFFIC,
-                options: {},
-            };
-        }
-
-        // TODO remove this warning and fallback after the release following v2.3.0
-        if (!this.format &amp;&amp; this.options.mimetype) {
-            console.warn('layer.options.mimetype is deprecated, please use layer.format');
-            this.format = this.options.mimetype;
-        }
-
-        this.defineLayerProperty('frozen', false);
+        this.updateProjectionMatrix();
     }
 
-    /**
-     * Defines a property for this layer, with a default value and a callback
-     * executed when the property changes.
-     * &lt;br>&lt;br>
-     * When changing the property, it also emits an event, named following this
-     * convention: &lt;code>${propertyName}-property-changed&lt;/code>, with
-     * &lt;code>${propertyName}&lt;/code> being replaced by the name of the property.
-     * For example, if the added property name is &lt;code>frozen&lt;/code>, it will
-     * emit a &lt;code>frozen-property-changed&lt;/code>.
-     * &lt;br>&lt;br>
-     * @example &lt;caption>The emitted event has some properties assigned to it&lt;/caption>
-     * event = {
-     *     new: {
-     *         ${propertyName}: * // the new value of the property
-     *     },
-     *     previous: {
-     *         ${propertyName}: * // the previous value of the property
-     *     },
-     *     target: Layer // the layer it has been dispatched from
-     *     type: string // the name of the emitted event
-     * }
-     *
-     * @param {string} propertyName - The name of the property, also used in
-     * the emitted event name.
-     * @param {*} defaultValue - The default set value.
-     * @param {function} [onChange] - The function executed when the property is
-     * changed. Parameters are the layer the property is defined on, and the
-     * name of the property.
-     */
-    defineLayerProperty(propertyName, defaultValue, onChange) {
-        const existing = Object.getOwnPropertyDescriptor(this, propertyName);
-        if (!existing || !existing.set) {
-            let property = this[propertyName] == undefined ? defaultValue : this[propertyName];
-
-            Object.defineProperty(
-                this,
-                propertyName,
-                {
-                    get: () => property,
-                    set: (newValue) => {
-                        if (property !== newValue) {
-                            const event = { type: `${propertyName}-property-changed`, previous: {}, new: {} };
-                            event.previous[propertyName] = property;
-                            event.new[propertyName] = newValue;
-                            property = newValue;
-                            if (onChange) {
-                                onChange(this, propertyName);
-                            }
-                            this.dispatchEvent(event);
-                        }
-                    },
-                });
+    // we override PerspectiveCamera.updateProjectionMatrix to
+    // update the projection matrix depending on other variables
+    // focal, center and size...
+    updateProjectionMatrix() {
+        if (!this.focal) {
+            return;
         }
+        const near = this.near;
+        const sx = near / this.focal.x;
+        const sy = near / this.focal.y;
+        const left = -sx * this.center.x;
+        const bottom = -sy * this.center.y;
+        const right = left + sx * this.size.x;
+        const top = bottom + sy * this.size.y;
+        this.projectionMatrix.makePerspective(left, right, top, bottom, near, this.far);
+        this.projectionMatrix.elements[4] = 2 * this.skew / this.size.x;
+
+        // take zoom and aspect into account
+        const textureAspect = this.size.x / this.size.y;
+        const aspectRatio = this.aspect / textureAspect;
+        const zoom = new THREE.Vector3(this.zoom, this.zoom, 1);
+        if (aspectRatio > 1) {
+            zoom.x /= aspectRatio;
+        } else {
+            zoom.y *= aspectRatio;
+        }
+        this.projectionMatrix.scale(zoom);
+    }
+
+    copy(source, recursive) {
+        super.copy(source, recursive);
+        this.size = source.size.clone();
+        this.focal = source.focal.clone();
+        this.center = source.center.clone();
+        this.skew = source.skew;
+        return this;
     }
 }
 
-export default Layer;
-
-export const ImageryLayers = {
-    // move this to new index
-    // After the modification :
-    //      * the minimum sequence will always be 0
-    //      * the maximum sequence will always be layers.lenght - 1
-    // the ordering of all layers (Except that specified) doesn't change
-    moveLayerToIndex: function moveLayerToIndex(layer, newIndex, imageryLayers) {
-        newIndex = Math.min(newIndex, imageryLayers.length - 1);
-        newIndex = Math.max(newIndex, 0);
-        const oldIndex = layer.sequence;
-
-        for (const imagery of imageryLayers) {
-            if (imagery.id === layer.id) {
-                // change index of specified layer
-                imagery.sequence = newIndex;
-            } else if (imagery.sequence > oldIndex &amp;&amp; imagery.sequence &lt;= newIndex) {
-                // down all layers between the old index and new index (to compensate the deletion of the old index)
-                imagery.sequence--;
-            } else if (imagery.sequence >= newIndex &amp;&amp; imagery.sequence &lt; oldIndex) {
-                // up all layers between the new index and old index (to compensate the insertion of the new index)
-                imagery.sequence++;
-            }
-        }
-    },
-
-    moveLayerDown: function moveLayerDown(layer, imageryLayers) {
-        if (layer.sequence > 0) {
-            this.moveLayerToIndex(layer, layer.sequence - 1, imageryLayers);
-        }
-    },
-
-    moveLayerUp: function moveLayerUp(layer, imageryLayers) {
-        const m = imageryLayers.length - 1;
-        if (layer.sequence &lt; m) {
-            this.moveLayerToIndex(layer, layer.sequence + 1, imageryLayers);
-        }
-    },
-
-    getColorLayersIdOrderedBySequence: function getColorLayersIdOrderedBySequence(imageryLayers) {
-        const copy = Array.from(imageryLayers);
-        copy.sort((a, b) => a.sequence - b.sequence);
-        return copy.map(l => l.id);
-    },
-};
-
+export default OrientedImageCamera;
 </code></pre>
         </article>
     </section>
