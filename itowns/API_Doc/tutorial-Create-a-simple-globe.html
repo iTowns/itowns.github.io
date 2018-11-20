@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : Renderer/ThreeExtended/FirstPersonControls.js</title>
+    <title>iTowns API : Tutorial: Creating a simple Globe</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -18,283 +18,152 @@
         <p></p>
         <div class="page-title"><img src="https://raw.githubusercontent.com/iTowns/itowns.github.io/master/images/itowns_logo_300x134.png" /></div>
 
-        
+        <section>
 
-
-
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import * as THREE from 'three';
-import { MAIN_LOOP_EVENTS } from '../../Core/MainLoop';
 
-// Note: we could use existing three.js controls (like https://github.com/mrdoob/three.js/blob/dev/examples/js/controls/FirstPersonControls.js)
-// but including these controls in itowns allows use to integrate them tightly with itowns.
-// Especially the existing controls are expecting a continuous update loop while we have a pausable one (so our controls use .notifyChange when needed)
+    <h2>Creating a simple Globe</h2>
+</header>
 
-function limitRotation(camera3D, rot, verticalFOV) {
-    // Limit vertical rotation (look up/down) to make sure the user cannot see
-    // outside of the cone defined by verticalFOV
-    const limit = THREE.Math.degToRad(verticalFOV - camera3D.fov) * 0.5;
-    return THREE.Math.clamp(rot, -limit, limit);
-}
-
-function applyRotation(view, camera3D, state) {
-    camera3D.quaternion.setFromUnitVectors(
-        new THREE.Vector3(0, 1, 0), camera3D.up);
-
-    camera3D.rotateY(state.rotateY);
-    camera3D.rotateX(state.rotateX);
-
-    view.notifyChange(view.camera.camera3D);
-}
-
-const MOVEMENTS = {
-    38: { method: 'translateZ', sign: -1 }, // FORWARD: up key
-    40: { method: 'translateZ', sign: 1 }, // BACKWARD: down key
-    37: { method: 'translateX', sign: -1 }, // STRAFE_LEFT: left key
-    39: { method: 'translateX', sign: 1 }, // STRAFE_RIGHT: right key
-    33: { method: 'translateY', sign: 1 }, // UP: PageUp key
-    34: { method: 'translateY', sign: -1 }, // DOWN: PageDown key
-};
-
-function moveCameraVerticalPlanar(value) {
-    this.camera.position.z += value;
-}
-
-const normal = new THREE.Vector3();
-function moveCameraVerticalGlobe(value) {
-    // compute geodesic normale
-    normal.copy(this.camera.position);
-    normal.normalize();
-    this.camera.position.add(normal.multiplyScalar(value));
-}
-
-class FirstPersonControls extends THREE.EventDispatcher {
-    /**
-     * @Constructor
-     * @param {View} view
-     * @param {object} options
-     * @param {boolean} options.focusOnClick - whether or not to focus the renderer domElement on click
-     * @param {boolean} options.focusOnMouseOver - whether or not to focus when the mouse is over the domElement
-     * @param {boolean} options.moveSpeed - if > 0, pressing the arrow keys will move the camera
-     * @param {number} options.verticalFOV - define the max visible vertical angle of the scene in degrees (default 180)
-     * @param {number} options.panoramaRatio - alternative way to specify the max vertical angle when using a panorama.
-     * You can specify the panorama width/height ratio and the verticalFOV will be computed automatically
-     * @param {boolean} options.disableEventListeners - if true, the controls will not self listen to mouse/key events.
-     * You'll have to manually forward the events to the appropriate functions: onMouseDown, onMouseMove, onMouseUp,
-     * onKeyUp, onKeyDown and onMouseWheel.
-     */
-    constructor(view, options = {}) {
-        super();
-        this.camera = view.camera.camera3D;
-        this.view = view;
-        this.moves = new Set();
-        if (options.panoramaRatio) {
-            const radius = (options.panoramaRatio * 200) / (2 * Math.PI);
-            options.verticalFOV =
-                options.panoramaRatio == 2 ? 180 : THREE.Math.radToDeg(2 * Math.atan(200 / (2 * radius)));
-        }
-        options.verticalFOV = options.verticalFOV || 180;
-        options.moveSpeed = options.moveSpeed === undefined ? 10 : options.moveSpeed; // backward or forward move speed in m/s
-        this.options = options;
-
-        this._isMouseDown = false;
-        this._onMouseDownMouseX = 0;
-        this._onMouseDownMouseY = 0;
-
-        this._state = {
-            rotateX: 0,
-            rotateY: 0,
-            snapshot() {
-                return {
-                    rotateX: this.rotateX,
-                    rotateY: this.rotateY,
-                };
-            },
-        };
-        this.reset();
-
-        const domElement = view.mainLoop.gfxEngine.renderer.domElement;
-        if (!options.disableEventListeners) {
-            domElement.addEventListener('mousedown', this.onMouseDown.bind(this), false);
-            domElement.addEventListener('touchstart', this.onMouseDown.bind(this), false);
-            domElement.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-            domElement.addEventListener('touchmove', this.onMouseMove.bind(this), false);
-            domElement.addEventListener('mouseup', this.onMouseUp.bind(this), false);
-            domElement.addEventListener('touchend', this.onMouseUp.bind(this), false);
-            domElement.addEventListener('keyup', this.onKeyUp.bind(this), true);
-            domElement.addEventListener('keydown', this.onKeyDown.bind(this), true);
-            domElement.addEventListener('mousewheel', this.onMouseWheel.bind(this), false);
-            domElement.addEventListener('DOMMouseScroll', this.onMouseWheel.bind(this), false); // firefox
-        }
-
-        this.view.addFrameRequester(MAIN_LOOP_EVENTS.AFTER_CAMERA_UPDATE, this.update.bind(this));
-
-        // focus policy
-        if (options.focusOnMouseOver) {
-            domElement.addEventListener('mouseover', () => domElement.focus());
-        }
-        if (options.focusOnClick) {
-            domElement.addEventListener('click', () => domElement.focus());
-        }
-
-        if (view.referenceCrs == 'EPSG:4978') {
-            this.moveCameraVertical = moveCameraVerticalGlobe;
-        } else {
-            this.moveCameraVertical = moveCameraVerticalPlanar;
-        }
+<article>
+    <p>The goal of this tutorial is to give a brief example on how to use iTowns to
+visualize a simple earth, with an elevation layer and a color layer.</p>
+<h2>Preparing the webpage</h2><pre class="prettyprint source lang-html"><code>&lt;!DOCTYPE html>
+&lt;html>
+    &lt;head>
+        &lt;meta charset=&quot;UTF-8&quot;>
+        &lt;title>Simple globe with iTowns&lt;/title>
+        &lt;style>
+            html: { height: 100%; }
+            body: { margin: 0; overflow: hidden; height: 100%; }
+            #viewerDiv: { margin: auto; height: 100%; width: 100%; padding: 0; }
+            canvas: { display: block }
+        &lt;/style>
+     &lt;/head>
+     &lt;body>
+        &lt;div id=&quot;viewerDiv&quot;>&lt;/div>
+        &lt;script src=&quot;js/itowns.js&quot;>&lt;/script>
+        &lt;script type=&quot;text/javascript&quot;>
+            // Our code goes here
+        &lt;/script>
+     &lt;/body>
+&lt;/html></code></pre><h2>Creating a view</h2><p>In order to be able to display anything with iTowns, we need one thing: a view,
+so we have a support to put our data on. The view needs to be attached to an
+element of the page in order to be displayed.</p>
+<pre class="prettyprint source lang-js"><code>var viewerDiv = document.getElementById('viewerDiv');
+var position = new itowns.Coordinates('WGS84', 2.35, 48.8, 25e6);
+var view = new itowns.GlobeView(viewerDiv, position);</code></pre><p>Three things are done here. First we get the element of the page, on which the
+view will be displayed. But getting this is not sufficient in our case to
+display a globe view. <a href="GlobeView.html">The documentation</a> specifies that a
+second parameter needs to be present: an object that will help place the camera
+on the globe.</p>
+<p>This object needs to contain three properties: <code>longitude</code>, <code>latitude</code> and
+<code>altitude</code>, as in any World Geodetic System 84 (WGS84) coordinates. So we can
+either pass an object created by hand, like <code>{ longitude: 2.35, latitude: 48.8,
+altitude: 25e6 }</code> or create a <a href="Coordinates.html">Coordinates</a> in the WGS84 system. A {@link}
+Coordinates} in this reference system has the three asked properties set, so it
+also answers our needs here.</p>
+<p>Then, having those two objects, the <a href="GlobeView.html">GlobeView</a> can be created. It should
+result in a simple blue globe like below.</p>
+<p><img src="tutorials/images/Create-a-simple-globe-1.png" alt="Simple GlobeView"></p>
+<h2>Adding a color layer</h2><p>Now that we have a globe, let's display data on it. For this, let's use a basic
+layer composed of aerial photos.</p>
+<pre class="prettyprint source lang-js"><code>var colorLayer = new itowns.ColorLayer('Ortho', {
+    source: {
+        protocol: 'wmts',
+        url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+        name: 'ORTHOIMAGERY.ORTHOPHOTOS',
+        tileMatrixSet: 'PM',
+        format: 'image/jpeg',
     }
-
-    isUserInteracting() {
-        return this.moves.size !== 0 &amp;&amp; !this._isMouseDown;
+});
+view.addLayer(colorLayer);</code></pre><p>We want to create and add a layer containing images. The best candidate here is
+the <a href="ColorLayer.html">ColorLayer</a>. Looking at the documentation, we need at least one
+parameter: the <code>id</code> of the layer. But that won't be enough to display data if we
+don't tell the layer where to look to get the data. For achieving this, we can
+declare a source in the options.</p>
+<p>Images that we choose to display are coming from a WMTS server. So the source
+used will be a <a href="WMTSSource.html">WMTSSource</a>. To declare this source, four elements are
+needed:</p>
+<ul>
+<li>a <code>protocol</code>, selecting the type of source we need, in our case <code>wmts</code></li>
+<li>an <code>url</code>, describing the path to the WMTS service</li>
+<li>a <code>name</code>, used to build the URL for each image</li>
+<li>a <code>tileMatrixSet</code>, for the same purpose</li>
+</ul>
+<p>A <code>format</code> will also be specified in our case, as we are looking for jpeg
+images.</p>
+<p>Then, having all the necessary things, the layer can simply be added to the view
+using <a href="View#addLayer"><code>addLayer</code></a>. The result is as below.</p>
+<p><img src="tutorials/images/Create-a-simple-globe-2.png" alt="Simple GlobeView with ColorLayer"></p>
+<h2>Adding an elevation layer</h2><p>We can add more depth to the current globe by providing an elevation layer. The
+process is quite similar to adding a <code>ColorLayer</code>.</p>
+<pre class="prettyprint source lang-js"><code>var elevationLayer = new itowns.ElevationLayer('MNT_WORLD', {
+    source: {
+        protocol: 'wmts',
+        url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+        name: 'ELEVATION.ELEVATIONGRIDCOVERAGE',
+        tileMatrixSet: 'WGS84G',
+        format: 'image/x-bil;bits=32'
     }
+});
+view.addLayer(elevationLayer);</code></pre><p>Two things have changed:</p>
+<ul>
+<li>the layer created, which is an <a href="ElevationLayer.html">ElevationLayer</a> instead</li>
+<li>the configuration, adapted to fit the source</li>
+</ul>
+<p>Now we can zoom in and see some moutains !</p>
+<p><img src="tutorials/images/Create-a-simple-globe-3.png" alt="Simple Globe with moutains"></p>
+<h2>Result</h2><p>Congratulations ! By reaching here, we are now able to display a simple globe
+with an elevation layer and an color layer. Here is the final code:</p>
+<pre class="prettyprint source lang-html"><code>&lt;!DOCTYPE html>
+&lt;html>
+    &lt;head>
+        &lt;meta charset=&quot;UTF-8&quot;>
+        &lt;title>Simple globe with iTowns&lt;/title>
+        &lt;style>
+            html { height: 100%; }
+            body { margin: 0; overflow: hidden; height: 100%; }
+            #viewerDiv { margin: auto; height: 100%; width: 100%; padding: 0; }
+            canvas { display: block }
+        &lt;/style>
+     &lt;/head>
+     &lt;body>
+        &lt;div id=&quot;viewerDiv&quot;>&lt;/div>
+        &lt;script src=&quot;js/itowns.js&quot;>&lt;/script>
+        &lt;script type=&quot;text/javascript&quot;>
+            var viewerDiv = document.getElementById('viewerDiv');
+            var position = new itowns.Coordinates('WGS84', 2.35, 48.8, 25e6);
+            var view = new itowns.GlobeView(viewerDiv, position);
 
-    /**
-     * Resets the controls internal state to match the camera' state.
-     * This must be called when manually modifying the camera's position or rotation.
-     * @param {boolean} preserveRotationOnX - if true, the look up/down rotation will
-     * not be copied from the camera
-     */
-    reset(preserveRotationOnX = false) {
-        // Compute the correct init state, given the calculus in applyRotation:
-        // cam.quaternion = q * r
-        // => r = inverse(q) * cam.quaterion
-        // q is the quaternion derived from the up vector
-        const q = new THREE.Quaternion().setFromUnitVectors(
-            new THREE.Vector3(0, 1, 0), this.camera.up);
-        q.inverse();
-        // compute r
-        const r = this.camera.quaternion.clone().premultiply(q);
-        // tranform it to euler
-        const e = new THREE.Euler(0, 0, 0, 'YXZ').setFromQuaternion(r);
+            var colorLayer = new itowns.ColorLayer('Ortho', {
+                source: {
+                    protocol: 'wmts',
+                    url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+                    name: 'ORTHOIMAGERY.ORTHOPHOTOS',
+                    tileMatrixSet: 'PM',
+                    format: 'image/jpeg'
+                }
+            });
+            view.addLayer(colorLayer);
 
-        if (!preserveRotationOnX) {
-            this._state.rotateX = e.x;
-        }
-        this._state.rotateY = e.y;
-    }
+            var elevationLayer = new itowns.ElevationLayer('MNT_WORLD', {
+                source: {
+                    protocol: 'wmts',
+                    url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+                    name: 'ELEVATION.ELEVATIONGRIDCOVERAGE',
+                    tileMatrixSet: 'WGS84G',
+                    format: 'image/x-bil;bits=32'
+                }
+            });
+            view.addLayer(elevationLayer);
+        &lt;/script>
+     &lt;/body>
+&lt;/html></code></pre>
+</article>
 
-    /**
-     * Updates the camera position / rotation based on occured input events.
-     * This is done automatically when needed but can also be done if needed.
-     * @param {number} dt - ellpased time since last update in seconds
-     * @param {boolean} updateLoopRestarted - true if itowns' update loop just restarted
-     * @param {boolean} force - set to true if you want to force the update, even if it
-     * appears unneeded.
-     */
-    update(dt, updateLoopRestarted, force) {
-        // dt will not be relevant when we just started rendering, we consider a 1-frame move in this case
-        if (updateLoopRestarted) {
-            dt = 16;
-        }
-
-        for (const move of this.moves) {
-            if (move.method === 'translateY') {
-                this.moveCameraVertical(move.sign * this.options.moveSpeed * dt / 1000);
-            } else {
-                this.camera[move.method](move.sign * this.options.moveSpeed * dt / 1000);
-            }
-        }
-
-        if (this._isMouseDown === true || force === true) {
-            applyRotation(this.view, this.camera, this._state);
-        }
-
-        if (this.moves.size) {
-            this.view.notifyChange(this.view.camera.camera3D);
-        }
-    }
-
-    // Event callback functions
-    // Mouse movement handling
-    onMouseDown(event) {
-        event.preventDefault();
-        this._isMouseDown = true;
-
-        const coords = this.view.eventToViewCoords(event);
-        this._onMouseDownMouseX = coords.x;
-        this._onMouseDownMouseY = coords.y;
-
-        this._stateOnMouseDown = this._state.snapshot();
-    }
-
-    onMouseUp() {
-        this._isMouseDown = false;
-    }
-
-    onMouseMove(event) {
-        if (this._isMouseDown === true) {
-            // in rigor we have tan(theta) = tan(cameraFOV) * deltaH / H
-            // (where deltaH is the vertical amount we moved, and H the renderer height)
-            // we loosely approximate tan(x) by x
-            const pxToAngleRatio = THREE.Math.degToRad(this.camera.fov) / this.view.mainLoop.gfxEngine.height;
-
-            const coords = this.view.eventToViewCoords(event);
-
-            // update state based on pointer movement
-            this._state.rotateY = ((coords.x - this._onMouseDownMouseX) * pxToAngleRatio) + this._stateOnMouseDown.rotateY;
-            this._state.rotateX = limitRotation(
-                this.camera,
-                ((coords.y - this._onMouseDownMouseY) * pxToAngleRatio) + this._stateOnMouseDown.rotateX,
-                this.options.verticalFOV);
-
-            applyRotation(this.view, this.camera, this._state);
-        }
-    }
-
-    // Mouse wheel
-    onMouseWheel(event) {
-        let delta = 0;
-        if (event.wheelDelta !== undefined) {
-            delta = -event.wheelDelta;
-        // Firefox
-        } else if (event.detail !== undefined) {
-            delta = event.detail;
-        }
-
-        this.camera.fov =
-            THREE.Math.clamp(this.camera.fov + Math.sign(delta),
-                10,
-                Math.min(100, this.options.verticalFOV));
-
-        this.camera.updateProjectionMatrix();
-
-        this._state.rotateX = limitRotation(
-            this.camera,
-            this._state.rotateX,
-            this.options.verticalFOV);
-
-        applyRotation(this.view, this.camera, this._state);
-    }
-
-    // Keyboard handling
-    onKeyUp(e) {
-        const move = MOVEMENTS[e.keyCode];
-        if (move) {
-            this.moves.delete(move);
-            this.view.notifyChange(undefined, false);
-            e.preventDefault();
-        }
-    }
-
-    onKeyDown(e) {
-        const move = MOVEMENTS[e.keyCode];
-        if (move) {
-            this.moves.add(move);
-            this.view.notifyChange(undefined, false);
-            e.preventDefault();
-        }
-    }
-}
-
-export default FirstPersonControls;
-</code></pre>
-        </article>
-    </section>
-
-
-
+</section>
 
     </div>
 
