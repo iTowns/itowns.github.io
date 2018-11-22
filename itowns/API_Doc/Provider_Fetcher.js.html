@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : FileSource</title>
+    <title>iTowns API : Provider/Fetcher.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -22,779 +22,158 @@
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-        FileSource
-        </h2>
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { TextureLoader, DataTexture, AlphaFormat, FloatType } from 'three';
 
-<article>
-    
-        <div class="container-overview">
-        
-            
+const textureLoader = new TextureLoader();
+const SIZE_TEXTURE_TILE = 256;
+function checkResponse(response) {
+    if (!response.ok) {
+        var error = new Error(`Error loading ${response.url}: status ${response.status}`);
+        error.response = response;
+        throw error;
+    }
+}
 
-    
-
-    <h4 class="name" id="FileSource"><span class="type-signature"></span>new FileSource<span class="signature">(source, crsOut)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Source_FileSource.js.html">Source/FileSource.js</a>, <a href="Source_FileSource.js.html#line93">line 93</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    File source to use file in <a href="GeometryLayer.html">GeometryLayer</a>, <a href="ColorLayer.html">ColorLayer</a> or <a href="ElevationLayer.html">ElevationLayer</a>.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Examples</h5>
-    
-        <p class="code-caption">add geometry layer with geojson file </p>
-    
-    <pre class="prettyprint"><code>const ariege = new itowns.GeometryLayer('ariege', new itowns.THREE.Group());
-ariege.update = itowns.FeatureProcessing.update;
-ariege.convert = itowns.Feature2Mesh.convert({
-     color: () => new itowns.THREE.Color(0xffcc00),
-     extrude: () => 5000,
+const arrayBuffer = (url, options = {}) => fetch(url, options).then((response) => {
+    checkResponse(response);
+    return response.arrayBuffer();
 });
-ariege.source = {
-     protocol: 'file',
-     url: 'https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements/09-ariege/departement-09-ariege.geojson',
-     projection: 'EPSG:4326',
-     format: 'application/json',
-     zoom: { min: 7, max: 7 },
+
+const getTextureFloat = function getTextureFloat(buffer) {
+    const texture = new DataTexture(buffer, SIZE_TEXTURE_TILE, SIZE_TEXTURE_TILE, AlphaFormat, FloatType);
+    texture.needsUpdate = true;
+    return texture;
 };
-view.addLayer(ariege);</code></pre>
 
-        <p class="code-caption">add color layer with geojson file </p>
-    
-    <pre class="prettyprint"><code>globeView.addLayer({
-    type: 'color',
-    id: 'Gpx',
-    name: 'Ultra 2009',
-    transparent: true,
-    source: {
-        url: 'https://raw.githubusercontent.com/iTowns/iTowns2-sample-data/master/ULTRA2009.gpx',
-        protocol: 'file',
-        projection: 'EPSG:4326',
+/**
+ * Utilitary to fetch resources from a server using the {@link
+ * https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch|fetch
+ * API}.
+ *
+ * @module Fetcher
+ */
+export default {
+    /**
+     * Wrapper over fetch to get some text.
+     *
+     * @param {string} url - The URL of the resources to fetch.
+     * @param {Object} options - Fetch options (passed directly to
+     * &lt;code>fetch()&lt;/code>), see {@link
+     * https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Syntax|the
+     * syntax for more information}.
+     *
+     * @return {Promise&lt;string>} Promise containing the text.
+     */
+    text(url, options = {}) {
+        return fetch(url, options).then((response) => {
+            checkResponse(response);
+            return response.text();
+        });
     },
-});</code></pre>
 
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>source</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#sourceParams">sourceParams</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The source
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>projection</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Data system projection, it needed to parse data</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>crsOut</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">crd output data</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        </div>
-    
-
-    
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li><a href="Source.html">Source</a></li>
-    </ul>
-
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id="extentInsideLimit"><span class="type-signature"></span>extentInsideLimit<span class="signature">(extent)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Source_Source.js.html">Source/Source.js</a>, <a href="Source_Source.js.html#line78">line 78</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="Source.html#extentInsideLimit">Source#extentInsideLimit</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    test if the extent is inside data's source
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>extent</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Extent.html">Extent</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">extent to test</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    return of test
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="extentsInsideLimit"><span class="type-signature"></span>extentsInsideLimit<span class="signature">(extents)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Source_Source.js.html">Source/Source.js</a>, <a href="Source_Source.js.html#line88">line 88</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Source.html#extentsInsideLimit">Source#extentsInsideLimit</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    test if all extents are inside data's source
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>extents</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="Extent.html">Extent</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The extents to test</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    test result
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="urlFromExtent"><span class="type-signature"></span>urlFromExtent<span class="signature">(extent)</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Source_Source.js.html">Source/Source.js</a>, <a href="Source_Source.js.html#line67">line 67</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="Source.html#urlFromExtent">Source#urlFromExtent</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    Generate url from extent. This url is link to fetch data inside the extent.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>extent</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Extent.html">Extent</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">extent to convert in url</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    url from extent
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    /**
+     * Little wrapper over fetch to get some JSON.
+     *
+     * @param {string} url - The URL of the resources to fetch.
+     * @param {Object} options - Fetch options (passed directly to
+     * &lt;code>fetch()&lt;/code>), see {@link
+     * https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Syntax|the
+     * syntax for more information}.
+     *
+     * @return {Promise&lt;Object>} Promise containing the JSON object.
+     */
+    json(url, options = {}) {
+        return fetch(url, options).then((response) => {
+            checkResponse(response);
+            return response.json();
+        });
+    },
+
+    /**
+     * Wrapper over fetch to get some XML.
+     *
+     * @param {string} url - The URL of the resources to fetch.
+     * @param {Object} options - Fetch options (passed directly to
+     * &lt;code>fetch()&lt;/code>), see {@link
+     * https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Syntax|the
+     * syntax for more information}.
+     *
+     * @return {Promise&lt;Document>} Promise containing the XML Document.
+     */
+    xml(url, options = {}) {
+        return fetch(url, options).then((response) => {
+            checkResponse(response);
+            return response.text();
+        }).then(text => new window.DOMParser().parseFromString(text, 'text/xml'));
+    },
+
+    /**
+     * Wrapper around {@link THREE.TextureLoader}.
+     *
+     * @param {string} url - The URL of the resources to fetch.
+     * @param {Object} options - Fetch options (passed directly to
+     * &lt;code>fetch()&lt;/code>), see {@link
+     * https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Syntax|the
+     * syntax for more information}.  Note that THREE.js docs mentions
+     * &lt;code>withCredentials&lt;/code>, but it is not actually used in {@link
+     * THREE.TextureLoader}.
+     *
+     * @return {Promise&lt;THREE.Texture>} Promise containing the {@link
+     * THREE.Texture}.
+     */
+    texture(url, options = {}) {
+        let res;
+        let rej;
+
+        textureLoader.crossOrigin = options.crossOrigin;
+
+        const promise = new Promise((resolve, reject) => {
+            res = resolve;
+            rej = reject;
+        });
+
+        textureLoader.load(url, res, () => {}, rej);
+        return promise;
+    },
+
+    /**
+     * Wrapper over fetch to get some ArrayBuffer.
+     *
+     * @param {string} url - The URL of the resources to fetch.
+     * @param {Object} options - Fetch options (passed directly to
+     * &lt;code>fetch()&lt;/code>), see {@link
+     * https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Syntax|the
+     * syntax for more information}.
+     *
+     * @return {Promise&lt;ArrayBuffer>} Promise containing the ArrayBuffer.
+     */
+    arrayBuffer,
+
+    /**
+     * Wrapper over fetch to get some {@link THREE.DataTexture}.
+     *
+     * @param {string} url - The URL of the resources to fetch.
+     * @param {Object} options - Fetch options (passed directly to
+     * &lt;code>fetch()&lt;/code>), see {@link
+     * https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Syntax|the
+     * syntax for more information}.
+     *
+     * @return {Promise&lt;THREE.DataTexture>} Promise containing the DataTexture.
+     */
+    textureFloat(url, options = {}) {
+        return arrayBuffer(url, options).then((buffer) => {
+            const floatArray = new Float32Array(buffer);
+            const texture = getTextureFloat(floatArray);
+            return texture;
+        });
+    },
+};
+</code></pre>
+        </article>
+    </section>
 
 
 
