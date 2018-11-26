@@ -31,6 +31,10 @@
         WMTSSource
         </h2>
         
+            <div class="class-description">An object defining the source of resources to get from a
+<a href="http://www.opengeospatial.org/standards/wmts">WMTS</a> server. It inherits
+from <a href="Source.html">Source</a>.</div>
+        
     
 </header>
 
@@ -40,6 +44,8 @@
         
             
 
+    
+    <h2>Constructor</h2>
     
 
     <h4 class="name" id="WMTSSource"><span class="type-signature"></span>new WMTSSource<span class="signature">(source)</span><span class="type-signature"></span></h4>
@@ -54,7 +60,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Source_WMTSSource.js.html">Source/WMTSSource.js</a>, <a href="Source_WMTSSource.js.html#line35">line 35</a>
+        <a href="Source_WMTSSource.js.html">Source/WMTSSource.js</a>, <a href="Source_WMTSSource.js.html#line59">line 59</a>
     </li></ul></dd>
     
 
@@ -91,11 +97,401 @@
 
 
 
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>isWMTSSource</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
 
 
-<div class="description">
-    Tiles images source
-</div>
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Used to checkout whether this source is a
+WMTSSource. Default is true. You should not change this, as it is used
+internally for optimisation.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The name of the layer, used in the generation of
+the url.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>version</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The version of the WMTS server to request on.
+Default value is '1.0.0'.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>style</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The style to query on the WMTS server. Default
+value is 'normal'.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tileMatrixSet</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Tile matrix set of the layer, used in the
+generation of the url. Default value is 'WGS84'.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tileMatrixSetLimits</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Limits of the tile matrix
+set. Each limit has for key its level number, and their properties are the
+<code>minTileRow</code>, <code>maxTileRow</code>, <code>minTileCol</code> and
+<code>maxTileCol</code>.
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>minTileRow</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Minimum row for tiles at
+the specified level.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxTileRow</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Maximum row for tiles at
+the specified level.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>minTileCol</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Minimum column for tiles
+at the specified level.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxTileCol</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Maximum column for tiles
+at the specified level.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>zoom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Object containing the minimum and maximum values of
+the level, to zoom in the source.
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>min</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The minimum level of the source. Default value
+is 2.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>max</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The maximum level of the source. Default value
+is 20.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
 
 
 
@@ -107,19 +503,21 @@
 
     <h5>Example</h5>
     
-        <p class="code-caption">Add color layer with wmts source</p>
-    
-    <pre class="prettyprint"><code>const colorlayer = new ColorLayer('darkmap', {
-    source: {
-         protocol: 'wmts',
-         name: 'DARK',
-         tileMatrixSet: 'PM',
-         url: 'http://server.geo/wmts',
-         format: 'image/jpg',
-    }
+    <pre class="prettyprint"><code>// Create the source
+const wmtsSource = new itowns.WMTSSource({
+    name: 'DARK',
+    tileMatrixSet: 'PM',
+    url: 'http://server.geo/wmts',
+    format: 'image/jpg',
 });
+
+// Create the layer
+const colorLayer = new itowns.ColorLayer('darkmap', {
+    source: wmtsSource,
+});
+
 // Add the layer
-view.addLayer(colorlayer);</code></pre>
+view.addLayer(colorLayer);</code></pre>
 
 
 
@@ -155,305 +553,6 @@ view.addLayer(colorlayer);</code></pre>
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#sourceParams">sourceParams</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">name of layer wmts</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>tileMatrixSet</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">define tile matrix set of wmts layer (ex: 'PM', 'WGS84')</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>tileMatrixSetLimits</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;Object></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The limits for the tile matrix set
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>minTileRow</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Minimum row for tiles at the level</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>maxTileRow</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Maximum row for tiles at the level</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>minTileCol</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Minimum col for tiles at the level</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>maxTileCol</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Maximum col for tiles at the level</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>zoom</code></td>
-            
-
-            <td class="type">
-            
-                
 <span class="param-type">Object</span>
 
 
@@ -461,121 +560,11 @@ view.addLayer(colorlayer);</code></pre>
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last">
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>min</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">layer's zoom minimum</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>max</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">layer's zoom maximum</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
+            <td class="description last">An object that can contain all properties of a
+WMTSSource. Only <code>url</code> and <code>name</code> are mandatory.</td>
         </tr>
 
     
@@ -644,7 +633,7 @@ view.addLayer(colorlayer);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Source_Source.js.html">Source/Source.js</a>, <a href="Source_Source.js.html#line78">line 78</a>
+        <a href="Source_Source.js.html">Source/Source.js</a>, <a href="Source_Source.js.html#line80">line 80</a>
     </li></ul></dd>
     
 
@@ -689,7 +678,7 @@ view.addLayer(colorlayer);</code></pre>
 
 
 <div class="description">
-    test if the extent is inside data's source
+    Tests if an extent is inside the source limits.
 </div>
 
 
@@ -743,7 +732,7 @@ view.addLayer(colorlayer);</code></pre>
 
             
 
-            <td class="description last">extent to test</td>
+            <td class="description last">Extent to test.</td>
         </tr>
 
     
@@ -767,7 +756,7 @@ view.addLayer(colorlayer);</code></pre>
 
         
 <div class="param-desc">
-    return of test
+    True if the extent is inside the limit, false otherwise.
 </div>
 
 
@@ -804,7 +793,7 @@ view.addLayer(colorlayer);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Source_Source.js.html">Source/Source.js</a>, <a href="Source_Source.js.html#line88">line 88</a>
+        <a href="Source_Source.js.html">Source/Source.js</a>, <a href="Source_Source.js.html#line91">line 91</a>
     </li></ul></dd>
     
 
@@ -849,7 +838,7 @@ view.addLayer(colorlayer);</code></pre>
 
 
 <div class="description">
-    test if all extents are inside data's source
+    Tests if an array of extents is inside the source limits.
 </div>
 
 
@@ -903,7 +892,7 @@ view.addLayer(colorlayer);</code></pre>
 
             
 
-            <td class="description last">The extents to test</td>
+            <td class="description last">Array of extents to test.</td>
         </tr>
 
     
@@ -927,7 +916,7 @@ view.addLayer(colorlayer);</code></pre>
 
         
 <div class="param-desc">
-    test result
+    True if all extents are inside, false otherwise.
 </div>
 
 
@@ -964,7 +953,7 @@ view.addLayer(colorlayer);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Source_Source.js.html">Source/Source.js</a>, <a href="Source_Source.js.html#line67">line 67</a>
+        <a href="Source_Source.js.html">Source/Source.js</a>, <a href="Source_Source.js.html#line68">line 68</a>
     </li></ul></dd>
     
 
@@ -1009,7 +998,8 @@ view.addLayer(colorlayer);</code></pre>
 
 
 <div class="description">
-    Generate url from extent. This url is link to fetch data inside the extent.
+    Generates an url from an extent. This url is a link to fetch the
+resources inside the extent.
 </div>
 
 
@@ -1063,7 +1053,7 @@ view.addLayer(colorlayer);</code></pre>
 
             
 
-            <td class="description last">extent to convert in url</td>
+            <td class="description last">Extent to convert in url.</td>
         </tr>
 
     
@@ -1087,7 +1077,7 @@ view.addLayer(colorlayer);</code></pre>
 
         
 <div class="param-desc">
-    url from extent
+    The URL constructed from the extent.
 </div>
 
 
@@ -1129,7 +1119,7 @@ view.addLayer(colorlayer);</code></pre>
     <br class="clear">
 
     <footer>
-        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 22 2018 17:44:52 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Nov 26 2018 16:08:27 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
     </footer>
 
     <script> prettyPrint(); </script>

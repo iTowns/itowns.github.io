@@ -68,53 +68,59 @@ also answers our needs here.</p>
 result in a simple blue globe like below.</p>
 <p><img src="tutorials/images/Create-a-simple-globe-1.png" alt="Simple GlobeView"></p>
 <h2>Adding a color layer</h2><p>Now that we have a globe, let's display data on it. For this, let's use a basic
-layer composed of aerial photos.</p>
-<pre class="prettyprint source lang-js"><code>var colorLayer = new itowns.ColorLayer('Ortho', {
-    source: {
-        protocol: 'wmts',
-        url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
-        name: 'ORTHOIMAGERY.ORTHOPHOTOS',
-        tileMatrixSet: 'PM',
-        format: 'image/jpeg',
-    }
+layer composed of aerial photos. To define this, we also need to describe our
+source.</p>
+<pre class="prettyprint source lang-js"><code>var orthoSource = new itowns.WMTSSource({
+    url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+    name: 'ORTHOIMAGERY.ORTHOPHOTOS',
+    tileMatrixSet: 'PM',
+    format: 'image/jpeg',
 });
-view.addLayer(colorLayer);</code></pre><p>We want to create and add a layer containing images. The best candidate here is
+
+var orthoLayer = new itowns.ColorLayer('Ortho', {
+    source: orthoSource,
+});
+
+view.addLayer(orthoLayer);</code></pre><p>We want to create and add a layer containing images. The best candidate here is
 the <a href="ColorLayer.html">ColorLayer</a>. Looking at the documentation, we need at least one
 parameter: the <code>id</code> of the layer. But that won't be enough to display data if we
 don't tell the layer where to look to get the data. For achieving this, we can
 declare a source in the options.</p>
 <p>Images that we choose to display are coming from a WMTS server. So the source
-used will be a <a href="WMTSSource.html">WMTSSource</a>. To declare this source, four elements are
+used will be a <a href="WMTSSource.html">WMTSSource</a>. To declare this source, three elements are
 needed:</p>
 <ul>
-<li>a <code>protocol</code>, selecting the type of source we need, in our case <code>wmts</code></li>
 <li>an <code>url</code>, describing the path to the WMTS service</li>
 <li>a <code>name</code>, used to build the URL for each image</li>
 <li>a <code>tileMatrixSet</code>, for the same purpose</li>
 </ul>
 <p>A <code>format</code> will also be specified in our case, as we are looking for jpeg
 images.</p>
-<p>Then, having all the necessary things, the layer can simply be added to the view
-using <a href="View#addLayer"><code>addLayer</code></a>. The result is as below.</p>
+<p>Then, having all the necessary things, the layer can simply be created and added
+to the view using <a href="View#addLayer"><code>addLayer</code></a>. The result is as below.</p>
 <p><img src="tutorials/images/Create-a-simple-globe-2.png" alt="Simple GlobeView with ColorLayer"></p>
 <h2>Adding an elevation layer</h2><p>We can add more depth to the current globe by providing an elevation layer. The
-process is quite similar to adding a <code>ColorLayer</code>.</p>
-<pre class="prettyprint source lang-js"><code>var elevationLayer = new itowns.ElevationLayer('MNT_WORLD', {
-    source: {
-        protocol: 'wmts',
-        url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
-        name: 'ELEVATION.ELEVATIONGRIDCOVERAGE',
-        tileMatrixSet: 'WGS84G',
-        format: 'image/x-bil;bits=32'
-    }
+process is quite similar to adding a <code>ColorLayer</code>. We are also still using a
+<code>WMTSSource</code>, but it needs to be created again as it is different from the
+previous one.</p>
+<pre class="prettyprint source lang-js"><code>var elevationSource = new itowns.WMTSSource({
+    url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+    name: 'ELEVATION.ELEVATIONGRIDCOVERAGE',
+    tileMatrixSet: 'WGS84G',
+    format: 'image/x-bil;bits=32'
 });
+
+var elevationLayer = new itowns.ElevationLayer('MNT_WORLD', {
+    source: elevationSource,
+});
+
 view.addLayer(elevationLayer);</code></pre><p>Two things have changed:</p>
 <ul>
 <li>the layer created, which is an <a href="ElevationLayer.html">ElevationLayer</a> instead</li>
 <li>the configuration, adapted to fit the source</li>
 </ul>
-<p>Now we can zoom in and see some moutains !</p>
-<p><img src="tutorials/images/Create-a-simple-globe-3.png" alt="Simple Globe with moutains"></p>
+<p>Now we can zoom in and see some mountains !</p>
+<p><img src="tutorials/images/Create-a-simple-globe-3.png" alt="Simple Globe with mountains"></p>
 <h2>Result</h2><p>Congratulations ! By reaching here, we are now able to display a simple globe
 with an elevation layer and an color layer. Here is the final code:</p>
 <pre class="prettyprint source lang-html"><code>&lt;!DOCTYPE html>
@@ -137,26 +143,30 @@ with an elevation layer and an color layer. Here is the final code:</p>
             var position = new itowns.Coordinates('WGS84', 2.35, 48.8, 25e6);
             var view = new itowns.GlobeView(viewerDiv, position);
 
-            var colorLayer = new itowns.ColorLayer('Ortho', {
-                source: {
-                    protocol: 'wmts',
-                    url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
-                    name: 'ORTHOIMAGERY.ORTHOPHOTOS',
-                    tileMatrixSet: 'PM',
-                    format: 'image/jpeg'
-                }
+            var orthoSource = new itowns.WMTSSource({
+                url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+                name: 'ORTHOIMAGERY.ORTHOPHOTOS',
+                tileMatrixSet: 'PM',
+                format: 'image/jpeg',
             });
-            view.addLayer(colorLayer);
+
+            var orthoLayer = new itowns.ColorLayer('Ortho', {
+                source: orthoSource,
+            });
+
+            view.addLayer(orthoLayer);
+
+            var elevationSource = new itowns.WMTSSource({
+                url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+                name: 'ELEVATION.ELEVATIONGRIDCOVERAGE',
+                tileMatrixSet: 'WGS84G',
+                format: 'image/x-bil;bits=32'
+            });
 
             var elevationLayer = new itowns.ElevationLayer('MNT_WORLD', {
-                source: {
-                    protocol: 'wmts',
-                    url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
-                    name: 'ELEVATION.ELEVATIONGRIDCOVERAGE',
-                    tileMatrixSet: 'WGS84G',
-                    format: 'image/x-bil;bits=32'
-                }
+                source: elevationSource,
             });
+
             view.addLayer(elevationLayer);
         &lt;/script>
      &lt;/body>
@@ -174,7 +184,7 @@ with an elevation layer and an color layer. Here is the final code:</p>
     <br class="clear">
 
     <footer>
-        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 22 2018 17:44:52 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Nov 26 2018 16:08:27 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
     </footer>
 
     <script> prettyPrint(); </script>
