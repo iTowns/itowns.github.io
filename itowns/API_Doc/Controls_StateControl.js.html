@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>iTowns API : Renderer/ThreeExtended/OBB.js</title>
+    <title>iTowns API : Controls/StateControl.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -26,175 +26,122 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import * as THREE from 'three';
-import TileGeometry from '../../Core/TileGeometry';
-import BuilderEllipsoidTile from '../../Core/Prefab/Globe/BuilderEllipsoidTile';
 
-// get oriented bounding box of tile
-const builder = new BuilderEllipsoidTile();
+const CONTROL_KEYS = {
+    LEFT: 37,
+    UP: 38,
+    RIGHT: 39,
+    BOTTOM: 40,
+    SPACE: 32,
+    SHIFT: 16,
+    CTRL: 17,
+    S: 83,
+};
 
-class OBB extends THREE.Object3D {
-    /**
-     * Oriented bounding box
-     * @constructor
-     * @extends THREE.Object3D
-     * @param {THREE.Vector3}  min representing the lower (x, y, z) boundary of the box. Default is ( + Infinity, + Infinity, + Infinity ).
-     * @param {THREE.Vector3}  max representing the lower upper (x, y, z) boundary of the box. Default is ( - Infinity, - Infinity, - Infinity ).
-     */
-    constructor(min = new THREE.Vector3(+Infinity, +Infinity, +Infinity), max = new THREE.Vector3(-Infinity, -Infinity, -Infinity)) {
-        super();
-        this.box3D = new THREE.Box3(min.clone(), max.clone());
-        this.natBox = this.box3D.clone();
-        this.z = { min: 0, max: 0 };
-        this.topPointsWorld = [
-            new THREE.Vector3(),
-            new THREE.Vector3(),
-            new THREE.Vector3(),
-            new THREE.Vector3(),
-        ];
-        this.update();
-    }
 
-    /**
-     * Creates a new instance of the object with same properties than original.
-     *
-     * @return     {OBB}  Copy of this object.
-     */
-    clone() {
-        return new OBB().copy(this);
-    }
+/**
+ * @typedef {Object} state
+ * @property {boolean} enable=true indicate whether the state is enable or not
+ * @property {Number} [mouseButton] the mouse button to enter this state
+ * @property {Number} [keyboard] the keyboard to enter this state
+ * @property {Number} [finger] the number of fingers on the pad to enter this state
+ */
 
-    /**
-     * Copy the property of OBB
-     *
-     * @param      {OBB}  cOBB OBB to copy
-     * @return     {OBB}  the copy
-     */
-    copy(cOBB) {
-        super.copy(cOBB);
-        this.box3D.copy(cOBB.box3D);
-        this.natBox.copy(cOBB.natBox);
-        this.z.min = cOBB.z.min;
-        this.z.max = cOBB.z.max;
-        for (let i = 0, max = this.topPointsWorld.length; i &lt; max; i++) {
-            this.topPointsWorld[i].copy(cOBB.topPointsWorld[i]);
-        }
-        return this;
-    }
-
-    /**
-     * Update the top point world
-     *
-     * @return {Array&lt;THREE.Vector3>} the top point world
-     */
-    update() {
-        this.updateMatrixWorld(true);
-        this.toPoints(this.topPointsWorld);
-
-        for (let i = 0, max = this.topPointsWorld.length; i &lt; max; i++) {
-            this.topPointsWorld[i].applyMatrix4(this.matrixWorld);
-        }
-
-        return this.topPointsWorld;
-    }
-
-    /**
-     * Update z min and z max of oriented bounding box
-     *
-     * @param {number}  min The minimum of oriented bounding box
-     * @param {number}  max The maximum of oriented bounding box
-     */
-    updateZ(min, max) {
-        this.z = { min, max };
-        this.box3D.min.z = this.natBox.min.z + min;
-        this.box3D.max.z = this.natBox.max.z + max;
-        this.update();
-    }
-
-    /**
-     * Set bouding box value to points
-     *
-     * @param      {Array&lt;THREE.Vector3>}  points  The points to set
-     * @return     {Array&lt;THREE.Vector3>}  The points seted
-     */
-    toPoints(points) {
-        // top points of bounding box
-        points[0].set(this.box3D.max.x, this.box3D.max.y, this.box3D.max.z);
-        points[1].set(this.box3D.min.x, this.box3D.max.y, this.box3D.max.z);
-        points[2].set(this.box3D.min.x, this.box3D.min.y, this.box3D.max.z);
-        points[3].set(this.box3D.max.x, this.box3D.min.y, this.box3D.max.z);
-        // bottom points of bounding box
-        if (points.length > 4) {
-            points[4].set(this.box3D.max.x, this.box3D.max.y, this.box3D.min.z);
-            points[5].set(this.box3D.min.x, this.box3D.max.y, this.box3D.min.z);
-            points[6].set(this.box3D.min.x, this.box3D.min.y, this.box3D.min.z);
-            points[7].set(this.box3D.max.x, this.box3D.min.y, this.box3D.min.z);
-        }
-
-        return points;
-    }
-
-    /**
-     * Determines if the sphere is above the XY space of the box
-     *
-     * @param      {Sphere}   sphere  The sphere
-     * @return     {boolean}  True if sphere is above the XY space of the box, False otherwise.
-     */
-    isSphereAboveXYBox(sphere) {
-        const localSpherePosition = this.worldToLocal(sphere.position);
-        // get obb closest point to sphere center by clamping
-        const x = Math.max(this.box3D.min.x, Math.min(localSpherePosition.x, this.box3D.max.x));
-        const y = Math.max(this.box3D.min.y, Math.min(localSpherePosition.y, this.box3D.max.y));
-
-        // this is the same as isPointInsideSphere.position
-        const distance = Math.sqrt((x - localSpherePosition.x) * (x - localSpherePosition.x) +
-                               (y - localSpherePosition.y) * (y - localSpherePosition.y));
-
-        return distance &lt; sphere.radius;
-    }
-
-    /**
-     * Compute OBB from extent.
-     * The OBB resulted can be only in the system 'EPSG:3946'.
-     *
-     * @param      {Extent}        extent     The extent (with crs 'EPSG:4326') to compute oriented bounding box
-     * @param      {number}        minHeight  The minimum height of OBB
-     * @param      {number}        maxHeight  The maximum height of OBB
-     * @param      {OBB}  obb      The obb to copy result
-     * @return     {TileGeometry}  { description_of_the_return_value }
-     */
-    static extentToOBB(extent, minHeight = 0, maxHeight = 0, obb) {
-        if (extent._crs != 'EPSG:4326') {
-            throw new Error('The extent crs is not a Geographic Coordinates (EPSG:4326)');
-        }
-
-        const { sharableExtent, quaternion, position } = builder.computeSharableExtent(extent);
-        // Compute the minimum count of segment to build tile
-        const segment = Math.max(Math.floor(sharableExtent.dimensions().x / 90 + 1), 2);
-        const paramsGeometry = {
-            extent: sharableExtent,
-            level: 0,
-            segment,
-            disableSkirt: true,
+/**
+ * It represents the control's states.
+ * Each {@link state} is a control mode of the camera and how to interact with
+ * the interface to activate this mode.
+ * @class StateControl
+ *
+ */
+class StateControl {
+    constructor() {
+        this.NONE = {};
+        /**
+         * The camera loot at target and moves at a constant distance from it
+         */
+        this.ORBIT = {
+            mouseButton: THREE.MOUSE.LEFT,
+            keyboard: CONTROL_KEYS.CTRL,
+            enable: true,
+            finger: 2,
         };
+        /**
+         * The camera loot at target and moves forward and backward from this point
+         */
+        this.DOLLY = {
+            mouseButton: THREE.MOUSE.MIDDLE,
+            enable: true,
+        };
+        /**
+         * the camera moves parallel to the current view plane
+         */
+        this.PAN = {
+            mouseButton: THREE.MOUSE.RIGHT,
+            up: CONTROL_KEYS.UP,
+            bottom: CONTROL_KEYS.BOTTOM,
+            left: CONTROL_KEYS.LEFT,
+            right: CONTROL_KEYS.RIGHT,
+            enable: true,
+            finger: 3,
+        };
+        this.MOVE_GLOBE = {
+            mouseButton: THREE.MOUSE.LEFT,
+            enable: true,
+            finger: 1,
+        };
+        /**
+         * the camera and target camera rotate around the globe
+         */
+        this.PANORAMIC = {
+            mouseButton: THREE.MOUSE.LEFT,
+            keyboard: CONTROL_KEYS.SHIFT,
+            enable: true,
+        };
+        /**
+         * object selection
+         */
+        this.SELECT = {
+            mouseButton: THREE.MOUSE.LEFT,
+            keyboard: CONTROL_KEYS.S,
+            enable: true,
+        };
+    }
 
-        const geometry = new TileGeometry(paramsGeometry, builder);
-        if (obb instanceof OBB) {
-            obb.copy(geometry.OBB);
-        } else {
-            obb = geometry.OBB;
+    /**
+     * get the state corresponding to the mouse button and the keyboard key
+     * @param      {Number}  mouseButton  The mouse button
+     * @param      {Number}  keyboard     The keyboard
+     * @return     {state}  the state corresponding
+     */
+    inputToState(mouseButton, keyboard) {
+        for (const key of Object.keys(this)) {
+            const state = this[key];
+            if (state.enable &amp;&amp; state.mouseButton === mouseButton &amp;&amp; state.keyboard === keyboard) {
+                return state;
+            }
         }
+        return this.NONE;
+    }
 
-        obb.updateZ(minHeight, maxHeight);
-        obb.position.copy(position);
-        obb.quaternion.copy(quaternion);
-        obb.update();
-
-        // Calling geometry.dispose() is not needed since this geometry never gets rendered
-        return obb;
+    /**
+     * get the state corresponding to the number of finger on the pad
+     *
+     * @param      {Number}  finger  The number of finger
+     * @return     {state}  the state corresponding
+     */
+    touchToState(finger) {
+        for (const key of Object.keys(this)) {
+            const state = this[key];
+            if (state.enable &amp;&amp; finger == state.finger) {
+                return state;
+            }
+        }
+        return this.NONE;
     }
 }
 
-export default OBB;
+export default StateControl;
 </code></pre>
         </article>
     </section>
@@ -211,7 +158,7 @@ export default OBB;
     <br class="clear">
 
     <footer>
-        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Nov 27 2018 12:40:16 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Nov 27 2018 16:37:43 GMT+0000 (Coordinated Universal Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
     </footer>
 
     <script> prettyPrint(); </script>
