@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>StaticSource - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        StaticSource
+        
+    </h1>
+
+    
+        <div class="description">Images source to panorama layer <a onclick="window.parent.goTo('api/Layer/PanoramaLayer.html','api/Layer/PanoramaLayer')" title="PanoramaLayer">PanoramaLayer</a></div>
+    
+
+    
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">StaticSource</span>
+        (
+
+
+    
+        source:
+            <span class="type">sourceParams</span>, 
+    
+        source.extent:
+            <span class="type">string</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>source</code>
+        
+        
+            &mdash; <span>The source</span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>source.extent</code>
+        
+        
+            &mdash; <span>It's extent of panoramic's images</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">extentInsideLimit</span>
+        (
+
+
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span>Extent to test.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Tests if an extent is inside the source limits.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">extentsInsideLimit</span>
+        (
+
+
+    
+        extents:
+            <span class="type">Array.&lt;Extent></span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extents</code>
+        
+        
+            &mdash; <span>Array of extents to test.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Tests if an array of extents is inside the source limits.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">urlFromExtent</span>
+        (
+
+
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type">string</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span>Extent to convert in url.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Generates an url from an extent. This url is a link to fetch the
+resources inside the extent.
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Source/StaticSource.js">
+            src/Source/StaticSource.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PlanarLayer - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        PlanarLayer
+        
+    </h1>
+
+    
+        <div class="description">A <a onclick="window.parent.goTo('api/Layer/TiledGeometryLayer.html','api/Layer/TiledGeometryLayer')" title="TiledGeometryLayer">TiledGeometryLayer</a> to use with a PlanarView. It has
+specific method for updating and subdivising its grid.</div>
+    
+
+    
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">PlanarLayer</span>
+        (
+
+
+    
+        id:
+            <span class="type">string</span>, 
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        object3d:
+            <span class="type">THREE.Object3d</span>, 
+    
+        config:
+            <span class="type">Object</span>, 
+    
+        config.maxSubdivisionLevel:
+            <span class="type">number</span>, 
+    
+        config.maxDeltaElevationLevel:
+            <span class="type">number</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>id</code>
+        
+        
+            &mdash; <span>The id of the layer, that should be unique. It is
+not mandatory, but an error will be emitted if this layer is added a
+<a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> that already has a layer going by that id.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span>The extent to define the layer within.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>object3d</code>
+        (default: <code>THREE.Group</code>)
+        
+        
+            &mdash; <span>The object3d used to
+contain the geometry of the TiledGeometryLayer. It is usually a
+<code>THREE.Group</code>, but it can be anything inheriting from a
+<code>THREE.Object3d</code>.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config</code>
+        (optional)
+        
+            &mdash; <span>Optional configuration, all elements in it
+will be merged as is in the layer. For example, if the configuration
+contains three elements <code>name, protocol, extent</code>, these
+elements will be available using <code>layer.name</code> or something
+else depending on the property name.</span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>config.maxSubdivisionLevel</code>
+        (default: <code>5</code>)
+        
+        
+            &mdash; <span>Maximum subdivision
+level for this tiled layer.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.maxDeltaElevationLevel</code>
+        (default: <code>4</code>)
+        
+        
+            &mdash; <span>Maximum delta between
+two elevations tile.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">isPlanarLayer</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            Used to checkout whether this layer is a
+PlanarLayer. Default is true. You should not change this, as it is used
+internally for optimisation.
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">attach</span>
+        (
+
+
+    
+        layer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>layer</code>
+        
+        
+            &mdash; <span>The layer to attach, that must have an
+<code>update</code> method.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Attach another layer to this one. Layers attached to a GeometryLayer will
+be available in <code>geometryLayer.attachedLayers</code>.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">changeOpacity</span>
+        (
+
+
+    
+        object:
+            <span class="type">Object</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>object</code>
+        
+        
+            &mdash; <span>The object to change the opacity from. It is
+usually a <code>THREE.Object3d</code> or an implementation of it.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Change the opacity of an object, according to the value of the
+<code>opacity</code> property of this layer.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">defineLayerProperty</span>
+        (
+
+
+    
+        propertyName:
+            <span class="type">string</span>, 
+    
+        defaultValue:
+            <span class="type">*</span>, 
+    
+        onChange:
+            <span class="type">function</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>propertyName</code>
+        
+        
+            &mdash; <span>The name of the property, also used in
+the emitted event name.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>defaultValue</code>
+        
+        
+            &mdash; <span>The default set value.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>onChange</code>
+        (optional)
+        
+            &mdash; <span>The function executed when the property is
+changed. Parameters are the layer the property is defined on, and the
+name of the property.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Defines a property for this layer, with a default value and a callback
+executed when the property changes.
+<br><br>
+When changing the property, it also emits an event, named following this
+convention: <code>${propertyName}-property-changed</code>, with
+<code>${propertyName}</code> being replaced by the name of the property.
+For example, if the added property name is <code>frozen</code>, it will
+emit a <code>frozen-property-changed</code>.
+<br><br>
+            </div>
+        
+
+        
+            <h4>Example</h4>
+            
+
+
+    <pre class="prettyprint source lang-js"><code><caption>The emitted event has some properties assigned to it</caption>
+event = {
+    new: {
+        ${propertyName}: * // the new value of the property
+    },
+    previous: {
+        ${propertyName}: * // the previous value of the property
+    },
+    target: Layer // the layer it has been dispatched from
+    type: string // the name of the emitted event
+}</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">detach</span>
+        (
+
+
+    
+        layer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>layer</code>
+        
+        
+            &mdash; <span>The layer to detach.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Detach a layer attached to this one. See attach to learn how to
+attach a layer.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">pickObjectsAt</span>
+        (
+
+
+    
+        view:
+            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
+    
+        coordinates:
+            <span class="type">Object</span>, 
+    
+        radius:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">Array</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>view</code>
+        
+        
+            &mdash; <span>The view instance.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>coordinates</code>
+        
+        
+            &mdash; <span>The coordinates to pick in the view. It
+should have at least <code>x</code> and <code>y</code> properties.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>radius</code>
+        
+        
+            &mdash; <span>Radius of the picking circle.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Picking method for this layer. It uses the Picking#pickTilesAt
+method.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">preUpdate</span>
+        (
+
+
+    
+        context:
+            <span class="type">Object</span>, 
+    
+        sources:
+            <span class="type">Set.&lt;(<a href="api/Layer/GeometryLayer.html">GeometryLayer</a>|<a href="api/Base/TileMesh.html">TileMesh</a>)></span>
+    
+
+)
+        :
+            
+                <span class="type">Array.&lt;TileMesh></span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>context</code>
+        
+        
+            &mdash; <span>The context of the update; see the MainLoop for more informations.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>sources</code>
+        
+        
+            &mdash; <span>A list of sources to
+generate a list of nodes to update.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Does pre-update work on the context:
+<ul>
+ <li>update the <code>colorLayers</code> and
+ <code>elevationLayers</code></li>
+ <li>update the <code>maxElevationLevel</code></li>
+</ul>
+
+Once this work is done, it returns a list of nodes to update. Depending
+on the origin of <code>sources</code>, it can return a few things:
+<ul>
+ <li>if <code>sources</code> is empty, it returns the first node of the
+ layer (stored as <code>level0Nodes</code>), which will trigger the
+ update of the whole tree</li>
+ <li>if the update is triggered by a camera move, the whole tree is
+ returned too</li>
+ <li>if <code>source.layer</code> is this layer, it means that
+ <code>source</code> is a node; a common ancestor will be found if there
+ are multiple sources, with the default common ancestor being the first
+ source itself</li>
+ <li>else it returns the whole tree</li>
+</ul>
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">subdivideNode</span>
+        (
+
+
+    
+        context:
+            <span class="type">Object</span>, 
+    
+        node:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/TileMesh.html','api/Base/TileMesh')" title="TileMesh">TileMesh</a></span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>context</code>
+        
+        
+            &mdash; <span>The context of the update; see the MainLoop for more informations.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>node</code>
+        
+        
+            &mdash; <span>The node to subdivide.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Subdivides a node of this layer. If the node is currently in the process
+of subdivision, it will not do anything here. The subdivision of a node
+will occur in four part, to create a quadtree. The extent of the node
+will be divided in four parts: north-west, north-east, south-west and
+south-east. Once all four nodes are created, they will be added to the
+current node and the view of the context will be notified of this change.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">subdivision</span>
+        (
+
+
+    
+        context:
+            <span class="type">Object</span>, 
+    
+        layer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/PlanarLayer.html','api/Layer/PlanarLayer')" title="PlanarLayer">PlanarLayer</a></span>, 
+    
+        node:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/TileMesh.html','api/Base/TileMesh')" title="TileMesh">TileMesh</a></span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>context</code>
+        
+        
+            &mdash; <span>The context of the update; see the MainLoop for more informations.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>layer</code>
+        
+        
+            &mdash; <span>This layer, parameter to be removed.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>node</code>
+        
+        
+            &mdash; <span>The node to test.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Test the subdvision of a node, compared to this layer.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">update</span>
+        (
+
+
+    
+        context:
+            <span class="type">Object</span>, 
+    
+        layer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>, 
+    
+        node:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/TileMesh.html','api/Base/TileMesh')" title="TileMesh">TileMesh</a></span>
+    
+
+)
+        :
+            
+                <span class="type">Object</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>context</code>
+        
+        
+            &mdash; <span>The context of the update; see the MainLoop for more informations.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>layer</code>
+        
+        
+            &mdash; <span>Parameter to be removed once all update methods
+have been aligned.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>node</code>
+        
+        
+            &mdash; <span>The node to update.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Update a node of this layer. The node will not be updated if:
+<ul>
+ <li>it does not have a parent, then it is removed</li>
+ <li>its parent is being subdivided</li>
+ <li>is not visible in the camera</li>
+</ul>
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/Prefab/Planar/PlanarLayer.js">
+            src/Core/Prefab/Planar/PlanarLayer.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

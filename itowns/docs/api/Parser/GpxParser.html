@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>GpxParser - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        GpxParser
+        
+    </h1>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h2>Static Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">parse</span>
+        (
+
+
+    
+        xml:
+            <span class="type">string</span>, 
+    
+        options:
+            <span class="type">Object</span>, 
+    
+        options.crs:
+            <span class="type">string</span>, 
+    
+        options.enablePin:
+            <span class="type">boolean</span>, 
+    
+        options.networkOptions:
+            <span class="type">NetworkOptions</span>, 
+    
+        options.lineWidth:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Mesh</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>xml</code>
+        
+        
+            &mdash; <span>the gpx file or xml.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options</code>
+        (optional)
+        
+            &mdash; <span>additional properties.</span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.crs</code>
+        
+        
+            &mdash; <span>the default CRS of Three.js coordinates. Should be a cartesian CRS.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.enablePin</code>
+        (default: <code>true</code>)
+        
+        
+            &mdash; <span>draw pin for way points.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.networkOptions</code>
+        (optional)
+        
+            &mdash; <span>options for fetching resources over network.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.lineWidth</code>
+        (default: <code>12</code>)
+        
+        
+            &mdash; <span>set line width to track line.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Parse gpx file and convert to THREE.Mesh
+            </div>
+        
+
+        
+            <h4>Example</h4>
+            
+
+
+    <pre class="prettyprint source lang-js"><code>// How to add a gpx object
+itowns.GpxParser.parse(file, { crs: viewer.referenceCrs }).then((gpx) => {
+     if (gpx) {
+        viewer.scene.add(gpx);
+        viewer.notifyChange();
+     }
+});</code></pre>
+
+
+        
+    
+</div>
+
+            
+        
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Parser/GpxParser.js">
+            src/Parser/GpxParser.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

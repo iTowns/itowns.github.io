@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>iTowns documentation</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/itowns.css">
+</head>
+
+<body data-spy="scroll" data-target="nav" onload="onLoad()">
+
+<nav class="scroll-section">
+    <img id="goToHome" src="images/itowns_logo.png" width="190px" onclick="goTo('home.html', 'home')"/>
+    <div class="filterBlock">
+        <input type="text" id="filterInput" placeholder="Type to filter"
+        autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <a href="#" id="clearFilterButton">x</a>
+    </div>
+    
+
+<h2>Tutorials</h2>
+<div>
+    <ul class="nav-section">
+    
+        <li class="nav-item">
+        <a class="nav-link" href="#tutorials/Create-a-simple-globe">Creating a simple Globe</a>
+        </li>
+    
+        <li class="nav-item">
+        <a class="nav-link" href="#tutorials/Display-a-geometry-layer">Display a Geometry Layer</a>
+        </li>
+    
+    </ul>
+</div>
+
+<h2>API</h2>
+
+    <div class="package">
+        <h3 class="nav-section">Base</h3>
+        <ul>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Base/Cache">Cache</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Base/Scheduler">Scheduler</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Base/TileMesh">TileMesh</a>
+            </li>
+        
+        </ul>
+    </div>
+
+    <div class="package">
+        <h3 class="nav-section">View</h3>
+        <ul>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/View/View">View</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/View/GlobeView">GlobeView</a>
+            </li>
+        
+        </ul>
+    </div>
+
+    <div class="package">
+        <h3 class="nav-section">Geographic</h3>
+        <ul>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Geographic/Coordinates">Coordinates</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Geographic/Extent">Extent</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Geographic/OrientationUtils">OrientationUtils</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Geographic/OBB">OBB</a>
+            </li>
+        
+        </ul>
+    </div>
+
+    <div class="package">
+        <h3 class="nav-section">Layer</h3>
+        <ul>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Layer/Layer">Layer</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Layer/ColorLayer">ColorLayer</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Layer/ElevationLayer">ElevationLayer</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Layer/GeometryLayer">GeometryLayer</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Layer/TiledGeometryLayer">TiledGeometryLayer</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Layer/InfoTiledGeometryLayer">InfoTiledGeometryLayer</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Layer/ColorLayersOrdering">ColorLayersOrdering</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Layer/GlobeLayer">GlobeLayer</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Layer/PanoramaLayer">PanoramaLayer</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Layer/PlanarLayer">PlanarLayer</a>
+            </li>
+        
+        </ul>
+    </div>
+
+    <div class="package">
+        <h3 class="nav-section">Source</h3>
+        <ul>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Source/Source">Source</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Source/WMTSSource">WMTSSource</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Source/WMSSource">WMSSource</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Source/WFSSource">WFSSource</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Source/TMSSource">TMSSource</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Source/StaticSource">StaticSource</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Source/FileSource">FileSource</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Source/URLBuilder">URLBuilder</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Source/Fetcher">Fetcher</a>
+            </li>
+        
+        </ul>
+    </div>
+
+    <div class="package">
+        <h3 class="nav-section">Parser</h3>
+        <ul>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Parser/GeoJsonParser">GeoJsonParser</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Parser/GpxParser">GpxParser</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Parser/VectorTileParser">VectorTileParser</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Parser/CameraCalibrationParser">CameraCalibrationParser</a>
+            </li>
+        
+        </ul>
+    </div>
+
+    <div class="package">
+        <h3 class="nav-section">Converter</h3>
+        <ul>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Converter/Feature2Mesh">Feature2Mesh</a>
+            </li>
+        
+        </ul>
+    </div>
+
+    <div class="package">
+        <h3 class="nav-section">Controls</h3>
+        <ul>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Controls/GlobeControls">GlobeControls</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Controls/StateControl">StateControl</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Controls/PlanarControls">PlanarControls</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Controls/FirstPersonControls">FirstPersonControls</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Controls/OrientedImageCamera">OrientedImageCamera</a>
+            </li>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Controls/CameraUtils">CameraUtils</a>
+            </li>
+        
+        </ul>
+    </div>
+
+    <div class="package">
+        <h3 class="nav-section">Renderer</h3>
+        <ul>
+        
+            
+            <li class="nav-item">
+            <a class="nav-link" href="#api/Renderer/OrientedImageMaterial">OrientedImageMaterial</a>
+            </li>
+        
+        </ul>
+    </div>
+
+
+
+</nav>
+
+<div id="main">
+    <iframe id="content" class="scroll-section" frameborder="0" height="100%"></iframe>
+</div>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+<script type="text/javascript">
+    var baseURI = document.baseURI;
+
+    function bindIframe() {
+        var navLinks = document.getElementsByClassName('nav-link');
+        for (var i = 0; i < navLinks.length; i++) {
+            navLinks[i].addEventListener('click', function(e) {
+                e.preventDefault();
+                var target = e.target.localName === 'b' ? e.target.parentNode : e.target;
+                var url = target.href.replace('#', '') + '.html';
+                var slug = target.hash;
+                goTo(url, slug);
+            });
+        }
+
+        // load page if setted
+        if (document.location.hash) {
+            var url = document.location.href.replace('#', '') + '.html';
+            goTo(url);
+        } else {
+            goTo('home.html', 'home');
+        }
+    };
+
+    function goTo(url, slug) {
+        if (slug) window.location.hash = slug;
+        var iframe = document.getElementById('content');
+        iframe.src = url;
+    };
+
+    // Functionality for search/filter input field
+    var filterInput = document.getElementById('filterInput');
+    filterInput.oninput = function (event) {
+        updateFilter();
+    };
+
+    // Functionality for filter clear button
+    var clearFilterButton = document.getElementById('clearFilterButton');
+    clearFilterButton.onclick = function (event) {
+        event.preventDefault();
+        filterInput.value = '';
+        updateFilter();
+    };
+
+    var navigation = [];
+    function initNavigation() {
+        var sections = document.getElementsByClassName('nav-section');
+        for (var i = 0; i < sections.length; i++) {
+            var section = { dom: sections[i], links: [] };
+
+            var links = sections[i].parentElement.getElementsByClassName('nav-link');
+            for (var j = 0; j < links.length; j++) {
+                section.links.push(links[j]);
+            }
+
+            navigation.push(section);
+        }
+    }
+
+    // Filtering
+    function updateFilter() {
+        var regExp = new RegExp(filterInput.value, 'gi');
+        for (var i = 0; i < navigation.length; i++) {
+            var section = navigation[i];
+            var visibleLinks = 0;
+            for (var j = 0; j < section.links.length; j++) {
+                var link = section.links[j];
+                var name = link.innerText;
+                var filterResults = name.match(regExp);
+
+                if (filterResults && filterResults.length > 0) {
+                    // Accentuate matching characters
+                    for (var k = 0; k < filterResults.length; k++) {
+                        var result = filterResults[k];
+                        if (result !== '') {
+                            name = name.replace( result, '<b>' + result + '</b>' );
+                        }
+                    }
+                    link.parentElement.classList.remove('hidden');
+                    link.innerHTML = name;
+                    visibleLinks++;
+                } else {
+                    // Hide all non-matching page names
+                    link.parentElement.classList.add('hidden');
+                }
+            }
+
+            if (visibleLinks > 0) {
+                section.dom.parentElement.classList.remove('hidden');
+            } else {
+                section.dom.parentElement.classList.add('hidden');
+            }
+        }
+    }
+
+    function onLoad() {
+        bindIframe();
+        initNavigation();
+    }
+</script>
+</body>
+</html>

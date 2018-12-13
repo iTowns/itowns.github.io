@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        Source
+        
+    </h1>
+
+    
+        <div class="description">Sources are object containing informations on how to fetch resources, from a
+set source.
+
+To extend a Source, it is necessary to implement two functions: Source#urlFromExtent and Source#extentInsideLimit.</div>
+    
+
+    
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">Source</span>
+        (
+
+
+    
+        source:
+            <span class="type">Object</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>source</code>
+        
+        
+            &mdash; <span>An object that can contain all properties of a
+Source. Only the <code>url</code> property is mandatory.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">isSource</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            Used to checkout whether this source is a
+Source. Default is true. You should not change this, as it is used internally
+for optimisation.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">url</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            The url of the resources that are fetched.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">format</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            The format of the resources that are fetched.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fetcher</span>
+        : <span class="type">function</span>
+    </h3>
+
+    
+        <div class="description">
+            The method used to fetch the resources from
+the source. iTowns provides some methods in Fetcher, but it can be
+specified a custom one. This method should return a <code>Promise</code>
+containing the fetched resource. If this property is set, it overrides the
+chosen fetcher method with <code>format</code>.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">networkOptions</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            Fetch options (passed directly to
+<code>fetch()</code>), see <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Syntax">the syntax for more information</a>.
+By default, set to <code>{ crossOrigin: 'anonymous' }</code>.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">projection</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            The projection of the resources.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">attribution</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            The intellectual property rights for the
+resources.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">extent</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    </h3>
+
+    
+        <div class="description">
+            The extent of the resources.
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">extentInsideLimit</span>
+        (
+
+
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span>Extent to test.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Tests if an extent is inside the source limits.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">extentsInsideLimit</span>
+        (
+
+
+    
+        extents:
+            <span class="type">Array.&lt;Extent></span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extents</code>
+        
+        
+            &mdash; <span>Array of extents to test.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Tests if an array of extents is inside the source limits.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">urlFromExtent</span>
+        (
+
+
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type">string</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span>Extent to convert in url.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Generates an url from an extent. This url is a link to fetch the
+resources inside the extent.
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Source/Source.js">
+            src/Source/Source.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

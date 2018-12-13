@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>URLBuilder - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        URLBuilder
+        
+    </h1>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h2>Static Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">bbox</span>
+        (
+
+
+    
+        bbox:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        layer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+    
+
+)
+        :
+            
+                <span class="type">string</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>bbox</code>
+        
+        
+            &mdash; <span>the bounding box</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>layer</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Builds an URL knowing the bounding box and the layer to query.
+<br><br>
+The layer object needs to have an url property, which should have the
+string <code>%bbox</code> in it. This string will be replaced by the four
+cardinal points composing the bounding box.
+<br><br>
+Order of the points can be specified in the <code>axisOrder</code>
+property in layer, using the letters <code>w, s, e, n</code> respectively
+for <code>WEST, SOUTH, EAST, NORTH</code>. The default order is
+<code>wsen</code>.
+            </div>
+        
+
+        
+            <h4>Example</h4>
+            
+
+
+    <pre class="prettyprint source lang-js"><code>extent = new Extent('EPSG:4326', 12, 14, 35, 46);
+layer.projection = 'EPSG:4326';
+layer.url = 'http://server.geo/wms/BBOX=%bbox&FORMAT=jpg&SERVICE=WMS';
+url = URLBuilder.bbox(extent, layer);
+
+// The resulting url is:
+// http://server.geo/wms/BBOX=12,35,14,46&FORMAT=jpg&SERVICE=WMS</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">xyz</span>
+        (
+
+
+    
+        coords:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        layer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+    
+
+)
+        :
+            
+                <span class="type">string</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>coords</code>
+        
+        
+            &mdash; <span>the coordinates</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>layer</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Builds an URL knowing the coordinates and the layer to query.
+<br><br>
+The layer object needs to have an url property, which should have some
+specific strings that will be replaced by coordinates.
+<ul>
+<li><code>${x}</code> or <code>%COL</code> will be replaced by
+<code>coords.col</code></li>
+<li><code>${y}</code> or <code>%ROW</code> will be replaced by
+<code>coords.row</code></li>
+<li><code>${z}</code> or <code>%TILEMATRIX</code> will be replaced by
+<code>coords.zoom</code></li>
+</ul>
+            </div>
+        
+
+        
+            <h4>Example</h4>
+            
+
+
+    <pre class="prettyprint source lang-js"><code>coords = new Coordinates('WMTS:WGS84', 12, 1410, 2072);
+layer.url = 'http://server.geo/wmts/SERVICE=WMTS&TILEMATRIX=%TILEMATRIX&TILEROW=%ROW&TILECOL=%COL';
+url = URLBuilder.xyz(coords, layer);
+
+// The resulting url is:
+// http://server.geo/wmts/SERVICE=WMTS&TILEMATRIX=12&TILEROW=1410&TILECOL=2072;</code></pre>
+
+    <pre class="prettyprint source lang-js"><code>coords = new Extent('TMS', 15, 2142, 3412);
+layer.url = 'http://server.geo/tms/${z}/${y}/${x}.jpg';
+url = URLBuilder.xyz(coords, layer);
+
+// The resulting url is:
+// http://server.geo/tms/15/2142/3412.jpg;</code></pre>
+
+
+        
+    
+</div>
+
+            
+        
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Provider/URLBuilder.js">
+            src/Provider/URLBuilder.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

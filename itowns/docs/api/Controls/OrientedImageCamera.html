@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>OrientedImageCamera - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        OrientedImageCamera
+        
+    </h1>
+
+    
+        <div class="description">OrientedImageCamera is a ThreeJs camera adapted to photogrammetric description.
+So we can build a ThreeJs perspective camera from size and focal information.</div>
+    
+
+    
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">OrientedImageCamera</span>
+        (
+
+
+    
+        size:
+            <span class="type">number|Vector2</span>, 
+    
+        focal:
+            <span class="type">number|Vector2</span>, 
+    
+        center:
+            <span class="type">Vector2</span>, 
+    
+        near:
+            <span class="type">number</span>, 
+    
+        far:
+            <span class="type">number</span>, 
+    
+        skew:
+            <span class="type">number</span>, 
+    
+        aspect:
+            <span class="type">number</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>size</code>
+        (default: <code>1024</code>)
+        
+        
+            &mdash; <span>image size in pixels (default: x=1024, y=x)</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>focal</code>
+        (default: <code>1024</code>)
+        
+        
+            &mdash; <span>focal length in pixels (default: x=1024, y=x)</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>center</code>
+        
+        
+            &mdash; <span>principal point in pixels (default: size/2)</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>near</code>
+        (default: <code>0.1</code>)
+        
+        
+            &mdash; <span>Camera frustum near plane (default: see THREE.PerspectiveCamera).</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>far</code>
+        (default: <code>1000</code>)
+        
+        
+            &mdash; <span>Camera frustum far plane (default: see THREE.PerspectiveCamera).</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>skew</code>
+        
+        
+            &mdash; <span>shear transform parameter (default: 0)</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>aspect</code>
+        
+        
+            &mdash; <span>aspect ratio of the camera (default: size.x/size.y).</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Renderer/OrientedImageCamera.js">
+            src/Renderer/OrientedImageCamera.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>TMSSource - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        TMSSource
+        
+            <span class="extends">extends <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a></span>
+        
+    </h1>
+
+    
+        <div class="description">An object defining the source of resources to get from a <a href="https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification">TMS</a> server. It
+inherits from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>.</div>
+    
+
+    
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">TMSSource</span>
+        (
+
+
+    
+        source:
+            <span class="type">Object</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>source</code>
+        
+        
+            &mdash; <span>An object that can contain all properties of a
+TMSSource. Only <code>url</code> is mandatory.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+        <h2>Example</h2>
+        
+
+
+    <pre class="prettyprint source lang-js"><code>// Create the source
+const tmsSource = new itowns.TMSSource({
+    format: 'image/png',
+    url: 'http://osm.io/styles/${z}/${x}/${y}.png',
+    attribution: {
+        name: 'OpenStreetMap',
+        url: 'http://www.openstreetmap.org/',
+    },
+    tileMatrixSet: 'PM',
+});
+
+// Create the layer
+const colorLayer = new itowns.ColorLayer('OPENSM', {
+    source: tmsSource,
+});
+
+// Add the layer
+view.addLayer(colorLayer);</code></pre>
+
+
+    
+
+    
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">isTMSSource</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            Used to checkout whether this source is a
+TMSSource. Default is true. You should not change this, as it is used
+internally for optimisation.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">isInverted</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            The isInverted property is to be set to the
+correct value, true or false (default being false) if the computation of the
+coordinates needs to be inverted to match the same scheme as OSM, Google Maps
+or other system. See <a href="https://alastaira.wordpress.com/2011/07/06/converting-tms-tile-coordinates-to-googlebingosm-tile-coordinates/%7Cthis%0Alink">https://alastaira.wordpress.com/2011/07/06/converting-tms-tile-coordinates-to-googlebingosm-tile-coordinates/|this
+link</a> for more information.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">tileMatrixSet</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            Tile matrix set of the layer, used in the
+generation of the coordinates to build the url. Default value is 'WGS84'.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">zoom</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            Object containing the minimum and maximum values of
+the level, to zoom in the source.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">zoom.min</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            The minimum level of the source. Default value
+is 0.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">zoom.max</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            The maximum level of the source. Default value
+is 18.
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">extentInsideLimit</span>
+        (
+
+
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span>Extent to test.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Tests if an extent is inside the source limits.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">extentsInsideLimit</span>
+        (
+
+
+    
+        extents:
+            <span class="type">Array.&lt;Extent></span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extents</code>
+        
+        
+            &mdash; <span>Array of extents to test.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Tests if an array of extents is inside the source limits.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">urlFromExtent</span>
+        (
+
+
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type">string</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span>Extent to convert in url.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Generates an url from an extent. This url is a link to fetch the
+resources inside the extent.
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Source/TMSSource.js">
+            src/Source/TMSSource.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

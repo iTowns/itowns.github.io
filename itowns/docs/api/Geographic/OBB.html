@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>OBB - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        OBB
+        
+            <span class="extends">extends THREE.Object3D</span>
+        
+    </h1>
+
+    
+        <div class="description">Oriented bounding box</div>
+    
+
+    
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">OBB</span>
+        (
+
+
+    
+        min:
+            <span class="type">THREE.Vector3</span>, 
+    
+        max:
+            <span class="type">THREE.Vector3</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>min</code>
+        
+        
+            &mdash; <span>representing the lower (x, y, z) boundary of the box. Default is ( + Infinity, + Infinity, + Infinity ).</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>max</code>
+        
+        
+            &mdash; <span>representing the lower upper (x, y, z) boundary of the box. Default is ( - Infinity, - Infinity, - Infinity ).</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">clone</span>
+        (
+
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/OBB.html','api/Geographic/OBB')" title="OBB">OBB</a></span>
+
+            
+        
+    </h3>
+
+    
+
+    
+        
+            <div class="description">
+                Creates a new instance of the object with same properties than original.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">copy</span>
+        (
+
+
+    
+        cOBB:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/OBB.html','api/Geographic/OBB')" title="OBB">OBB</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/OBB.html','api/Geographic/OBB')" title="OBB">OBB</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>cOBB</code>
+        
+        
+            &mdash; <span>OBB to copy</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Copy the property of OBB
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">isSphereAboveXYBox</span>
+        (
+
+
+    
+        sphere:
+            <span class="type">Sphere</span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>sphere</code>
+        
+        
+            &mdash; <span>The sphere</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Determines if the sphere is above the XY space of the box
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">toPoints</span>
+        (
+
+
+    
+        points:
+            <span class="type">Array.&lt;THREE.Vector3></span>
+    
+
+)
+        :
+            
+                <span class="type">Array.&lt;THREE.Vector3></span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>points</code>
+        
+        
+            &mdash; <span>The points to set</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Set bouding box value to points
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">update</span>
+        (
+
+
+)
+        :
+            
+                <span class="type">Array.&lt;THREE.Vector3></span>
+
+            
+        
+    </h3>
+
+    
+
+    
+        
+            <div class="description">
+                Update the top point world
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">updateZ</span>
+        (
+
+
+    
+        min:
+            <span class="type">number</span>, 
+    
+        max:
+            <span class="type">number</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>min</code>
+        
+        
+            &mdash; <span>The minimum of oriented bounding box</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>max</code>
+        
+        
+            &mdash; <span>The maximum of oriented bounding box</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Update z min and z max of oriented bounding box
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+    
+        <h2>Static Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">extentToOBB</span>
+        (
+
+
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        minHeight:
+            <span class="type">number</span>, 
+    
+        maxHeight:
+            <span class="type">number</span>, 
+    
+        obb:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/OBB.html','api/Geographic/OBB')" title="OBB">OBB</a></span>
+    
+
+)
+        :
+            
+                <span class="type">TileGeometry</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span>The extent (with crs 'EPSG:4326') to compute oriented bounding box</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>minHeight</code>
+        
+        
+            &mdash; <span>The minimum height of OBB</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>maxHeight</code>
+        
+        
+            &mdash; <span>The maximum height of OBB</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>obb</code>
+        
+        
+            &mdash; <span>The obb to copy result</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Compute OBB from extent.
+The OBB resulted can be only in the system 'EPSG:3946'.
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Renderer/OBB.js">
+            src/Renderer/OBB.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

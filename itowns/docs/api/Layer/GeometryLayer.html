@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>GeometryLayer - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        GeometryLayer
+        
+    </h1>
+
+    
+        <div class="description">A layer usually managing a geometry to display on a view. For example, it
+can be a layer of buildings extruded from a a WFS stream.</div>
+    
+
+    
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">GeometryLayer</span>
+        (
+
+
+    
+        id:
+            <span class="type">string</span>, 
+    
+        object3d:
+            <span class="type">THREE.Object3d</span>, 
+    
+        config:
+            <span class="type">Object</span>, 
+    
+        config.source:
+            <span class="type"><a onclick="window.parent.goTo('api/Source/WMTSSource.html','api/Source/WMTSSource')" title="WMTSSource">WMTSSource</a>|<a onclick="window.parent.goTo('api/Source/WMSSource.html','api/Source/WMSSource')" title="WMSSource">WMSSource</a>|<a onclick="window.parent.goTo('api/Source/WFSSource.html','api/Source/WFSSource')" title="WFSSource">WFSSource</a>|<a onclick="window.parent.goTo('api/Source/TMSSource.html','api/Source/TMSSource')" title="TMSSource">TMSSource</a>|<a onclick="window.parent.goTo('api/Source/FileSource.html','api/Source/FileSource')" title="FileSource">FileSource</a></span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>id</code>
+        
+        
+            &mdash; <span>The id of the layer, that should be unique. It is
+not mandatory, but an error will be emitted if this layer is added a
+<a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> that already has a layer going by that id.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>object3d</code>
+        
+        
+            &mdash; <span>The object3d used to contain the
+geometry of the GeometryLayer. It is usually a <code>THREE.Group</code>,
+but it can be anything inheriting from a <code>THREE.Object3d</code>.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config</code>
+        (optional)
+        
+            &mdash; <span>Optional configuration, all elements in it
+will be merged as is in the layer. For example, if the configuration
+contains three elements <code>name, protocol, extent</code>, these
+elements will be available using <code>layer.name</code> or something
+else depending on the property name.</span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>config.source</code>
+        (optional)
+        
+            &mdash; <span>Description and options of the source.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">isGeometryLayer</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            Used to checkout whether this layer is
+a GeometryLayer. Default is true. You should not change this, as it is used
+internally for optimisation.
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">attach</span>
+        (
+
+
+    
+        layer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>layer</code>
+        
+        
+            &mdash; <span>The layer to attach, that must have an
+<code>update</code> method.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Attach another layer to this one. Layers attached to a GeometryLayer will
+be available in <code>geometryLayer.attachedLayers</code>.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">changeOpacity</span>
+        (
+
+
+    
+        object:
+            <span class="type">Object</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>object</code>
+        
+        
+            &mdash; <span>The object to change the opacity from. It is
+usually a <code>THREE.Object3d</code> or an implementation of it.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Change the opacity of an object, according to the value of the
+<code>opacity</code> property of this layer.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">defineLayerProperty</span>
+        (
+
+
+    
+        propertyName:
+            <span class="type">string</span>, 
+    
+        defaultValue:
+            <span class="type">*</span>, 
+    
+        onChange:
+            <span class="type">function</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>propertyName</code>
+        
+        
+            &mdash; <span>The name of the property, also used in
+the emitted event name.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>defaultValue</code>
+        
+        
+            &mdash; <span>The default set value.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>onChange</code>
+        (optional)
+        
+            &mdash; <span>The function executed when the property is
+changed. Parameters are the layer the property is defined on, and the
+name of the property.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Defines a property for this layer, with a default value and a callback
+executed when the property changes.
+<br><br>
+When changing the property, it also emits an event, named following this
+convention: <code>${propertyName}-property-changed</code>, with
+<code>${propertyName}</code> being replaced by the name of the property.
+For example, if the added property name is <code>frozen</code>, it will
+emit a <code>frozen-property-changed</code>.
+<br><br>
+            </div>
+        
+
+        
+            <h4>Example</h4>
+            
+
+
+    <pre class="prettyprint source lang-js"><code><caption>The emitted event has some properties assigned to it</caption>
+event = {
+    new: {
+        ${propertyName}: * // the new value of the property
+    },
+    previous: {
+        ${propertyName}: * // the previous value of the property
+    },
+    target: Layer // the layer it has been dispatched from
+    type: string // the name of the emitted event
+}</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">detach</span>
+        (
+
+
+    
+        layer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>layer</code>
+        
+        
+            &mdash; <span>The layer to detach.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Detach a layer attached to this one. See attach to learn how to
+attach a layer.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">pickObjectsAt</span>
+        (
+
+
+    
+        view:
+            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
+    
+        coordinates:
+            <span class="type">Object</span>, 
+    
+        radius:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">Array</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>view</code>
+        
+        
+            &mdash; <span>The view instance.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>coordinates</code>
+        
+        
+            &mdash; <span>The coordinates to pick in the view. It
+should have at least <code>x</code> and <code>y</code> properties.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>radius</code>
+        
+        
+            &mdash; <span>Radius of the picking circle.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Picking method for this layer. It uses the Picking#pickObjectsAt
+method.
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Layer/GeometryLayer.js">
+            src/Layer/GeometryLayer.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

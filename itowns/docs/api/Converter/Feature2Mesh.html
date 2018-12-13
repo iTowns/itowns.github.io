@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Feature2Mesh - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        Feature2Mesh
+        
+    </h1>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h2>Static Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">convert</span>
+        (
+
+
+    
+        options:
+            <span class="type">Object</span>, 
+    
+        options.altitude:
+            <span class="type">number|function</span>, 
+    
+        options.extrude:
+            <span class="type">number|function</span>, 
+    
+        options.color:
+            <span class="type">object|function</span>
+    
+
+)
+        :
+            
+                <span class="type">function</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>options</code>
+        
+        
+            &mdash; <span>options controlling the conversion</span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.altitude</code>
+        
+        
+            &mdash; <span>define the base altitude of the mesh</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.extrude</code>
+        
+        
+            &mdash; <span>if defined, polygons will be extruded by the specified amount</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.color</code>
+        
+        
+            &mdash; <span>define per feature color</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Return a function that converts <a onclick="window.parent.goTo('api/Parser/GeoJsonParser.html','api/Parser/GeoJsonParser')" title="Features">Features</a> to Meshes. Feature collection will be converted to a
+a THREE.Group.
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Converter/Feature2Mesh.js">
+            src/Converter/Feature2Mesh.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

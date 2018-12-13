@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>FirstPersonControls - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        FirstPersonControls
+        
+    </h1>
+
+    
+
+    
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">FirstPersonControls</span>
+        (
+
+
+    
+        view:
+            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
+    
+        options:
+            <span class="type">object</span>, 
+    
+        options.focusOnClick:
+            <span class="type">boolean</span>, 
+    
+        options.focusOnMouseOver:
+            <span class="type">boolean</span>, 
+    
+        options.moveSpeed:
+            <span class="type">boolean</span>, 
+    
+        options.verticalFOV:
+            <span class="type">number</span>, 
+    
+        options.panoramaRatio:
+            <span class="type">number</span>, 
+    
+        options.disableEventListeners:
+            <span class="type">boolean</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>view</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options</code>
+        
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.focusOnClick</code>
+        
+        
+            &mdash; <span>whether or not to focus the renderer domElement on click</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.focusOnMouseOver</code>
+        
+        
+            &mdash; <span>whether or not to focus when the mouse is over the domElement</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.moveSpeed</code>
+        
+        
+            &mdash; <span>if > 0, pressing the arrow keys will move the camera</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.verticalFOV</code>
+        
+        
+            &mdash; <span>define the max visible vertical angle of the scene in degrees (default 180)</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.panoramaRatio</code>
+        
+        
+            &mdash; <span>alternative way to specify the max vertical angle when using a panorama.
+You can specify the panorama width/height ratio and the verticalFOV will be computed automatically</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.disableEventListeners</code>
+        
+        
+            &mdash; <span>if true, the controls will not self listen to mouse/key events.
+You'll have to manually forward the events to the appropriate functions: onMouseDown, onMouseMove, onMouseUp,
+onKeyUp, onKeyDown and onMouseWheel.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">reset</span>
+        (
+
+
+    
+        preserveRotationOnX:
+            <span class="type">boolean</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>preserveRotationOnX</code>
+        
+        
+            &mdash; <span>if true, the look up/down rotation will
+not be copied from the camera</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Resets the controls internal state to match the camera' state.
+This must be called when manually modifying the camera's position or rotation.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">update</span>
+        (
+
+
+    
+        dt:
+            <span class="type">number</span>, 
+    
+        updateLoopRestarted:
+            <span class="type">boolean</span>, 
+    
+        force:
+            <span class="type">boolean</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>dt</code>
+        
+        
+            &mdash; <span>ellpased time since last update in seconds</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>updateLoopRestarted</code>
+        
+        
+            &mdash; <span>true if itowns' update loop just restarted</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>force</code>
+        
+        
+            &mdash; <span>set to true if you want to force the update, even if it
+appears unneeded.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Updates the camera position / rotation based on occured input events.
+This is done automatically when needed but can also be done if needed.
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Controls/FirstPersonControls.js">
+            src/Controls/FirstPersonControls.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

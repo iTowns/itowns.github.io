@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>GlobeControls - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        GlobeControls
+        
+    </h1>
+
+    
+        <div class="description">GlobeControls is a camera controller</div>
+    
+
+    
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">GlobeControls</span>
+        (
+
+
+    
+        view:
+            <span class="type"><a onclick="window.parent.goTo('api/View/GlobeView.html','api/View/GlobeView')" title="GlobeView">GlobeView</a></span>, 
+    
+        targetCoordinate:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>, 
+    
+        range:
+            <span class="type">number</span>, 
+    
+        globeRadius:
+            <span class="type">number</span>, 
+    
+        options:
+            <span class="type">object</span>, 
+    
+        options.zoomSpeed:
+            <span class="type">number</span>, 
+    
+        options.rotateSpeed:
+            <span class="type">number</span>, 
+    
+        options.minDistance:
+            <span class="type">number</span>, 
+    
+        options.maxDistance:
+            <span class="type">number</span>, 
+    
+        options.handleCollision:
+            <span class="type">bool</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>view</code>
+        
+        
+            &mdash; <span>the view where the control will be used</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>targetCoordinate</code>
+        
+        
+            &mdash; <span>the target looked by camera, at initialization</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>range</code>
+        
+        
+            &mdash; <span>distance between the target looked and camera, at initialization</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>globeRadius</code>
+        
+        
+            &mdash; <span>The globe's radius</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options</code>
+        
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.zoomSpeed</code>
+        
+        
+            &mdash; <span>Speed zoom with mouse</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.rotateSpeed</code>
+        
+        
+            &mdash; <span>Speed camera rotation in orbit and panoramic mode</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.minDistance</code>
+        
+        
+            &mdash; <span>Minimum distance between ground and camera</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.maxDistance</code>
+        
+        
+            &mdash; <span>Maximum distance between ground and camera</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.handleCollision</code>
+        
+        
+            &mdash; <span>enable collision camera with ground</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">enabled</span>
+        : <span class="type">bool</span>
+    </h3>
+
+    
+        <div class="description">
+            enable control
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">minDistance</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            Minimum distance between ground and camera
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">maxDistance</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            Maximum distance between ground and camera
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">zoomSpeed</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            Speed zoom with mouse
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">rotateSpeed</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            Speed camera rotation in orbit and panoramic mode
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">minDistanceCollision</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            Minimum distance collision between ground and camera
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">enableDamping</span>
+        : <span class="type">bool</span>
+    </h3>
+
+    
+        <div class="description">
+            enable camera damping, if it's disabled the camera immediately when the mouse button is released.
+If it's enabled, the camera movement is decelerate.
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getCameraCoordinate</span>
+        (
+
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+
+            
+        
+    </h3>
+
+    
+
+    
+        
+            <div class="description">
+                Returns the camera location projected on the ground in lat,lon. See <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> for conversion.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getCameraOrientation</span>
+        (
+
+
+)
+        :
+            
+                <span class="type">Array.&lt;number></span>
+
+            
+        
+    </h3>
+
+    
+
+    
+        
+            <div class="description">
+                Returns the orientation angles of the current camera, in degrees.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getCameraTargetGeoPosition</span>
+        (
+
+
+)
+        :
+            
+                <span class="type">Position</span>
+
+            
+        
+    </h3>
+
+    
+
+    
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getCameraTargetPosition</span>
+        (
+
+
+)
+        :
+            
+                <span class="type">THREE.Vector3</span>
+
+            
+        
+    </h3>
+
+    
+
+    
+        
+            <div class="description">
+                Returns the <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> of the globe point targeted by the camera in EPSG:4978 projection. See <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> for conversion
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getHeading</span>
+        (
+
+
+)
+        :
+            
+                <span class="type">Angle</span>
+
+            
+        
+    </h3>
+
+    
+
+    
+        
+            <div class="description">
+                Returns the heading of the current camera in degrees.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getLookAtCoordinate</span>
+        (
+
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+
+            
+        
+    </h3>
+
+    
+
+    
+        
+            <div class="description">
+                Returns the <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> of the central point on screen in lat,lon. See <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> for conversion.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getRange</span>
+        (
+
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+
+    
+        
+            <div class="description">
+                Returns the "range": the distance in meters between the camera and the current central point on the screen.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getScale</span>
+        (
+
+
+    
+        pitch:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>pitch</code>
+        
+        
+            &mdash; <span>Screen pitch, in millimeters ; 0.28 by default</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Return the current zoom scale at the central point of the view.
+This function compute the scale of a map
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getTilt</span>
+        (
+
+
+)
+        :
+            
+                <span class="type">Angle</span>
+
+            
+        
+    </h3>
+
+    
+
+    
+        
+            <div class="description">
+                Returns the tilt of the current camera in degrees.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getZoom</span>
+        (
+
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+
+    
+        
+            <div class="description">
+                Returns the actual zoom. The zoom will always be between the [getMinZoom(), getMaxZoom()].
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">isAnimationEnabled</span>
+        (
+
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+
+    
+        
+            <div class="description">
+                Determines if animation enabled.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">lookAtCoordinate</span>
+        (
+
+
+    
+        params:
+            <span class="type">cameraTransformOptions</span>, 
+    
+        params.zoom:
+            <span class="type">number</span>, 
+    
+        params.scale:
+            <span class="type">number</span>, 
+    
+        isAnimated:
+            <span class="type">boolean</span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>params</code>
+        
+        
+            &mdash; <span>camera transformation to apply</span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>params.zoom</code>
+        (optional)
+        
+            &mdash; <span>zoom</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>params.scale</code>
+        (optional)
+        
+            &mdash; <span>scale</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>isAnimated</code>
+        
+        
+            &mdash; <span>Indicates if animated</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Changes the center of the scene on screen to the specified in lat, lon. See <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> for conversion.
+This function allows to change the central position, the zoom, the range, the scale and the camera orientation at the same time.
+The zoom has to be between the [getMinZoom(), getMaxZoom()].
+Zoom parameter is ignored if range is set
+The tilt's interval is between 4 and 89.5 degree
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">metersToPixels</span>
+        (
+
+
+    
+        value:
+            <span class="type">number</span>, 
+    
+        pixelPitch:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>value</code>
+        
+        
+            &mdash; <span>Length in meter on globe</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>pixelPitch</code>
+        
+        
+            &mdash; <span>Screen pixel pitch, in millimeters (default = 0.28 mm / standard pixel size of 0.28 millimeters as defined by the OGC)</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Projection on screen in pixels of length in meter on globe
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">pan</span>
+        (
+
+
+    
+        pVector:
+            <span class="type">vector</span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>pVector</code>
+        
+        
+            &mdash; <span>The vector</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Displaces the central point to a specific amount of pixels from its current position.
+The view flies to the desired coordinate, i.e.is not teleported instantly. Note : The results can be strange in some cases, if ever possible, when e.g.the camera looks horizontally or if the displaced center would not pick the ground once displaced.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">pickGeoPosition</span>
+        (
+
+
+    
+        windowCoords:
+            <span class="type">Vector2</span>, 
+    
+        y:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>windowCoords</code>
+        
+        
+            &mdash; <span>window coordinates</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>y</code>
+        (optional)
+        
+            &mdash; <span>The y-position inside the Globe element.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Pick a position on the globe at the given position in lat,lon. See <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> for conversion.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">pixelsToDegrees</span>
+        (
+
+
+    
+        pixels:
+            <span class="type">number</span>, 
+    
+        pixelPitch:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>pixels</code>
+        
+        
+            &mdash; <span>count pixels to project</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>pixelPitch</code>
+        
+        
+            &mdash; <span>Screen pixel pitch, in millimeters (default = 0.28 mm / standard pixel size of 0.28 millimeters as defined by the OGC)</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                To convert the projection a number of horizontal pixels of screen to longitude degree WGS84 on the globe
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">pixelsToMeters</span>
+        (
+
+
+    
+        pixels:
+            <span class="type">number</span>, 
+    
+        pixelPitch:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>pixels</code>
+        
+        
+            &mdash; <span>count pixels to project</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>pixelPitch</code>
+        
+        
+            &mdash; <span>Screen pixel pitch, in millimeters (default = 0.28 mm / standard pixel size of 0.28 millimeters as defined by the OGC)</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                To convert the projection in meters on the globe of a number of pixels of screen
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setAnimationEnabled</span>
+        (
+
+
+    
+        enable:
+            <span class="type">boolean</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>enable</code>
+        
+        
+            &mdash; <span>enable</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Sets the animation enabled.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setCameraTargetGeoPosition</span>
+        (
+
+
+    
+        coordinates:
+            <span class="type">Object</span>, 
+    
+        coordinates.latitude:
+            <span class="type">number</span>, 
+    
+        coordinates.longitude:
+            <span class="type">number</span>, 
+    
+        coordinates.range:
+            <span class="type">number</span>, 
+    
+        isAnimated:
+            <span class="type">boolean</span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>coordinates</code>
+        
+        
+            &mdash; <span>The globe coordinates in EPSG_4326 projection to aim to</span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>coordinates.latitude</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>coordinates.longitude</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>coordinates.range</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>isAnimated</code>
+        
+        
+            &mdash; <span>if the movement should be animated</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setCameraTargetGeoPositionAdvanced</span>
+        (
+
+
+    
+        position:
+            <span class="type">Position</span>, 
+    
+        position.longitude:
+            <span class="type">number</span>, 
+    
+        position.latitude:
+            <span class="type">number</span>, 
+    
+        position.tilt:
+            <span class="type">number</span>, 
+    
+        position.heading:
+            <span class="type">number</span>, 
+    
+        position.range:
+            <span class="type">number</span>, 
+    
+        position.zoom:
+            <span class="type">number</span>, 
+    
+        position.scale:
+            <span class="type">number</span>, 
+    
+        isAnimated:
+            <span class="type">boolean</span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>position</code>
+        
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>position.longitude</code>
+        
+        
+            &mdash; <span>Coordinate longitude WGS84 in degree</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>position.latitude</code>
+        
+        
+            &mdash; <span>Coordinate latitude WGS84 in degree</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>position.tilt</code>
+        (optional)
+        
+            &mdash; <span>Camera tilt in degree</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>position.heading</code>
+        (optional)
+        
+            &mdash; <span>Camera heading in degree</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>position.range</code>
+        (optional)
+        
+            &mdash; <span>The camera distance to the target center</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>position.zoom</code>
+        (optional)
+        
+            &mdash; <span>zoom,  ignored if range is set</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>position.scale</code>
+        (optional)
+        
+            &mdash; <span>scale,  ignored if the zoom or range is set. For a scale of 1/500 it is necessary to write 0,002.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>isAnimated</code>
+        
+        
+            &mdash; <span>Indicates if animated</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setHeading</span>
+        (
+
+
+    
+        heading:
+            <span class="type">number</span>, 
+    
+        isAnimated:
+            <span class="type">boolean</span>
+    
+
+)
+        :
+            
+                <span class="type">Promise.&lt;void></span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>heading</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>isAnimated</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Changes the heading of the current camera, in degrees.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setOrbitalPosition</span>
+        (
+
+
+    
+        position:
+            <span class="type">Object</span>, 
+    
+        isAnimated:
+            <span class="type">boolean</span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>position</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>isAnimated</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setRange</span>
+        (
+
+
+    
+        range:
+            <span class="type">number</span>, 
+    
+        isAnimated:
+            <span class="type">boolean</span>
+    
+
+)
+        :
+            
+                <span class="type">Promise.&lt;void></span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>range</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>isAnimated</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Sets the "range": the distance in meters between the camera and the current central point on the screen.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setScale</span>
+        (
+
+
+    
+        scale:
+            <span class="type">number</span>, 
+    
+        pitch:
+            <span class="type">number</span>, 
+    
+        isAnimated:
+            <span class="type">boolean</span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>scale</code>
+        
+        
+            &mdash; <span>The scale</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>pitch</code>
+        
+        
+            &mdash; <span>The pitch</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>isAnimated</code>
+        
+        
+            &mdash; <span>Indicates if animated</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Changes the zoom of the central point of screen so that screen acts as a map with a specified scale.
+ The view flies to the desired zoom scale;
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setTilt</span>
+        (
+
+
+    
+        tilt:
+            <span class="type">number</span>, 
+    
+        isAnimated:
+            <span class="type">boolean</span>
+    
+
+)
+        :
+            
+                <span class="type">Promise.&lt;void></span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>tilt</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>isAnimated</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Changes the tilt of the current camera, in degrees.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setZoom</span>
+        (
+
+
+    
+        zoom:
+            <span class="type">number</span>, 
+    
+        isAnimated:
+            <span class="type">boolean</span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>zoom</code>
+        
+        
+            &mdash; <span>The zoom</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>isAnimated</code>
+        
+        
+            &mdash; <span>Indicates if animated</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Sets the current zoom, which is an index in the logical scales predefined for the application.
+The higher the zoom, the closer to the ground.
+The zoom is always in the [getMinZoom(), getMaxZoom()] range.
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Controls/GlobeControls.js">
+            src/Controls/GlobeControls.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

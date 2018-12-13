@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>StateControl - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        StateControl
+        
+    </h1>
+
+    
+        <div class="description">It represents the control's states.
+Each state is a control mode of the camera and how to interact with
+the interface to activate this mode.</div>
+    
+
+    
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">StateControl</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">inputToState</span>
+        (
+
+
+    
+        mouseButton:
+            <span class="type">Number</span>, 
+    
+        keyboard:
+            <span class="type">Number</span>
+    
+
+)
+        :
+            
+                <span class="type">state</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>mouseButton</code>
+        
+        
+            &mdash; <span>The mouse button</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>keyboard</code>
+        
+        
+            &mdash; <span>The keyboard</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                get the state corresponding to the mouse button and the keyboard key
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">touchToState</span>
+        (
+
+
+    
+        finger:
+            <span class="type">Number</span>
+    
+
+)
+        :
+            
+                <span class="type">state</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>finger</code>
+        
+        
+            &mdash; <span>The number of finger</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                get the state corresponding to the number of finger on the pad
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Controls/StateControl.js">
+            src/Controls/StateControl.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

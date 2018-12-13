@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>TileMesh - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        TileMesh
+        
+    </h1>
+
+    
+        <div class="description">A TileMesh is a THREE.Mesh with a geometricError and an OBB
+The objectId property of the material is the with the id of the TileMesh</div>
+    
+
+    
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">TileMesh</span>
+        (
+
+
+    
+        geometry:
+            <span class="type">TileGeometry</span>, 
+    
+        material:
+            <span class="type">THREE.Material</span>, 
+    
+        layer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>, 
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        level:
+            <span class="type">number</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>geometry</code>
+        
+        
+            &mdash; <span>the tile geometry</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>material</code>
+        
+        
+            &mdash; <span>a THREE.Material compatible with THREE.Mesh</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>layer</code>
+        
+        
+            &mdash; <span>the layer the tile is added to</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span>the tile extent</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>level</code>
+        
+        
+            &mdash; <span>the tile level (default = 0)</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">findCommonAncestor</span>
+        (
+
+
+    
+        tile:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/TileMesh.html','api/Base/TileMesh')" title="TileMesh">TileMesh</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Base/TileMesh.html','api/Base/TileMesh')" title="TileMesh">TileMesh</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>tile</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Search for a common ancestor between this tile and another one. It goes
+through parents on each side until one is found.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setBBoxZ</span>
+        (
+
+
+    
+        min:
+            <span class="type">number</span>, 
+    
+        max:
+            <span class="type">number</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>min</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>max</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                If specified, update the min and max elevation of the OBB
+and updates accordingly the bounding sphere and the geometric error
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">updateMatrixWorld</span>
+        (
+
+
+    
+        force:
+            <span class="type">Boolean</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>force</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Update the global transform of the object and its children.
+Update the OBB of the object.
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/TileMesh.js">
+            src/Core/TileMesh.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

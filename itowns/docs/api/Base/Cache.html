@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Cache - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        Cache
+        
+    </h1>
+
+    
+        <div class="description">This is a copy of the Map object, except that it also store a value for last
+time used. This value is used for cache expiration mechanism.
+<br><br>
+This module can be imported anywhere, its data will be shared, as it is a
+single instance.</div>
+    
+
+    
+
+    
+        <h2>Example</h2>
+        
+
+
+    <pre class="prettyprint source lang-js"><code>import Cache from './Cache';
+
+Cache.set('foo', { bar: 1 }, Cache.POLICIES.TEXTURE);
+Cache.set('acme', { bar: 32 });
+
+Cache.get('foo');
+
+Cache.delete('foo');
+
+Cache.clear();</code></pre>
+
+
+    
+
+    
+
+    
+
+    
+        <h2>Static Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">clear</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+
+    
+        
+            <div class="description">
+                Removes all entries of the cache.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">delete</span>
+        (
+
+
+    
+        key:
+            <span class="type">string</span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>key</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Deletes the specified entry from the cache.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">flush</span>
+        (
+
+
+    
+        time:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">Object</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>time</code>
+        (optional)
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Flush the cache: entries that have been present for too long since the
+last time they were used, are removed from the cache. By default, the
+time is the current time, but the interval can be reduced by doing
+something like <code>Cache.flush(Date.now() - reductionTime)</code>. If
+you want to clear the whole cache, use Cache.clear instead.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">get</span>
+        (
+
+
+    
+        key:
+            <span class="type">string</span>
+    
+
+)
+        :
+            
+                <span class="type">Object</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>key</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Returns the entry related to the specified key from the cache. The last
+time used property of the entry is updated to extend the longevity of the
+entry.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">set</span>
+        (
+
+
+    
+        key:
+            <span class="type">string</span>, 
+    
+        value:
+            <span class="type">Object</span>, 
+    
+        lifetime:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">Object</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>key</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>value</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>lifetime</code>
+        (optional)
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Adds or updates an entry with a specified key. A lifetime can be added,
+by specifying a numerical value or using the Cache.POLICIES
+values. By default an entry has an infinite lifetime.
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/Scheduler/Cache.js">
+            src/Core/Scheduler/Cache.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

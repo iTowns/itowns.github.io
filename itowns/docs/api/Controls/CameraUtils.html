@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>CameraUtils - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        CameraUtils
+        
+    </h1>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h2>Static Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">animateCameraToLookAtTarget</span>
+        (
+
+
+    
+        view:
+            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
+    
+        camera:
+            <span class="type">Camera</span>, 
+    
+        params:
+            <span class="type">cameraTransformOptions</span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>view</code>
+        
+        
+            &mdash; <span>The camera view</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>camera</code>
+        
+        
+            &mdash; <span>The camera to animate</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>params</code>
+        
+        
+            &mdash; <span>The parameters</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Apply transform to camera with animation
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getDiffParams</span>
+        (
+
+
+    
+        first:
+            <span class="type">cameraTransformOptions</span>, 
+    
+        second:
+            <span class="type">cameraTransformOptions</span>
+    
+
+)
+        :
+            
+                <span class="type">object</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>first</code>
+        
+        
+            &mdash; <span>param to compare with the second</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>second</code>
+        
+        
+            &mdash; <span>param to compare with the first</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Gets the difference camera transformation
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getTransformCameraLookingAtTarget</span>
+        (
+
+
+    
+        view:
+            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
+    
+        camera:
+            <span class="type">Camera</span>
+    
+
+)
+        :
+            
+                <span class="type">cameraTransformOptions</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>view</code>
+        
+        
+            &mdash; <span>The camera view</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>camera</code>
+        
+        
+            &mdash; <span>The camera to get transform</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Gets the current parameters transform camera looking at target.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">sequenceAnimationsToLookAtTarget</span>
+        (
+
+
+    
+        view:
+            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
+    
+        camera:
+            <span class="type">Camera</span>, 
+    
+        params:
+            <span class="type">Array.&lt;cameraTransformOptions></span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>view</code>
+        
+        
+            &mdash; <span>The camera view</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>camera</code>
+        
+        
+            &mdash; <span>The camera to animate</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>params</code>
+        
+        
+            &mdash; <span>array parameters, each parameters transforms are apply to camera, in serial</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                chain animation transform to camera
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">stop</span>
+        (
+
+
+    
+        view:
+            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
+    
+        camera:
+            <span class="type">Camera</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>view</code>
+        
+        
+            &mdash; <span>The camera view</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>camera</code>
+        
+        
+            &mdash; <span>The camera to stop animation</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Stop camera's animation
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">transformCameraToLookAtTarget</span>
+        (
+
+
+    
+        view:
+            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
+    
+        camera:
+            <span class="type">Camera</span>, 
+    
+        params:
+            <span class="type">cameraTransformOptions</span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>view</code>
+        
+        
+            &mdash; <span>The camera view</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>camera</code>
+        
+        
+            &mdash; <span>The camera to transform</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>params</code>
+        
+        
+            &mdash; <span>The parameters</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Apply transform to camera
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Utils/CameraUtils.js">
+            src/Utils/CameraUtils.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

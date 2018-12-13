@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>View - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        View
+        
+    </h1>
+
+    
+        <div class="description">Constructs an Itowns View instance</div>
+    
+
+    
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">View</span>
+        (
+
+
+    
+        crs:
+            <span class="type">string</span>, 
+    
+        viewerDiv:
+            <span class="type">HTMLElement</span>, 
+    
+        options:
+            <span class="type">Object</span>, 
+    
+        options.mainLoop:
+            <span class="type">MainLoop</span>, 
+    
+        options.renderer:
+            <span class="type">WebGLRenderer|object</span>, 
+    
+        options.scene3D:
+            <span class="type">Scene</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>crs</code>
+        
+        
+            &mdash; <span>The default CRS of Three.js coordinates. Should be a cartesian CRS.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>viewerDiv</code>
+        
+        
+            &mdash; <span>Where to instanciate the Three.js scene in the DOM</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options</code>
+        (optional)
+        
+            &mdash; <span>Optional properties.</span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.mainLoop</code>
+        
+        
+            &mdash; <span>MainLoop instance to use, otherwise a default one will be constructed</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.renderer</code>
+        
+        
+            &mdash; <span>WebGLRenderer instance to use, otherwise
+a default one will be constructed. In this case, if options.renderer is an object, it will be used to
+configure the renderer (see c3DEngine.  If not present, a new &lt;canvas> will be created and
+added to viewerDiv (mutually exclusive with mainLoop)</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.scene3D</code>
+        
+        
+            &mdash; <span>Scene instance to use, otherwise a default one will be constructed</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">addFrameRequester</span>
+        (
+
+
+    
+        when:
+            <span class="type">String</span>, 
+    
+        frameRequester:
+            <span class="type">FrameRequester</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>when</code>
+        
+        
+            &mdash; <span>decide when the frameRequester should be called during
+the update cycle. Can be any of MAIN_LOOP_EVENTS.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>frameRequester</code>
+        
+        
+            &mdash; <span>this function will be called at each
+MainLoop update with the time delta between last update, or 0 if the MainLoop
+has just been relaunched.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Add a frame requester to this view.
+
+FrameRequesters can activate the MainLoop update by calling view.notifyChange.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">addLayer</span>
+        (
+
+
+    
+        layer:
+            <span class="type">LayerOptions|<a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a>|<a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></span>, 
+    
+        parentLayer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>layer</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>parentLayer</code>
+        (optional)
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Add layer in viewer.
+The layer id must be unique.
+
+This function calls `preprocessDataLayer` of the relevant provider with this
+layer and set `layer.whenReady` to a promise that resolves when
+the preprocessing operation is done. This promise is also returned by
+`addLayer` allowing to chain call.
+            </div>
+        
+
+        
+            <h4>Example</h4>
+            
+
+
+    <pre class="prettyprint source lang-js"><code>// Add Color Layer
+view.addLayer({
+     type: 'elevation',
+     id: 'iElevation',
+});
+
+// Example to add an OPENSM Layer
+view.addLayer({
+  type: 'color',
+  id: 'OPENSM',
+  fx: 2.5,
+  source: {
+     protocol:   'xyz',
+     url:  'http://b.tile.openstreetmap.fr/osmfr/${z}/${x}/${y}.png',
+     format: 'image/png',
+      attribution : {
+          name: 'OpenStreetMap',
+          url: 'http://www.openstreetmap.org/',
+      },
+      tileMatrixSet: 'PM',
+   },
+});
+
+// Add Elevation Layer and do something once it's ready
+var layer = view.addLayer({
+     type: 'elevation',
+     id: 'iElevation',
+}).then(() => { .... });
+
+// One can also attach a callback to the same promise with a layer instance.
+layer.whenReady.then(() => { ... });</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">eventToNormalizedCoords</span>
+        (
+
+
+    
+        event:
+            <span class="type">event</span>, 
+    
+        touchIdx:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>event</code>
+        
+        
+            &mdash; <span>event can be a MouseEvent or a TouchEvent</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>touchIdx</code>
+        
+        
+            &mdash; <span>finger index when using a TouchEvent (default: 0)</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Extract normalized coordinates (NDC) from a mouse-event / touch-event
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">eventToViewCoords</span>
+        (
+
+
+    
+        event:
+            <span class="type">event</span>, 
+    
+        touchIdx:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>event</code>
+        
+        
+            &mdash; <span>event can be a MouseEvent or a TouchEvent</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>touchIdx</code>
+        
+        
+            &mdash; <span>finger index when using a TouchEvent (default: 0)</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Extract view coordinates from a mouse-event / touch-event
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">execFrameRequesters</span>
+        (
+
+
+    
+        when:
+            <span class="type">String</span>, 
+    
+        dt:
+            <span class="type">Number</span>, 
+    
+        updateLoopRestarted:
+            <span class="type">boolean</span>, 
+    
+        args:
+            <span class="type">*</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>when</code>
+        
+        
+            &mdash; <span>attach point of this (these) requester(s). Can be any
+of MAIN_LOOP_EVENTS.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>dt</code>
+        
+        
+            &mdash; <span>delta between this update and the previous one</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>updateLoopRestarted</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>args</code>
+        
+        
+            &mdash; <span>optional arguments</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Execute a frameRequester.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getLayers</span>
+        (
+
+
+    
+        filter:
+            <span class="type">function</span>
+    
+
+)
+        :
+            
+                <span class="type">Array.&lt;Layer></span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>filter</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Get all layers, with an optionnal filter applied.
+The filter method will be called with 2 args:
+  - 1st: current layer
+  - 2nd: (optional) the geometry layer to which the current layer is attached
+            </div>
+        
+
+        
+            <h4>Example</h4>
+            
+
+
+    <pre class="prettyprint source lang-js"><code>// get all layers
+view.getLayers();
+// get all color layers
+view.getLayers(layer => layer.type === 'color');
+// get all elevation layers
+view.getLayers(layer => layer.type === 'elevation');
+// get all geometry layers
+view.getLayers(layer => layer.type === 'geometry');
+// get one layer with id
+view.getLayers(layer => layer.id === 'itt');</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getParentLayer</span>
+        (
+
+
+    
+        layer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>layer</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getPickingPositionFromDepth</span>
+        (
+
+
+    
+        mouse:
+            <span class="type">THREE.Vector2</span>, 
+    
+        target:
+            <span class="type">THREE.Vector3</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector3</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>mouse</code>
+        
+        
+            &mdash; <span>position in view coordinates (in pixel), if it's null so it's view's center.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target</code>
+        (default: <code>THREE.Vector3()</code>)
+        
+        
+            &mdash; <span>target. the result will be copied into this Vector3. If not present a new one will be created.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Returns the world position (view's crs: referenceCrs) under view coordinates.
+This position is computed with depth buffer.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">normalizedToViewCoords</span>
+        (
+
+
+    
+        ndcCoords:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>ndcCoords</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Convert NDC coordinates to view coordinates
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">notifyChange</span>
+        (
+
+
+    
+        changeSource:
+            <span class="type">*</span>, 
+    
+        needsRedraw:
+            <span class="type">boolean</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>changeSource</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>needsRedraw</code>
+        
+        
+            &mdash; <span>indicates if notified change requires a full scene redraw.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Notifies the scene it needs to be updated due to changes exterior to the
+scene itself (e.g. camera movement).
+non-interactive events (e.g: texture loaded)
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">pickObjectsAt</span>
+        (
+
+
+    
+        mouseOrEvt:
+            <span class="type">Object</span>, 
+    
+        radius:
+            <span class="type">number</span>, 
+    
+        where:
+            <span class="type">*</span>
+    
+
+)
+        :
+            
+                <span class="type">Array</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>mouseOrEvt</code>
+        
+        
+            &mdash; <span>mouse position in window coordinates (0, 0 = top-left)
+or MouseEvent or TouchEvent</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>radius</code>
+        
+        
+            &mdash; <span>picking will happen in a circle centered on mouseOrEvt. Radius
+is the radius of this circle, in pixels</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>where</code>
+        
+        
+            &mdash; <span>where to look for objects. Can be either: empty (= look
+in all layers with type == 'geometry'), layer ids or layers or a mix of all
+the above.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Return objects from some layers/objects3d under the mouse in this view.
+            </div>
+        
+
+        
+            <h4>Example</h4>
+            
+
+
+    <pre class="prettyprint source lang-js"><code>view.pickObjectsAt({ x, y })
+view.pickObjectsAt({ x, y }, 1, 'wfsBuilding')
+view.pickObjectsAt({ x, y }, 3, 'wfsBuilding', myLayer)</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">removeFrameRequester</span>
+        (
+
+
+    
+        when:
+            <span class="type">String</span>, 
+    
+        frameRequester:
+            <span class="type">FrameRequester</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>when</code>
+        
+        
+            &mdash; <span>attach point of this requester. Can be any of
+MAIN_LOOP_EVENTS.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>frameRequester</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Remove a frameRequester.
+The effective removal will happen either later; at worst it'll be at
+the beginning of the next frame.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">viewToNormalizedCoords</span>
+        (
+
+
+    
+        viewCoords:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>viewCoords</code>
+        
+        
+            &mdash; <span>(in pixels, 0-0 = top-left of the View)</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Convert view coordinates to normalized coordinates (NDC)
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/View.js">
+            src/Core/View.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>OrientedImageMaterial - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        OrientedImageMaterial
+        
+    </h1>
+
+    
+        <div class="description">OrientedImageMaterial is a custom shader material used to do projective texture mapping.<br/>
+
+This Material is designed to project many textures simultaneously.
+Each projected texture setting is stored as an <a onclick="window.parent.goTo('api/Controls/OrientedImageCamera.html','api/Controls/OrientedImageCamera')" title="OrientedImageCamera">OrientedImageCamera</a>.<br/>
+<br/>
+All cameras settings, like distorsion, can be specified in a configuration file.
+See CameraCalibrationParser
+used to parse a configuration file and create an array of camera.<br/>
+<br/>
+The current implementation supports the following distortion models : <br/>
+ - no distortion (polynom==vec3(0),l1l2==vec2(0))<br/>
+ - radial distortion (polynom!=vec3(0),l1l2==vec2(0)) (see <b>15.2.2 Radial Model</b> in <a href="https://github.com/micmacIGN/Documentation/blob/master/DocMicMac.pdf">MicMac doc</a>) </br>
+ - equilinear fish eye distortion (polynom!=vec3(0),l1l2 != vec2(0)) (see <b>15.3.4 Fish eye models</b> in <a href="https://github.com/micmacIGN/Documentation/blob/master/DocMicMac.pdf">MicMac doc</a>) </br>
+(Note: radial decentric parameters P1 are P2 not supported and assumed to be 0).<br/>
+<br/>
+To get a more comprehensive support of camera Micmac models, you can consider using <a href="https://github.com/mbredif/three-photogrammetric-camera">three-photogrammetric-camera</a> instead.</div>
+    
+
+    
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">OrientedImageMaterial</span>
+        (
+
+
+    
+        cameras:
+            <span class="type">Array.&lt;OrientedImageCamera></span>, 
+    
+        options:
+            <span class="type">Object</span>, 
+    
+        options.side:
+            <span class="type">Number</span>, 
+    
+        options.transparent:
+            <span class="type">Boolean</span>, 
+    
+        options.opacity:
+            <span class="type">Number</span>, 
+    
+        options.alphaBorder:
+            <span class="type">Number</span>, 
+    
+        options.debugAlphaBorder:
+            <span class="type">Number</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>cameras</code>
+        
+        
+            &mdash; <span>Array of <a onclick="window.parent.goTo('api/Controls/OrientedImageCamera.html','api/Controls/OrientedImageCamera')" title="OrientedImageCamera">OrientedImageCamera</a>. Each camera will project a texture.
+CameraCalibrationParser can used to create this array of camera from a configuration file.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options</code>
+        (default: <code>{}</code>)
+        
+        
+            &mdash; <span>Object with one or more properties defining the material's appearance.
+Any property of the material (including any property inherited from
+<a href="https://threejs.org/docs/#api/en/materials/Material">THREE.Material</a> and
+<a href="https://threejs.org/docs/#api/en/materials/ShaderMaterial">THREE.ShaderMaterial</a>) can be passed in here.</span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.side</code>
+        (default: <code>THREE.DoubleSide</code>)
+        
+        
+            &mdash; <span>We override default
+<a href="https://threejs.org/docs/#api/en/materials/Material.side">THREE.Material.side</a> from FrontSide to DoubleSide.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.transparent</code>
+        (default: <code>true</code>)
+        
+        
+            &mdash; <span>We override default
+<a href="https://threejs.org/docs/#api/en/materials/Material.transparent">THREE.Material.transparent</a> from false to true.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.opacity</code>
+        (default: <code>0.1</code>)
+        
+        
+            &mdash; <span>We override default
+<a href="https://threejs.org/docs/#api/en/materials/Material.opacity">THREE.Material.opacity</a> from 1 to 0.1.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.alphaBorder</code>
+        (default: <code>20</code>)
+        
+        
+            &mdash; <span>Part of the texture that is blended, when texture crosses each other.
+For example, 10 means a border as large as 1 / 10 of the size of the texture is used to blend colors.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.debugAlphaBorder</code>
+        (optional)
+        
+            &mdash; <span>Set this option to 1 to see influence of alphaBorder option.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setTextures</span>
+        (
+
+
+    
+        textures:
+            <span class="type">THREE.Texture</span>, 
+    
+        feature:
+            <span class="type">Object</span>, 
+    
+        feature.position:
+            <span class="type">THREE.Vector3</span>, 
+    
+        feature.quaternion:
+            <span class="type">THREE.Quaternion</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>textures</code>
+        
+        
+            &mdash; <span>Array of <a href="https://threejs.org/docs/#api/en/textures/Texture">THREE.Texture</a>.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>feature</code>
+        
+        
+            &mdash; <span>New position / orientation of the set of cameras</span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>feature.position</code>
+        
+        
+            &mdash; <span>New position.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>feature.quaternion</code>
+        
+        
+            &mdash; <span>New orientation.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Set new textures and new position/orientation of the camera set.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">updateUniforms</span>
+        (
+
+
+    
+        viewCamera:
+            <span class="type">THREE.Camera</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>viewCamera</code>
+        
+        
+            &mdash; <span>Camera of the scene.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Udate the uniforms using the current value of camera.matrixWorld.
+Need to be called when the camera of the scene has changed.
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Renderer/OrientedImageMaterial.js">
+            src/Renderer/OrientedImageMaterial.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>
