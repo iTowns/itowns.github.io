@@ -60,9 +60,9 @@ from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source'
         <code>source</code>
         
         
-            &mdash; <span>An object that can contain all properties of a
-WMSSource. <code>url</code>, <code>name</code>, <code>extent</code> and
-<code>projection</code> are mandatory.</span>
+            &mdash; <span>An object that can contain all properties of
+WMSSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. <code>url</code>, <code>name</code>,
+<code>extent</code> and <code>projection</code> are mandatory.</span>
         
 
         
@@ -189,14 +189,32 @@ value is 'normal'.
 
 <div class="property">
     <h3>
-        <span class="property-name">heightMapWidth</span>
+        <span class="property-name">width</span>
         : <span class="type">number</span>
     </h3>
 
     
         <div class="description">
-            The size of the image to fetch, in pixel.
-Default value is 256.
+            The width of the image to fetch, in pixel.
+Default value is the height if set or 256.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">height</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            The height of the image to fetch, in pixel.
+Default value is the width if set or 256.
         </div>
     
 </div>
