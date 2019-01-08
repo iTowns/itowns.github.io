@@ -44,9 +44,6 @@ one or use View#addLayer.</div>
         id:
             <span class="type">string</span>, 
     
-        type:
-            <span class="type">string</span>, 
-    
         config:
             <span class="type">Object</span>
     
@@ -67,25 +64,6 @@ one or use View#addLayer.</div>
             &mdash; <span>The id of the layer, that should be unique. It is
 not mandatory, but an error will be emitted if this layer is added a
 <a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> that already has a layer going by that id.</span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>type</code>
-        
-        
-            &mdash; <span>The type of the layer, used to determine
-operations to do on a layer later in the rendering loop. There are three
-type of layers in itowns:
-<ul>
- <li><code>color</code>, used for simple layer containing a texture</li>
- <li><code>elevation</code>, used for adding an elevation to the globe or
- plane the layer is attached to</li>
- <li><code>geometry</code>, used for complex layer containing meshes,
- like a WFS layer with extruded buildings</li>
-</ul></span>
         
 
         

@@ -284,44 +284,6 @@ the preprocessing operation is done. This promise is also returned by
         
 
         
-            <h4>Example</h4>
-            
-
-
-    <pre class="prettyprint source lang-js"><code>// Add Color Layer
-view.addLayer({
-     type: 'elevation',
-     id: 'iElevation',
-});
-
-// Example to add an OPENSM Layer
-view.addLayer({
-  type: 'color',
-  id: 'OPENSM',
-  fx: 2.5,
-  source: {
-     protocol:   'xyz',
-     url:  'http://b.tile.openstreetmap.fr/osmfr/${z}/${x}/${y}.png',
-     format: 'image/png',
-      attribution : {
-          name: 'OpenStreetMap',
-          url: 'http://www.openstreetmap.org/',
-      },
-      tileMatrixSet: 'PM',
-   },
-});
-
-// Add Elevation Layer and do something once it's ready
-var layer = view.addLayer({
-     type: 'elevation',
-     id: 'iElevation',
-}).then(() => { .... });
-
-// One can also attach a callback to the same promise with a layer instance.
-layer.whenReady.then(() => { ... });</code></pre>
-
-
-        
     
 </div>
 
@@ -605,11 +567,11 @@ The filter method will be called with 2 args:
     <pre class="prettyprint source lang-js"><code>// get all layers
 view.getLayers();
 // get all color layers
-view.getLayers(layer => layer.type === 'color');
+view.getLayers(layer => layer.isColorLayer);
 // get all elevation layers
-view.getLayers(layer => layer.type === 'elevation');
+view.getLayers(layer => layer.isElevationLayer);
 // get all geometry layers
-view.getLayers(layer => layer.type === 'geometry');
+view.getLayers(layer => layer.isGeometryLayer);
 // get one layer with id
 view.getLayers(layer => layer.id === 'itt');</code></pre>
 
