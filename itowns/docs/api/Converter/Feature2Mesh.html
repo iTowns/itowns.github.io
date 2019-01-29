@@ -56,7 +56,10 @@
             <span class="type">number|function</span>, 
     
         options.color:
-            <span class="type">object|function</span>
+            <span class="type">object|function</span>, 
+    
+        options.batchId:
+            <span class="type">function</span>
     
 
 )
@@ -115,6 +118,16 @@
         
     </li>
     
+    <li>
+        <code>options.batchId</code>
+        (optional)
+        
+            &mdash; <span>optional function to create batchId attribute. It is passed the feature property and the feature index. As the batchId is using an unsigned int structure on 32 bits, the batchId could be between 0 and 4,294,967,295.</span>
+        
+
+        
+    </li>
+    
 </ul>
 
         
@@ -131,6 +144,48 @@
 a THREE.Group.
             </div>
         
+
+        
+            <h4>Example</h4>
+            
+
+
+    <pre class="prettyprint source lang-js"><code><caption>Example usage of batchId with featureId.</caption>
+view.addLayer({
+    id: 'WFS Buildings',
+    type: 'geometry',
+    update: itowns.FeatureProcessing.update,
+    convert: itowns.Feature2Mesh.convert({
+        color: colorBuildings,
+        batchId: (property, featureId) => featureId,
+        altitude: altitudeBuildings,
+        extrude: extrudeBuildings }),
+    onMeshCreated: function scaleZ(mesh) {
+        mesh.scale.z = 0.01;
+        meshes.push(mesh);
+    },
+    filter: acceptFeature,
+    source,
+});</code></pre>
+
+    <pre class="prettyprint source lang-js"><code><caption>Example usage of batchId with property.</caption>
+view.addLayer({
+    id: 'WFS Buildings',
+    type: 'geometry',
+    update: itowns.FeatureProcessing.update,
+    convert: itowns.Feature2Mesh.convert({
+        color: colorBuildings,
+        batchId: (property, featureId) => property.house ? 10 : featureId,
+        altitude: altitudeBuildings,
+        extrude: extrudeBuildings }),
+    onMeshCreated: function scaleZ(mesh) {
+        mesh.scale.z = 0.01;
+        meshes.push(mesh);
+    },
+    filter: acceptFeature,
+    source,
+});</code></pre>
+
 
         
     
