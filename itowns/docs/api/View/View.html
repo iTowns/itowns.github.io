@@ -514,6 +514,60 @@ of MAIN_LOOP_EVENTS.</span>
 
 <div class="method">
     <h3>
+        <span class="method-name">getLayerById</span>
+        (
+
+
+    
+        layerId:
+            <span class="type">String</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>layerId</code>
+        
+        
+            &mdash; <span>The layer identifier</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Gets the layer by identifier.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
         <span class="method-name">getLayers</span>
         (
 
@@ -963,6 +1017,68 @@ The effective removal will happen either later; at worst it'll be at
 the beginning of the next frame.
             </div>
         
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">removeLayer</span>
+        (
+
+
+    
+        layerId:
+            <span class="type">string</span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>layerId</code>
+        
+        
+            &mdash; <span>The identifier</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Removes a specific imagery layer from the current layer list. This removes layers inserted with attach().
+            </div>
+        
+
+        
+            <h4>Example</h4>
+            
+
+
+    <pre class="prettyprint source lang-js"><code>view.removeLayer('layerId');</code></pre>
+
 
         
     
