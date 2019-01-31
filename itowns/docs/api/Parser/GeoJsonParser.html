@@ -78,6 +78,9 @@ containing all necessary informations to display this GeoJSON.</div>
             <span class="type">boolean</span>, 
     
         options.withAltitude:
+            <span class="type">boolean</span>, 
+    
+        options.overrideAltitudeInToZero:
             <span class="type">boolean</span>
     
 
@@ -198,6 +201,17 @@ have an extent property containing the area covered by the geom</span>
         
         
             &mdash; <span>If true each coordinate altitude is kept</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.overrideAltitudeInToZero</code>
+        (optional)
+        
+            &mdash; <span>If true, the altitude of the source data isn't taken into account for 3D geometry convertions.
+the altitude will be override to 0. This can be useful if you don't have a DEM or provide a new one when converting (with Layer.convert).</span>
         
 
         
