@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>BatchTable - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        BatchTable
+        
+    </h1>
+
+    
+        <div class="description">Class representing a 3D Tiles batch table</div>
+    
+
+    
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">BatchTable</span>
+        (
+
+
+    
+        json:
+            <span class="type">Object</span>, 
+    
+        binary:
+            <span class="type">ArrayBuffer</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>json</code>
+        
+        
+            &mdash; <span>batch table json part</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>binary</code>
+        
+        
+            &mdash; <span>buffer representing the batch table
+binary part (not supported yet)</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getPickingInfo</span>
+        (
+
+
+    
+        featureId:
+            <span class="type">integer</span>
+    
+
+)
+        :
+            
+                <span class="type">Object</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>featureId</code>
+        
+        
+            &mdash; <span>id of the feature</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Creates and returns a javascript object holding the displayable
+information from the batch table and from extensions of the batch table
+for a given feature
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">removeExtensionFromContent</span>
+        (
+
+
+    
+        extensionName:
+            <span class="type">string</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extensionName</code>
+        
+        
+            &mdash; <span>the name of the extension to remove</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Remove an extension from this.content. Must be called when an extension
+has been parsed and added to this.extensions
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Parser/BatchTableParser.js">
+            src/Parser/BatchTableParser.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

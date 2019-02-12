@@ -12,13 +12,14 @@
     <body>
         <div id="viewerDiv"></div>
         <div class="help">
-            <p><b>Batch Table Information:</b></p>
-            <ul id="info"></ul>
+            <p><b>Feature Information:</b></p>
+            <div id="featureInfo"></div>
         </div>
         <script src="js/GUI/GuiTools.js"></script>
         <script src="../dist/itowns.js"></script>
         <script src="js/loading_screen.js"></script>
         <script src="../dist/debug.js"></script>
+        <script src="js/3dTilesHelper.js"></script>
         <script type="text/javascript">
             /* global itowns,document,GuiTools*/
             var positionOnGlobe = { longitude: -75.61, latitude: 40.04, altitude: 50000 }
@@ -58,8 +59,16 @@
             $3dTilesLayerRequestVolume.protocol = '3d-tiles'
             $3dTilesLayerRequestVolume.overrideMaterials = true;  // custom cesium shaders are not functional
             $3dTilesLayerRequestVolume.sseThreshold = 1;
-            // add an event for have information when you move your mouse on a building
-            itowns.View.prototype.addLayer.call(view, $3dTilesLayerRequestVolume).then(function _() { window.addEventListener('mousemove', picking, false); })
+            // add an event for picking the 3D Tiles layer and displaying
+            // information about the picked feature in an html div
+            var pickingArgs = {};
+            pickingArgs.htmlDiv = document.getElementById('featureInfo');
+            pickingArgs.view = view;
+            pickingArgs.layer = $3dTilesLayerRequestVolume;
+            itowns.View.prototype.addLayer.call(view,
+                $3dTilesLayerRequestVolume).then(function _() {
+                    window.addEventListener('mousemove', fillHTMLWithPickingInfo.bind(pickingArgs),
+                        false); });
 
             // Add the UI Debug
             var d = new debug.Debug(view, menuGlobe.gui);
@@ -72,50 +81,6 @@
                 view.notifyChange(view.camera.camera3D);
             }
             menuGlobe.gui.add(d, 'zoom').name('Go to point cloud');
-
-// Picking example - - - - - - - - - - -- - - - -- - - - -- - - - -- - - - -- - - - -- - - - -
-            function findBatchTableParent(object) {
-                if (object.batchTable) {
-                    return object.batchTable;
-                }
-                else if (object.parent) {
-                    return findBatchTableParent(object.parent);
-                } else {
-                    return undefined;
-                }
-            }
-            function picking(event) {
-                var htmlInfo = document.getElementById('info');
-                htmlInfo.innerHTML = ' ';
-
-                const intersects = view.pickObjectsAt(
-                    event,
-                    5,
-                    $3dTilesLayerRequestVolume);
-
-                for (var i = 0; i < intersects.length; i++) {
-                    var interAttributes = intersects[i].object.geometry.attributes;
-                    if (interAttributes) {
-                        if (interAttributes._BATCHID) {
-                            var face = intersects[i].face.a;
-                            var batchID = interAttributes._BATCHID.array[face];
-                            var batchTable = findBatchTableParent(intersects[i].object);
-
-                            htmlInfo.innerHTML +='<li><b> Batch id: </b>'+ batchID +'</li>';
-                            Object.keys(batchTable).map(function(objectKey) {
-                                var value = batchTable[objectKey][batchID];
-                                // if the value is a integer or not
-                                var info = Number.isInteger(value) ? value.toString() : value.toFixed(3).toString();
-                                htmlInfo.innerHTML +='<li><b>' + objectKey.toString() + ': </b>'+ info +'</li>';
-                                return true;
-                            });
-
-                            return;
-                        }
-                    }
-                }
-            }
-
         </script>
     </body>
 </html>

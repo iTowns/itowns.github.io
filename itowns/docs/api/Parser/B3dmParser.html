@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>B3dmParser - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        B3dmParser
+        
+    </h1>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h2>Static Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">parse</span>
+        (
+
+
+    
+        buffer:
+            <span class="type">ArrayBuffer</span>, 
+    
+        options:
+            <span class="type">Object</span>, 
+    
+        options.gltfUpAxis:
+            <span class="type">string</span>, 
+    
+        options.urlBase:
+            <span class="type">string</span>, 
+    
+        options.doNotPatchMaterial:
+            <span class="type">boolean</span>, 
+    
+        options.opacity:
+            <span class="type">float</span>, 
+    
+        options.overrideMaterials:
+            <span class="type">boolean|Material</span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>buffer</code>
+        
+        
+            &mdash; <span>the b3dm buffer.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options</code>
+        
+        
+            &mdash; <span>additional properties.</span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.gltfUpAxis</code>
+        (default: <code>'Y'</code>)
+        
+        
+            &mdash; <span>embedded glTF model up axis.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.urlBase</code>
+        
+        
+            &mdash; <span>the base url of the b3dm file (used to fetch textures for the embedded glTF model).</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.doNotPatchMaterial</code>
+        (default: <code>'false'</code>)
+        
+        
+            &mdash; <span>disable patching material with logarithmic depth buffer support.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.opacity</code>
+        (default: <code>1.0</code>)
+        
+        
+            &mdash; <span>the b3dm opacity.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.overrideMaterials</code>
+        (default: <code>'false'</code>)
+        
+        
+            &mdash; <span>override b3dm's embedded glTF materials. If overrideMaterials is a three.js material, it will be the material used to override.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Parse b3dm buffer and extract THREE.Scene and batch table
+            </div>
+        
+
+        
+    
+</div>
+
+            
+        
+    
+
+
+
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Parser/B3dmParser.js">
+            src/Parser/B3dmParser.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>
