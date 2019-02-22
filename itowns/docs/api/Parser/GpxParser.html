@@ -25,6 +25,10 @@
     </h1>
 
     
+        <div class="description">The GpxParser module provides a parse
+method that takes a GPX in and gives an object formatted for iTowns
+containing all necessary informations to display this GPX.</div>
+    
 
     
 
@@ -46,29 +50,17 @@
 
 
     
-        xml:
-            <span class="type">string</span>, 
+        gpx:
+            <span class="type">XMLDocument</span>, 
     
         options:
-            <span class="type">Object</span>, 
-    
-        options.crs:
-            <span class="type">string</span>, 
-    
-        options.enablePin:
-            <span class="type">boolean</span>, 
-    
-        options.networkOptions:
-            <span class="type">NetworkOptions</span>, 
-    
-        options.lineWidth:
-            <span class="type">number</span>
+            <span class="type">geojsonParserOptions</span>
     
 
 )
         :
             
-                <span class="type">THREE.Mesh</span>
+                <span class="type">Promise</span>
 
             
         
@@ -80,10 +72,10 @@
 <ul class="params">
     
     <li>
-        <code>xml</code>
+        <code>gpx</code>
         
         
-            &mdash; <span>the gpx file or xml.</span>
+            &mdash; <span>The GPX file content to parse.</span>
         
 
         
@@ -91,59 +83,10 @@
     
     <li>
         <code>options</code>
-        (optional)
-        
-            &mdash; <span>additional properties.</span>
-        
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>options.crs</code>
         
         
-            &mdash; <span>the default CRS of Three.js coordinates. Should be a cartesian CRS.</span>
+            &mdash; <span>Options controlling the parsing.</span>
         
-
-        
-    </li>
-    
-    <li>
-        <code>options.enablePin</code>
-        (default: <code>true</code>)
-        
-        
-            &mdash; <span>draw pin for way points.</span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>options.networkOptions</code>
-        (optional)
-        
-            &mdash; <span>options for fetching resources over network.</span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>options.lineWidth</code>
-        (default: <code>12</code>)
-        
-        
-            &mdash; <span>set line width to track line.</span>
-        
-
-        
-    </li>
-    
-</ul>
 
         
     </li>
@@ -155,23 +98,9 @@
     
         
             <div class="description">
-                Parse gpx file and convert to THREE.Mesh
+                Parse a GPX file content and return a FeatureCollection.
             </div>
         
-
-        
-            <h4>Example</h4>
-            
-
-
-    <pre class="prettyprint source lang-js"><code>// How to add a gpx object
-itowns.GpxParser.parse(file, { crs: viewer.referenceCrs }).then((gpx) => {
-     if (gpx) {
-        viewer.scene.add(gpx);
-        viewer.notifyChange();
-     }
-});</code></pre>
-
 
         
     

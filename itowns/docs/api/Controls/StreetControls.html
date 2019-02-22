@@ -30,7 +30,16 @@
         <div class="description">Camera controls that can follow a path.
 It is used to simulate a street view.
 It stores a currentPosition and nextPosition, and do a camera traveling to go to next position.
-
+It also manages picking on the ground and on other object, like building.
+<ul> It manages 2 surfaces, used as helpers for the end user :
+<li> a circle is shown when mouse is moving on the ground </li>
+<li> a rectangle is shown when mouse is moving on other 3d object </li>
+</ul>
+<ul>
+This controls is designed
+<li> to move forward when user click on the ground (click and go) </li>
+<li> to rotate the camera when user click on other object (click to look at) </li>
+</ul>
 <ul> Bindings inherited from FirstPersonControls
 <li><b> up + down keys : </b> forward/backward </li>
 <li><b> left + right keys: </b> strafing movements </li>
@@ -41,7 +50,8 @@ It stores a currentPosition and nextPosition, and do a camera traveling to go to
 <li><b> keys Z : </b> Move camera to the next position </li>
 <li><b> keys S : </b> Move camera to the previous position </li>
 <li><b> keys A : </b> Set camera to current position </li>
-</ul></div>
+</ul>
+Note that it only works in globe view.</div>
     
 
     
@@ -61,7 +71,25 @@ It stores a currentPosition and nextPosition, and do a camera traveling to go to
         options:
             <span class="type">Object</span>, 
     
-        options.animationDuration:
+        options.wallMaxDistance:
+            <span class="type">number</span>, 
+    
+        options.animationDurationWall:
+            <span class="type">number</span>, 
+    
+        options.surfaceGround:
+            <span class="type">THREE.Mesh</span>, 
+    
+        options.surfaceWall:
+            <span class="type">THREE.Mesh</span>, 
+    
+        options.buildingsLayer:
+            <span class="type">string</span>, 
+    
+        options.computeTime:
+            <span class="type">function</span>, 
+    
+        options.offset:
             <span class="type">number</span>
     
 
@@ -97,10 +125,74 @@ It stores a currentPosition and nextPosition, and do a camera traveling to go to
 <ul class="params">
     
     <li>
-        <code>options.animationDuration</code>
+        <code>options.wallMaxDistance</code>
+        (default: <code>1000</code>)
         
         
-            &mdash; <span>Duration of the animation to another panoramic.</span>
+            &mdash; <span>Maximum distance to click on a wall, in meter.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.animationDurationWall</code>
+        (default: <code>1000</code>)
+        
+        
+            &mdash; <span>Time in millis for the animation when clicking on a wall.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.surfaceGround</code>
+        (optional)
+        
+            &mdash; <span>Surface helper to see when mouse is on the ground, default is a transparent circle.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.surfaceWall</code>
+        (optional)
+        
+            &mdash; <span>Surface helper to see when mouse is on a wall, default is a transparent rectangle.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.buildingsLayer</code>
+        (default: <code>'Buildings'</code>)
+        
+        
+            &mdash; <span>Name of the building layer (used to pick on wall).</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.computeTime</code>
+        (optional)
+        
+            &mdash; <span>Function to compute time (in millis), used for the animation to move to a distance (in meter)</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.offset</code>
+        (default: <code>4</code>)
+        
+        
+            &mdash; <span>Altitude in meter up to the ground to move to when click on a target on the ground.</span>
         
 
         
@@ -185,12 +277,163 @@ It stores a currentPosition and nextPosition, and do a camera traveling to go to
 
 <div class="method">
     <h3>
+        <span class="method-name">animateCameraLookAt</span>
+        (
+
+
+    
+        position:
+            <span class="type">THREE.Vector3</span>, 
+    
+        time:
+            <span class="type">number</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>position</code>
+        
+        
+            &mdash; <span>Position to look at</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>time</code>
+        
+        
+            &mdash; <span>Time in millisecond</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Animate the camera to make it look at a position, in a given time
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
         <span class="method-name">moveCameraTo</span>
         (
 
 
     
-        positionTo:
+        position:
+            <span class="type">THREE.Vector3</span>, 
+    
+        time:
+            <span class="type">number</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>position</code>
+        
+        
+            &mdash; <span>Destination of the movement.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>time</code>
+        
+        
+            &mdash; <span>Time in millisecond</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Move the camera smoothly to the position, in a given time.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">moveCameraToCurrentPosition</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+
+    
+        
+            <div class="description">
+                Move the camera to the 'currentPosition' stored in this control.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">onClickOnGround</span>
+        (
+
+
+    
+        position:
             <span class="type">THREE.Vector3</span>
     
 
@@ -204,10 +447,10 @@ It stores a currentPosition and nextPosition, and do a camera traveling to go to
 <ul class="params">
     
     <li>
-        <code>positionTo</code>
+        <code>position</code>
         
         
-            &mdash; <span>Destination of the movement.</span>
+            &mdash; <span>The position</span>
         
 
         
@@ -220,7 +463,58 @@ It stores a currentPosition and nextPosition, and do a camera traveling to go to
     
         
             <div class="description">
-                Move the camera
+                Method called when user click on the ground.</br>
+Note that this funtion contains default values that can be overrided, by overriding this class.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">onClickOnWall</span>
+        (
+
+
+    
+        position:
+            <span class="type">THREE.Vector3</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>position</code>
+        
+        
+            &mdash; <span>The position</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Method called when user click on oject that is not the ground.</br>
+Note that this function contains default values that can be overrided, by overriding this class.
             </div>
         
 
@@ -360,7 +654,7 @@ This must be called when manually modifying the camera's position or rotation.
     
         
             <div class="description">
-                Sets the camera to the current position, looking at the next position.
+                Sets the camera to the current position (stored in this controls), looking at the next position (also stored in this controls).
             </div>
         
 
