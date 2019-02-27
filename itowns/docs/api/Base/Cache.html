@@ -327,6 +327,68 @@ values. By default an entry has an infinite lifetime.
         
     
 
+    
+        <h2>Types</h2>
+        
+            
+
+<div class="typedef">
+    <h3>
+        <span class="typedef-name">POLICIES</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+
+<ul class="params">
+    
+    <li>
+        <code>INFINITE</code>
+        
+        
+            &mdash; <span>The entry is never flushed, except when the
+<code>all</code> flag is set to <code>true</code> when calling Cache.flush.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>TEXTURE</code>
+        
+        
+            &mdash; <span>Shortcut for texture resources. Time is 15 minutes.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>ELEVATION</code>
+        
+        
+            &mdash; <span>Shortcut for elevation resources. Time is 15
+minutes.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+
+    
+        <div class="description">
+            Cache policies for flushing. Those policies can be used when something is
+set into the Cache, as the lifetime property.
+        </div>
+    
+</div>
+
+            
+        
+    
+
 
 
         <h2>Source</h2>

@@ -54,7 +54,7 @@ containing all necessary informations to display this GeoJSON.</div>
             <span class="type">string</span>, 
     
         options:
-            <span class="type">geojsonParserOptions</span>
+            <span class="type">GeoJsonParser~GeoJsonParserOptions</span>
     
 
 )
@@ -85,7 +85,8 @@ containing all necessary informations to display this GeoJSON.</div>
         <code>options</code>
         
         
-            &mdash; <span>Options controlling the parsing.</span>
+            &mdash; <span>Options controlling
+the parsing.</span>
         
 
         
@@ -103,6 +104,356 @@ containing all necessary informations to display this GeoJSON.</div>
         
 
         
+    
+</div>
+
+            
+        
+    
+
+    
+        <h2>Types</h2>
+        
+            
+
+<div class="typedef">
+    <h3>
+        <span class="typedef-name">Feature</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+
+<ul class="params">
+    
+    <li>
+        <code>type</code>
+        
+        
+            &mdash; <span>Geometry type, can be <code>point</code>,
+<code>multipoint</code>, <code>linestring</code>,
+<code>multilinestring</code>, <code>polygon</code> or
+<code>multipolygon</code>.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>vertices</code>
+        
+        
+            &mdash; <span>All the vertices of the geometry.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>normals</code>
+        
+        
+            &mdash; <span>All the normals of the geometry.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>size</code>
+        
+        
+            &mdash; <span>the number of values of the array that should be associated with a coordinates.
+The size is 3 with altitude and 2 without altitude.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>crs</code>
+        
+        
+            &mdash; <span>Geographic or Geocentric coordinates system.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>geometry</code>
+        
+        
+            &mdash; <span>The feature's geometry, as an
+array of FeatureGeometry.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span>The 2D extent containing all the geometries
+composing the feature.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+
+    
+        <div class="description">
+            Similar to a feature in a GeoJSON, but adapted to iTowns.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="typedef">
+    <h3>
+        <span class="typedef-name">FeatureCollection</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+
+<ul class="params">
+    
+    <li>
+        <code>features</code>
+        
+        
+            &mdash; <span>The array of features composing the
+collection.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span>The 2D extent containing all the features
+composing the collection.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>crs</code>
+        
+        
+            &mdash; <span>Geographic or Geocentric coordinates system.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>isFeature</code>
+        
+        
+            &mdash; <span>Used to check whether this is FeatureCollection.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+
+    
+        <div class="description">
+            An object regrouping a list of features and the extent of this collection.
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="typedef">
+    <h3>
+        <span class="typedef-name">FeatureGeometry</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span>The 2D extent containing all the points
+composing the geometry.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>indices</code>
+        
+        
+            &mdash; <span>If this geometry is a
+<code>linestring</code> or a <code>polygon</code>, contains the indices
+that define the geometry. Objects stored in this array have two
+properties, an <code>offset</code> and a <code>count</code>. The offset
+is related to the overall number of vertices in the Feature.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>properties</code>
+        
+        
+            &mdash; <span>Properties of the geometry. It can be
+anything specified in the GeoJSON under the <code>properties</code>
+property.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+
+    
+        <div class="description">
+            Similar to the geometry of a feature in a GeoJSON, but adapted to iTowns.
+The difference is that coordinates are stored in unique Array of number
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="typedef">
+    <h3>
+        <span class="typedef-name">GeoJsonParserOptions</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+
+<ul class="params">
+    
+    <li>
+        <code>crsOut</code>
+        
+        
+            &mdash; <span>The CRS to convert the input coordinates
+to.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>crsIn</code>
+        
+        
+            &mdash; <span>Override the data CRS.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>filteringExtent</code>
+        (optional)
+        
+            &mdash; <span>Optional filter to reject
+features outside of this extent.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>buildExtent</code>
+        (optional)
+        
+            &mdash; <span>If true the geometry will
+have an extent property containing the area covered by the geom</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>filter</code>
+        (optional)
+        
+            &mdash; <span>Filter function to remove features</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>mergeFeatures</code>
+        (default: <code>true</code>)
+        
+        
+            &mdash; <span>If true all geometries are merged by type and multi-type</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>withNormal</code>
+        (default: <code>true</code>)
+        
+        
+            &mdash; <span>If true each coordinate normal is computed</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>withAltitude</code>
+        (default: <code>true</code>)
+        
+        
+            &mdash; <span>If true each coordinate altitude is kept</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>overrideAltitudeInToZero</code>
+        (optional)
+        
+            &mdash; <span>If true, the altitude of the source data isn't taken into account for 3D geometry convertions.
+the altitude will be override to 0. This can be useful if you don't have a DEM or provide a new one when converting (with Layer.convert).</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+
     
 </div>
 

@@ -53,7 +53,7 @@
             <span class="type">Camera</span>, 
     
         params:
-            <span class="type">cameraTransformOptions</span>
+            <span class="type">CameraUtils~CameraTransformOptions</span>
     
 
 )
@@ -127,10 +127,10 @@
 
     
         first:
-            <span class="type">cameraTransformOptions</span>, 
+            <span class="type">CameraUtils~CameraTransformOptions</span>, 
     
         second:
-            <span class="type">cameraTransformOptions</span>
+            <span class="type">CameraUtils~CameraTransformOptions</span>
     
 
 )
@@ -203,7 +203,7 @@
 )
         :
             
-                <span class="type">cameraTransformOptions</span>
+                <span class="type">CameraUtils~CameraTransformOptions</span>
 
             
         
@@ -267,7 +267,7 @@
             <span class="type">Camera</span>, 
     
         params:
-            <span class="type">Array.&lt;cameraTransformOptions></span>
+            <span class="type">Array.&lt;CameraUtils~CameraTransformOptions></span>
     
 
 )
@@ -409,7 +409,7 @@
             <span class="type">Camera</span>, 
     
         params:
-            <span class="type">cameraTransformOptions</span>
+            <span class="type">CameraUtils~CameraTransformOptions</span>
     
 
 )
@@ -468,6 +468,129 @@
         
 
         
+    
+</div>
+
+            
+        
+    
+
+    
+        <h2>Types</h2>
+        
+            
+
+<div class="typedef">
+    <h3>
+        <span class="typedef-name">CameraTransformOptions</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+
+<ul class="params">
+    
+    <li>
+        <code>coord</code>
+        (default: <code>currentCoordinate</code>)
+        
+        
+            &mdash; <span>Camera look at geographic coordinate</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>tilt</code>
+        (default: <code>currentTilt</code>)
+        
+        
+            &mdash; <span>camera's tilt, in degree</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>heading</code>
+        (default: <code>currentHeading</code>)
+        
+        
+            &mdash; <span>camera's heading, in degree</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>range</code>
+        (default: <code>currentRange</code>)
+        
+        
+            &mdash; <span>camera distance to target coordinate, in meter</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>time</code>
+        (default: <code>2500</code>)
+        
+        
+            &mdash; <span>duration of the animation, in ms</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>proxy</code>
+        (default: <code>true</code>)
+        
+        
+            &mdash; <span>use proxy to handling camera's transformation. if proxy == true, other camera's transformation stops rig's transformation</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>easing</code>
+        (default: <code>TWEEN.Easing.Quartic.InOut</code>)
+        
+        
+            &mdash; <span>in and out easing animation</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>callback</code>
+        (optional)
+        
+            &mdash; <span>callback call each animation's frame (params are current cameraTransform and worldTargetPosition)</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>stopPlaceOnGroundAtEnd</code>
+        (default: <code>defaultStopPlaceOnGroundAtEnd</code>)
+        
+        
+            &mdash; <span>stop place target on the ground at animation ending</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+
     
 </div>
 
