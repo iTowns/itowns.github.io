@@ -237,6 +237,87 @@
 
 <div class="method">
     <h3>
+        <span class="method-name">setFromExtent</span>
+        (
+
+
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        minHeight:
+            <span class="type">number</span>, 
+    
+        maxHeight:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/OBB.html','api/Geographic/OBB')" title="OBB">OBB</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span>The extent (with crs 'EPSG:4326') to compute oriented bounding box</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>minHeight</code>
+        
+        
+            &mdash; <span>The minimum height of OBB</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>maxHeight</code>
+        
+        
+            &mdash; <span>The maximum height of OBB</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <div class="description">
+                Compute OBB from extent.
+The OBB resulted can be only in the system 'EPSG:3946'.
+            </div>
+        
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
         <span class="method-name">toPoints</span>
         (
 
@@ -378,103 +459,6 @@
         
     
 
-    
-        <h2>Static Methods</h2>
-        
-            
-
-<div class="method">
-    <h3>
-        <span class="method-name">extentToOBB</span>
-        (
-
-
-    
-        extent:
-            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
-    
-        minHeight:
-            <span class="type">number</span>, 
-    
-        maxHeight:
-            <span class="type">number</span>, 
-    
-        obb:
-            <span class="type"><a onclick="window.parent.goTo('api/Geographic/OBB.html','api/Geographic/OBB')" title="OBB">OBB</a></span>
-    
-
-)
-        :
-            
-                <span class="type">TileGeometry</span>
-
-            
-        
-    </h3>
-
-    
-        
-
-<ul class="params">
-    
-    <li>
-        <code>extent</code>
-        
-        
-            &mdash; <span>The extent (with crs 'EPSG:4326') to compute oriented bounding box</span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>minHeight</code>
-        
-        
-            &mdash; <span>The minimum height of OBB</span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>maxHeight</code>
-        
-        
-            &mdash; <span>The maximum height of OBB</span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>obb</code>
-        
-        
-            &mdash; <span>The obb to copy result</span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-            <div class="description">
-                Compute OBB from extent.
-The OBB resulted can be only in the system 'EPSG:3946'.
-            </div>
-        
-
-        
-    
-</div>
-
-            
-        
     
 
     
