@@ -123,11 +123,12 @@ the parsing.</span>
     </h3>
 
     
+    
 
 <ul class="params">
     
     <li>
-        <code>type</code>
+        <code>type: <span class="type">string</span></code>
         
         
             &mdash; <span>Geometry type, can be <code>point</code>,
@@ -140,7 +141,7 @@ the parsing.</span>
     </li>
     
     <li>
-        <code>vertices</code>
+        <code>vertices: <span class="type">Array.&lt;number></span></code>
         
         
             &mdash; <span>All the vertices of the geometry.</span>
@@ -150,7 +151,7 @@ the parsing.</span>
     </li>
     
     <li>
-        <code>normals</code>
+        <code>normals: <span class="type">Array.&lt;number></span></code>
         
         
             &mdash; <span>All the normals of the geometry.</span>
@@ -160,7 +161,7 @@ the parsing.</span>
     </li>
     
     <li>
-        <code>size</code>
+        <code>size: <span class="type">number</span></code>
         
         
             &mdash; <span>the number of values of the array that should be associated with a coordinates.
@@ -171,7 +172,7 @@ The size is 3 with altitude and 2 without altitude.</span>
     </li>
     
     <li>
-        <code>crs</code>
+        <code>crs: <span class="type">string</span></code>
         
         
             &mdash; <span>Geographic or Geocentric coordinates system.</span>
@@ -181,7 +182,7 @@ The size is 3 with altitude and 2 without altitude.</span>
     </li>
     
     <li>
-        <code>geometry</code>
+        <code>geometry: <span class="type">Array.&lt;FeatureGeometry></span></code>
         
         
             &mdash; <span>The feature's geometry, as an
@@ -192,7 +193,7 @@ array of FeatureGeometry.</span>
     </li>
     
     <li>
-        <code>extent</code>
+        <code>extent: <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span></code>
         
         
             &mdash; <span>The 2D extent containing all the geometries
@@ -223,11 +224,12 @@ composing the feature.</span>
     </h3>
 
     
+    
 
 <ul class="params">
     
     <li>
-        <code>features</code>
+        <code>features: <span class="type">Array.&lt;Feature></span></code>
         
         
             &mdash; <span>The array of features composing the
@@ -238,7 +240,7 @@ collection.</span>
     </li>
     
     <li>
-        <code>extent</code>
+        <code>extent: <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span></code>
         
         
             &mdash; <span>The 2D extent containing all the features
@@ -249,7 +251,7 @@ composing the collection.</span>
     </li>
     
     <li>
-        <code>crs</code>
+        <code>crs: <span class="type">string</span></code>
         
         
             &mdash; <span>Geographic or Geocentric coordinates system.</span>
@@ -259,7 +261,7 @@ composing the collection.</span>
     </li>
     
     <li>
-        <code>isFeature</code>
+        <code>isFeature: <span class="type">boolean</span></code>
         
         
             &mdash; <span>Used to check whether this is FeatureCollection.</span>
@@ -289,11 +291,12 @@ composing the collection.</span>
     </h3>
 
     
+    
 
 <ul class="params">
     
     <li>
-        <code>extent</code>
+        <code>extent: <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span></code>
         
         
             &mdash; <span>The 2D extent containing all the points
@@ -304,7 +307,7 @@ composing the geometry.</span>
     </li>
     
     <li>
-        <code>indices</code>
+        <code>indices: <span class="type">Array.&lt;Object></span></code>
         
         
             &mdash; <span>If this geometry is a
@@ -318,7 +321,7 @@ is related to the overall number of vertices in the Feature.</span>
     </li>
     
     <li>
-        <code>properties</code>
+        <code>properties: <span class="type">Object</span></code>
         
         
             &mdash; <span>Properties of the geometry. It can be
@@ -351,11 +354,12 @@ The difference is that coordinates are stored in unique Array of number
     </h3>
 
     
+    
 
 <ul class="params">
     
     <li>
-        <code>crsOut</code>
+        <code>crsOut: <span class="type">string</span></code>
         
         
             &mdash; <span>The CRS to convert the input coordinates
@@ -366,7 +370,7 @@ to.</span>
     </li>
     
     <li>
-        <code>crsIn</code>
+        <code>crsIn: <span class="type">string</span></code>
         
         
             &mdash; <span>Override the data CRS.</span>
@@ -376,7 +380,7 @@ to.</span>
     </li>
     
     <li>
-        <code>filteringExtent</code>
+        <code>filteringExtent: <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span></code>
         (optional)
         
             &mdash; <span>Optional filter to reject
@@ -387,7 +391,7 @@ features outside of this extent.</span>
     </li>
     
     <li>
-        <code>buildExtent</code>
+        <code>buildExtent: <span class="type">boolean</span></code>
         (optional)
         
             &mdash; <span>If true the geometry will
@@ -398,7 +402,7 @@ have an extent property containing the area covered by the geom</span>
     </li>
     
     <li>
-        <code>filter</code>
+        <code>filter: <span class="type">function</span></code>
         (optional)
         
             &mdash; <span>Filter function to remove features</span>
@@ -408,7 +412,7 @@ have an extent property containing the area covered by the geom</span>
     </li>
     
     <li>
-        <code>mergeFeatures</code>
+        <code>mergeFeatures: <span class="type">boolean</span></code>
         (default: <code>true</code>)
         
         
@@ -419,7 +423,7 @@ have an extent property containing the area covered by the geom</span>
     </li>
     
     <li>
-        <code>withNormal</code>
+        <code>withNormal: <span class="type">boolean</span></code>
         (default: <code>true</code>)
         
         
@@ -430,7 +434,7 @@ have an extent property containing the area covered by the geom</span>
     </li>
     
     <li>
-        <code>withAltitude</code>
+        <code>withAltitude: <span class="type">boolean</span></code>
         (default: <code>true</code>)
         
         
@@ -441,7 +445,7 @@ have an extent property containing the area covered by the geom</span>
     </li>
     
     <li>
-        <code>overrideAltitudeInToZero</code>
+        <code>overrideAltitudeInToZero: <span class="type">boolean</span></code>
         (optional)
         
             &mdash; <span>If true, the altitude of the source data isn't taken into account for 3D geometry convertions.
