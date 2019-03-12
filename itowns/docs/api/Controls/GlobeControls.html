@@ -75,6 +75,11 @@
     </h3>
 
     
+
+    
+
+    
+        <h4>Parameters</h4>
         
 
 <ul class="params">
@@ -341,14 +346,23 @@ If it's enabled, the camera movement is decelerate.
     </h3>
 
     
-
-    
         
             <div class="description">
                 Returns the camera location projected on the ground in lat,lon. See <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> for conversion.
             </div>
         
+    
 
+    
+                <h4>Returns</h4>
+                
+                    position
+                    
+                
+
+    
+
+    
         
     
 </div>
@@ -373,14 +387,18 @@ If it's enabled, the camera movement is decelerate.
     </h3>
 
     
-
-    
         
             <div class="description">
                 Returns the orientation angles of the current camera, in degrees.
             </div>
         
+    
 
+    
+
+    
+
+    
         
     
 </div>
@@ -405,10 +423,19 @@ If it's enabled, the camera movement is decelerate.
     </h3>
 
     
+        
+    
 
     
-        
+                <h4>Returns</h4>
+                
+                    position
+                    
+                
 
+    
+
+    
         
     
 </div>
@@ -433,14 +460,23 @@ If it's enabled, the camera movement is decelerate.
     </h3>
 
     
-
-    
         
             <div class="description">
                 Returns the <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> of the globe point targeted by the camera in EPSG:4978 projection. See <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> for conversion
             </div>
         
+    
 
+    
+                <h4>Returns</h4>
+                
+                    position
+                    
+                
+
+    
+
+    
         
     
 </div>
@@ -465,14 +501,23 @@ If it's enabled, the camera movement is decelerate.
     </h3>
 
     
-
-    
         
             <div class="description">
                 Returns the heading of the current camera in degrees.
             </div>
         
+    
 
+    
+                <h4>Returns</h4>
+                
+                    number - The angle of the rotation in degrees.
+                    
+                
+
+    
+
+    
         
     
 </div>
@@ -497,14 +542,23 @@ If it's enabled, the camera movement is decelerate.
     </h3>
 
     
-
-    
         
             <div class="description">
                 Returns the <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> of the central point on screen in lat,lon. See <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> for conversion.
             </div>
         
+    
 
+    
+                <h4>Returns</h4>
+                
+                    coordinate
+                    
+                
+
+    
+
+    
         
     
 </div>
@@ -529,14 +583,23 @@ If it's enabled, the camera movement is decelerate.
     </h3>
 
     
-
-    
         
             <div class="description">
                 Returns the "range": the distance in meters between the camera and the current central point on the screen.
             </div>
         
+    
 
+    
+                <h4>Returns</h4>
+                
+                    number
+                    
+                
+
+    
+
+    
         
     
 </div>
@@ -567,6 +630,23 @@ If it's enabled, the camera movement is decelerate.
 
     
         
+            <div class="description">
+                Return the current zoom scale at the central point of the view.
+This function compute the scale of a map
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    The zoom scale.
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -585,13 +665,6 @@ If it's enabled, the camera movement is decelerate.
     
 
     
-        
-            <div class="description">
-                Return the current zoom scale at the central point of the view.
-This function compute the scale of a map
-            </div>
-        
-
         
     
 </div>
@@ -616,14 +689,23 @@ This function compute the scale of a map
     </h3>
 
     
-
-    
         
             <div class="description">
                 Returns the tilt of the current camera in degrees.
             </div>
         
+    
 
+    
+                <h4>Returns</h4>
+                
+                    number - The angle of the rotation in degrees.
+                    
+                
+
+    
+
+    
         
     
 </div>
@@ -648,14 +730,23 @@ This function compute the scale of a map
     </h3>
 
     
-
-    
         
             <div class="description">
                 Returns the actual zoom. The zoom will always be between the [getMinZoom(), getMaxZoom()].
             </div>
         
+    
 
+    
+                <h4>Returns</h4>
+                
+                    The zoom .
+                    
+                
+
+    
+
+    
         
     
 </div>
@@ -680,14 +771,23 @@ This function compute the scale of a map
     </h3>
 
     
-
-    
         
             <div class="description">
                 Determines if animation enabled.
             </div>
         
+    
 
+    
+                <h4>Returns</h4>
+                
+                    True if animation enabled, False otherwise.
+                    
+                
+
+    
+
+    
         
     
 </div>
@@ -726,6 +826,26 @@ This function compute the scale of a map
     </h3>
 
     
+        
+            <div class="description">
+                Changes the center of the scene on screen to the specified in lat, lon. See <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> for conversion.
+This function allows to change the central position, the zoom, the range, the scale and the camera orientation at the same time.
+The zoom has to be between the [getMinZoom(), getMaxZoom()].
+Zoom parameter is ignored if range is set
+The tilt's interval is between 4 and 89.5 degree
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    A promise that resolves when transformation is oppered
+                    
+                
+
+    
+        <h4>Parameters</h4>
         
 
 <ul class="params">
@@ -783,16 +903,6 @@ This function compute the scale of a map
 
     
         
-            <div class="description">
-                Changes the center of the scene on screen to the specified in lat, lon. See <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> for conversion.
-This function allows to change the central position, the zoom, the range, the scale and the camera orientation at the same time.
-The zoom has to be between the [getMinZoom(), getMaxZoom()].
-Zoom parameter is ignored if range is set
-The tilt's interval is between 4 and 89.5 degree
-            </div>
-        
-
-        
     
 </div>
 
@@ -825,6 +935,22 @@ The tilt's interval is between 4 and 89.5 degree
 
     
         
+            <div class="description">
+                Projection on screen in pixels of length in meter on globe
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    projection in pixels on screen
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -853,12 +979,6 @@ The tilt's interval is between 4 and 89.5 degree
     
 
     
-        
-            <div class="description">
-                Projection on screen in pixels of length in meter on globe
-            </div>
-        
-
         
     
 </div>
@@ -889,6 +1009,18 @@ The tilt's interval is between 4 and 89.5 degree
 
     
         
+            <div class="description">
+                Displaces the central point to a specific amount of pixels from its current position.
+The view flies to the desired coordinate, i.e.is not teleported instantly. Note : The results can be strange in some cases, if ever possible, when e.g.the camera looks horizontally or if the displaced center would not pick the ground once displaced.
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -907,13 +1039,6 @@ The tilt's interval is between 4 and 89.5 degree
     
 
     
-        
-            <div class="description">
-                Displaces the central point to a specific amount of pixels from its current position.
-The view flies to the desired coordinate, i.e.is not teleported instantly. Note : The results can be strange in some cases, if ever possible, when e.g.the camera looks horizontally or if the displaced center would not pick the ground once displaced.
-            </div>
-        
-
         
     
 </div>
@@ -947,6 +1072,22 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
     
         
+            <div class="description">
+                Pick a position on the globe at the given position in lat,lon. See <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> for conversion.
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    position
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -975,12 +1116,6 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     
 
     
-        
-            <div class="description">
-                Pick a position on the globe at the given position in lat,lon. See <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="<code>Coordinates</code>"><code>Coordinates</code></a> for conversion.
-            </div>
-        
-
         
     
 </div>
@@ -1014,6 +1149,22 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
     
         
+            <div class="description">
+                To convert the projection a number of horizontal pixels of screen to longitude degree WGS84 on the globe
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    projection in degree on globe
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -1042,12 +1193,6 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     
 
     
-        
-            <div class="description">
-                To convert the projection a number of horizontal pixels of screen to longitude degree WGS84 on the globe
-            </div>
-        
-
         
     
 </div>
@@ -1081,6 +1226,22 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
     
         
+            <div class="description">
+                To convert the projection in meters on the globe of a number of pixels of screen
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    projection in meters on globe
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -1110,12 +1271,6 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
     
         
-            <div class="description">
-                To convert the projection in meters on the globe of a number of pixels of screen
-            </div>
-        
-
-        
     
 </div>
 
@@ -1140,6 +1295,17 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
     
         
+            <div class="description">
+                Sets the animation enabled.
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -1158,12 +1324,6 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     
 
     
-        
-            <div class="description">
-                Sets the animation enabled.
-            </div>
-        
-
         
     
 </div>
@@ -1205,6 +1365,18 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     </h3>
 
     
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    A promise that resolves when the next 'globe initilazed' event fires.
+                    
+                
+
+    
+        <h4>Parameters</h4>
         
 
 <ul class="params">
@@ -1266,8 +1438,6 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
     
         
-
-        
     
 </div>
 
@@ -1320,6 +1490,13 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     </h3>
 
     
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
         
 
 <ul class="params">
@@ -1425,8 +1602,6 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
     
         
-
-        
     
 </div>
 
@@ -1459,6 +1634,17 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
     
         
+            <div class="description">
+                Changes the heading of the current camera, in degrees.
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -1483,12 +1669,6 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     
 
     
-        
-            <div class="description">
-                Changes the heading of the current camera, in degrees.
-            </div>
-        
-
         
     
 </div>
@@ -1522,6 +1702,18 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
     
         
+    
+
+    
+                <h4>Returns</h4>
+                
+                    A promise that resolves when transformation is oppered
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -1546,8 +1738,6 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     
 
     
-        
-
         
     
 </div>
@@ -1581,6 +1771,17 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
     
         
+            <div class="description">
+                Sets the "range": the distance in meters between the camera and the current central point on the screen.
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -1605,12 +1806,6 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     
 
     
-        
-            <div class="description">
-                Sets the "range": the distance in meters between the camera and the current central point on the screen.
-            </div>
-        
-
         
     
 </div>
@@ -1646,6 +1841,18 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     </h3>
 
     
+        
+            <div class="description">
+                Changes the zoom of the central point of screen so that screen acts as a map with a specified scale.
+ The view flies to the desired zoom scale;
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
         
 
 <ul class="params">
@@ -1686,13 +1893,6 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
     
         
-            <div class="description">
-                Changes the zoom of the central point of screen so that screen acts as a map with a specified scale.
- The view flies to the desired zoom scale;
-            </div>
-        
-
-        
     
 </div>
 
@@ -1725,6 +1925,17 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
     
         
+            <div class="description">
+                Changes the tilt of the current camera, in degrees.
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -1749,12 +1960,6 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     
 
     
-        
-            <div class="description">
-                Changes the tilt of the current camera, in degrees.
-            </div>
-        
-
         
     
 </div>
@@ -1788,6 +1993,19 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
     
         
+            <div class="description">
+                Sets the current zoom, which is an index in the logical scales predefined for the application.
+The higher the zoom, the closer to the ground.
+The zoom is always in the [getMinZoom(), getMaxZoom()] range.
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -1816,14 +2034,6 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     
 
     
-        
-            <div class="description">
-                Sets the current zoom, which is an index in the logical scales predefined for the application.
-The higher the zoom, the closer to the ground.
-The zoom is always in the [getMinZoom(), getMaxZoom()] range.
-            </div>
-        
-
         
     
 </div>

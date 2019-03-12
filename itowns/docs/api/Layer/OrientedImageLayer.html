@@ -76,6 +76,11 @@ It creates an <a onclick="window.parent.goTo('api/Renderer/OrientedImageMaterial
     </h3>
 
     
+
+    
+
+    
+        <h4>Parameters</h4>
         
 
 <ul class="params">
@@ -204,6 +209,18 @@ a tecture is need for each camera, for each panoramic.</span>
 
     
         
+            <div class="description">
+                Attach another layer to this one. Layers attached to a GeometryLayer will
+be available in <code>geometryLayer.attachedLayers</code>.
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -223,13 +240,6 @@ a tecture is need for each camera, for each panoramic.</span>
     
 
     
-        
-            <div class="description">
-                Attach another layer to this one. Layers attached to a GeometryLayer will
-be available in <code>geometryLayer.attachedLayers</code>.
-            </div>
-        
-
         
     
 </div>
@@ -255,6 +265,18 @@ be available in <code>geometryLayer.attachedLayers</code>.
 
     
         
+            <div class="description">
+                Change the opacity of an object, according to the value of the
+<code>opacity</code> property of this layer.
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -274,13 +296,6 @@ usually a <code>THREE.Object3d</code> or an implementation of it.</span>
     
 
     
-        
-            <div class="description">
-                Change the opacity of an object, according to the value of the
-<code>opacity</code> property of this layer.
-            </div>
-        
-
         
     
 </div>
@@ -311,6 +326,25 @@ usually a <code>THREE.Object3d</code> or an implementation of it.</span>
     </h3>
 
     
+        
+            <div class="description">
+                Defines a property for this layer, with a default value and a callback
+executed when the property changes.
+<br><br>
+When changing the property, it also emits an event, named following this
+convention: <code>${propertyName}-property-changed</code>, with
+<code>${propertyName}</code> being replaced by the name of the property.
+For example, if the added property name is <code>frozen</code>, it will
+emit a <code>frozen-property-changed</code>.
+<br><br>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
         
 
 <ul class="params">
@@ -354,20 +388,6 @@ name of the property.</span>
 
     
         
-            <div class="description">
-                Defines a property for this layer, with a default value and a callback
-executed when the property changes.
-<br><br>
-When changing the property, it also emits an event, named following this
-convention: <code>${propertyName}-property-changed</code>, with
-<code>${propertyName}</code> being replaced by the name of the property.
-For example, if the added property name is <code>frozen</code>, it will
-emit a <code>frozen-property-changed</code>.
-<br><br>
-            </div>
-        
-
-        
             <h4>Example</h4>
             
 
@@ -404,8 +424,6 @@ event = {
     </h3>
 
     
-
-    
         
             <div class="description">
                 Delete background, but doesn't delete OrientedImageLayer.material. For the moment, this material visibility is set to false.
@@ -413,7 +431,13 @@ You need to replace OrientedImageLayer.material applied on each object, if you w
 This issue (see #1018 <a href="https://github.com/iTowns/itowns/issues/1018">https://github.com/iTowns/itowns/issues/1018</a>) will be fixed when OrientedImageLayer will be a ColorLayer.
             </div>
         
+    
 
+    
+
+    
+
+    
         
     
 </div>
@@ -444,6 +468,23 @@ This issue (see #1018 <a href="https://github.com/iTowns/itowns/issues/1018">htt
 
     
         
+            <div class="description">
+                Detach a layer attached to this one. See attach to learn how to
+attach a layer.
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    Confirmation of the detachment of the layer.
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -462,13 +503,6 @@ This issue (see #1018 <a href="https://github.com/iTowns/itowns/issues/1018">htt
     
 
     
-        
-            <div class="description">
-                Detach a layer attached to this one. See attach to learn how to
-attach a layer.
-            </div>
-        
-
         
     
 </div>
@@ -504,6 +538,24 @@ attach a layer.
     </h3>
 
     
+        
+            <div class="description">
+                Picking method for this layer. It uses the Picking#pickObjectsAt
+method.
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    An array containing all targets picked under the
+specified coordinates.
+                    
+                
+
+    
+        <h4>Parameters</h4>
         
 
 <ul class="params">
@@ -544,13 +596,6 @@ should have at least <code>x</code> and <code>y</code> properties.</span>
     
 
     
-        
-            <div class="description">
-                Picking method for this layer. It uses the Picking#pickObjectsAt
-method.
-            </div>
-        
-
         
     
 </div>

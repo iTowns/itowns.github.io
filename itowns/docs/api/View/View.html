@@ -63,6 +63,11 @@
     </h3>
 
     
+
+    
+
+    
+        <h4>Parameters</h4>
         
 
 <ul class="params">
@@ -175,6 +180,19 @@ added to viewerDiv (mutually exclusive with mainLoop)</span>
 
     
         
+            <div class="description">
+                Add a frame requester to this view.
+
+FrameRequesters can activate the MainLoop update by calling view.notifyChange.
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -206,14 +224,6 @@ has just been relaunched.</span>
     
 
     
-        
-            <div class="description">
-                Add a frame requester to this view.
-
-FrameRequesters can activate the MainLoop update by calling view.notifyChange.
-            </div>
-        
-
         
     
 </div>
@@ -247,6 +257,28 @@ FrameRequesters can activate the MainLoop update by calling view.notifyChange.
 
     
         
+            <div class="description">
+                Add layer in viewer.
+The layer id must be unique.
+
+This function calls `preprocessDataLayer` of the relevant provider with this
+layer and set `layer.whenReady` to a promise that resolves when
+the preprocessing operation is done. This promise is also returned by
+`addLayer` allowing to chain call.
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    a promise resolved with the new layer object when it is fully initialized or rejected if any error occurred.
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -271,18 +303,6 @@ FrameRequesters can activate the MainLoop update by calling view.notifyChange.
     
 
     
-        
-            <div class="description">
-                Add layer in viewer.
-The layer id must be unique.
-
-This function calls `preprocessDataLayer` of the relevant provider with this
-layer and set `layer.whenReady` to a promise that resolves when
-the preprocessing operation is done. This promise is also returned by
-`addLayer` allowing to chain call.
-            </div>
-        
-
         
     
 </div>
@@ -316,6 +336,22 @@ the preprocessing operation is done. This promise is also returned by
 
     
         
+            <div class="description">
+                Extract normalized coordinates (NDC) from a mouse-event / touch-event
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    NDC coordinates (x and y are [-1, 1])
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -344,12 +380,6 @@ the preprocessing operation is done. This promise is also returned by
     
 
     
-        
-            <div class="description">
-                Extract normalized coordinates (NDC) from a mouse-event / touch-event
-            </div>
-        
-
         
     
 </div>
@@ -383,6 +413,22 @@ the preprocessing operation is done. This promise is also returned by
 
     
         
+            <div class="description">
+                Extract view coordinates from a mouse-event / touch-event
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    view coordinates (in pixels, 0-0 = top-left of the View)
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -411,12 +457,6 @@ the preprocessing operation is done. This promise is also returned by
     
 
     
-        
-            <div class="description">
-                Extract view coordinates from a mouse-event / touch-event
-            </div>
-        
-
         
     
 </div>
@@ -450,6 +490,17 @@ the preprocessing operation is done. This promise is also returned by
     </h3>
 
     
+        
+            <div class="description">
+                Execute a frameRequester.
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
         
 
 <ul class="params">
@@ -499,12 +550,6 @@ of MAIN_LOOP_EVENTS.</span>
 
     
         
-            <div class="description">
-                Execute a frameRequester.
-            </div>
-        
-
-        
     
 </div>
 
@@ -534,6 +579,22 @@ of MAIN_LOOP_EVENTS.</span>
 
     
         
+            <div class="description">
+                Gets the layer by identifier.
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    The layer by identifier.
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -552,12 +613,6 @@ of MAIN_LOOP_EVENTS.</span>
     
 
     
-        
-            <div class="description">
-                Gets the layer by identifier.
-            </div>
-        
-
         
     
 </div>
@@ -588,6 +643,20 @@ of MAIN_LOOP_EVENTS.</span>
 
     
         
+            <div class="description">
+                Get all layers, with an optionnal filter applied.
+The filter method will be called with 2 args:
+  - 1st: current layer
+  - 2nd: (optional) the geometry layer to which the current layer is attached
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -604,15 +673,6 @@ of MAIN_LOOP_EVENTS.</span>
     
 
     
-        
-            <div class="description">
-                Get all layers, with an optionnal filter applied.
-The filter method will be called with 2 args:
-  - 1st: current layer
-  - 2nd: (optional) the geometry layer to which the current layer is attached
-            </div>
-        
-
         
             <h4>Example</h4>
             
@@ -660,6 +720,18 @@ view.getLayers(layer => layer.id === 'itt');</code></pre>
 
     
         
+    
+
+    
+                <h4>Returns</h4>
+                
+                    the parent layer of the given layer or undefined.
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -676,8 +748,6 @@ view.getLayers(layer => layer.id === 'itt');</code></pre>
     
 
     
-        
-
         
     
 </div>
@@ -711,6 +781,23 @@ view.getLayers(layer => layer.id === 'itt');</code></pre>
 
     
         
+            <div class="description">
+                Returns the world position (view's crs: referenceCrs) under view coordinates.
+This position is computed with depth buffer.
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    the world position in view's crs: referenceCrs.
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -741,13 +828,6 @@ view.getLayers(layer => layer.id === 'itt');</code></pre>
 
     
         
-            <div class="description">
-                Returns the world position (view's crs: referenceCrs) under view coordinates.
-This position is computed with depth buffer.
-            </div>
-        
-
-        
     
 </div>
 
@@ -777,6 +857,22 @@ This position is computed with depth buffer.
 
     
         
+            <div class="description">
+                Convert NDC coordinates to view coordinates
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    view coordinates (in pixels, 0-0 = top-left of the View)
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -793,12 +889,6 @@ This position is computed with depth buffer.
     
 
     
-        
-            <div class="description">
-                Convert NDC coordinates to view coordinates
-            </div>
-        
-
         
     
 </div>
@@ -827,6 +917,19 @@ This position is computed with depth buffer.
 
     
         
+            <div class="description">
+                Notifies the scene it needs to be updated due to changes exterior to the
+scene itself (e.g. camera movement).
+non-interactive events (e.g: texture loaded)
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -853,14 +956,6 @@ This position is computed with depth buffer.
     
 
     
-        
-            <div class="description">
-                Notifies the scene it needs to be updated due to changes exterior to the
-scene itself (e.g. camera movement).
-non-interactive events (e.g: texture loaded)
-            </div>
-        
-
         
     
 </div>
@@ -896,6 +991,25 @@ non-interactive events (e.g: texture loaded)
     </h3>
 
     
+        
+            <div class="description">
+                Return objects from some layers/objects3d under the mouse in this view.
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    an array of objects. Each element contains at least an object
+property which is the Object3D under the cursor. Then depending on the queried
+layer/source, there may be additionnal properties (coming from THREE.Raycaster
+for instance).
+                    
+                
+
+    
+        <h4>Parameters</h4>
         
 
 <ul class="params">
@@ -940,12 +1054,6 @@ the above.</span>
 
     
         
-            <div class="description">
-                Return objects from some layers/objects3d under the mouse in this view.
-            </div>
-        
-
-        
             <h4>Example</h4>
             
 
@@ -983,6 +1091,19 @@ view.pickObjectsAt({ x, y }, 3, 'wfsBuilding', myLayer)</code></pre>
 
     
         
+            <div class="description">
+                Remove a frameRequester.
+The effective removal will happen either later; at worst it'll be at
+the beginning of the next frame.
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -1010,14 +1131,6 @@ MAIN_LOOP_EVENTS.</span>
     
 
     
-        
-            <div class="description">
-                Remove a frameRequester.
-The effective removal will happen either later; at worst it'll be at
-the beginning of the next frame.
-            </div>
-        
-
         
     
 </div>
@@ -1048,6 +1161,17 @@ the beginning of the next frame.
 
     
         
+            <div class="description">
+                Removes a specific imagery layer from the current layer list. This removes layers inserted with attach().
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -1066,12 +1190,6 @@ the beginning of the next frame.
     
 
     
-        
-            <div class="description">
-                Removes a specific imagery layer from the current layer list. This removes layers inserted with attach().
-            </div>
-        
-
         
             <h4>Example</h4>
             
@@ -1110,6 +1228,22 @@ the beginning of the next frame.
 
     
         
+            <div class="description">
+                Convert view coordinates to normalized coordinates (NDC)
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    NDC coordinates (x and y are [-1, 1])
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
 
 <ul class="params">
     
@@ -1128,12 +1262,6 @@ the beginning of the next frame.
     
 
     
-        
-            <div class="description">
-                Convert view coordinates to normalized coordinates (NDC)
-            </div>
-        
-
         
     
 </div>
