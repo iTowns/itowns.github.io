@@ -121,6 +121,127 @@
 
 <div class="method">
     <h3>
+        <span class="method-name">multiple</span>
+        (
+
+
+    
+        baseUrl:
+            <span class="type">string</span>, 
+    
+        extensions:
+            <span class="type">Object</span>, 
+    
+        options:
+            <span class="type">Object</span>
+    
+
+)
+        :
+            
+                <span class="type">Array.&lt;Promise></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                Wrapper over fetch to get a bunch of files sharing the same name, but
+different extensions.
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    An array of promises, containing all the files,
+organized by their extensions (see the example below).
+                    
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>baseUrl</code>
+        
+        
+            &mdash; <span>The shared URL of the resources to fetch.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>extensions</code>
+        
+        
+            &mdash; <span>An object containing arrays. The keys of each
+of this array are available fetch type, such as <code>text</code>,
+<code>json</code> or even <code>arrayBuffer</code>. The arrays contains
+the extensions to append after the <code>baseUrl</code> (see example
+below).</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options</code>
+        
+        
+            &mdash; <span>Fetch options (passed directly to
+<code>fetch()</code>), see <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Syntax">the syntax for more information</a>.</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    <pre class="prettyprint source lang-js"><code>itowns.Fetcher.multiple('http://geo.server/shapefile', {
+    // will fetch:
+    // - http://geo.server/shapefile.shp
+    // - http://geo.server/shapefile.dbf
+    // - http://geo.server/shapefile.shx
+    // - http://geo.server/shapefile.prj
+    arrayBuffer: ['shp', 'dbf', 'shx'],
+    text: ['prj'],
+}).then(function _(result) {
+    // result looks like:
+    result = {
+        shp: ArrayBuffer
+        dbf: ArrayBuffer
+        shx: ArrayBuffer
+        prj: string
+    };
+});</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
         <span class="method-name">text</span>
         (
 
