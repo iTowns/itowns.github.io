@@ -122,7 +122,7 @@ const kmlSource = new itowns.FileSource({
 const kmlLayer = new itowns.ColorLayer('Kml', {
     name: 'kml',
     transparent: true,
-    projection: view.tileLayer.extent.crs(),
+    projection: view.tileLayer.extent.crs,
     source: kmlSource,
 });
 
@@ -165,7 +165,7 @@ itowns.Fetcher.json('https://raw.githubusercontent.com/gregoiredavid/france-geoj
         return itowns.GeoJsonParser.parse(geojson, {
             buildExtent: true,
             crsIn: 'EPSG:4326',
-            crsOut: view.tileLayer.extent.crs(),
+            crsOut: view.tileLayer.extent.crs,
             mergeFeatures: true,
             withNormal: false,
             withAltitude: false,
