@@ -274,7 +274,10 @@ see constructor for more information.
             <span class="type">number</span>, 
     
         alt:
-            <span class="type">number</span>
+            <span class="type">number</span>, 
+    
+        normal:
+            <span class="type">THREE.Vector3</span>
     
 
 )
@@ -320,9 +323,20 @@ No geographical conversion is made or the normal doesn't stored.
     
     <li>
         <code>alt</code>
-        
+        (optional)
         
             &mdash; <span>The altitude coordinate.</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>normal</code>
+        (default: <code>THREE.Vector3(0,0,1)</code>)
+        
+        
+            &mdash; <span>the normal on coordinates.</span>
         
 
         
