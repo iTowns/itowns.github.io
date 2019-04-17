@@ -36,6 +36,7 @@ It creates an <a onclick="window.parent.goTo('api/Renderer/OrientedImageMaterial
     
 
     
+        <hr class="title-divider"/>
         <h2>Constructor</h2>
         
 
@@ -46,29 +47,12 @@ It creates an <a onclick="window.parent.goTo('api/Renderer/OrientedImageMaterial
 
 
     
+    
         id:
             <span class="type">string</span>, 
     
         config:
-            <span class="type">Object</span>, 
-    
-        config.backgroundDistance:
-            <span class="type">number</span>, 
-    
-        config.onPanoChanged:
-            <span class="type">function</span>, 
-    
-        config.projection:
-            <span class="type">string</span>, 
-    
-        config.orientation:
-            <span class="type">string</span>, 
-    
-        config.calibrations:
-            <span class="type">string</span>, 
-    
-        config.source:
-            <span class="type"><a onclick="window.parent.goTo('api/Source/OrientedImageSource.html','api/Source/OrientedImageSource')" title="OrientedImageSource">OrientedImageSource</a></span>
+            <span class="type">Object</span>
     
 
 )
@@ -188,6 +172,7 @@ a tecture is need for each camera, for each panoramic.</span>
     
 
     
+        <hr class="title-divider"/>
         <h2>Methods</h2>
         
             
@@ -198,6 +183,7 @@ a tecture is need for each camera, for each panoramic.</span>
         (
 
 
+    
     
         layer:
             <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
@@ -255,6 +241,7 @@ be available in <code>geometryLayer.attachedLayers</code>.
 
 
     
+    
         object:
             <span class="type">Object</span>
     
@@ -310,6 +297,7 @@ usually a <code>THREE.Object3d</code> or an implementation of it.</span>
         (
 
 
+    
     
         propertyName:
             <span class="type">string</span>, 
@@ -392,8 +380,12 @@ name of the property.</span>
             
 
 
-    <pre class="prettyprint source lang-js"><code><caption>The emitted event has some properties assigned to it</caption>
-event = {
+    
+        <caption>The emitted event has some properties assigned to it</caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>event = {
     new: {
         ${propertyName}: * // the new value of the property
     },
@@ -452,6 +444,7 @@ This issue (see #1018 <a href="https://github.com/iTowns/itowns/issues/1018">htt
         (
 
 
+    
     
         layer:
             <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
@@ -516,6 +509,7 @@ attach a layer.
         (
 
 
+    
     
         view:
             <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
@@ -606,8 +600,33 @@ should have at least <code>x</code> and <code>y</code> properties.</span>
 
     
 
+    
+        <hr class="title-divider"/>
+        <h2>Events</h2>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">opacity-property-changed</span>
+    </h3>
+
+    
+        <div class="description">
+            Fires when the opacity of the layer has changed.
+        </div>
+    
+
+    
+</div>
+
+            
+        
+    
 
 
+
+        <hr class="title-divider"/>
         <h2>Source</h2>
         <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Layer/OrientedImageLayer.js">
             src/Layer/OrientedImageLayer.js

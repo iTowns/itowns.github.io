@@ -35,6 +35,7 @@
     
 
     
+        <hr class="title-divider"/>
         <h2>Static Methods</h2>
         
             
@@ -45,6 +46,7 @@
         (
 
 
+    
     
         bbox:
             <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
@@ -119,6 +121,8 @@ for <code>WEST, SOUTH, EAST, NORTH</code>. The default order is
             
 
 
+    
+
     <pre class="prettyprint source lang-js"><code>extent = new Extent('EPSG:4326', 12, 14, 35, 46);
 layer.projection = 'EPSG:4326';
 layer.url = 'http://server.geo/wms/BBOX=%bbox&FORMAT=jpg&SERVICE=WMS';
@@ -142,6 +146,7 @@ url = URLBuilder.bbox(extent, layer);
         (
 
 
+    
     
         coords:
             <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
@@ -218,12 +223,16 @@ specific strings that will be replaced by coordinates.
             
 
 
+    
+
     <pre class="prettyprint source lang-js"><code>coords = new Coordinates('WMTS:WGS84', 12, 1410, 2072);
 layer.url = 'http://server.geo/wmts/SERVICE=WMTS&TILEMATRIX=%TILEMATRIX&TILEROW=%ROW&TILECOL=%COL';
 url = URLBuilder.xyz(coords, layer);
 
 // The resulting url is:
 // http://server.geo/wmts/SERVICE=WMTS&TILEMATRIX=12&TILEROW=1410&TILECOL=2072;</code></pre>
+
+    
 
     <pre class="prettyprint source lang-js"><code>coords = new Extent('TMS', 15, 2142, 3412);
 layer.url = 'http://server.geo/tms/${z}/${y}/${x}.jpg';
@@ -243,8 +252,11 @@ url = URLBuilder.xyz(coords, layer);
 
     
 
+    
 
 
+
+        <hr class="title-divider"/>
         <h2>Source</h2>
         <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Provider/URLBuilder.js">
             src/Provider/URLBuilder.js

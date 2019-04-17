@@ -29,6 +29,7 @@
     
 
     
+        <hr class="title-divider"/>
         <h2>Constructor</h2>
         
 
@@ -38,6 +39,7 @@
         (
 
 
+    
     
         view:
             <span class="type"><a onclick="window.parent.goTo('api/View/GlobeView.html','api/View/GlobeView')" title="GlobeView">GlobeView</a></span>, 
@@ -52,22 +54,7 @@
             <span class="type">number</span>, 
     
         options:
-            <span class="type">object</span>, 
-    
-        options.zoomSpeed:
-            <span class="type">number</span>, 
-    
-        options.rotateSpeed:
-            <span class="type">number</span>, 
-    
-        options.minDistance:
-            <span class="type">number</span>, 
-    
-        options.maxDistance:
-            <span class="type">number</span>, 
-    
-        options.handleCollision:
-            <span class="type">bool</span>
+            <span class="type">object</span>
     
 
 )
@@ -201,6 +188,7 @@
     
 
     
+        <hr class="title-divider"/>
         <h2>Properties</h2>
         
             
@@ -326,6 +314,7 @@ If it's enabled, the camera movement is decelerate.
     
 
     
+        <hr class="title-divider"/>
         <h2>Methods</h2>
         
             
@@ -609,6 +598,7 @@ If it's enabled, the camera movement is decelerate.
 
 
     
+    
         pitch:
             <span class="type">number</span>
     
@@ -793,14 +783,9 @@ This function compute the scale of a map
 
 
     
+    
         params:
             <span class="type">CameraUtils~CameraTransformOptions</span>, 
-    
-        params.zoom:
-            <span class="type">number</span>, 
-    
-        params.scale:
-            <span class="type">number</span>, 
     
         isAnimated:
             <span class="type">boolean</span>
@@ -906,6 +891,7 @@ The tilt's interval is between 4 and 89.5 degree
 
 
     
+    
         value:
             <span class="type">number</span>, 
     
@@ -982,6 +968,7 @@ The tilt's interval is between 4 and 89.5 degree
 
 
     
+    
         pVector:
             <span class="type">vector</span>
     
@@ -1041,6 +1028,7 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
         (
 
 
+    
     
         windowCoords:
             <span class="type">Vector2</span>, 
@@ -1118,6 +1106,7 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
 
     
+    
         pixels:
             <span class="type">number</span>, 
     
@@ -1193,6 +1182,7 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
         (
 
 
+    
     
         pixels:
             <span class="type">number</span>, 
@@ -1270,6 +1260,7 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
 
     
+    
         enable:
             <span class="type">boolean</span>
     
@@ -1324,17 +1315,9 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
 
     
+    
         coordinates:
             <span class="type">Object</span>, 
-    
-        coordinates.latitude:
-            <span class="type">number</span>, 
-    
-        coordinates.longitude:
-            <span class="type">number</span>, 
-    
-        coordinates.range:
-            <span class="type">number</span>, 
     
         isAnimated:
             <span class="type">boolean</span>
@@ -1436,29 +1419,9 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
 
     
+    
         position:
             <span class="type">Position</span>, 
-    
-        position.longitude:
-            <span class="type">number</span>, 
-    
-        position.latitude:
-            <span class="type">number</span>, 
-    
-        position.tilt:
-            <span class="type">number</span>, 
-    
-        position.heading:
-            <span class="type">number</span>, 
-    
-        position.range:
-            <span class="type">number</span>, 
-    
-        position.zoom:
-            <span class="type">number</span>, 
-    
-        position.scale:
-            <span class="type">number</span>, 
     
         isAnimated:
             <span class="type">boolean</span>
@@ -1600,6 +1563,7 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
 
     
+    
         heading:
             <span class="type">number</span>, 
     
@@ -1667,6 +1631,7 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
         (
 
 
+    
     
         position:
             <span class="type">Object</span>, 
@@ -1736,6 +1701,7 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
 
     
+    
         range:
             <span class="type">number</span>, 
     
@@ -1803,6 +1769,7 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
         (
 
 
+    
     
         scale:
             <span class="type">number</span>, 
@@ -1890,6 +1857,7 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
 
 
     
+    
         tilt:
             <span class="type">number</span>, 
     
@@ -1957,6 +1925,7 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
         (
 
 
+    
     
         zoom:
             <span class="type">number</span>, 
@@ -2029,8 +1998,321 @@ The zoom is always in the [getMinZoom(), getMaxZoom()] range.
 
     
 
+    
+        <hr class="title-divider"/>
+        <h2>Events</h2>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">camera-target-changed</span>
+    </h3>
+
+    
+        <div class="description">
+            Globe control camera's target event. Fires when camera's target change
+        </div>
+    
+
+    
+        <h4>Properties</h4>
+        
+        
+
+<ul class="params">
+    
+    <li>
+        <code>new: <span class="type">object</span></code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>new: <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span></code>
+        
+        
+            &mdash; <span>the new camera's target coordinates</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>previous: <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span></code>
+        
+        
+            &mdash; <span>the previous camera's target coordinates</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target: <span class="type"><a onclick="window.parent.goTo('api/Controls/GlobeControls.html','api/Controls/GlobeControls')" title="GlobeControls">GlobeControls</a></span></code>
+        
+        
+            &mdash; <span>dispatched on controls</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>type: <span class="type">string</span></code>
+        
+        
+            &mdash; <span>camera-target-changed</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">orientation-changed</span>
+    </h3>
+
+    
+        <div class="description">
+            Globe control orientation event. Fires when camera's orientation change
+        </div>
+    
+
+    
+        <h4>Properties</h4>
+        
+        
+
+<ul class="params">
+    
+    <li>
+        <code>new: <span class="type">object</span></code>
+        
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>new.tilt: <span class="type">number</span></code>
+        
+        
+            &mdash; <span>the new value of the tilt of the camera</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>new.heading: <span class="type">number</span></code>
+        
+        
+            &mdash; <span>the new value of the heading of the camera</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>previous: <span class="type">object</span></code>
+        
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>previous.tilt: <span class="type">number</span></code>
+        
+        
+            &mdash; <span>the previous value of the tilt of the camera</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>previous.heading: <span class="type">number</span></code>
+        
+        
+            &mdash; <span>the previous value of the heading of the camera</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>target: <span class="type"><a onclick="window.parent.goTo('api/Controls/GlobeControls.html','api/Controls/GlobeControls')" title="GlobeControls">GlobeControls</a></span></code>
+        
+        
+            &mdash; <span>dispatched on controls</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>type: <span class="type">string</span></code>
+        
+        
+            &mdash; <span>orientation-changed</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">pan-changed</span>
+    </h3>
+
+    
+        <div class="description">
+            Globe control pan event. Fires after camera pan
+        </div>
+    
+
+    
+        <h4>Properties</h4>
+        
+        
+
+<ul class="params">
+    
+    <li>
+        <code>target: <span class="type"><a onclick="window.parent.goTo('api/Controls/GlobeControls.html','api/Controls/GlobeControls')" title="GlobeControls">GlobeControls</a></span></code>
+        
+        
+            &mdash; <span>dispatched on controls</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>type: <span class="type">string</span></code>
+        
+        
+            &mdash; <span>orientation-changed</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">range-changed</span>
+    </h3>
+
+    
+        <div class="description">
+            Globe control range event. Fires when camera's range to target change
+        </div>
+    
+
+    
+        <h4>Properties</h4>
+        
+        
+
+<ul class="params">
+    
+    <li>
+        <code>new: <span class="type">number</span></code>
+        
+        
+            &mdash; <span>the new value of the range</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>previous: <span class="type">number</span></code>
+        
+        
+            &mdash; <span>the previous value of the range</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target: <span class="type"><a onclick="window.parent.goTo('api/Controls/GlobeControls.html','api/Controls/GlobeControls')" title="GlobeControls">GlobeControls</a></span></code>
+        
+        
+            &mdash; <span>dispatched on controls</span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>type: <span class="type">string</span></code>
+        
+        
+            &mdash; <span>range-changed</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+</div>
+
+            
+        
+    
 
 
+
+        <hr class="title-divider"/>
         <h2>Source</h2>
         <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Controls/GlobeControls.js">
             src/Controls/GlobeControls.js

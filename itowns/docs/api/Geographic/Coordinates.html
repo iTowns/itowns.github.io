@@ -33,6 +33,7 @@ If crs = 'EPSG:4978', coordinates must be in geocentric system.</div>
     
 
     
+        <hr class="title-divider"/>
         <h2>Constructor</h2>
         
 
@@ -43,29 +44,12 @@ If crs = 'EPSG:4978', coordinates must be in geocentric system.</div>
 
 
     
+    
         crs:
             <span class="type">string</span>, 
     
         coordinates:
-            <span class="type">number|THREE.Vector3</span>, 
-    
-        coordinates.longitude:
-            <span class="type">number</span>, 
-    
-        coordinates.latitude:
-            <span class="type">number</span>, 
-    
-        coordinates.altitude:
-            <span class="type">number</span>, 
-    
-        coordinates.x:
-            <span class="type">number</span>, 
-    
-        coordinates.y:
-            <span class="type">number</span>, 
-    
-        coordinates.z:
-            <span class="type">number</span>
+            <span class="type">number|THREE.Vector3</span>
     
 
 )
@@ -179,9 +163,12 @@ If crs = 'EPSG:4978', coordinates must be in geocentric system.</div>
     
 
     
+        <hr class="title-divider"/>
         <h2>Example</h2>
         
 
+
+    
 
     <pre class="prettyprint source lang-js"><code>new Coordinates('EPSG:4978', 20885167, 849862, 23385912); //Geocentric coordinates
 // or
@@ -193,6 +180,7 @@ new Coordinates('EPSG:4326', 2.33, 48.24, 24999549); //Geographic coordinates</c
     
 
     
+        <hr class="title-divider"/>
         <h2>Methods</h2>
         
             
@@ -234,6 +222,8 @@ new Coordinates('EPSG:4326', 2.33, 48.24, 24999549); //Geographic coordinates</c
             
 
 
+    
+
     <pre class="prettyprint source lang-js"><code>const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
 const coordinates = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
 coordinates.altitude(); // Altitude in geographic system
@@ -262,6 +252,7 @@ coordinates.altitude(); // Altitude in geographic system
         (
 
 
+    
     
         crs:
             <span class="type">string</span>
@@ -315,6 +306,8 @@ coordinates.altitude(); // Altitude in geographic system
             <h4>Example</h4>
             
 
+
+    
 
     <pre class="prettyprint source lang-js"><code>const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
 const coords = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
@@ -380,6 +373,8 @@ new Coordinates('EPSG:4978', x: 20885167, y: 849862, z: 23385912).as('EPSG:4326'
             
 
 
+    
+
     <pre class="prettyprint source lang-js"><code>const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
 const coordinates = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
 coordinates.latitude(); // Latitude in geographic system
@@ -439,6 +434,8 @@ coordinates.latitude(); // Latitude in geographic system
             
 
 
+    
+
     <pre class="prettyprint source lang-js"><code>const position = { longitude: 2.33, latitude: 48.24, altitude: 24999549 };
 const coordinates = new Coordinates('EPSG:4326', position.longitude, position.latitude, position.altitude); // Geographic system
 coordinates.longitude(); // Longitude in geographic system
@@ -467,6 +464,7 @@ coordinates.longitude(); // Longitude in geographic system
         (
 
 
+    
     
         extent:
             <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
@@ -543,6 +541,7 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
 
 
     
+    
         altitude:
             <span class="type">number</span>
     
@@ -586,6 +585,8 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
             <h4>Example</h4>
             
 
+
+    
 
     <pre class="prettyprint source lang-js"><code>coordinates.setAltitude(number)</code></pre>
 
@@ -634,6 +635,8 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
             <h4>Example</h4>
             
 
+
+    
 
     <pre class="prettyprint source lang-js"><code>const position = { x: 20885167, y: 849862, z: 23385912 };
 const coordinates = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
@@ -693,6 +696,8 @@ coordinates.x(); // Geocentric system
             <h4>Example</h4>
             
 
+
+    
 
     <pre class="prettyprint source lang-js"><code>const position = { x: 20885167, y: 849862, z: 23385912 };
 const coordinates = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
@@ -759,6 +764,8 @@ coordinates.xyz(); // Geocentric system
             
 
 
+    
+
     <pre class="prettyprint source lang-js"><code>const position = { x: 20885167, y: 849862, z: 23385912 };
 const coordinates = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
 coordinates.y();  // Geocentric system
@@ -818,6 +825,8 @@ coordinates.y(); // Geocentric system
             
 
 
+    
+
     <pre class="prettyprint source lang-js"><code>const position = { x: 20885167, y: 849862, z: 23385912 };
 const coordinates = new Coordinates('EPSG:4978', position.x, position.y, position.z);  // Geocentric system
 coordinates.z();  // Geocentric system
@@ -844,8 +853,11 @@ coordinates.z(); // Geocentric system
 
     
 
+    
 
 
+
+        <hr class="title-divider"/>
         <h2>Source</h2>
         <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/Geographic/Coordinates.js">
             src/Core/Geographic/Coordinates.js

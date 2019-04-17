@@ -42,6 +42,7 @@ See the examples below for real use cases.</div>
     
 
     
+        <hr class="title-divider"/>
         <h2>Constructor</h2>
         
 
@@ -51,6 +52,7 @@ See the examples below for real use cases.</div>
         (
 
 
+    
     
         source:
             <span class="type">Object</span>, 
@@ -106,13 +108,18 @@ but if it presents in <code>parsedData</code> under the property
     
 
     
+        <hr class="title-divider"/>
         <h2>Example</h2>
         
 
 
-    <pre class="prettyprint source lang-js"><code><caption>Simple: create a source, a layer, and let iTowns taking
+    
+        <caption>Simple: create a source, a layer, and let iTowns taking
 care of everything.</caption>
-const kmlSource = new itowns.FileSource({
+
+    
+
+    <pre class="prettyprint source lang-js"><code>const kmlSource = new itowns.FileSource({
     url: 'https://raw.githubusercontent.com/iTowns/iTowns2-sample-data/master/croquis.kml',
     projection: 'EPSG:4326',
     fetcher: itowns.Fetcher.xml,
@@ -128,9 +135,13 @@ const kmlLayer = new itowns.ColorLayer('Kml', {
 
 view.addLayer(kmlLayer);</code></pre>
 
-    <pre class="prettyprint source lang-js"><code><caption>Advanced: fetch some data, create a source, a layer, and
+    
+        <caption>Advanced: fetch some data, create a source, a layer, and
 let iTowns do the parsing and converting.</caption>
-// Parse and Convert by iTowns
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// Parse and Convert by iTowns
 itowns.Fetcher.xml('https://raw.githubusercontent.com/iTowns/iTowns2-sample-data/master/ULTRA2009.gpx')
     .then(function _(gpx) {
         const gpxSource = new itowns.FileSource({
@@ -148,9 +159,13 @@ itowns.Fetcher.xml('https://raw.githubusercontent.com/iTowns/iTowns2-sample-data
         return view.addLayer(gpxLayer);
     });</code></pre>
 
-    <pre class="prettyprint source lang-js"><code><caption>More advanced: create a layer, fetch some data, parse the
+    
+        <caption>More advanced: create a layer, fetch some data, parse the
 data, append a source to the layer and add the layer to iTowns.</caption>
-// Create a layer
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// Create a layer
 const ariege = new itowns.GeometryLayer('ariege', new itowns.THREE.Group());
 
 // Specify update method and conversion
@@ -183,6 +198,7 @@ itowns.Fetcher.json('https://raw.githubusercontent.com/gregoiredavid/france-geoj
     
 
     
+        <hr class="title-divider"/>
         <h2>Properties</h2>
         
             
@@ -243,6 +259,7 @@ resulting data is stored in this property.
     
 
     
+        <hr class="title-divider"/>
         <h2>Methods</h2>
         
             
@@ -253,6 +270,7 @@ resulting data is stored in this property.
         (
 
 
+    
     
         extent:
             <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
@@ -317,6 +335,7 @@ resulting data is stored in this property.
 
 
     
+    
         extents:
             <span class="type">Array.&lt;Extent></span>
     
@@ -380,6 +399,7 @@ resulting data is stored in this property.
 
 
     
+    
         extent:
             <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
     
@@ -441,8 +461,11 @@ resources inside the extent.
 
     
 
+    
 
 
+
+        <hr class="title-divider"/>
         <h2>Source</h2>
         <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Source/FileSource.js">
             src/Source/FileSource.js

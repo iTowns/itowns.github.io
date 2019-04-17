@@ -30,6 +30,7 @@ can be a layer of buildings extruded from a a WFS stream.</div>
     
 
     
+        <hr class="title-divider"/>
         <h2>Constructor</h2>
         
 
@@ -40,6 +41,7 @@ can be a layer of buildings extruded from a a WFS stream.</div>
 
 
     
+    
         id:
             <span class="type">string</span>, 
     
@@ -47,10 +49,7 @@ can be a layer of buildings extruded from a a WFS stream.</div>
             <span class="type">THREE.Object3d</span>, 
     
         config:
-            <span class="type">Object</span>, 
-    
-        config.source:
-            <span class="type"><a onclick="window.parent.goTo('api/Source/WMTSSource.html','api/Source/WMTSSource')" title="WMTSSource">WMTSSource</a>|<a onclick="window.parent.goTo('api/Source/WMSSource.html','api/Source/WMSSource')" title="WMSSource">WMSSource</a>|<a onclick="window.parent.goTo('api/Source/WFSSource.html','api/Source/WFSSource')" title="WFSSource">WFSSource</a>|<a onclick="window.parent.goTo('api/Source/TMSSource.html','api/Source/TMSSource')" title="TMSSource">TMSSource</a>|<a onclick="window.parent.goTo('api/Source/FileSource.html','api/Source/FileSource')" title="FileSource">FileSource</a></span>
+            <span class="type">Object</span>
     
 
 )
@@ -134,6 +133,7 @@ else depending on the property name.</span>
     
 
     
+        <hr class="title-divider"/>
         <h2>Properties</h2>
         
             
@@ -158,6 +158,7 @@ internally for optimisation.
     
 
     
+        <hr class="title-divider"/>
         <h2>Methods</h2>
         
             
@@ -168,6 +169,7 @@ internally for optimisation.
         (
 
 
+    
     
         layer:
             <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
@@ -225,6 +227,7 @@ be available in <code>geometryLayer.attachedLayers</code>.
 
 
     
+    
         object:
             <span class="type">Object</span>
     
@@ -280,6 +283,7 @@ usually a <code>THREE.Object3d</code> or an implementation of it.</span>
         (
 
 
+    
     
         propertyName:
             <span class="type">string</span>, 
@@ -362,8 +366,12 @@ name of the property.</span>
             
 
 
-    <pre class="prettyprint source lang-js"><code><caption>The emitted event has some properties assigned to it</caption>
-event = {
+    
+        <caption>The emitted event has some properties assigned to it</caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>event = {
     new: {
         ${propertyName}: * // the new value of the property
     },
@@ -420,6 +428,7 @@ event = {
         (
 
 
+    
     
         layer:
             <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
@@ -484,6 +493,7 @@ attach a layer.
         (
 
 
+    
     
         view:
             <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
@@ -574,8 +584,33 @@ should have at least <code>x</code> and <code>y</code> properties.</span>
 
     
 
+    
+        <hr class="title-divider"/>
+        <h2>Events</h2>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">opacity-property-changed</span>
+    </h3>
+
+    
+        <div class="description">
+            Fires when the opacity of the layer has changed.
+        </div>
+    
+
+    
+</div>
+
+            
+        
+    
 
 
+
+        <hr class="title-divider"/>
         <h2>Source</h2>
         <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Layer/GeometryLayer.js">
             src/Layer/GeometryLayer.js

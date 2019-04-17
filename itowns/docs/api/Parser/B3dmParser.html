@@ -35,6 +35,7 @@
     
 
     
+        <hr class="title-divider"/>
         <h2>Static Methods</h2>
         
             
@@ -45,6 +46,7 @@
         (
 
 
+    
     
         path:
             <span class="type">string</span>, 
@@ -109,8 +111,12 @@ For more information on Draco, read file in /itowns/examples/libs/draco/README.m
             
 
 
-    <pre class="prettyprint source lang-js"><code><caption>Enable draco decoder</caption>
-// if you copied the folder from /itowns/examples/libs/draco/ to your root project,
+    
+        <caption>Enable draco decoder</caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// if you copied the folder from /itowns/examples/libs/draco/ to your root project,
 // You could set path with './'.
 itowns.enableDracoLoader('./');</code></pre>
 
@@ -130,26 +136,12 @@ itowns.enableDracoLoader('./');</code></pre>
 
 
     
+    
         buffer:
             <span class="type">ArrayBuffer</span>, 
     
         options:
-            <span class="type">Object</span>, 
-    
-        options.gltfUpAxis:
-            <span class="type">string</span>, 
-    
-        options.urlBase:
-            <span class="type">string</span>, 
-    
-        options.doNotPatchMaterial:
-            <span class="type">boolean</span>, 
-    
-        options.opacity:
-            <span class="type">float</span>, 
-    
-        options.overrideMaterials:
-            <span class="type">boolean|Material</span>
+            <span class="type">Object</span>
     
 
 )
@@ -277,8 +269,11 @@ itowns.enableDracoLoader('./');</code></pre>
 
     
 
+    
 
 
+
+        <hr class="title-divider"/>
         <h2>Source</h2>
         <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Parser/B3dmParser.js">
             src/Parser/B3dmParser.js

@@ -29,6 +29,7 @@
     
 
     
+        <hr class="title-divider"/>
         <h2>Constructor</h2>
         
 
@@ -39,6 +40,7 @@
 
 
     
+    
         crs:
             <span class="type">string</span>, 
     
@@ -46,16 +48,7 @@
             <span class="type">HTMLElement</span>, 
     
         options:
-            <span class="type">Object</span>, 
-    
-        options.mainLoop:
-            <span class="type">MainLoop</span>, 
-    
-        options.renderer:
-            <span class="type">WebGLRenderer|object</span>, 
-    
-        options.scene3D:
-            <span class="type">Scene</span>
+            <span class="type">Object</span>
     
 
 )
@@ -156,6 +149,7 @@ added to viewerDiv (mutually exclusive with mainLoop)</span>
     
 
     
+        <hr class="title-divider"/>
         <h2>Methods</h2>
         
             
@@ -166,6 +160,7 @@ added to viewerDiv (mutually exclusive with mainLoop)</span>
         (
 
 
+    
     
         when:
             <span class="type">String</span>, 
@@ -238,6 +233,7 @@ has just been relaunched.</span>
         (
 
 
+    
     
         layer:
             <span class="type">LayerOptions|<a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a>|<a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></span>, 
@@ -317,6 +313,7 @@ the preprocessing operation is done. This promise is also returned by
 
 
     
+    
         event:
             <span class="type">event</span>, 
     
@@ -393,6 +390,7 @@ the preprocessing operation is done. This promise is also returned by
 
 
     
+    
         event:
             <span class="type">event</span>, 
     
@@ -468,6 +466,7 @@ the preprocessing operation is done. This promise is also returned by
         (
 
 
+    
     
         when:
             <span class="type">String</span>, 
@@ -561,6 +560,7 @@ of MAIN_LOOP_EVENTS.</span>
 
 
     
+    
         layerId:
             <span class="type">String</span>
     
@@ -624,6 +624,7 @@ of MAIN_LOOP_EVENTS.</span>
 
 
     
+    
         filter:
             <span class="type">function</span>
     
@@ -674,6 +675,8 @@ The filter method will be called with 2 args:
             
 
 
+    
+
     <pre class="prettyprint source lang-js"><code>// get all layers
 view.getLayers();
 // get all color layers
@@ -700,6 +703,7 @@ view.getLayers(layer => layer.id === 'itt');</code></pre>
         (
 
 
+    
     
         layer:
             <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
@@ -757,6 +761,7 @@ view.getLayers(layer => layer.id === 'itt');</code></pre>
         (
 
 
+    
     
         mouse:
             <span class="type">THREE.Vector2</span>, 
@@ -836,6 +841,7 @@ This position is computed with depth buffer.
 
 
     
+    
         ndcCoords:
             <span class="type">THREE.Vector2</span>
     
@@ -896,6 +902,7 @@ This position is computed with depth buffer.
         (
 
 
+    
     
         changeSource:
             <span class="type">*</span>, 
@@ -963,6 +970,7 @@ non-interactive events (e.g: texture loaded)
         (
 
 
+    
     
         mouseOrEvt:
             <span class="type">Object</span>, 
@@ -1050,6 +1058,8 @@ the above.</span>
             
 
 
+    
+
     <pre class="prettyprint source lang-js"><code>view.pickObjectsAt({ x, y })
 view.pickObjectsAt({ x, y }, 1, 'wfsBuilding')
 view.pickObjectsAt({ x, y }, 3, 'wfsBuilding', myLayer)</code></pre>
@@ -1069,6 +1079,7 @@ view.pickObjectsAt({ x, y }, 3, 'wfsBuilding', myLayer)</code></pre>
         (
 
 
+    
     
         when:
             <span class="type">String</span>, 
@@ -1138,6 +1149,7 @@ MAIN_LOOP_EVENTS.</span>
 
 
     
+    
         layerId:
             <span class="type">string</span>
     
@@ -1187,6 +1199,8 @@ MAIN_LOOP_EVENTS.</span>
             
 
 
+    
+
     <pre class="prettyprint source lang-js"><code>view.removeLayer('layerId');</code></pre>
 
 
@@ -1204,6 +1218,7 @@ MAIN_LOOP_EVENTS.</span>
         (
 
 
+    
     
         viewCoords:
             <span class="type">THREE.Vector2</span>
@@ -1265,8 +1280,57 @@ MAIN_LOOP_EVENTS.</span>
 
     
 
+    
+        <hr class="title-divider"/>
+        <h2>Events</h2>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">layers-initialized</span>
+    </h3>
+
+    
+        <div class="description">
+            Fires when all the layers of the view are considered initialized.
+Initialized in this context means: all layers are ready to be
+displayed (no pending network access, no visual improvement to be
+expected, ...).
+If you add new layers, the event will be fired again when all
+layers are ready.
+        </div>
+    
+
+    
+        <h4>Properties</h4>
+        
+        
+
+<ul class="params">
+    
+    <li>
+        <code>type: <span class="type">string</span></code>
+        
+        
+            &mdash; <span>layers-initialized</span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+</div>
+
+            
+        
+    
 
 
+
+        <hr class="title-divider"/>
         <h2>Source</h2>
         <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/View.js">
             src/Core/View.js

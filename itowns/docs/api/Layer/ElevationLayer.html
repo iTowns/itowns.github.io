@@ -30,6 +30,7 @@ plane or globe view for example.</div>
     
 
     
+        <hr class="title-divider"/>
         <h2>Constructor</h2>
         
 
@@ -40,14 +41,12 @@ plane or globe view for example.</div>
 
 
     
+    
         id:
             <span class="type">string</span>, 
     
         config:
-            <span class="type">Object</span>, 
-    
-        config.source:
-            <span class="type"><a onclick="window.parent.goTo('api/Source/WMTSSource.html','api/Source/WMTSSource')" title="WMTSSource">WMTSSource</a>|<a onclick="window.parent.goTo('api/Source/WMSSource.html','api/Source/WMSSource')" title="WMSSource">WMSSource</a>|<a onclick="window.parent.goTo('api/Source/WFSSource.html','api/Source/WFSSource')" title="WFSSource">WFSSource</a>|<a onclick="window.parent.goTo('api/Source/TMSSource.html','api/Source/TMSSource')" title="TMSSource">TMSSource</a>|<a onclick="window.parent.goTo('api/Source/FileSource.html','api/Source/FileSource')" title="FileSource">FileSource</a></span>
+            <span class="type">Object</span>
     
 
 )
@@ -119,6 +118,7 @@ else depending on the property name.</span>
     
 
     
+        <hr class="title-divider"/>
         <h2>Properties</h2>
         
             
@@ -143,6 +143,7 @@ internally for optimisation.
     
 
     
+        <hr class="title-divider"/>
         <h2>Methods</h2>
         
             
@@ -153,6 +154,7 @@ internally for optimisation.
         (
 
 
+    
     
         propertyName:
             <span class="type">string</span>, 
@@ -235,8 +237,12 @@ name of the property.</span>
             
 
 
-    <pre class="prettyprint source lang-js"><code><caption>The emitted event has some properties assigned to it</caption>
-event = {
+    
+        <caption>The emitted event has some properties assigned to it</caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>event = {
     new: {
         ${propertyName}: * // the new value of the property
     },
@@ -291,8 +297,11 @@ event = {
 
     
 
+    
 
 
+
+        <hr class="title-divider"/>
         <h2>Source</h2>
         <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Layer/ElevationLayer.js">
             src/Layer/ElevationLayer.js
