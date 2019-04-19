@@ -86,8 +86,9 @@ If crs is tiled projection (WMTS or TMS), the extent is defined by zoom, row and
         <code>v0</code>
         
         
-            &mdash; <span>west value, zoom value, Array of values [west, east, south and north],
-Coordinates of west-south corner or object {west, east, south and north}</span>
+            &mdash; <span>west value, zoom
+value, Array of values [west, east, south and north], Coordinates of
+west-south corner or object {west, east, south and north}</span>
         
 
         
@@ -97,7 +98,8 @@ Coordinates of west-south corner or object {west, east, south and north}</span>
         <code>v1</code>
         (optional)
         
-            &mdash; <span>east value, row value or Coordinates of east-north corner</span>
+            &mdash; <span>east value, row value or Coordinates of
+east-north corner</span>
         
 
         
@@ -946,10 +948,10 @@ point.</span>
     
     
         v0:
-            <span class="type">number</span>, 
+            <span class="type">number|Array.&lt;number>|<a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a>|Object</span>, 
     
         v1:
-            <span class="type">number</span>, 
+            <span class="type">number|<a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>, 
     
         v2:
             <span class="type">number</span>, 
@@ -988,7 +990,9 @@ Or if tiled extent, set zoom, row and column values
         <code>v0</code>
         
         
-            &mdash; <span>west or zoom value</span>
+            &mdash; <span>west value, zoom
+value, Array of values [west, east, south and north], Coordinates of
+west-south corner or object {west, east, south and north}</span>
         
 
         
@@ -996,9 +1000,10 @@ Or if tiled extent, set zoom, row and column values
     
     <li>
         <code>v1</code>
+        (optional)
         
-        
-            &mdash; <span>east or row value</span>
+            &mdash; <span>east value, row value or Coordinates of
+east-north corner</span>
         
 
         
@@ -1006,9 +1011,9 @@ Or if tiled extent, set zoom, row and column values
     
     <li>
         <code>v2</code>
+        (optional)
         
-        
-            &mdash; <span>south or column value</span>
+            &mdash; <span>south value or column value</span>
         
 
         
@@ -1016,7 +1021,7 @@ Or if tiled extent, set zoom, row and column values
     
     <li>
         <code>v3</code>
-        
+        (optional)
         
             &mdash; <span>north value</span>
         
