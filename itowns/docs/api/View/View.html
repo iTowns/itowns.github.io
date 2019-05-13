@@ -25,7 +25,7 @@
     </h1>
 
     
-        <div class="description">Constructs an Itowns View instance</div>
+        <div class="description"><p>Constructs an Itowns View instance</p></div>
     
 
     
@@ -69,7 +69,7 @@
         <code>crs</code>
         
         
-            &mdash; <span>The default CRS of Three.js coordinates. Should be a cartesian CRS.</span>
+            &mdash; <span><p>The default CRS of Three.js coordinates. Should be a cartesian CRS.</p></span>
         
 
         
@@ -79,7 +79,7 @@
         <code>viewerDiv</code>
         
         
-            &mdash; <span>Where to instanciate the Three.js scene in the DOM</span>
+            &mdash; <span><p>Where to instanciate the Three.js scene in the DOM</p></span>
         
 
         
@@ -89,7 +89,7 @@
         <code>options</code>
         (optional)
         
-            &mdash; <span>Optional properties.</span>
+            &mdash; <span><p>Optional properties.</p></span>
         
 
         
@@ -101,7 +101,7 @@
         <code>options.mainLoop</code>
         
         
-            &mdash; <span>MainLoop instance to use, otherwise a default one will be constructed</span>
+            &mdash; <span><p>MainLoop instance to use, otherwise a default one will be constructed</p></span>
         
 
         
@@ -111,10 +111,10 @@
         <code>options.renderer</code>
         
         
-            &mdash; <span>WebGLRenderer instance to use, otherwise
+            &mdash; <span><p>WebGLRenderer instance to use, otherwise
 a default one will be constructed. In this case, if options.renderer is an object, it will be used to
-configure the renderer (see c3DEngine.  If not present, a new &lt;canvas> will be created and
-added to viewerDiv (mutually exclusive with mainLoop)</span>
+configure the renderer (see c3DEngine.  If not present, a new &lt;canvas&gt; will be created and
+added to viewerDiv (mutually exclusive with mainLoop)</p></span>
         
 
         
@@ -124,7 +124,7 @@ added to viewerDiv (mutually exclusive with mainLoop)</span>
         <code>options.scene3D</code>
         
         
-            &mdash; <span>Scene instance to use, otherwise a default one will be constructed</span>
+            &mdash; <span><p>Scene instance to use, otherwise a default one will be constructed</p></span>
         
 
         
@@ -176,9 +176,8 @@ added to viewerDiv (mutually exclusive with mainLoop)</span>
     
         
             <div class="description">
-                Add a frame requester to this view.
-
-FrameRequesters can activate the MainLoop update by calling view.notifyChange.
+                <p>Add a frame requester to this view.</p>
+<p>FrameRequesters can activate the MainLoop update by calling view.notifyChange.</p>
             </div>
         
     
@@ -195,8 +194,8 @@ FrameRequesters can activate the MainLoop update by calling view.notifyChange.
         <code>when</code>
         
         
-            &mdash; <span>decide when the frameRequester should be called during
-the update cycle. Can be any of MAIN_LOOP_EVENTS.</span>
+            &mdash; <span><p>decide when the frameRequester should be called during
+the update cycle. Can be any of MAIN_LOOP_EVENTS.</p></span>
         
 
         
@@ -206,9 +205,9 @@ the update cycle. Can be any of MAIN_LOOP_EVENTS.</span>
         <code>frameRequester</code>
         
         
-            &mdash; <span>this function will be called at each
+            &mdash; <span><p>this function will be called at each
 MainLoop update with the time delta between last update, or 0 if the MainLoop
-has just been relaunched.</span>
+has just been relaunched.</p></span>
         
 
         
@@ -254,13 +253,12 @@ has just been relaunched.</span>
     
         
             <div class="description">
-                Add layer in viewer.
-The layer id must be unique.
-
-This function calls `preprocessDataLayer` of the relevant provider with this
-layer and set `layer.whenReady` to a promise that resolves when
+                <p>Add layer in viewer.
+The layer id must be unique.</p>
+<p>This function calls <code>preprocessDataLayer</code> of the relevant provider with this
+layer and set <code>layer.whenReady</code> to a promise that resolves when
 the preprocessing operation is done. This promise is also returned by
-`addLayer` allowing to chain call.
+<code>addLayer</code> allowing to chain call.</p>
             </div>
         
     
@@ -268,7 +266,7 @@ the preprocessing operation is done. This promise is also returned by
     
                 <h4>Returns</h4>
                 
-                    a promise resolved with the new layer object when it is fully initialized or rejected if any error occurred.
+                    <p>a promise resolved with the new layer object when it is fully initialized or rejected if any error occurred.</p>
                 
 
     
@@ -333,7 +331,7 @@ the preprocessing operation is done. This promise is also returned by
     
         
             <div class="description">
-                Extract normalized coordinates (NDC) from a mouse-event / touch-event
+                <p>Extract normalized coordinates (NDC) from a mouse-event / touch-event</p>
             </div>
         
     
@@ -341,7 +339,9 @@ the preprocessing operation is done. This promise is also returned by
     
                 <h4>Returns</h4>
                 
-                    NDC coordinates (x and y are [-1, 1])
+                    <ul>
+<li>NDC coordinates (x and y are [-1, 1])</li>
+</ul>
                 
 
     
@@ -354,7 +354,7 @@ the preprocessing operation is done. This promise is also returned by
         <code>event</code>
         
         
-            &mdash; <span>event can be a MouseEvent or a TouchEvent</span>
+            &mdash; <span><p>event can be a MouseEvent or a TouchEvent</p></span>
         
 
         
@@ -364,7 +364,7 @@ the preprocessing operation is done. This promise is also returned by
         <code>touchIdx</code>
         
         
-            &mdash; <span>finger index when using a TouchEvent (default: 0)</span>
+            &mdash; <span><p>finger index when using a TouchEvent (default: 0)</p></span>
         
 
         
@@ -410,7 +410,7 @@ the preprocessing operation is done. This promise is also returned by
     
         
             <div class="description">
-                Extract view coordinates from a mouse-event / touch-event
+                <p>Extract view coordinates from a mouse-event / touch-event</p>
             </div>
         
     
@@ -418,7 +418,9 @@ the preprocessing operation is done. This promise is also returned by
     
                 <h4>Returns</h4>
                 
-                    view coordinates (in pixels, 0-0 = top-left of the View)
+                    <ul>
+<li>view coordinates (in pixels, 0-0 = top-left of the View)</li>
+</ul>
                 
 
     
@@ -431,7 +433,7 @@ the preprocessing operation is done. This promise is also returned by
         <code>event</code>
         
         
-            &mdash; <span>event can be a MouseEvent or a TouchEvent</span>
+            &mdash; <span><p>event can be a MouseEvent or a TouchEvent</p></span>
         
 
         
@@ -441,7 +443,7 @@ the preprocessing operation is done. This promise is also returned by
         <code>touchIdx</code>
         
         
-            &mdash; <span>finger index when using a TouchEvent (default: 0)</span>
+            &mdash; <span><p>finger index when using a TouchEvent (default: 0)</p></span>
         
 
         
@@ -488,7 +490,7 @@ the preprocessing operation is done. This promise is also returned by
     
         
             <div class="description">
-                Execute a frameRequester.
+                <p>Execute a frameRequester.</p>
             </div>
         
     
@@ -505,8 +507,8 @@ the preprocessing operation is done. This promise is also returned by
         <code>when</code>
         
         
-            &mdash; <span>attach point of this (these) requester(s). Can be any
-of MAIN_LOOP_EVENTS.</span>
+            &mdash; <span><p>attach point of this (these) requester(s). Can be any
+of MAIN_LOOP_EVENTS.</p></span>
         
 
         
@@ -516,7 +518,7 @@ of MAIN_LOOP_EVENTS.</span>
         <code>dt</code>
         
         
-            &mdash; <span>delta between this update and the previous one</span>
+            &mdash; <span><p>delta between this update and the previous one</p></span>
         
 
         
@@ -534,7 +536,7 @@ of MAIN_LOOP_EVENTS.</span>
         <code>args</code>
         
         
-            &mdash; <span>optional arguments</span>
+            &mdash; <span><p>optional arguments</p></span>
         
 
         
@@ -577,7 +579,7 @@ of MAIN_LOOP_EVENTS.</span>
     
         
             <div class="description">
-                Gets the layer by identifier.
+                <p>Gets the layer by identifier.</p>
             </div>
         
     
@@ -585,7 +587,7 @@ of MAIN_LOOP_EVENTS.</span>
     
                 <h4>Returns</h4>
                 
-                    The layer by identifier.
+                    <p>The layer by identifier.</p>
                 
 
     
@@ -598,7 +600,7 @@ of MAIN_LOOP_EVENTS.</span>
         <code>layerId</code>
         
         
-            &mdash; <span>The layer identifier</span>
+            &mdash; <span><p>The layer identifier</p></span>
         
 
         
@@ -641,10 +643,12 @@ of MAIN_LOOP_EVENTS.</span>
     
         
             <div class="description">
-                Get all layers, with an optionnal filter applied.
-The filter method will be called with 2 args:
-  - 1st: current layer
-  - 2nd: (optional) the geometry layer to which the current layer is attached
+                <p>Get all layers, with an optionnal filter applied.
+The filter method will be called with 2 args:</p>
+<ul>
+<li>1st: current layer</li>
+<li>2nd: (optional) the geometry layer to which the current layer is attached</li>
+</ul>
             </div>
         
     
@@ -725,7 +729,7 @@ view.getLayers(layer => layer.id === 'itt');</code></pre>
     
                 <h4>Returns</h4>
                 
-                    the parent layer of the given layer or undefined.
+                    <p>the parent layer of the given layer or undefined.</p>
                 
 
     
@@ -782,8 +786,8 @@ view.getLayers(layer => layer.id === 'itt');</code></pre>
     
         
             <div class="description">
-                Returns the world position (view's crs: referenceCrs) under view coordinates.
-This position is computed with depth buffer.
+                <p>Returns the world position (view's crs: referenceCrs) under view coordinates.
+This position is computed with depth buffer.</p>
             </div>
         
     
@@ -791,7 +795,7 @@ This position is computed with depth buffer.
     
                 <h4>Returns</h4>
                 
-                    the world position in view's crs: referenceCrs.
+                    <p>the world position in view's crs: referenceCrs.</p>
                 
 
     
@@ -804,7 +808,7 @@ This position is computed with depth buffer.
         <code>mouse</code>
         
         
-            &mdash; <span>position in view coordinates (in pixel), if it's null so it's view's center.</span>
+            &mdash; <span><p>position in view coordinates (in pixel), if it's null so it's view's center.</p></span>
         
 
         
@@ -815,7 +819,7 @@ This position is computed with depth buffer.
         (default: <code>THREE.Vector3()</code>)
         
         
-            &mdash; <span>target. the result will be copied into this Vector3. If not present a new one will be created.</span>
+            &mdash; <span><p>target. the result will be copied into this Vector3. If not present a new one will be created.</p></span>
         
 
         
@@ -858,7 +862,7 @@ This position is computed with depth buffer.
     
         
             <div class="description">
-                Convert NDC coordinates to view coordinates
+                <p>Convert NDC coordinates to view coordinates</p>
             </div>
         
     
@@ -866,7 +870,9 @@ This position is computed with depth buffer.
     
                 <h4>Returns</h4>
                 
-                    view coordinates (in pixels, 0-0 = top-left of the View)
+                    <ul>
+<li>view coordinates (in pixels, 0-0 = top-left of the View)</li>
+</ul>
                 
 
     
@@ -918,9 +924,9 @@ This position is computed with depth buffer.
     
         
             <div class="description">
-                Notifies the scene it needs to be updated due to changes exterior to the
+                <p>Notifies the scene it needs to be updated due to changes exterior to the
 scene itself (e.g. camera movement).
-non-interactive events (e.g: texture loaded)
+non-interactive events (e.g: texture loaded)</p>
             </div>
         
     
@@ -945,7 +951,7 @@ non-interactive events (e.g: texture loaded)
         <code>needsRedraw</code>
         
         
-            &mdash; <span>indicates if notified change requires a full scene redraw.</span>
+            &mdash; <span><p>indicates if notified change requires a full scene redraw.</p></span>
         
 
         
@@ -994,7 +1000,7 @@ non-interactive events (e.g: texture loaded)
     
         
             <div class="description">
-                Return objects from some layers/objects3d under the mouse in this view.
+                <p>Return objects from some layers/objects3d under the mouse in this view.</p>
             </div>
         
     
@@ -1002,10 +1008,12 @@ non-interactive events (e.g: texture loaded)
     
                 <h4>Returns</h4>
                 
-                    an array of objects. Each element contains at least an object
+                    <ul>
+<li>an array of objects. Each element contains at least an object
 property which is the Object3D under the cursor. Then depending on the queried
 layer/source, there may be additionnal properties (coming from THREE.Raycaster
-for instance).
+for instance).</li>
+</ul>
                 
 
     
@@ -1018,8 +1026,8 @@ for instance).
         <code>mouseOrEvt</code>
         
         
-            &mdash; <span>mouse position in window coordinates (0, 0 = top-left)
-or MouseEvent or TouchEvent</span>
+            &mdash; <span><p>mouse position in window coordinates (0, 0 = top-left)
+or MouseEvent or TouchEvent</p></span>
         
 
         
@@ -1029,8 +1037,8 @@ or MouseEvent or TouchEvent</span>
         <code>radius</code>
         
         
-            &mdash; <span>picking will happen in a circle centered on mouseOrEvt. Radius
-is the radius of this circle, in pixels</span>
+            &mdash; <span><p>picking will happen in a circle centered on mouseOrEvt. Radius
+is the radius of this circle, in pixels</p></span>
         
 
         
@@ -1040,9 +1048,9 @@ is the radius of this circle, in pixels</span>
         <code>where</code>
         
         
-            &mdash; <span>where to look for objects. Can be either: empty (= look
+            &mdash; <span><p>where to look for objects. Can be either: empty (= look
 in all layers with type == 'geometry'), layer ids or layers or a mix of all
-the above.</span>
+the above.</p></span>
         
 
         
@@ -1095,9 +1103,9 @@ view.pickObjectsAt({ x, y }, 3, 'wfsBuilding', myLayer)</code></pre>
     
         
             <div class="description">
-                Remove a frameRequester.
+                <p>Remove a frameRequester.
 The effective removal will happen either later; at worst it'll be at
-the beginning of the next frame.
+the beginning of the next frame.</p>
             </div>
         
     
@@ -1114,8 +1122,8 @@ the beginning of the next frame.
         <code>when</code>
         
         
-            &mdash; <span>attach point of this requester. Can be any of
-MAIN_LOOP_EVENTS.</span>
+            &mdash; <span><p>attach point of this requester. Can be any of
+MAIN_LOOP_EVENTS.</p></span>
         
 
         
@@ -1166,7 +1174,7 @@ MAIN_LOOP_EVENTS.</span>
     
         
             <div class="description">
-                Removes a specific imagery layer from the current layer list. This removes layers inserted with attach().
+                <p>Removes a specific imagery layer from the current layer list. This removes layers inserted with attach().</p>
             </div>
         
     
@@ -1183,7 +1191,7 @@ MAIN_LOOP_EVENTS.</span>
         <code>layerId</code>
         
         
-            &mdash; <span>The identifier</span>
+            &mdash; <span><p>The identifier</p></span>
         
 
         
@@ -1236,7 +1244,7 @@ MAIN_LOOP_EVENTS.</span>
     
         
             <div class="description">
-                Convert view coordinates to normalized coordinates (NDC)
+                <p>Convert view coordinates to normalized coordinates (NDC)</p>
             </div>
         
     
@@ -1244,7 +1252,9 @@ MAIN_LOOP_EVENTS.</span>
     
                 <h4>Returns</h4>
                 
-                    NDC coordinates (x and y are [-1, 1])
+                    <ul>
+<li>NDC coordinates (x and y are [-1, 1])</li>
+</ul>
                 
 
     
@@ -1257,7 +1267,7 @@ MAIN_LOOP_EVENTS.</span>
         <code>viewCoords</code>
         
         
-            &mdash; <span>(in pixels, 0-0 = top-left of the View)</span>
+            &mdash; <span><p>(in pixels, 0-0 = top-left of the View)</p></span>
         
 
         
@@ -1293,12 +1303,12 @@ MAIN_LOOP_EVENTS.</span>
 
     
         <div class="description">
-            Fires when all the layers of the view are considered initialized.
+            <p>Fires when all the layers of the view are considered initialized.
 Initialized in this context means: all layers are ready to be
 displayed (no pending network access, no visual improvement to be
 expected, ...).
 If you add new layers, the event will be fired again when all
-layers are ready.
+layers are ready.</p>
         </div>
     
 
@@ -1313,7 +1323,7 @@ layers are ready.
         <code>type: <span class="type">string</span></code>
         
         
-            &mdash; <span>layers-initialized</span>
+            &mdash; <span><p>layers-initialized</p></span>
         
 
         

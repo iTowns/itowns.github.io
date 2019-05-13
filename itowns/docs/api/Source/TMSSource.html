@@ -27,8 +27,8 @@
     </h1>
 
     
-        <div class="description">An object defining the source of resources to get from a <a href="https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification">TMS</a> server. It
-inherits from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>.</div>
+        <div class="description"><p>An object defining the source of resources to get from a <a href="https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification">TMS</a> server. It
+inherits from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>.</p></div>
     
 
     
@@ -66,8 +66,8 @@ inherits from <a onclick="window.parent.goTo('api/Source/Source.html','api/Sourc
         <code>source</code>
         
         
-            &mdash; <span>An object that can contain all properties of a
-TMSSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. Only <code>url</code> is mandatory.</span>
+            &mdash; <span><p>An object that can contain all properties of a
+TMSSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. Only <code>url</code> is mandatory.</p></span>
         
 
         
@@ -126,9 +126,9 @@ view.addLayer(colorLayer);</code></pre>
 
     
         <div class="description">
-            Used to checkout whether this source is a
+            <p>Used to checkout whether this source is a
 TMSSource. Default is true. You should not change this, as it is used
-internally for optimisation.
+internally for optimisation.</p>
         </div>
     
 </div>
@@ -145,11 +145,11 @@ internally for optimisation.
 
     
         <div class="description">
-            The isInverted property is to be set to the
+            <p>The isInverted property is to be set to the
 correct value, true or false (default being false) if the computation of the
 coordinates needs to be inverted to match the same scheme as OSM, Google Maps
 or other system. See <a href="https://alastaira.wordpress.com/2011/07/06/converting-tms-tile-coordinates-to-googlebingosm-tile-coordinates/">this link</a>
-for more information.
+for more information.</p>
         </div>
     
 </div>
@@ -166,8 +166,8 @@ for more information.
 
     
         <div class="description">
-            Tile matrix set of the layer, used in the
-generation of the coordinates to build the url. Default value is 'WGS84'.
+            <p>Tile matrix set of the layer, used in the
+generation of the coordinates to build the url. Default value is 'WGS84'.</p>
         </div>
     
 </div>
@@ -184,8 +184,8 @@ generation of the coordinates to build the url. Default value is 'WGS84'.
 
     
         <div class="description">
-            Object containing the minimum and maximum values of
-the level, to zoom in the source.
+            <p>Object containing the minimum and maximum values of
+the level, to zoom in the source.</p>
         </div>
     
 </div>
@@ -202,8 +202,8 @@ the level, to zoom in the source.
 
     
         <div class="description">
-            The minimum level of the source. Default value
-is 0.
+            <p>The minimum level of the source. Default value
+is 0.</p>
         </div>
     
 </div>
@@ -220,8 +220,8 @@ is 0.
 
     
         <div class="description">
-            The maximum level of the source. Default value
-is 18.
+            <p>The maximum level of the source. Default value
+is 18.</p>
         </div>
     
 </div>
@@ -260,7 +260,7 @@ is 18.
     
         
             <div class="description">
-                Tests if an extent is inside the source limits.
+                <p>Tests if an extent is inside the source limits.</p>
             </div>
         
     
@@ -268,7 +268,7 @@ is 18.
     
                 <h4>Returns</h4>
                 
-                    True if the extent is inside the limit, false otherwise.
+                    <p>True if the extent is inside the limit, false otherwise.</p>
                 
 
     
@@ -281,7 +281,7 @@ is 18.
         <code>extent</code>
         
         
-            &mdash; <span>Extent to test.</span>
+            &mdash; <span><p>Extent to test.</p></span>
         
 
         
@@ -324,7 +324,7 @@ is 18.
     
         
             <div class="description">
-                Tests if an array of extents is inside the source limits.
+                <p>Tests if an array of extents is inside the source limits.</p>
             </div>
         
     
@@ -332,7 +332,7 @@ is 18.
     
                 <h4>Returns</h4>
                 
-                    True if all extents are inside, false otherwise.
+                    <p>True if all extents are inside, false otherwise.</p>
                 
 
     
@@ -345,7 +345,7 @@ is 18.
         <code>extents</code>
         
         
-            &mdash; <span>Array of extents to test.</span>
+            &mdash; <span><p>Array of extents to test.</p></span>
         
 
         
@@ -388,8 +388,8 @@ is 18.
     
         
             <div class="description">
-                Generates an url from an extent. This url is a link to fetch the
-resources inside the extent.
+                <p>Generates an url from an extent. This url is a link to fetch the
+resources inside the extent.</p>
             </div>
         
     
@@ -397,7 +397,7 @@ resources inside the extent.
     
                 <h4>Returns</h4>
                 
-                    The URL constructed from the extent.
+                    <p>The URL constructed from the extent.</p>
                 
 
     
@@ -410,7 +410,7 @@ resources inside the extent.
         <code>extent</code>
         
         
-            &mdash; <span>Extent to convert in url.</span>
+            &mdash; <span><p>Extent to convert in url.</p></span>
         
 
         

@@ -27,12 +27,12 @@
     </h1>
 
     
-        <div class="description">OrientedImageLayer loads oriented images, and project these textures on the scene.
+        <div class="description"><p>OrientedImageLayer loads oriented images, and project these textures on the scene.
 It is design to create an immersive view. </br>
 It loads a set of panoramic position and orientation,
 a set of camera calibration file (it's the same set of camera for each panoramic),
 and a set of texture (each image for each camera for each panoramic), all organised in an <a onclick="window.parent.goTo('api/Source/OrientedImageSource.html','api/Source/OrientedImageSource')" title="OrientedImageSource">OrientedImageSource</a>. </br>
-It creates an <a onclick="window.parent.goTo('api/Renderer/OrientedImageMaterial.html','api/Renderer/OrientedImageMaterial')" title="OrientedImageMaterial">OrientedImageMaterial</a> used to do projective texture mapping on the scene.</div>
+It creates an <a onclick="window.parent.goTo('api/Renderer/OrientedImageMaterial.html','api/Renderer/OrientedImageMaterial')" title="OrientedImageMaterial">OrientedImageMaterial</a> used to do projective texture mapping on the scene.</p></div>
     
 
     
@@ -73,7 +73,7 @@ It creates an <a onclick="window.parent.goTo('api/Renderer/OrientedImageMaterial
         <code>id</code>
         
         
-            &mdash; <span>The id of the layer, a unique name.</span>
+            &mdash; <span><p>The id of the layer, a unique name.</p></span>
         
 
         
@@ -83,7 +83,7 @@ It creates an <a onclick="window.parent.goTo('api/Renderer/OrientedImageMaterial
         <code>config</code>
         
         
-            &mdash; <span>configuration of the layer</span>
+            &mdash; <span><p>configuration of the layer</p></span>
         
 
         
@@ -95,7 +95,7 @@ It creates an <a onclick="window.parent.goTo('api/Renderer/OrientedImageMaterial
         <code>config.backgroundDistance</code>
         
         
-            &mdash; <span>Radius in meter of the sphere used as a background</span>
+            &mdash; <span><p>Radius in meter of the sphere used as a background</p></span>
         
 
         
@@ -105,7 +105,7 @@ It creates an <a onclick="window.parent.goTo('api/Renderer/OrientedImageMaterial
         <code>config.onPanoChanged</code>
         
         
-            &mdash; <span>callback fired when current panoramic changes</span>
+            &mdash; <span><p>callback fired when current panoramic changes</p></span>
         
 
         
@@ -115,7 +115,7 @@ It creates an <a onclick="window.parent.goTo('api/Renderer/OrientedImageMaterial
         <code>config.projection</code>
         
         
-            &mdash; <span>projection of the view</span>
+            &mdash; <span><p>projection of the view</p></span>
         
 
         
@@ -125,8 +125,8 @@ It creates an <a onclick="window.parent.goTo('api/Renderer/OrientedImageMaterial
         <code>config.orientation</code>
         
         
-            &mdash; <span>Json object, using GeoJSon format to represent points,
-it's a set of panoramic position and orientation.</span>
+            &mdash; <span><p>Json object, using GeoJSon format to represent points,
+it's a set of panoramic position and orientation.</p></span>
         
 
         
@@ -136,7 +136,7 @@ it's a set of panoramic position and orientation.</span>
         <code>config.calibrations</code>
         
         
-            &mdash; <span>Json object, representing a set of camera. see <a onclick="window.parent.goTo('api/Parser/CameraCalibrationParser.html','api/Parser/CameraCalibrationParser')" title="CameraCalibrationParser">CameraCalibrationParser</a></span>
+            &mdash; <span><p>Json object, representing a set of camera. see <a onclick="window.parent.goTo('api/Parser/CameraCalibrationParser.html','api/Parser/CameraCalibrationParser')" title="CameraCalibrationParser">CameraCalibrationParser</a></p></span>
         
 
         
@@ -146,8 +146,8 @@ it's a set of panoramic position and orientation.</span>
         <code>config.source</code>
         
         
-            &mdash; <span>Source used to build url of texture for each oriented image,
-a tecture is need for each camera, for each panoramic.</span>
+            &mdash; <span><p>Source used to build url of texture for each oriented image,
+a tecture is need for each camera, for each panoramic.</p></span>
         
 
         
@@ -196,8 +196,8 @@ a tecture is need for each camera, for each panoramic.</span>
     
         
             <div class="description">
-                Attach another layer to this one. Layers attached to a GeometryLayer will
-be available in <code>geometryLayer.attachedLayers</code>.
+                <p>Attach another layer to this one. Layers attached to a GeometryLayer will
+be available in <code>geometryLayer.attachedLayers</code>.</p>
             </div>
         
     
@@ -214,8 +214,8 @@ be available in <code>geometryLayer.attachedLayers</code>.
         <code>layer</code>
         
         
-            &mdash; <span>The layer to attach, that must have an
-<code>update</code> method.</span>
+            &mdash; <span><p>The layer to attach, that must have an <code>update</code>
+method.</p></span>
         
 
         
@@ -253,8 +253,8 @@ be available in <code>geometryLayer.attachedLayers</code>.
     
         
             <div class="description">
-                Change the opacity of an object, according to the value of the
-<code>opacity</code> property of this layer.
+                <p>Change the opacity of an object, according to the value of the <code>opacity</code>
+property of this layer.</p>
             </div>
         
     
@@ -271,8 +271,8 @@ be available in <code>geometryLayer.attachedLayers</code>.
         <code>object</code>
         
         
-            &mdash; <span>The object to change the opacity from. It is
-usually a <code>THREE.Object3d</code> or an implementation of it.</span>
+            &mdash; <span><p>The object to change the opacity from. It is
+usually a <code>THREE.Object3d</code> or an implementation of it.</p></span>
         
 
         
@@ -316,15 +316,14 @@ usually a <code>THREE.Object3d</code> or an implementation of it.</span>
     
         
             <div class="description">
-                Defines a property for this layer, with a default value and a callback
+                <p>Defines a property for this layer, with a default value and a callback
 executed when the property changes.
 <br><br>
 When changing the property, it also emits an event, named following this
-convention: <code>${propertyName}-property-changed</code>, with
-<code>${propertyName}</code> being replaced by the name of the property.
-For example, if the added property name is <code>frozen</code>, it will
-emit a <code>frozen-property-changed</code>.
-<br><br>
+convention: <code>${propertyName}-property-changed</code>, with <code>${propertyName}</code>
+being replaced by the name of the property.  For example, if the added
+property name is <code>frozen</code>, it will emit a <code>frozen-property-changed</code>.
+<br><br></p>
             </div>
         
     
@@ -341,8 +340,8 @@ emit a <code>frozen-property-changed</code>.
         <code>propertyName</code>
         
         
-            &mdash; <span>The name of the property, also used in
-the emitted event name.</span>
+            &mdash; <span><p>The name of the property, also used in
+the emitted event name.</p></span>
         
 
         
@@ -352,7 +351,7 @@ the emitted event name.</span>
         <code>defaultValue</code>
         
         
-            &mdash; <span>The default set value.</span>
+            &mdash; <span><p>The default set value.</p></span>
         
 
         
@@ -362,9 +361,9 @@ the emitted event name.</span>
         <code>onChange</code>
         (optional)
         
-            &mdash; <span>The function executed when the property is
+            &mdash; <span><p>The function executed when the property is
 changed. Parameters are the layer the property is defined on, and the
-name of the property.</span>
+name of the property.</p></span>
         
 
         
@@ -418,9 +417,9 @@ name of the property.</span>
     
         
             <div class="description">
-                Delete background, but doesn't delete OrientedImageLayer.material. For the moment, this material visibility is set to false.
+                <p>Delete background, but doesn't delete OrientedImageLayer.material. For the moment, this material visibility is set to false.
 You need to replace OrientedImageLayer.material applied on each object, if you want to continue displaying them.
-This issue (see #1018 <a href="https://github.com/iTowns/itowns/issues/1018">https://github.com/iTowns/itowns/issues/1018</a>) will be fixed when OrientedImageLayer will be a ColorLayer.
+This issue (see #1018 <a href="https://github.com/iTowns/itowns/issues/1018">https://github.com/iTowns/itowns/issues/1018</a>) will be fixed when OrientedImageLayer will be a ColorLayer.</p>
             </div>
         
     
@@ -462,8 +461,8 @@ This issue (see #1018 <a href="https://github.com/iTowns/itowns/issues/1018">htt
     
         
             <div class="description">
-                Detach a layer attached to this one. See attach to learn how to
-attach a layer.
+                <p>Detach a layer attached to this one. See attach to learn how to
+attach a layer.</p>
             </div>
         
     
@@ -471,7 +470,7 @@ attach a layer.
     
                 <h4>Returns</h4>
                 
-                    Confirmation of the detachment of the layer.
+                    <p>Confirmation of the detachment of the layer.</p>
                 
 
     
@@ -484,7 +483,7 @@ attach a layer.
         <code>layer</code>
         
         
-            &mdash; <span>The layer to detach.</span>
+            &mdash; <span><p>The layer to detach.</p></span>
         
 
         
@@ -533,8 +532,8 @@ attach a layer.
     
         
             <div class="description">
-                Picking method for this layer. It uses the Picking#pickObjectsAt
-method.
+                <p>Picking method for this layer. It uses the Picking#pickObjectsAt
+method.</p>
             </div>
         
     
@@ -542,8 +541,8 @@ method.
     
                 <h4>Returns</h4>
                 
-                    An array containing all targets picked under the
-specified coordinates.
+                    <p>An array containing all targets picked under the
+specified coordinates.</p>
                 
 
     
@@ -556,7 +555,7 @@ specified coordinates.
         <code>view</code>
         
         
-            &mdash; <span>The view instance.</span>
+            &mdash; <span><p>The view instance.</p></span>
         
 
         
@@ -566,8 +565,8 @@ specified coordinates.
         <code>coordinates</code>
         
         
-            &mdash; <span>The coordinates to pick in the view. It
-should have at least <code>x</code> and <code>y</code> properties.</span>
+            &mdash; <span><p>The coordinates to pick in the view. It
+should have at least <code>x</code> and <code>y</code> properties.</p></span>
         
 
         
@@ -577,7 +576,7 @@ should have at least <code>x</code> and <code>y</code> properties.</span>
         <code>radius</code>
         
         
-            &mdash; <span>Radius of the picking circle.</span>
+            &mdash; <span><p>Radius of the picking circle.</p></span>
         
 
         
@@ -613,7 +612,7 @@ should have at least <code>x</code> and <code>y</code> properties.</span>
 
     
         <div class="description">
-            Fires when the opacity of the layer has changed.
+            <p>Fires when the opacity of the layer has changed.</p>
         </div>
     
 

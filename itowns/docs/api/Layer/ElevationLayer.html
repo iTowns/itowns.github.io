@@ -22,11 +22,13 @@
     <h1>
         ElevationLayer
         
+            <span class="extends">extends <a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+        
     </h1>
 
     
-        <div class="description">A simple layer, managing an elevation texture to add some reliefs on the
-plane or globe view for example.</div>
+        <div class="description"><p>A simple layer, managing an elevation texture to add some reliefs on the
+plane or globe view for example.</p></div>
     
 
     
@@ -67,9 +69,9 @@ plane or globe view for example.</div>
         <code>id</code>
         
         
-            &mdash; <span>The id of the layer, that should be unique. It is
+            &mdash; <span><p>The id of the layer, that should be unique. It is
 not mandatory, but an error will be emitted if this layer is added a
-<a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> that already has a layer going by that id.</span>
+<a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> that already has a layer going by that id.</p></span>
         
 
         
@@ -79,11 +81,11 @@ not mandatory, but an error will be emitted if this layer is added a
         <code>config</code>
         (optional)
         
-            &mdash; <span>Optional configuration, all elements in it
+            &mdash; <span><p>Optional configuration, all elements in it
 will be merged as is in the layer. For example, if the configuration
-contains three elements <code>name, protocol, extent</code>, these
-elements will be available using <code>layer.name</code> or something
-else depending on the property name.</span>
+contains three elements <code>name, protocol, extent</code>, these elements will be
+available using <code>layer.name</code> or something else depending on the property
+name.</p></span>
         
 
         
@@ -95,7 +97,7 @@ else depending on the property name.</span>
         <code>config.source</code>
         (optional)
         
-            &mdash; <span>Description and options of the source.</span>
+            &mdash; <span><p>Description and options of the source.</p></span>
         
 
         
@@ -116,6 +118,27 @@ else depending on the property name.</span>
     
 
     
+        <hr class="title-divider"/>
+        <h2>Example</h2>
+        
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// Create an ElevationLayer
+const elevation = new ElevationLayer('IGN_MNT', {
+     source: {
+         url: 'http://server.geo/wmts/SERVICE=WMTS&TILEMATRIX=%TILEMATRIX&TILEROW=%ROW&TILECOL=%COL',
+         protocol: 'wmts',
+         format: 'image/x-bil;bits=32',
+     },
+});
+
+// Add the layer
+view.addLayer(elevation);</code></pre>
+
+
+    
 
     
         <hr class="title-divider"/>
@@ -131,9 +154,9 @@ else depending on the property name.</span>
 
     
         <div class="description">
-            Used to checkout whether this layer is
+            <p>Used to checkout whether this layer is
 an ElevationLayer. Default is true. You should not change this, as it is used
-internally for optimisation.
+internally for optimisation.</p>
         </div>
     
 </div>
@@ -173,15 +196,14 @@ internally for optimisation.
     
         
             <div class="description">
-                Defines a property for this layer, with a default value and a callback
+                <p>Defines a property for this layer, with a default value and a callback
 executed when the property changes.
 <br><br>
 When changing the property, it also emits an event, named following this
-convention: <code>${propertyName}-property-changed</code>, with
-<code>${propertyName}</code> being replaced by the name of the property.
-For example, if the added property name is <code>frozen</code>, it will
-emit a <code>frozen-property-changed</code>.
-<br><br>
+convention: <code>${propertyName}-property-changed</code>, with <code>${propertyName}</code>
+being replaced by the name of the property.  For example, if the added
+property name is <code>frozen</code>, it will emit a <code>frozen-property-changed</code>.
+<br><br></p>
             </div>
         
     
@@ -198,8 +220,8 @@ emit a <code>frozen-property-changed</code>.
         <code>propertyName</code>
         
         
-            &mdash; <span>The name of the property, also used in
-the emitted event name.</span>
+            &mdash; <span><p>The name of the property, also used in
+the emitted event name.</p></span>
         
 
         
@@ -209,7 +231,7 @@ the emitted event name.</span>
         <code>defaultValue</code>
         
         
-            &mdash; <span>The default set value.</span>
+            &mdash; <span><p>The default set value.</p></span>
         
 
         
@@ -219,9 +241,9 @@ the emitted event name.</span>
         <code>onChange</code>
         (optional)
         
-            &mdash; <span>The function executed when the property is
+            &mdash; <span><p>The function executed when the property is
 changed. Parameters are the layer the property is defined on, and the
-name of the property.</span>
+name of the property.</p></span>
         
 
         
@@ -275,7 +297,7 @@ name of the property.</span>
     
         
             <div class="description">
-                All layer's textures are removed from scene and disposed from video device.
+                <p>All layer's textures are removed from scene and disposed from video device.</p>
             </div>
         
     

@@ -27,9 +27,9 @@
     </h1>
 
     
-        <div class="description">An object defining the source of resources to get from a
+        <div class="description"><p>An object defining the source of resources to get from a
 <a href="http://www.opengeospatial.org/standards/wmts">WMTS</a> server. It inherits
-from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>.</div>
+from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>.</p></div>
     
 
     
@@ -67,9 +67,8 @@ from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source'
         <code>source</code>
         
         
-            &mdash; <span>An object that can contain all properties of a
-WMTSSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. Only <code>url</code> and
-<code>name</code> are mandatory.</span>
+            &mdash; <span><p>An object that can contain all properties of a
+WMTSSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. Only <code>url</code> and <code>name</code> are mandatory.</p></span>
         
 
         
@@ -125,9 +124,9 @@ view.addLayer(colorLayer);</code></pre>
 
     
         <div class="description">
-            Used to checkout whether this source is a
+            <p>Used to checkout whether this source is a
 WMTSSource. Default is true. You should not change this, as it is used
-internally for optimisation.
+internally for optimisation.</p>
         </div>
     
 </div>
@@ -144,8 +143,8 @@ internally for optimisation.
 
     
         <div class="description">
-            The name of the layer, used in the generation of
-the url.
+            <p>The name of the layer, used in the generation of
+the url.</p>
         </div>
     
 </div>
@@ -162,8 +161,8 @@ the url.
 
     
         <div class="description">
-            The version of the WMTS server to request on.
-Default value is '1.0.0'.
+            <p>The version of the WMTS server to request on.
+Default value is '1.0.0'.</p>
         </div>
     
 </div>
@@ -180,8 +179,8 @@ Default value is '1.0.0'.
 
     
         <div class="description">
-            The style to query on the WMTS server. Default
-value is 'normal'.
+            <p>The style to query on the WMTS server. Default
+value is 'normal'.</p>
         </div>
     
 </div>
@@ -198,9 +197,9 @@ value is 'normal'.
 
     
         <div class="description">
-            The projection in which to fetch the data. If
-not specified, it is deduced from <code>tileMatrixSet</code>. Default value
-is 'EPSG:3857'.
+            <p>The projection in which to fetch the data. If
+not specified, it is deduced from <code>tileMatrixSet</code>. Default value is
+'EPSG:3857'.</p>
         </div>
     
 </div>
@@ -217,8 +216,8 @@ is 'EPSG:3857'.
 
     
         <div class="description">
-            Tile matrix set of the layer, used in the
-generation of the url. Default value is 'WGS84'.
+            <p>Tile matrix set of the layer, used in the
+generation of the url. Default value is 'WGS84'.</p>
         </div>
     
 </div>
@@ -235,10 +234,9 @@ generation of the url. Default value is 'WGS84'.
 
     
         <div class="description">
-            Limits of the tile matrix
-set. Each limit has for key its level number, and their properties are the
-<code>minTileRow</code>, <code>maxTileRow</code>, <code>minTileCol</code> and
-<code>maxTileCol</code>.
+            <p>Limits of the tile matrix set. Each
+limit has for key its level number, and their properties are the
+<code>minTileRow</code>, <code>maxTileRow</code>, <code>minTileCol</code> and <code>maxTileCol</code>.</p>
         </div>
     
 </div>
@@ -255,8 +253,8 @@ set. Each limit has for key its level number, and their properties are the
 
     
         <div class="description">
-            Minimum row for tiles at
-the specified level.
+            <p>Minimum row for tiles at
+the specified level.</p>
         </div>
     
 </div>
@@ -273,8 +271,8 @@ the specified level.
 
     
         <div class="description">
-            Maximum row for tiles at
-the specified level.
+            <p>Maximum row for tiles at
+the specified level.</p>
         </div>
     
 </div>
@@ -291,8 +289,8 @@ the specified level.
 
     
         <div class="description">
-            Minimum column for tiles
-at the specified level.
+            <p>Minimum column for tiles
+at the specified level.</p>
         </div>
     
 </div>
@@ -309,8 +307,8 @@ at the specified level.
 
     
         <div class="description">
-            Maximum column for tiles
-at the specified level.
+            <p>Maximum column for tiles
+at the specified level.</p>
         </div>
     
 </div>
@@ -327,8 +325,8 @@ at the specified level.
 
     
         <div class="description">
-            Object containing the minimum and maximum values of
-the level, to zoom in the source.
+            <p>Object containing the minimum and maximum values of
+the level, to zoom in the source.</p>
         </div>
     
 </div>
@@ -345,8 +343,8 @@ the level, to zoom in the source.
 
     
         <div class="description">
-            The minimum level of the source. Default value
-is 2.
+            <p>The minimum level of the source. Default value
+is 2.</p>
         </div>
     
 </div>
@@ -363,8 +361,8 @@ is 2.
 
     
         <div class="description">
-            The maximum level of the source. Default value
-is 20.
+            <p>The maximum level of the source. Default value
+is 20.</p>
         </div>
     
 </div>
@@ -403,7 +401,7 @@ is 20.
     
         
             <div class="description">
-                Tests if an extent is inside the source limits.
+                <p>Tests if an extent is inside the source limits.</p>
             </div>
         
     
@@ -411,7 +409,7 @@ is 20.
     
                 <h4>Returns</h4>
                 
-                    True if the extent is inside the limit, false otherwise.
+                    <p>True if the extent is inside the limit, false otherwise.</p>
                 
 
     
@@ -424,7 +422,7 @@ is 20.
         <code>extent</code>
         
         
-            &mdash; <span>Extent to test.</span>
+            &mdash; <span><p>Extent to test.</p></span>
         
 
         
@@ -467,7 +465,7 @@ is 20.
     
         
             <div class="description">
-                Tests if an array of extents is inside the source limits.
+                <p>Tests if an array of extents is inside the source limits.</p>
             </div>
         
     
@@ -475,7 +473,7 @@ is 20.
     
                 <h4>Returns</h4>
                 
-                    True if all extents are inside, false otherwise.
+                    <p>True if all extents are inside, false otherwise.</p>
                 
 
     
@@ -488,7 +486,7 @@ is 20.
         <code>extents</code>
         
         
-            &mdash; <span>Array of extents to test.</span>
+            &mdash; <span><p>Array of extents to test.</p></span>
         
 
         
@@ -531,8 +529,8 @@ is 20.
     
         
             <div class="description">
-                Generates an url from an extent. This url is a link to fetch the
-resources inside the extent.
+                <p>Generates an url from an extent. This url is a link to fetch the
+resources inside the extent.</p>
             </div>
         
     
@@ -540,7 +538,7 @@ resources inside the extent.
     
                 <h4>Returns</h4>
                 
-                    The URL constructed from the extent.
+                    <p>The URL constructed from the extent.</p>
                 
 
     
@@ -553,7 +551,7 @@ resources inside the extent.
         <code>extent</code>
         
         
-            &mdash; <span>Extent to convert in url.</span>
+            &mdash; <span><p>Extent to convert in url.</p></span>
         
 
         

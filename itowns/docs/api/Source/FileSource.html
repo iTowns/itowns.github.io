@@ -27,16 +27,15 @@
     </h1>
 
     
-        <div class="description">An object defining the source of a single resource to get from a direct
+        <div class="description"><p>An object defining the source of a single resource to get from a direct
 access. It inherits from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. There is multiple ways of adding a
-resource here:
+resource here:</p>
 <ul>
- <li>add the file like any other sources, using the <code>url</code>
+ <li>add the file like any other sources, using the `url` property.</li>
+ <li>fetch the file, and give the data to the source using the `fetchedData`
  property.</li>
- <li>fetch the file, and give the data to the source using the
- <code>fetchedData</code> property.</li>
  <li>fetch the file, parse it and git the parsed data to the source using the
- <code>parsedData</code> property.</li>
+ `parsedData` property.</li>
 </ul>
 See the examples below for real use cases.</div>
     
@@ -79,10 +78,10 @@ See the examples below for real use cases.</div>
         <code>source</code>
         
         
-            &mdash; <span>An object that can contain all properties of a
-FileSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. Only <code>projection</code> is mandatory,
-but if it presents in <code>parsedData</code> under the property
-<code>projection</code> or <code>crs</code>, it is fine.</span>
+            &mdash; <span><p>An object that can contain all properties of a
+FileSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. Only <code>projection</code> is mandatory, but if it
+presents in <code>parsedData</code> under the property <code>projection</code> or <code>crs</code>, it is
+fine.</p></span>
         
 
         
@@ -92,7 +91,7 @@ but if it presents in <code>parsedData</code> under the property
         <code>crsOut</code>
         
         
-            &mdash; <span>The projection of the output data after parsing.</span>
+            &mdash; <span><p>The projection of the output data after parsing.</p></span>
         
 
         
@@ -211,9 +210,9 @@ itowns.Fetcher.json('https://raw.githubusercontent.com/gregoiredavid/france-geoj
 
     
         <div class="description">
-            Used to checkout whether this source is a
+            <p>Used to checkout whether this source is a
 FileSource. Default is true. You should not change this, as it is used
-internally for optimisation.
+internally for optimisation.</p>
         </div>
     
 </div>
@@ -230,8 +229,8 @@ internally for optimisation.
 
     
         <div class="description">
-            Once the file has been loaded, the resulting data
-is stored in this property.
+            <p>Once the file has been loaded, the resulting data
+is stored in this property.</p>
         </div>
     
 </div>
@@ -248,8 +247,8 @@ is stored in this property.
 
     
         <div class="description">
-            Once the file has been loaded and parsed, the
-resulting data is stored in this property.
+            <p>Once the file has been loaded and parsed, the
+resulting data is stored in this property.</p>
         </div>
     
 </div>
@@ -288,7 +287,7 @@ resulting data is stored in this property.
     
         
             <div class="description">
-                Tests if an extent is inside the source limits.
+                <p>Tests if an extent is inside the source limits.</p>
             </div>
         
     
@@ -296,7 +295,7 @@ resulting data is stored in this property.
     
                 <h4>Returns</h4>
                 
-                    True if the extent is inside the limit, false otherwise.
+                    <p>True if the extent is inside the limit, false otherwise.</p>
                 
 
     
@@ -309,7 +308,7 @@ resulting data is stored in this property.
         <code>extent</code>
         
         
-            &mdash; <span>Extent to test.</span>
+            &mdash; <span><p>Extent to test.</p></span>
         
 
         
@@ -352,7 +351,7 @@ resulting data is stored in this property.
     
         
             <div class="description">
-                Tests if an array of extents is inside the source limits.
+                <p>Tests if an array of extents is inside the source limits.</p>
             </div>
         
     
@@ -360,7 +359,7 @@ resulting data is stored in this property.
     
                 <h4>Returns</h4>
                 
-                    True if all extents are inside, false otherwise.
+                    <p>True if all extents are inside, false otherwise.</p>
                 
 
     
@@ -373,7 +372,7 @@ resulting data is stored in this property.
         <code>extents</code>
         
         
-            &mdash; <span>Array of extents to test.</span>
+            &mdash; <span><p>Array of extents to test.</p></span>
         
 
         
@@ -416,8 +415,8 @@ resulting data is stored in this property.
     
         
             <div class="description">
-                Generates an url from an extent. This url is a link to fetch the
-resources inside the extent.
+                <p>Generates an url from an extent. This url is a link to fetch the
+resources inside the extent.</p>
             </div>
         
     
@@ -425,7 +424,7 @@ resources inside the extent.
     
                 <h4>Returns</h4>
                 
-                    The URL constructed from the extent.
+                    <p>The URL constructed from the extent.</p>
                 
 
     
@@ -438,7 +437,7 @@ resources inside the extent.
         <code>extent</code>
         
         
-            &mdash; <span>Extent to convert in url.</span>
+            &mdash; <span><p>Extent to convert in url.</p></span>
         
 
         

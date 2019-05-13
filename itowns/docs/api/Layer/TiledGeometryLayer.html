@@ -22,10 +22,12 @@
     <h1>
         TiledGeometryLayer
         
+            <span class="extends">extends <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></span>
+        
     </h1>
 
     
-        <div class="description">A layer extending the <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, but with a tiling notion.</div>
+        <div class="description"><p>A layer extending the <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, but with a tiling notion.</p></div>
     
 
     
@@ -75,9 +77,9 @@
         <code>id</code>
         
         
-            &mdash; <span>The id of the layer, that should be unique. It is
+            &mdash; <span><p>The id of the layer, that should be unique. It is
 not mandatory, but an error will be emitted if this layer is added a
-<a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> that already has a layer going by that id.</span>
+<a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> that already has a layer going by that id.</p></span>
         
 
         
@@ -87,10 +89,9 @@ not mandatory, but an error will be emitted if this layer is added a
         <code>object3d</code>
         
         
-            &mdash; <span>The object3d used to contain the
-geometry of the TiledGeometryLayer. It is usually a
-<code>THREE.Group</code>, but it can be anything inheriting from a
-<code>THREE.Object3d</code>.</span>
+            &mdash; <span><p>The object3d used to contain the
+geometry of the TiledGeometryLayer. It is usually a <code>THREE.Group</code>, but it
+can be anything inheriting from a <code>THREE.Object3d</code>.</p></span>
         
 
         
@@ -100,7 +101,7 @@ geometry of the TiledGeometryLayer. It is usually a
         <code>schemeTile</code>
         
         
-            &mdash; <span>extents Array of root tiles</span>
+            &mdash; <span><p>extents Array of root tiles</p></span>
         
 
         
@@ -110,7 +111,7 @@ geometry of the TiledGeometryLayer. It is usually a
         <code>builder</code>
         
         
-            &mdash; <span>builder geometry object</span>
+            &mdash; <span><p>builder geometry object</p></span>
         
 
         
@@ -120,11 +121,11 @@ geometry of the TiledGeometryLayer. It is usually a
         <code>config</code>
         (optional)
         
-            &mdash; <span>Optional configuration, all elements in it
+            &mdash; <span><p>Optional configuration, all elements in it
 will be merged as is in the layer. For example, if the configuration
-contains three elements <code>name, protocol, extent</code>, these
-elements will be available using <code>layer.name</code> or something
-else depending on the property name.</span>
+contains three elements <code>name, protocol, extent</code>, these elements will be
+available using <code>layer.name</code> or something else depending on the property
+name.</p></span>
         
 
         
@@ -136,7 +137,7 @@ else depending on the property name.</span>
         <code>config.source</code>
         (optional)
         
-            &mdash; <span>Description and options of the source.</span>
+            &mdash; <span><p>Description and options of the source.</p></span>
         
 
         
@@ -172,7 +173,7 @@ else depending on the property name.</span>
 
     
         <div class="description">
-            Status information of layer
+            <p>Status information of layer</p>
         </div>
     
 </div>
@@ -189,9 +190,9 @@ else depending on the property name.</span>
 
     
         <div class="description">
-            Used to checkout whether this
+            <p>Used to checkout whether this
 layer is a TiledGeometryLayer. Default is true. You should not change this,
-as it is used internally for optimisation.
+as it is used internally for optimisation.</p>
         </div>
     
 </div>
@@ -225,8 +226,8 @@ as it is used internally for optimisation.
     
         
             <div class="description">
-                Attach another layer to this one. Layers attached to a GeometryLayer will
-be available in <code>geometryLayer.attachedLayers</code>.
+                <p>Attach another layer to this one. Layers attached to a GeometryLayer will
+be available in <code>geometryLayer.attachedLayers</code>.</p>
             </div>
         
     
@@ -243,8 +244,8 @@ be available in <code>geometryLayer.attachedLayers</code>.
         <code>layer</code>
         
         
-            &mdash; <span>The layer to attach, that must have an
-<code>update</code> method.</span>
+            &mdash; <span><p>The layer to attach, that must have an <code>update</code>
+method.</p></span>
         
 
         
@@ -282,8 +283,8 @@ be available in <code>geometryLayer.attachedLayers</code>.
     
         
             <div class="description">
-                Change the opacity of an object, according to the value of the
-<code>opacity</code> property of this layer.
+                <p>Change the opacity of an object, according to the value of the <code>opacity</code>
+property of this layer.</p>
             </div>
         
     
@@ -300,8 +301,8 @@ be available in <code>geometryLayer.attachedLayers</code>.
         <code>object</code>
         
         
-            &mdash; <span>The object to change the opacity from. It is
-usually a <code>THREE.Object3d</code> or an implementation of it.</span>
+            &mdash; <span><p>The object to change the opacity from. It is
+usually a <code>THREE.Object3d</code> or an implementation of it.</p></span>
         
 
         
@@ -345,15 +346,14 @@ usually a <code>THREE.Object3d</code> or an implementation of it.</span>
     
         
             <div class="description">
-                Defines a property for this layer, with a default value and a callback
+                <p>Defines a property for this layer, with a default value and a callback
 executed when the property changes.
 <br><br>
 When changing the property, it also emits an event, named following this
-convention: <code>${propertyName}-property-changed</code>, with
-<code>${propertyName}</code> being replaced by the name of the property.
-For example, if the added property name is <code>frozen</code>, it will
-emit a <code>frozen-property-changed</code>.
-<br><br>
+convention: <code>${propertyName}-property-changed</code>, with <code>${propertyName}</code>
+being replaced by the name of the property.  For example, if the added
+property name is <code>frozen</code>, it will emit a <code>frozen-property-changed</code>.
+<br><br></p>
             </div>
         
     
@@ -370,8 +370,8 @@ emit a <code>frozen-property-changed</code>.
         <code>propertyName</code>
         
         
-            &mdash; <span>The name of the property, also used in
-the emitted event name.</span>
+            &mdash; <span><p>The name of the property, also used in
+the emitted event name.</p></span>
         
 
         
@@ -381,7 +381,7 @@ the emitted event name.</span>
         <code>defaultValue</code>
         
         
-            &mdash; <span>The default set value.</span>
+            &mdash; <span><p>The default set value.</p></span>
         
 
         
@@ -391,9 +391,9 @@ the emitted event name.</span>
         <code>onChange</code>
         (optional)
         
-            &mdash; <span>The function executed when the property is
+            &mdash; <span><p>The function executed when the property is
 changed. Parameters are the layer the property is defined on, and the
-name of the property.</span>
+name of the property.</p></span>
         
 
         
@@ -447,7 +447,7 @@ name of the property.</span>
     
         
             <div class="description">
-                All layer's meshs are removed from scene and disposed from video device.
+                <p>All layer's meshs are removed from scene and disposed from video device.</p>
             </div>
         
     
@@ -489,8 +489,8 @@ name of the property.</span>
     
         
             <div class="description">
-                Detach a layer attached to this one. See attach to learn how to
-attach a layer.
+                <p>Detach a layer attached to this one. See attach to learn how to
+attach a layer.</p>
             </div>
         
     
@@ -498,7 +498,7 @@ attach a layer.
     
                 <h4>Returns</h4>
                 
-                    Confirmation of the detachment of the layer.
+                    <p>Confirmation of the detachment of the layer.</p>
                 
 
     
@@ -511,7 +511,7 @@ attach a layer.
         <code>layer</code>
         
         
-            &mdash; <span>The layer to detach.</span>
+            &mdash; <span><p>The layer to detach.</p></span>
         
 
         
@@ -560,8 +560,8 @@ attach a layer.
     
         
             <div class="description">
-                Picking method for this layer. It uses the Picking#pickTilesAt
-method.
+                <p>Picking method for this layer. It uses the Picking#pickTilesAt
+method.</p>
             </div>
         
     
@@ -569,8 +569,8 @@ method.
     
                 <h4>Returns</h4>
                 
-                    An array containing all targets picked under the
-specified coordinates.
+                    <p>An array containing all targets picked under the
+specified coordinates.</p>
                 
 
     
@@ -583,7 +583,7 @@ specified coordinates.
         <code>view</code>
         
         
-            &mdash; <span>The view instance.</span>
+            &mdash; <span><p>The view instance.</p></span>
         
 
         
@@ -593,8 +593,8 @@ specified coordinates.
         <code>coordinates</code>
         
         
-            &mdash; <span>The coordinates to pick in the view. It
-should have at least <code>x</code> and <code>y</code> properties.</span>
+            &mdash; <span><p>The coordinates to pick in the view. It
+should have at least <code>x</code> and <code>y</code> properties.</p></span>
         
 
         
@@ -604,7 +604,7 @@ should have at least <code>x</code> and <code>y</code> properties.</span>
         <code>radius</code>
         
         
-            &mdash; <span>Radius of the picking circle.</span>
+            &mdash; <span><p>Radius of the picking circle.</p></span>
         
 
         
@@ -650,25 +650,22 @@ should have at least <code>x</code> and <code>y</code> properties.</span>
     
         
             <div class="description">
-                Does pre-update work on the context:
+                <p>Does pre-update work on the context:</p>
 <ul>
- <li>update the <code>colorLayers</code> and
- <code>elevationLayers</code></li>
- <li>update the <code>maxElevationLevel</code></li>
+ <li>update the `colorLayers` and `elevationLayers`</li>
+ <li>update the `maxElevationLevel`</li>
 </ul>
-
-Once this work is done, it returns a list of nodes to update. Depending
-on the origin of <code>sources</code>, it can return a few things:
+<p>Once this work is done, it returns a list of nodes to update. Depending
+on the origin of <code>sources</code>, it can return a few things:</p>
 <ul>
- <li>if <code>sources</code> is empty, it returns the first node of the
- layer (stored as <code>level0Nodes</code>), which will trigger the
- update of the whole tree</li>
+ <li>if `sources` is empty, it returns the first node of the layer
+ (stored as `level0Nodes`), which will trigger the update of the whole
+ tree</li>
  <li>if the update is triggered by a camera move, the whole tree is
  returned too</li>
- <li>if <code>source.layer</code> is this layer, it means that
- <code>source</code> is a node; a common ancestor will be found if there
- are multiple sources, with the default common ancestor being the first
- source itself</li>
+ <li>if `source.layer` is this layer, it means that `source` is a node; a
+ common ancestor will be found if there are multiple sources, with the
+ default common ancestor being the first source itself</li>
  <li>else it returns the whole tree</li>
 </ul>
             </div>
@@ -678,7 +675,7 @@ on the origin of <code>sources</code>, it can return a few things:
     
                 <h4>Returns</h4>
                 
-                    The array of nodes to update.
+                    <p>The array of nodes to update.</p>
                 
 
     
@@ -691,7 +688,7 @@ on the origin of <code>sources</code>, it can return a few things:
         <code>context</code>
         
         
-            &mdash; <span>The context of the update; see the MainLoop for more informations.</span>
+            &mdash; <span><p>The context of the update; see the MainLoop for more informations.</p></span>
         
 
         
@@ -701,8 +698,8 @@ on the origin of <code>sources</code>, it can return a few things:
         <code>sources</code>
         
         
-            &mdash; <span>A list of sources to
-generate a list of nodes to update.</span>
+            &mdash; <span><p>A list of sources to
+generate a list of nodes to update.</p></span>
         
 
         
@@ -743,12 +740,12 @@ generate a list of nodes to update.</span>
     
         
             <div class="description">
-                Subdivides a node of this layer. If the node is currently in the process
+                <p>Subdivides a node of this layer. If the node is currently in the process
 of subdivision, it will not do anything here. The subdivision of a node
 will occur in four part, to create a quadtree. The extent of the node
 will be divided in four parts: north-west, north-east, south-west and
 south-east. Once all four nodes are created, they will be added to the
-current node and the view of the context will be notified of this change.
+current node and the view of the context will be notified of this change.</p>
             </div>
         
     
@@ -765,7 +762,7 @@ current node and the view of the context will be notified of this change.
         <code>context</code>
         
         
-            &mdash; <span>The context of the update; see the MainLoop for more informations.</span>
+            &mdash; <span><p>The context of the update; see the MainLoop for more informations.</p></span>
         
 
         
@@ -775,7 +772,7 @@ current node and the view of the context will be notified of this change.
         <code>node</code>
         
         
-            &mdash; <span>The node to subdivide.</span>
+            &mdash; <span><p>The node to subdivide.</p></span>
         
 
         
@@ -824,7 +821,7 @@ current node and the view of the context will be notified of this change.
     
         
             <div class="description">
-                Test the subdvision of a node, compared to this layer.
+                <p>Test the subdvision of a node, compared to this layer.</p>
             </div>
         
     
@@ -832,7 +829,9 @@ current node and the view of the context will be notified of this change.
     
                 <h4>Returns</h4>
                 
-                    True if the node is subdivisable, otherwise false.
+                    <ul>
+<li>True if the node is subdivisable, otherwise false.</li>
+</ul>
                 
 
     
@@ -845,7 +844,7 @@ current node and the view of the context will be notified of this change.
         <code>context</code>
         
         
-            &mdash; <span>The context of the update; see the MainLoop for more informations.</span>
+            &mdash; <span><p>The context of the update; see the MainLoop for more informations.</p></span>
         
 
         
@@ -855,7 +854,7 @@ current node and the view of the context will be notified of this change.
         <code>layer</code>
         
         
-            &mdash; <span>This layer, parameter to be removed.</span>
+            &mdash; <span><p>This layer, parameter to be removed.</p></span>
         
 
         
@@ -865,7 +864,7 @@ current node and the view of the context will be notified of this change.
         <code>node</code>
         
         
-            &mdash; <span>The node to test.</span>
+            &mdash; <span><p>The node to test.</p></span>
         
 
         
@@ -914,7 +913,7 @@ current node and the view of the context will be notified of this change.
     
         
             <div class="description">
-                Update a node of this layer. The node will not be updated if:
+                <p>Update a node of this layer. The node will not be updated if:</p>
 <ul>
  <li>it does not have a parent, then it is removed</li>
  <li>its parent is being subdivided</li>
@@ -936,7 +935,7 @@ current node and the view of the context will be notified of this change.
         <code>context</code>
         
         
-            &mdash; <span>The context of the update; see the MainLoop for more informations.</span>
+            &mdash; <span><p>The context of the update; see the MainLoop for more informations.</p></span>
         
 
         
@@ -946,8 +945,8 @@ current node and the view of the context will be notified of this change.
         <code>layer</code>
         
         
-            &mdash; <span>Parameter to be removed once all update methods
-have been aligned.</span>
+            &mdash; <span><p>Parameter to be removed once all update methods
+have been aligned.</p></span>
         
 
         
@@ -957,7 +956,7 @@ have been aligned.</span>
         <code>node</code>
         
         
-            &mdash; <span>The node to update.</span>
+            &mdash; <span><p>The node to update.</p></span>
         
 
         
@@ -1009,8 +1008,8 @@ have been aligned.</span>
     
         
             <div class="description">
-                Tell if a node has enough elevation or color textures to subdivide.
-Subdivision is prevented if:
+                <p>Tell if a node has enough elevation or color textures to subdivide.
+Subdivision is prevented if:</p>
 <ul>
  <li>the node is covered by at least one elevation layer and if the node
  doesn't have an elevation texture yet</li>
@@ -1023,8 +1022,8 @@ Subdivision is prevented if:
     
                 <h4>Returns</h4>
                 
-                    False if the node can not be subdivided, true
-otherwise.
+                    <p>False if the node can not be subdivided, true
+otherwise.</p>
                 
 
     
@@ -1037,7 +1036,7 @@ otherwise.
         <code>context</code>
         
         
-            &mdash; <span>The context of the update; see the MainLoop for more informations.</span>
+            &mdash; <span><p>The context of the update; see the MainLoop for more informations.</p></span>
         
 
         
@@ -1047,7 +1046,7 @@ otherwise.
         <code>node</code>
         
         
-            &mdash; <span>The node to subdivide.</span>
+            &mdash; <span><p>The node to subdivide.</p></span>
         
 
         
@@ -1081,7 +1080,7 @@ otherwise.
 
     
         <div class="description">
-            Fires when the opacity of the layer has changed.
+            <p>Fires when the opacity of the layer has changed.</p>
         </div>
     
 

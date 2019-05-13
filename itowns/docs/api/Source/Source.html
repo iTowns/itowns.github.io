@@ -25,11 +25,10 @@
     </h1>
 
     
-        <div class="description">Sources are object containing informations on how to fetch resources, from a
-set source.
-
-To extend a Source, it is necessary to implement two functions:
-<code>urlFromExtent</code> and <code>extentInsideLimit</code>.</div>
+        <div class="description"><p>Sources are object containing informations on how to fetch resources, from a
+set source.</p>
+<p>To extend a Source, it is necessary to implement two functions:
+<code>urlFromExtent</code> and <code>extentInsideLimit</code>.</p></div>
     
 
     
@@ -67,8 +66,8 @@ To extend a Source, it is necessary to implement two functions:
         <code>source</code>
         
         
-            &mdash; <span>An object that can contain all properties of a
-Source. Only the <code>url</code> property is mandatory.</span>
+            &mdash; <span><p>An object that can contain all properties of a
+Source. Only the <code>url</code> property is mandatory.</p></span>
         
 
         
@@ -99,9 +98,9 @@ Source. Only the <code>url</code> property is mandatory.</span>
 
     
         <div class="description">
-            Used to checkout whether this source is a
+            <p>Used to checkout whether this source is a
 Source. Default is true. You should not change this, as it is used internally
-for optimisation.
+for optimisation.</p>
         </div>
     
 </div>
@@ -118,8 +117,8 @@ for optimisation.
 
     
         <div class="description">
-            Unique uid mainly used to store data linked to this
-source into Cache.
+            <p>Unique uid mainly used to store data linked to this
+source into Cache.</p>
         </div>
     
 </div>
@@ -136,7 +135,7 @@ source into Cache.
 
     
         <div class="description">
-            The url of the resources that are fetched.
+            <p>The url of the resources that are fetched.</p>
         </div>
     
 </div>
@@ -153,7 +152,7 @@ source into Cache.
 
     
         <div class="description">
-            The format of the resources that are fetched.
+            <p>The format of the resources that are fetched.</p>
         </div>
     
 </div>
@@ -170,11 +169,11 @@ source into Cache.
 
     
         <div class="description">
-            The method used to fetch the resources from
+            <p>The method used to fetch the resources from
 the source. iTowns provides some methods in Fetcher, but it can be
-specified a custom one. This method should return a <code>Promise</code>
-containing the fetched resource. If this property is set, it overrides the
-chosen fetcher method with <code>format</code>.
+specified a custom one. This method should return a <code>Promise</code> containing the
+fetched resource. If this property is set, it overrides the chosen fetcher
+method with <code>format</code>.</p>
         </div>
     
 </div>
@@ -191,9 +190,9 @@ chosen fetcher method with <code>format</code>.
 
     
         <div class="description">
-            Fetch options (passed directly to
+            <p>Fetch options (passed directly to
 <code>fetch()</code>), see <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Syntax">the syntax for more information</a>.
-By default, set to <code>{ crossOrigin: 'anonymous' }</code>.
+By default, set to <code>{ crossOrigin: 'anonymous' }</code>.</p>
         </div>
     
 </div>
@@ -210,7 +209,7 @@ By default, set to <code>{ crossOrigin: 'anonymous' }</code>.
 
     
         <div class="description">
-            The projection of the resources.
+            <p>The projection of the resources.</p>
         </div>
     
 </div>
@@ -227,8 +226,8 @@ By default, set to <code>{ crossOrigin: 'anonymous' }</code>.
 
     
         <div class="description">
-            The intellectual property rights for the
-resources.
+            <p>The intellectual property rights for the
+resources.</p>
         </div>
     
 </div>
@@ -245,7 +244,7 @@ resources.
 
     
         <div class="description">
-            The extent of the resources.
+            <p>The extent of the resources.</p>
         </div>
     
 </div>
@@ -262,39 +261,33 @@ resources.
 
     
         <div class="description">
-            The method used to parse the resources attached
-to the layer. iTowns provides some parsers, visible in the
-<code>Parser/</code> folder. If the method is custom, it should return a
-<code>Promise</code> containing the parsed resource. If this property is set,
-it overrides the default selected parser method with
-<code>source.format</code>. If <code>source.format</code> is also empty, no
-parsing action is done.
+            <p>The method used to parse the resources attached
+to the layer. iTowns provides some parsers, visible in the <code>Parser/</code> folder.
+If the method is custom, it should return a <code>Promise</code> containing the parsed
+resource. If this property is set, it overrides the default selected parser
+method with <code>source.format</code>. If <code>source.format</code> is also empty, no parsing
+action is done.
 <br><br>
-When calling this method, two parameters are passed:
+When calling this method, two parameters are passed:</p>
 <ul>
  <li>the fetched data, i.e. the data to parse</li>
  <li>an object containing severals properties, set when this method is
  called: it is specific to each call, so the value of each property can vary
  depending on the current fetched tile for example</li>
 </ul>
-
-The properties of the second parameter are:
+<p>The properties of the second parameter are:</p>
 <ul>
- <li><code>buildExtent : boolean</code> - True if the layer does not inherit
- from <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>.</li>
- <li><code>crsIn : string</code> - The projection of the source.</li>
- <li><code>crsOut : string</code> - The projection of the layer.</li>
- <li><code>filteringExtent : Extent</code> - If the layer inherits from
- <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, it is set to the extent of destination, otherwise it
- is undefined.</li>
- <li><code>filter : function</code> - Property of the layer.</li>
- <li><code>mergeFeatures : boolean (default true)</code> - Property of the
- layer, default to true.</li>
- <li><code>withNormal : boolean</code> - True if the layer inherits from
- <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>.</li>
- <li><code>withAltitude : boolean</code> - True if the layer inherits from
- <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>.</li>
- <li><code>isInverted : string</code> - Property of the source.</li>
+ <li>`buildExtent : boolean` - True if the layer does not inherit from <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>.</li>
+ <li>`crsIn : string` - The projection of the source.</li>
+ <li>`crsOut : string` - The projection of the layer.</li>
+ <li>`filteringExtent : Extent` - If the layer inherits from <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, it is set to the extent of destination, otherwise it is
+ undefined.</li>
+ <li>`filter : function` - Property of the layer.</li>
+ <li>`mergeFeatures : boolean (default true)` - Property of the layer,
+ default to true.</li>
+ <li>`withNormal : boolean` - True if the layer inherits from <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>.</li>
+ <li>`withAltitude : boolean` - True if the layer inherits from <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>.</li>
+ <li>`isInverted : string` - Property of the source.</li>
 </ul>
         </div>
     
@@ -334,7 +327,7 @@ The properties of the second parameter are:
     
         
             <div class="description">
-                Tests if an extent is inside the source limits.
+                <p>Tests if an extent is inside the source limits.</p>
             </div>
         
     
@@ -342,7 +335,7 @@ The properties of the second parameter are:
     
                 <h4>Returns</h4>
                 
-                    True if the extent is inside the limit, false otherwise.
+                    <p>True if the extent is inside the limit, false otherwise.</p>
                 
 
     
@@ -355,7 +348,7 @@ The properties of the second parameter are:
         <code>extent</code>
         
         
-            &mdash; <span>Extent to test.</span>
+            &mdash; <span><p>Extent to test.</p></span>
         
 
         
@@ -398,7 +391,7 @@ The properties of the second parameter are:
     
         
             <div class="description">
-                Tests if an array of extents is inside the source limits.
+                <p>Tests if an array of extents is inside the source limits.</p>
             </div>
         
     
@@ -406,7 +399,7 @@ The properties of the second parameter are:
     
                 <h4>Returns</h4>
                 
-                    True if all extents are inside, false otherwise.
+                    <p>True if all extents are inside, false otherwise.</p>
                 
 
     
@@ -419,7 +412,7 @@ The properties of the second parameter are:
         <code>extents</code>
         
         
-            &mdash; <span>Array of extents to test.</span>
+            &mdash; <span><p>Array of extents to test.</p></span>
         
 
         
@@ -462,8 +455,8 @@ The properties of the second parameter are:
     
         
             <div class="description">
-                Generates an url from an extent. This url is a link to fetch the
-resources inside the extent.
+                <p>Generates an url from an extent. This url is a link to fetch the
+resources inside the extent.</p>
             </div>
         
     
@@ -471,7 +464,7 @@ resources inside the extent.
     
                 <h4>Returns</h4>
                 
-                    The URL constructed from the extent.
+                    <p>The URL constructed from the extent.</p>
                 
 
     
@@ -484,7 +477,7 @@ resources inside the extent.
         <code>extent</code>
         
         
-            &mdash; <span>Extent to convert in url.</span>
+            &mdash; <span><p>Extent to convert in url.</p></span>
         
 
         

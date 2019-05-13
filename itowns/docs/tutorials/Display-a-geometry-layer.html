@@ -22,7 +22,8 @@
 <article>
     <p>The goal of this tutorial is to give a brief example on how to use iTowns to
 visualize some buildings on top of a simple globe view, using a geometry layer.</p>
-<h2>Preparing the field</h2><p>To display our buildings, we are going to use the data created in the <a href="tutorial-Create-a-simple-globe.html">Creating a simple Globe</a> tutorial. As we are trying to display some buildings,
+<h2>Preparing the field</h2>
+<p>To display our buildings, we are going to use the data created in the <a href="tutorial-Create-a-simple-globe.html">Creating a simple Globe</a> tutorial. As we are trying to display some buildings,
 let's move closer to the ground to see something. For this, change the starting
 position to something more appropriate. We also need to modify the elevation
 layer to a more precise one.</p>
@@ -99,7 +100,10 @@ layer to a more precise one.</p>
             view.addLayer(elevationLayer);
         &lt;/script>
      &lt;/body>
-&lt;/html></code></pre><h2>Adding a GeometryLayer</h2><p>We want to create and add a layer containing geometries. The best candidate here
+&lt;/html>
+</code></pre>
+<h2>Adding a GeometryLayer</h2>
+<p>We want to create and add a layer containing geometries. The best candidate here
 is of course <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>. Reading the documentation, adding this type
 of layer is similar to the other layers. So before declaring the layer, let's
 instantiate the source.</p>
@@ -116,7 +120,9 @@ var geometryLayer = new itowns.GeometryLayer('Buildings', new itowns.THREE.Group
     convert: itowns.Feature2Mesh.convert(),
 });
 
-view.addLayer(geometryLayer);</code></pre><p>There is a few differences though:</p>
+view.addLayer(geometryLayer);
+</code></pre>
+<p>There is a few differences though:</p>
 <ul>
 <li>the second parameter, <code>new itowns.THREE.Group()</code> in our case, is the
 <code>THREE.Object3d</code> the geometry will be attached to. Here we won't do something
@@ -134,7 +140,8 @@ displayed, but it is hidden under the elevation layer. If we remove the
 elevation layer, we can see some shapes on the ground, indicating that buildings
 have indeed been added. So let's place the data on the elevation layer !</p>
 <p><img src="images/Display-a-geometry-layer-1.png" alt="Flat buildings on GeometryLayer"></p>
-<h2>Placing the data on the ground</h2><p>To achieve the positionning relative to the elevation layer, we will need to add
+<h2>Placing the data on the ground</h2>
+<p>To achieve the positionning relative to the elevation layer, we will need to add
 a parameter to the <code>convert</code> property: <code>altitude</code>, a method that will help us.</p>
 <pre class="prettyprint source lang-js"><code>function setAltitude(properties) {
     console.log(properties);
@@ -155,7 +162,9 @@ var geometryLayer = new itowns.GeometryLayer('Buildings', new itowns.THREE.Group
     }),
 });
 
-view.addLayer(geometryLayer);</code></pre><p>If we take a look using <code>console.log(properties);</code> at what we have in the
+view.addLayer(geometryLayer);
+</code></pre>
+<p>If we take a look using <code>console.log(properties);</code> at what we have in the
 <code>properties</code> object, we will get a lot of output. Our data being constitued of
 multiple buildings, we get an output for each building. Looking closer to an
 output, here is what we can obtain:</p>
@@ -166,22 +175,29 @@ origin_bat: &quot;Cadastre&quot;
 prec_alti: 5
 prec_plani: 2.5
 z_max: 83.7
-z_min: 83.7</code></pre><p>Reading the documentation of the database we are querying (<a href="http://professionnels.ign.fr/doc/DC_BDTOPO_3-0.pdf">section 9.1, page
+z_min: 83.7
+</code></pre>
+<p>Reading the documentation of the database we are querying (<a href="http://professionnels.ign.fr/doc/DC_BDTOPO_3-0.pdf">section 9.1, page
 84</a>, in french), we have an
 explanation on each property. To help us place the data correctly, let's use the
 <code>z_min</code> property:</p>
 <pre class="prettyprint source lang-js"><code>function setAltitude(properties) {
     return properties.z_min;
-}</code></pre><p>And now the buildings are visible ! But if we take a look around by moving the
+}
+</code></pre>
+<p>And now the buildings are visible ! But if we take a look around by moving the
 mouse, we'll see that the buildings are too high. It's due to the fact that the
 <code>z_min</code> doesn't correspond exactly to the altitude of the building. To resolve
 this problem, let's lower the altitude with the height of the building:</p>
 <pre class="prettyprint source lang-js"><code>function setAltitude(properties) {
     return properties.z_min - properties.hauteur;
-}</code></pre><p>But now we can't see completely our buildings again. What can we do about that
+}
+</code></pre>
+<p>But now we can't see completely our buildings again. What can we do about that
 ? Let's give them volume !</p>
 <p><img src="images/Display-a-geometry-layer-2.png" alt="Still flat buildings on GeometryLayer"></p>
-<h2>Extruding the data</h2><p>Like the altitude, the volume of a building can be changed using the <code>extrude</code>
+<h2>Extruding the data</h2>
+<p>Like the altitude, the volume of a building can be changed using the <code>extrude</code>
 parameter of the <code>convert</code> property.</p>
 <pre class="prettyprint source lang-js"><code>function setExtrusion(properties) {
     return properties.hauteur;
@@ -203,12 +219,15 @@ var geometryLayer = new itowns.GeometryLayer('Buildings', new itowns.THREE.Group
     }),
 });
 
-view.addLayer(geometryLayer);</code></pre><p>The parameter <code>properties</code> of the <code>setExtrusion</code> method is the same that in
+view.addLayer(geometryLayer);
+</code></pre>
+<p>The parameter <code>properties</code> of the <code>setExtrusion</code> method is the same that in
 <code>setAltitude</code>. We notice there is a <code>hauteur</code> (<code>height</code> in french) property that
 we could use to set the height of the building. Moving around with this gives a
 nice view of our buildings:</p>
 <p><img src="images/Display-a-geometry-layer-3.png" alt="Extruded buildings on GeometryLayer"></p>
-<h2>Coloring the data</h2><p>We are not yet touching the color of the buildings. This results in every
+<h2>Coloring the data</h2>
+<p>We are not yet touching the color of the buildings. This results in every
 building being randomly colored at each time. To solve this, as we did before,
 we can add a <code>color</code> parameter to the <code>convert</code> property.</p>
 <pre class="prettyprint source lang-js"><code>function setColor(properties) {
@@ -232,10 +251,13 @@ var geometryLayer = new itowns.GeometryLayer('Buildings', new itowns.THREE.Group
     }),
 });
 
-view.addLayer(geometryLayer);</code></pre><p>For each building, a new color is created (using <code>THREE.Color</code>), and the result
+view.addLayer(geometryLayer);
+</code></pre>
+<p>For each building, a new color is created (using <code>THREE.Color</code>), and the result
 here results in all buildings being in a light gray.</p>
 <p><img src="images/Display-a-geometry-layer-4.png" alt="Extruded and colored buildings on GeometryLayer"></p>
-<h2>Result</h2><p>Congratulations ! By reaching here, we know how to display a simple geometry
+<h2>Result</h2>
+<p>Congratulations ! By reaching here, we know how to display a simple geometry
 layer on a globe, and change some things on this layer. Here is the final code:</p>
 <pre class="prettyprint source lang-html"><code>&lt;!DOCTYPE html>
 &lt;html>
@@ -341,7 +363,8 @@ layer on a globe, and change some things on this layer. Here is the final code:<
             view.addLayer(geometryLayer);
         &lt;/script>
      &lt;/body>
-&lt;/html></code></pre>
+&lt;/html>
+</code></pre>
 </article>
 
 </section>

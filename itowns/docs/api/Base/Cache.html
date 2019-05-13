@@ -25,11 +25,11 @@
     </h1>
 
     
-        <div class="description">This is a copy of the Map object, except that it also store a value for last
+        <div class="description"><p>This is a copy of the Map object, except that it also store a value for last
 time used. This value is used for cache expiration mechanism.
 <br><br>
 This module can be imported anywhere, its data will be shared, as it is a
-single instance.</div>
+single instance.</p></div>
     
 
     
@@ -79,7 +79,7 @@ Cache.clear();</code></pre>
     
         
             <div class="description">
-                Removes all entries of the cache.
+                <p>Removes all entries of the cache.</p>
             </div>
         
     
@@ -121,7 +121,7 @@ Cache.clear();</code></pre>
     
         
             <div class="description">
-                Deletes the specified entry from the cache.
+                <p>Deletes the specified entry from the cache.</p>
             </div>
         
     
@@ -129,7 +129,9 @@ Cache.clear();</code></pre>
     
                 <h4>Returns</h4>
                 
-                    Confirmation that the entry has been deleted.
+                    <ul>
+<li>Confirmation that the entry has been deleted.</li>
+</ul>
                 
 
     
@@ -183,11 +185,11 @@ Cache.clear();</code></pre>
     
         
             <div class="description">
-                Flush the cache: entries that have been present for too long since the
+                <p>Flush the cache: entries that have been present for too long since the
 last time they were used, are removed from the cache. By default, the
 time is the current time, but the interval can be reduced by doing
-something like <code>Cache.flush(Date.now() - reductionTime)</code>. If
-you want to clear the whole cache, use Cache.clear instead.
+something like <code>Cache.flush(Date.now() - reductionTime)</code>. If you want to
+clear the whole cache, use Cache.clear instead.</p>
             </div>
         
     
@@ -195,12 +197,11 @@ you want to clear the whole cache, use Cache.clear instead.
     
                 <h4>Returns</h4>
                 
-                    Statistics about the flush: <code>before</code>
-gives the number of entries before flushing, <code>after</code> the
-number after flushing, <code>hit</code> the number of total successful
-hit on resources in the cache, and </code>miss</code> the number of
-failed hit. The hit and miss are based since the last flush, and are
-reset on every flush.
+                    <p>Statistics about the flush: <code>before</code> gives the number of
+entries before flushing, <code>after</code> the number after flushing, <code>hit</code> the
+number of total successful hit on resources in the cache, and <code>miss</code> the
+number of failed hit. The hit and miss are based since the last flush,
+and are reset on every flush.</p>
                 
 
     
@@ -254,9 +255,9 @@ reset on every flush.
     
         
             <div class="description">
-                Returns the entry related to the specified key from the cache. The last
+                <p>Returns the entry related to the specified key from the cache. The last
 time used property of the entry is updated to extend the longevity of the
-entry.
+entry.</p>
             </div>
         
     
@@ -320,9 +321,9 @@ entry.
     
         
             <div class="description">
-                Adds or updates an entry with a specified key. A lifetime can be added,
+                <p>Adds or updates an entry with a specified key. A lifetime can be added,
 by specifying a numerical value or using the Cache.POLICIES
-values. By default an entry has an infinite lifetime.
+values. By default an entry has an infinite lifetime.</p>
             </div>
         
     
@@ -330,7 +331,7 @@ values. By default an entry has an infinite lifetime.
     
                 <h4>Returns</h4>
                 
-                    the added value
+                    <p>the added value</p>
                 
 
     
@@ -397,8 +398,8 @@ values. By default an entry has an infinite lifetime.
         <code>INFINITE: <span class="type">number</span></code>
         
         
-            &mdash; <span>The entry is never flushed, except when the
-<code>all</code> flag is set to <code>true</code> when calling Cache.flush.</span>
+            &mdash; <span><p>The entry is never flushed, except when the
+<code>all</code> flag is set to <code>true</code> when calling Cache.flush.</p></span>
         
 
         
@@ -408,7 +409,7 @@ values. By default an entry has an infinite lifetime.
         <code>TEXTURE: <span class="type">number</span></code>
         
         
-            &mdash; <span>Shortcut for texture resources. Time is 15 minutes.</span>
+            &mdash; <span><p>Shortcut for texture resources. Time is 15 minutes.</p></span>
         
 
         
@@ -418,8 +419,8 @@ values. By default an entry has an infinite lifetime.
         <code>ELEVATION: <span class="type">number</span></code>
         
         
-            &mdash; <span>Shortcut for elevation resources. Time is 15
-minutes.</span>
+            &mdash; <span><p>Shortcut for elevation resources. Time is 15
+minutes.</p></span>
         
 
         
@@ -430,8 +431,8 @@ minutes.</span>
 
     
         <div class="description">
-            Cache policies for flushing. Those policies can be used when something is
-set into the Cache, as the lifetime property.
+            <p>Cache policies for flushing. Those policies can be used when something is
+set into the Cache, as the lifetime property.</p>
         </div>
     
 </div>

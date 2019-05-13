@@ -25,11 +25,11 @@
     </h1>
 
     
-        <div class="description">Build a Coordinates object, given a <a href="http://inspire.ec.europa.eu/theme/rs">crs</a> and a number of coordinates value.
+        <div class="description"><p>Build a Coordinates object, given a <a href="http://inspire.ec.europa.eu/theme/rs">crs</a> and a number of coordinates value.
 Coordinates can be in geocentric system, geographic system or an instance of
 <a href="https://threejs.org/docs/#api/math/Vector3">THREE.Vector3</a>.
 If crs = 'EPSG:4326', coordinates must be in geographic system.
-If crs = 'EPSG:4978', coordinates must be in geocentric system.</div>
+If crs = 'EPSG:4978', coordinates must be in geocentric system.</p></div>
     
 
     
@@ -70,7 +70,7 @@ If crs = 'EPSG:4978', coordinates must be in geocentric system.</div>
         <code>crs</code>
         
         
-            &mdash; <span>Geographic or Geocentric coordinates system.</span>
+            &mdash; <span><p>Geographic or Geocentric coordinates system.</p></span>
         
 
         
@@ -80,7 +80,7 @@ If crs = 'EPSG:4978', coordinates must be in geocentric system.</div>
         <code>coordinates</code>
         
         
-            &mdash; <span>The globe coordinates to aim to.</span>
+            &mdash; <span><p>The globe coordinates to aim to.</p></span>
         
 
         
@@ -92,7 +92,7 @@ If crs = 'EPSG:4978', coordinates must be in geocentric system.</div>
         <code>coordinates.longitude</code>
         
         
-            &mdash; <span>Geographic Coordinate longitude</span>
+            &mdash; <span><p>Geographic Coordinate longitude</p></span>
         
 
         
@@ -102,7 +102,7 @@ If crs = 'EPSG:4978', coordinates must be in geocentric system.</div>
         <code>coordinates.latitude</code>
         
         
-            &mdash; <span>Geographic Coordinate latitude</span>
+            &mdash; <span><p>Geographic Coordinate latitude</p></span>
         
 
         
@@ -112,7 +112,7 @@ If crs = 'EPSG:4978', coordinates must be in geocentric system.</div>
         <code>coordinates.altitude</code>
         
         
-            &mdash; <span>Geographic Coordinate altiude</span>
+            &mdash; <span><p>Geographic Coordinate altiude</p></span>
         
 
         
@@ -122,7 +122,7 @@ If crs = 'EPSG:4978', coordinates must be in geocentric system.</div>
         <code>coordinates.x</code>
         
         
-            &mdash; <span>Geocentric Coordinate X</span>
+            &mdash; <span><p>Geocentric Coordinate X</p></span>
         
 
         
@@ -132,7 +132,7 @@ If crs = 'EPSG:4978', coordinates must be in geocentric system.</div>
         <code>coordinates.y</code>
         
         
-            &mdash; <span>Geocentric Coordinate Y</span>
+            &mdash; <span><p>Geocentric Coordinate Y</p></span>
         
 
         
@@ -142,7 +142,7 @@ If crs = 'EPSG:4978', coordinates must be in geocentric system.</div>
         <code>coordinates.z</code>
         
         
-            &mdash; <span>Geocentric Coordinate Z</span>
+            &mdash; <span><p>Geocentric Coordinate Z</p></span>
         
 
         
@@ -203,7 +203,7 @@ new Coordinates('EPSG:4326', 2.33, 48.24, 24999549); //Geographic coordinates</c
     
         
             <div class="description">
-                Returns the altitude in geographic coordinates. Coordinates must be in geographic system (can be converted by using <code>as()</code> ).
+                <p>Returns the altitude in geographic coordinates. Coordinates must be in geographic system (can be converted by using <code>as()</code> ).</p>
             </div>
         
     
@@ -211,7 +211,9 @@ new Coordinates('EPSG:4326', 2.33, 48.24, 24999549); //Geographic coordinates</c
     
                 <h4>Returns</h4>
                 
-                    The altitude of the position.
+                    <ul>
+<li>The altitude of the position.</li>
+</ul>
                 
 
     
@@ -270,7 +272,7 @@ coordinates.altitude(); // Altitude in geographic system
     
         
             <div class="description">
-                Returns coordinates in the wanted <a href="http://inspire.ec.europa.eu/theme/rs">CRS</a>.
+                <p>Returns coordinates in the wanted <a href="http://inspire.ec.europa.eu/theme/rs">CRS</a>.</p>
             </div>
         
     
@@ -278,7 +280,9 @@ coordinates.altitude(); // Altitude in geographic system
     
                 <h4>Returns</h4>
                 
-                    position
+                    <ul>
+<li>position</li>
+</ul>
                 
 
     
@@ -291,7 +295,7 @@ coordinates.altitude(); // Altitude in geographic system
         <code>crs</code>
         
         
-            &mdash; <span><a href="http://inspire.ec.europa.eu/theme/rs">crs</a> : Geocentric (ex: 'EPSG:4326') or Geographic (ex: 'EPSG:4978').</span>
+            &mdash; <span><p><a href="http://inspire.ec.europa.eu/theme/rs">crs</a> : Geocentric (ex: 'EPSG:4326') or Geographic (ex: 'EPSG:4978').</p></span>
         
 
         
@@ -354,7 +358,7 @@ new Coordinates('EPSG:4978', x: 20885167, y: 849862, z: 23385912).as('EPSG:4326'
     
         
             <div class="description">
-                Returns the latitude in geographic coordinates. Coordinates must be in geographic system (can be converted by using <code>as()</code> ).
+                <p>Returns the latitude in geographic coordinates. Coordinates must be in geographic system (can be converted by using <code>as()</code> ).</p>
             </div>
         
     
@@ -362,7 +366,9 @@ new Coordinates('EPSG:4978', x: 20885167, y: 849862, z: 23385912).as('EPSG:4326'
     
                 <h4>Returns</h4>
                 
-                    The latitude of the position.
+                    <ul>
+<li>The latitude of the position.</li>
+</ul>
                 
 
     
@@ -415,7 +421,7 @@ coordinates.latitude(); // Latitude in geographic system
     
         
             <div class="description">
-                Returns the longitude in geographic coordinates. Coordinates must be in geographic system (can be converted by using <code>as()</code> ).
+                <p>Returns the longitude in geographic coordinates. Coordinates must be in geographic system (can be converted by using <code>as()</code> ).</p>
             </div>
         
     
@@ -423,7 +429,9 @@ coordinates.latitude(); // Latitude in geographic system
     
                 <h4>Returns</h4>
                 
-                    The longitude of the position.
+                    <ul>
+<li>The longitude of the position.</li>
+</ul>
                 
 
     
@@ -485,8 +493,8 @@ coordinates.longitude(); // Longitude in geographic system
     
         
             <div class="description">
-                Returns the normalized offset from top-left in extent of this Coordinates
-e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
+                <p>Returns the normalized offset from top-left in extent of this Coordinates
+e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).</p>
             </div>
         
     
@@ -494,7 +502,7 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
     
                 <h4>Returns</h4>
                 
-                    normalized offset in extent
+                    <p>normalized offset in extent</p>
                 
 
     
@@ -515,7 +523,7 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
         <code>target</code>
         
         
-            &mdash; <span>optional Vector2 target. If not present a new one will be created</span>
+            &mdash; <span><p>optional Vector2 target. If not present a new one will be created</p></span>
         
 
         
@@ -553,7 +561,7 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
     
         
             <div class="description">
-                Set the altiude.
+                <p>Set the altiude.</p>
             </div>
         
     
@@ -570,7 +578,7 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
         <code>altitude</code>
         
         
-            &mdash; <span>Set the altitude.</span>
+            &mdash; <span><p>Set the altitude.</p></span>
         
 
         
@@ -617,7 +625,7 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
     
         
             <div class="description">
-                Returns the longitude in geocentric coordinates. Coordinates must be in geocentric system (can be converted by using <code>as()</code> ).
+                <p>Returns the longitude in geocentric coordinates. Coordinates must be in geocentric system (can be converted by using <code>as()</code> ).</p>
             </div>
         
     
@@ -625,7 +633,9 @@ e.g: extent.center().offsetInExtent(extent) would return (0.5, 0.5).
     
                 <h4>Returns</h4>
                 
-                    The longitude of the position.
+                    <ul>
+<li>The longitude of the position.</li>
+</ul>
                 
 
     
@@ -678,7 +688,7 @@ coordinates.x(); // Geocentric system
     
         
             <div class="description">
-                Returns a position in cartesian coordinates. Coordinates must be in geocentric system (can be converted by using <code>as()</code> ).
+                <p>Returns a position in cartesian coordinates. Coordinates must be in geocentric system (can be converted by using <code>as()</code> ).</p>
             </div>
         
     
@@ -686,7 +696,9 @@ coordinates.x(); // Geocentric system
     
                 <h4>Returns</h4>
                 
-                    position
+                    <ul>
+<li>position</li>
+</ul>
                 
 
     
@@ -745,7 +757,7 @@ coordinates.xyz(); // Geocentric system
     
         
             <div class="description">
-                Returns the latitude in geocentric coordinates. Coordinates must be in geocentric system (can be converted by using <code>as()</code> ).
+                <p>Returns the latitude in geocentric coordinates. Coordinates must be in geocentric system (can be converted by using <code>as()</code> ).</p>
             </div>
         
     
@@ -753,7 +765,9 @@ coordinates.xyz(); // Geocentric system
     
                 <h4>Returns</h4>
                 
-                    The latitude of the position.
+                    <ul>
+<li>The latitude of the position.</li>
+</ul>
                 
 
     
@@ -806,7 +820,7 @@ coordinates.y(); // Geocentric system
     
         
             <div class="description">
-                Returns the altitude in geocentric coordinates. Coordinates must be in geocentric system (can be converted by using <code>as()</code> ).
+                <p>Returns the altitude in geocentric coordinates. Coordinates must be in geocentric system (can be converted by using <code>as()</code> ).</p>
             </div>
         
     
@@ -814,7 +828,9 @@ coordinates.y(); // Geocentric system
     
                 <h4>Returns</h4>
                 
-                    The altitude of the position.
+                    <ul>
+<li>The altitude of the position.</li>
+</ul>
                 
 
     

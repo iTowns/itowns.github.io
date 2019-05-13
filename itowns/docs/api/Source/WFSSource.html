@@ -27,9 +27,9 @@
     </h1>
 
     
-        <div class="description">An object defining the source of resources to get from a
+        <div class="description"><p>An object defining the source of resources to get from a
 <a href="http://www.opengeospatial.org/standards/wfs">WFS</a> server. It inherits
-from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>.</div>
+from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>.</p></div>
     
 
     
@@ -67,9 +67,9 @@ from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source'
         <code>source</code>
         
         
-            &mdash; <span>An object that can contain all properties of a
-WFSSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. <code>url</code>, <code>typeName</code> and
-<code>projection</code> are mandatory.</span>
+            &mdash; <span><p>An object that can contain all properties of a
+WFSSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. <code>url</code>, <code>typeName</code> and <code>projection</code> are
+mandatory.</p></span>
         
 
         
@@ -168,9 +168,9 @@ view.addLayer(geometryLayer);</code></pre>
 
     
         <div class="description">
-            Used to checkout whether this source is a
+            <p>Used to checkout whether this source is a
 WFSSource. Default is true. You should not change this, as it is used
-internally for optimisation.
+internally for optimisation.</p>
         </div>
     
 </div>
@@ -187,8 +187,8 @@ internally for optimisation.
 
     
         <div class="description">
-            The name of the feature to get, used in the
-generation of the url.
+            <p>The name of the feature to get, used in the
+generation of the url.</p>
         </div>
     
 </div>
@@ -205,8 +205,8 @@ generation of the url.
 
     
         <div class="description">
-            The version of the WFS server to request on.
-Default value is '2.0.2'.
+            <p>The version of the WFS server to request on.
+Default value is '2.0.2'.</p>
         </div>
     
 </div>
@@ -223,8 +223,8 @@ Default value is '2.0.2'.
 
     
         <div class="description">
-            Object containing the minimum and maximum values of
-the level, to zoom in the source.
+            <p>Object containing the minimum and maximum values of
+the level, to zoom in the source.</p>
         </div>
     
 </div>
@@ -241,8 +241,8 @@ the level, to zoom in the source.
 
     
         <div class="description">
-            The minimum level of the source. Default value
-is 0.
+            <p>The minimum level of the source. Default value
+is 0.</p>
         </div>
     
 </div>
@@ -259,8 +259,8 @@ is 0.
 
     
         <div class="description">
-            The maximum level of the source. Default value
-is 21.
+            <p>The maximum level of the source. Default value
+is 21.</p>
         </div>
     
 </div>
@@ -277,11 +277,11 @@ is 21.
 
     
         <div class="description">
-            An object containing vendor specific
+            <p>An object containing vendor specific
 parameters. See for example a <a href="https://docs.geoserver.org/latest/en/user/services/wfs/vendor.html">list of these parameters for GeoServer</a>. This
-object is read simply with the <code>key</code> being the name of the
-parameter and <code>value</code> being the value of the parameter. If used,
-this property should be set in the constructor parameters.
+object is read simply with the <code>key</code> being the name of the parameter and
+<code>value</code> being the value of the parameter. If used, this property should be
+set in the constructor parameters.</p>
         </div>
     
 </div>
@@ -320,7 +320,7 @@ this property should be set in the constructor parameters.
     
         
             <div class="description">
-                Tests if an extent is inside the source limits.
+                <p>Tests if an extent is inside the source limits.</p>
             </div>
         
     
@@ -328,7 +328,7 @@ this property should be set in the constructor parameters.
     
                 <h4>Returns</h4>
                 
-                    True if the extent is inside the limit, false otherwise.
+                    <p>True if the extent is inside the limit, false otherwise.</p>
                 
 
     
@@ -341,7 +341,7 @@ this property should be set in the constructor parameters.
         <code>extent</code>
         
         
-            &mdash; <span>Extent to test.</span>
+            &mdash; <span><p>Extent to test.</p></span>
         
 
         
@@ -384,7 +384,7 @@ this property should be set in the constructor parameters.
     
         
             <div class="description">
-                Tests if an array of extents is inside the source limits.
+                <p>Tests if an array of extents is inside the source limits.</p>
             </div>
         
     
@@ -392,7 +392,7 @@ this property should be set in the constructor parameters.
     
                 <h4>Returns</h4>
                 
-                    True if all extents are inside, false otherwise.
+                    <p>True if all extents are inside, false otherwise.</p>
                 
 
     
@@ -405,7 +405,7 @@ this property should be set in the constructor parameters.
         <code>extents</code>
         
         
-            &mdash; <span>Array of extents to test.</span>
+            &mdash; <span><p>Array of extents to test.</p></span>
         
 
         
@@ -448,8 +448,8 @@ this property should be set in the constructor parameters.
     
         
             <div class="description">
-                Generates an url from an extent. This url is a link to fetch the
-resources inside the extent.
+                <p>Generates an url from an extent. This url is a link to fetch the
+resources inside the extent.</p>
             </div>
         
     
@@ -457,7 +457,7 @@ resources inside the extent.
     
                 <h4>Returns</h4>
                 
-                    The URL constructed from the extent.
+                    <p>The URL constructed from the extent.</p>
                 
 
     
@@ -470,7 +470,7 @@ resources inside the extent.
         <code>extent</code>
         
         
-            &mdash; <span>Extent to convert in url.</span>
+            &mdash; <span><p>Extent to convert in url.</p></span>
         
 
         

@@ -62,7 +62,7 @@
     
         
             <div class="description">
-                Enable Draco decoding for gltf.
+                <p>Enable Draco decoding for gltf.</p>
             </div>
         
     
@@ -79,8 +79,8 @@
         <code>path</code>
         
         
-            &mdash; <span>to draco library folder.
-This library is mandatory to load b3dm with Draco compression.</span>
+            &mdash; <span><p>to draco library folder.
+This library is mandatory to load b3dm with Draco compression.</p></span>
         
 
         
@@ -90,12 +90,10 @@ This library is mandatory to load b3dm with Draco compression.</span>
         <code>config</code>
         
         
-            &mdash; <span>optional configuration for Draco compression.
-
-The Draco library files are in folder itowns/examples/libs/draco/.
-You are obliged to indicate this path when you want enable the Draco Decoding.
-
-For more information on Draco, read file in /itowns/examples/libs/draco/README.md.</span>
+            &mdash; <span><p>optional configuration for Draco compression.</p>
+<p>The Draco library files are in folder itowns/examples/libs/draco/.
+You are obliged to indicate this path when you want enable the Draco Decoding.</p>
+<p>For more information on Draco, read file in /itowns/examples/libs/draco/README.md.</p></span>
         
 
         
@@ -156,7 +154,7 @@ itowns.enableDracoLoader('./');</code></pre>
     
         
             <div class="description">
-                Parse b3dm buffer and extract THREE.Scene and batch table
+                <p>Parse b3dm buffer and extract THREE.Scene and batch table</p>
             </div>
         
     
@@ -164,7 +162,9 @@ itowns.enableDracoLoader('./');</code></pre>
     
                 <h4>Returns</h4>
                 
-                    a promise that resolves with an object containig a THREE.Scene (gltf) and a batch table (batchTable).
+                    <ul>
+<li>a promise that resolves with an object containig a THREE.Scene (gltf) and a batch table (batchTable).</li>
+</ul>
                 
 
     
@@ -177,7 +177,7 @@ itowns.enableDracoLoader('./');</code></pre>
         <code>buffer</code>
         
         
-            &mdash; <span>the b3dm buffer.</span>
+            &mdash; <span><p>the b3dm buffer.</p></span>
         
 
         
@@ -187,7 +187,7 @@ itowns.enableDracoLoader('./');</code></pre>
         <code>options</code>
         
         
-            &mdash; <span>additional properties.</span>
+            &mdash; <span><p>additional properties.</p></span>
         
 
         
@@ -200,7 +200,7 @@ itowns.enableDracoLoader('./');</code></pre>
         (default: <code>'Y'</code>)
         
         
-            &mdash; <span>embedded glTF model up axis.</span>
+            &mdash; <span><p>embedded glTF model up axis.</p></span>
         
 
         
@@ -210,7 +210,7 @@ itowns.enableDracoLoader('./');</code></pre>
         <code>options.urlBase</code>
         
         
-            &mdash; <span>the base url of the b3dm file (used to fetch textures for the embedded glTF model).</span>
+            &mdash; <span><p>the base url of the b3dm file (used to fetch textures for the embedded glTF model).</p></span>
         
 
         
@@ -221,7 +221,7 @@ itowns.enableDracoLoader('./');</code></pre>
         (default: <code>'false'</code>)
         
         
-            &mdash; <span>disable patching material with logarithmic depth buffer support.</span>
+            &mdash; <span><p>disable patching material with logarithmic depth buffer support.</p></span>
         
 
         
@@ -232,7 +232,7 @@ itowns.enableDracoLoader('./');</code></pre>
         (default: <code>1.0</code>)
         
         
-            &mdash; <span>the b3dm opacity.</span>
+            &mdash; <span><p>the b3dm opacity.</p></span>
         
 
         
@@ -243,7 +243,7 @@ itowns.enableDracoLoader('./');</code></pre>
         (default: <code>'false'</code>)
         
         
-            &mdash; <span>override b3dm's embedded glTF materials. If overrideMaterials is a three.js material, it will be the material used to override.</span>
+            &mdash; <span><p>override b3dm's embedded glTF materials. If overrideMaterials is a three.js material, it will be the material used to override.</p></span>
         
 
         
