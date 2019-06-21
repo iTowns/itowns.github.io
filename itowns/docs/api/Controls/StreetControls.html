@@ -49,7 +49,8 @@ This controls is designed
 <ul> Bindings added
 <li><b> keys Z : </b> Move camera to the next position </li>
 <li><b> keys S : </b> Move camera to the previous position </li>
-<li><b> keys A : </b> Set camera to current position </li>
+<li><b> keys A : </b> Set camera to current position and look at next position</li>
+<li><b> keys Q : </b> Set camera to current position and look at previous position</li>
 </ul>
 Note that it only works in globe view.</div>
     
@@ -123,7 +124,7 @@ Note that it only works in globe view.</div>
     
     <li>
         <code>options.animationDurationWall</code>
-        (default: <code>1000</code>)
+        (default: <code>200</code>)
         
         
             &mdash; <span><p>Time in millis for the animation when clicking on a wall.</p></span>
@@ -242,13 +243,30 @@ Note that it only works in globe view.</div>
 
 <div class="property">
     <h3>
-        <span class="property-name">keySetCameraToCurrentPosition</span>
+        <span class="property-name">keySetCameraToCurrentPositionAndLookAtNext</span>
         : <span class="type">number</span>
     </h3>
 
     
         <div class="description">
             <p>key code set camera to current position, default to 65 for key  A</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">keySetCameraToCurrentPositionAndLookAtPrevious</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>key code set camera to current position, default to 81 for key  Q</p>
         </div>
     
 </div>
@@ -347,6 +365,11 @@ Note that it only works in globe view.</div>
     
 
 )
+        :
+            
+                <span class="type">Promise</span>
+
+            
         
     </h3>
 
@@ -378,6 +401,7 @@ Note that it only works in globe view.</div>
     
     <li>
         <code>time</code>
+        (default: <code>50</code>)
         
         
             &mdash; <span><p>Time in millisecond</p></span>
@@ -673,6 +697,12 @@ not be copied from the camera</p></span>
         (
 
 
+    
+    
+        lookAtPrevious:
+            <span class="type">boolean</span>
+    
+
 )
         
     </h3>
@@ -686,6 +716,24 @@ not be copied from the camera</p></span>
     
 
     
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>lookAtPrevious</code>
+        
+        
+            &mdash; <span><p>look at the previous position rather than the next one</p></span>
+        
+
+        
+    </li>
+    
+</ul>
 
     
 
