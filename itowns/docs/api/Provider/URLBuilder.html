@@ -25,6 +25,14 @@
     </h1>
 
     
+        <div class="description"><p>This module performs basic operations around urls, to replace some elements
+in it by coordinates or other things.</p>
+<p>In an url, it is also possible to specify subdomains alternatives using the
+<code>${u:a|b|c}</code> pattern, by separating differents options using <code>|</code>. It will go
+through the following alternative each time (no random). For example
+<code>https://${u:xyz.org|yzx.org|zxy.org}/${z}/${x}/${y}.png</code> or
+<code>https://${u:a|b|c}.tile.openstreetmap.org/${z}/${x}/${y}.png</code>.</p></div>
+    
 
     
 
@@ -51,8 +59,8 @@
         bbox:
             <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
     
-        layer:
-            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+        source:
+            <span class="type"><a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a></span>
     
 
 )
@@ -67,14 +75,14 @@
     
         
             <div class="description">
-                <p>Builds an URL knowing the bounding box and the layer to query.
+                <p>Builds an URL knowing the bounding box and the source to query.
 <br><br>
-The layer object needs to have an url property, which should have the
+The source object needs to have an url property, which should have the
 string <code>%bbox</code> in it. This string will be replaced by the four cardinal
 points composing the bounding box.
 <br><br>
 Order of the points can be specified in the <code>axisOrder</code> property in
-layer, using the letters <code>w, s, e, n</code> respectively for <code>WEST, SOUTH, EAST, NORTH</code>. The default order is <code>wsen</code>.</p>
+source, using the letters <code>w, s, e, n</code> respectively for <code>WEST, SOUTH, EAST, NORTH</code>. The default order is <code>wsen</code>.</p>
             </div>
         
     
@@ -102,7 +110,7 @@ layer, using the letters <code>w, s, e, n</code> respectively for <code>WEST, SO
     </li>
     
     <li>
-        <code>layer</code>
+        <code>source</code>
         
         
 
@@ -122,9 +130,9 @@ layer, using the letters <code>w, s, e, n</code> respectively for <code>WEST, SO
     
 
     <pre class="prettyprint source lang-js"><code>extent = new Extent('EPSG:4326', 12, 14, 35, 46);
-layer.projection = 'EPSG:4326';
-layer.url = 'http://server.geo/wms/BBOX=%bbox&FORMAT=jpg&SERVICE=WMS';
-url = URLBuilder.bbox(extent, layer);
+source.projection = 'EPSG:4326';
+source.url = 'http://server.geo/wms/BBOX=%bbox&FORMAT=jpg&SERVICE=WMS';
+url = URLBuilder.bbox(extent, source);
 
 // The resulting url is:
 // http://server.geo/wms/BBOX=12,35,14,46&FORMAT=jpg&SERVICE=WMS</code></pre>
@@ -149,8 +157,8 @@ url = URLBuilder.bbox(extent, layer);
         coords:
             <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
     
-        layer:
-            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+        source:
+            <span class="type"><a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a></span>
     
 
 )
@@ -165,9 +173,9 @@ url = URLBuilder.bbox(extent, layer);
     
         
             <div class="description">
-                <p>Builds an URL knowing the coordinates and the layer to query.
+                <p>Builds an URL knowing the coordinates and the source to query.
 <br><br>
-The layer object needs to have an url property, which should have some
+The source object needs to have an url property, which should have some
 specific strings that will be replaced by coordinates.</p>
 <ul>
 <li>`${x}` or `%COL` will be replaced by `coords.col`</li>
@@ -201,7 +209,7 @@ specific strings that will be replaced by coordinates.</p>
     </li>
     
     <li>
-        <code>layer</code>
+        <code>source</code>
         
         
 
@@ -221,8 +229,8 @@ specific strings that will be replaced by coordinates.</p>
     
 
     <pre class="prettyprint source lang-js"><code>coords = new Coordinates('WMTS:WGS84', 12, 1410, 2072);
-layer.url = 'http://server.geo/wmts/SERVICE=WMTS&TILEMATRIX=%TILEMATRIX&TILEROW=%ROW&TILECOL=%COL';
-url = URLBuilder.xyz(coords, layer);
+source.url = 'http://server.geo/wmts/SERVICE=WMTS&TILEMATRIX=%TILEMATRIX&TILEROW=%ROW&TILECOL=%COL';
+url = URLBuilder.xyz(coords, source);
 
 // The resulting url is:
 // http://server.geo/wmts/SERVICE=WMTS&TILEMATRIX=12&TILEROW=1410&TILECOL=2072;</code></pre>
@@ -230,8 +238,8 @@ url = URLBuilder.xyz(coords, layer);
     
 
     <pre class="prettyprint source lang-js"><code>coords = new Extent('TMS', 15, 2142, 3412);
-layer.url = 'http://server.geo/tms/${z}/${y}/${x}.jpg';
-url = URLBuilder.xyz(coords, layer);
+source.url = 'http://server.geo/tms/${z}/${y}/${x}.jpg';
+url = URLBuilder.xyz(coords, source);
 
 // The resulting url is:
 // http://server.geo/tms/15/2142/3412.jpg;</code></pre>
