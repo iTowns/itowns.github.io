@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>TIFFParser - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        TIFFParser
+        
+    </h1>
+
+    
+        <div class="description"><p>The TIFFParser module provides a parse
+method that takes a TIFF in and gives a <code>THREE.DataTexture</code> that can be
+displayed in the view.</p>
+<p>It needs the <a href="https://www.npmjs.com/package/utif">utif</a> library to parse the
+TIFF.</p></div>
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Example</h2>
+        
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>Fetcher.arrayBuffer('image.tiff')
+    .then(TIFFParser.parse)
+    .then(function _(texture) {
+        var source = new itowns.FileSource({ parsedData: texture });
+        var layer = new itowns.ColorLayer('tiff', { source });
+        view.addLayer(layer);
+    });</code></pre>
+
+
+    
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Static Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">parse</span>
+        (
+
+
+    
+    
+        data:
+            <span class="type">ArrayBuffer</span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Parse a TIFF file and return a <code>THREE.DataTexture</code>.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>A promise resolving with a <code>THREE.DataTexture</code>.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>data</code>
+        
+        
+            &mdash; <span><p>The TIFF file content to parse.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/examples/js/plugins/TIFFParser.js">
+            examples/js/plugins/TIFFParser.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -3,17 +3,17 @@
         <title>Itowns - Globe + color layers from vector data</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="css/example.css">
-        <link rel="stylesheet" type="text/css" href="css/loading_screen.css">
+        <link rel="stylesheet" type="text/css" href="css/LoadingScreen.css">
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="js/GUI/dat.gui/dat.gui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js"></script>
     </head>
     <body>
         <div id="viewerDiv" class="viewer"></div>
         <script src="js/GUI/GuiTools.js"></script>
         <script src="../dist/itowns.js"></script>
-        <script src="js/loading_screen.js"></script>
-        <script src="js/FeatureToolTip.js"></script>
+        <script src="js/GUI/LoadingScreen.js"></script>
+        <script src="js/plugins/FeatureToolTip.js"></script>
         <script type="text/javascript">
             // # Simple Globe viewer
             /* global itowns, setupLoadingScreen, GuiTools, ToolTip */
@@ -132,7 +132,7 @@
 
             // Listen for globe full initialisation event
             view.addEventListener(itowns.VIEW_EVENTS.LAYERS_INITIALIZED, function _() {
-                Promise.all(promises).then(new ToolTip(view));
+                Promise.all(promises).then(new FeatureToolTip(view));
             });
         </script>
     </body>
