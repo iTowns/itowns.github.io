@@ -1,16 +1,17 @@
 <html>
     <head>
-        <title>Itowns - Planar kml + geojson file example</title>
+        <title>Itowns - Planar example</title>
 
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="css/example.css">
         <link rel="stylesheet" type="text/css" href="css/LoadingScreen.css">
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js"></script>
     </head>
     <body>
-        <div class="help">
-            <p>Key bindings</p>
+        <div id="description">
+            Key bindings
             <ul>
               <li>Left-Click: camera translation (drag)</li>
               <li>Right-Click: camera translation (pan)</li>
@@ -21,19 +22,23 @@
               <li>Y: move camera to start position</li>
             </ul>
         </div>
-        <div id="viewerDiv"></div>
+        <div id="viewerDiv" class="viewer"></div>
         <script src="../dist/itowns.js"></script>
         <script src="js/GUI/LoadingScreen.js"></script>
+        <script src="../dist/debug.js"></script>
+        <script src="js/GUI/GuiTools.js"></script>
         <script type="text/javascript">
             // Define projection that we will use (taken from https://epsg.io/3946, Proj4js section)
             itowns.proj4.defs('EPSG:3946', '+proj=lcc +lat_1=45.25 +lat_2=46.75 +lat_0=46 +lon_0=3 +x_0=1700000 +y_0=5200000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+            /* global itowns, setupLoadingScreen, GuiTools, debug */
             // # Planar (EPSG:3946) viewer
 
             var extent;
             var viewerDiv;
             var view;
             var p;
-            var config;
+            var menuGlobe;
+            var d;
 
             // Define geographic extent: CRS, min/max X, min/max Y
             extent = new itowns.Extent(
@@ -58,8 +63,8 @@
                 format: 'image/jpeg',
             });
 
-            // Add an WMS elevation layer (see WMSProvider* for valid options)
-            var wmsImageryLayer = new itowns.ColorLayer('wms_Jmagery', {
+            // Add a WMS imagery layer
+            var wmsImageryLayer = new itowns.ColorLayer('wms_imagery', {
                 updateStrategy: {
                     type: itowns.STRATEGY_DICHOTOMY,
                     options: {},
@@ -89,67 +94,23 @@
 
             view.addLayer(wmsElevationLayer);
 
-            var kmlSource = new itowns.FileSource({
-                    url: 'https://raw.githubusercontent.com/iTowns/iTowns2-sample-data/master/lyon.kml',
-                    projection: 'EPSG:4326',
-                    extent: extent,
-                    zoom: { min: 0, max: 6 },
-                    fetcher: itowns.Fetcher.xml,
-                    parser: itowns.KMLParser.parse,
-                });
-            var kmlLayer = new itowns.ColorLayer('Kml', {
-                transparent: true,
-                source: kmlSource,
-            });
-            view.addLayer(kmlLayer);
-
-            var gpxSource = new itowns.FileSource({
-                    url: 'https://raw.githubusercontent.com/iTowns/iTowns2-sample-data/master/lyon.gpx',
-                    projection: 'EPSG:4326',
-                    zoom: { min: 0, max: 6 },
-                    fetcher: itowns.Fetcher.xml,
-                    parser: itowns.GpxParser.parse,
-                });
-            var gpxLayer = new itowns.ColorLayer('Gpx', {
-                transparent: true,
-                style: {
-                    stroke: { color: 'blue'},
-                },
-                source: gpxSource,
-            });
-
-            view.addLayer(gpxLayer);
-
-            var geoSource = new itowns.FileSource({
-                    url: 'https://raw.githubusercontent.com/iTowns/iTowns2-sample-data/master/lyon.geojson',
-                    projection: 'EPSG:3946',
-                    extent: extent,
-                    zoom: { min: 0, max: 6 },
-                    fetcher: itowns.Fetcher.json,
-                    parser: itowns.GeoJsonParser.parse,
-                });
-            var geoLayer = new itowns.ColorLayer('geo', {
-                transparent: true,
-                source: geoSource,
-                style: {
-                    fill: { 
-                        color: 'orange',
-                        opacity: 0.2,
-                    },
-                    stroke: {
-                        color:'white'
-                    },
-                },
-            });
-
-            view.addLayer(geoLayer);
-
             p = { coord: extent.center(), heading: -49.6, range: 6200, tilt: 17 };
             itowns.CameraUtils.transformCameraToLookAtTarget(view, view.camera.camera3D, p);
 
             // instanciate controls
             // eslint-disable-next-line no-new
             new itowns.PlanarControls(view, {});
+
+            // Request redraw
+            view.notifyChange();
+
+            if (view.isDebugMode) {
+                menuGlobe = new GuiTools('menuDiv', view);
+                menuGlobe.addImageryLayersGUI(view.getLayers(function gui(l) { return l.isColorLayer; }));
+                menuGlobe.addElevationLayerGUI(wmsElevationLayer);
+                d = new debug.Debug(view, menuGlobe.gui);
+                debug.createTileDebugUI(menuGlobe.gui, view, view.tileLayer, d);
+            }
         </script>
     </body>
 </html>

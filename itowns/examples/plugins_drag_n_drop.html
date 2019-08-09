@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Itowns - Globe + geoson to 3d</title>
+        <title>Itowns - GeoJSON drag and drop</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="css/example.css">
         <link rel="stylesheet" type="text/css" href="css/LoadingScreen.css">
@@ -9,26 +9,28 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js"></script>
     </head>
     <body>
-        <div id="viewerDiv" class="viewer">
-            <span id="tooltipDiv" class="tooltip"></span>
+        <div id="viewerDiv">
+            <div id="description">Drag and drop a Geojson or Gpx file onto the
+                viewer, and see it loaded as a ColorLayer. Only files with the
+                projection <b>EPSG:4326</b> can be projected correctly in this
+                demo. More information about the plugin used <a
+                 href="http://www.itowns-project.org/itowns/docs/#api/Plugins/DragNDrop"
+                 target="_blank">in the documentation.</a></div>
         </div>
-        <script src="js/GUI/GuiTools.js"></script>
+        <script src="js/plugins/DragNDrop.js"></script>
         <script src="../dist/itowns.js"></script>
-        <script src="../dist/debug.js"></script>
+        <script src="js/GUI/LoadingScreen.js"></script>
         <script type="text/javascript">
-            /* global itowns,document,GuiTools, window, debug */
-            var ariege;
-            var menuGlobe;
-
             // Define initial camera position
-            var positionOnGlobe = { longitude: 1.5, latitude: 43, altitude: 300000 };
+            var positionOnGlobe = { longitude: 2.351323, latitude: 48.856712,
+                altitude: 250000 };
 
             // `viewerDiv` will contain iTowns' rendering area (`<canvas>`)
             var viewerDiv = document.getElementById('viewerDiv');
 
             // Instanciate iTowns GlobeView*
             var view = new itowns.GlobeView(viewerDiv, positionOnGlobe);
-
+            setupLoadingScreen(viewerDiv, view);
 
             // Add one imagery layer to the scene
             // This layer is defined in a json file but it could be defined as a plain js
@@ -36,7 +38,7 @@
             itowns.Fetcher.json('./layers/JSONLayers/Ortho.json').then(function _(config) {
                 config.source = new itowns.WMTSSource(config.source);
                 var layer = new itowns.ColorLayer('Ortho', config);
-                view.addLayer(layer).then(menuGlobe.addLayerGUI.bind(menuGlobe));
+                view.addLayer(layer);
             });
 
             // Add two elevation layers.
@@ -44,42 +46,15 @@
             function addElevationLayerFromConfig(config) {
                 config.source = new itowns.WMTSSource(config.source);
                 var layer = new itowns.ElevationLayer(config.id, config);
-                view.addLayer(layer).then(menuGlobe.addLayerGUI.bind(menuGlobe));
+                view.addLayer(layer);
             }
             itowns.Fetcher.json('./layers/JSONLayers/WORLD_DTM.json').then(addElevationLayerFromConfig);
             itowns.Fetcher.json('./layers/JSONLayers/IGN_MNT_HIGHRES.json').then(addElevationLayerFromConfig);
 
-            function extrude() {
-                return 5000;
-            }
-
-            function color() {
-                return new itowns.THREE.Color(0xffcc00);
-            }
-
-            ariege = new itowns.GeometryLayer('ariege', new itowns.THREE.Group());
-            ariege.update = itowns.FeatureProcessing.update;
-            ariege.convert = itowns.Feature2Mesh.convert({
-                color: color,
-                extrude: extrude });
-
-            ariege.source = new itowns.FileSource({
-                url: 'https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements/09-ariege/departement-09-ariege.geojson',
-                projection: 'EPSG:4326',
-                format: 'application/json',
-                zoom: { min: 7, max: 7 },
-            });
-
-            view.addLayer(ariege).then(function menue(layer) {
-                var gui = debug.GeometryDebug
-                    .createGeometryDebugUI(menuGlobe.gui, view, layer);
-                debug.GeometryDebug.addWireFrameCheckbox(gui, view, layer);
-            });
-
-            menuGlobe = new GuiTools('menuDiv', view);
-</script>
-</body>
+            DragNDrop.setView(view);
+            DragNDrop.register('geojson', DragNDrop.JSON, itowns.GeoJsonParser.parse, DragNDrop.COLOR);
+            DragNDrop.register('gpx', DragNDrop.XML, itowns.GpxParser.parse, DragNDrop.COLOR);
+        </script>
+    </body>
 </html>
-
-
 
