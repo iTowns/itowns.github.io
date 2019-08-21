@@ -25,7 +25,7 @@
     </h1>
 
     
-        <div class="description"><p>Style defines <a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a> style.</p></div>
+        <div class="description"><p>Constructs the object.</p></div>
     
 
     
@@ -42,7 +42,7 @@
     
     
         params:
-            <span class="type">object</span>
+            <span class="type">Object</span>
     
 
 )
@@ -61,166 +61,11 @@
     
     <li>
         <code>params</code>
-        (optional)
+        (default: <code>{}</code>)
         
-
         
-            
-
-<ul class="params">
-    
-    <li>
-        <code>params.fill</code>
-        (optional)
+            &mdash; <span><p>An object that can contain all properties of a Style.</p></span>
         
-            &mdash; <span><p>fill style.</p></span>
-        
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>params.fill.color</code>
-        (optional)
-        
-            &mdash; <span><p>fill color string css.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>params.fill.opacity</code>
-        (optional)
-        
-            &mdash; <span><p>fill opacity.</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-        
-    </li>
-    
-    <li>
-        <code>params.stroke</code>
-        (optional)
-        
-            &mdash; <span><p>stroke style.</p></span>
-        
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>params.stroke.color</code>
-        (optional)
-        
-            &mdash; <span><p>stroke color string css.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>params.stroke.opacity</code>
-        (optional)
-        
-            &mdash; <span><p>stroke opacity.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>params.stroke.width</code>
-        (optional)
-        
-            &mdash; <span><p>stroke line width.</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-        
-    </li>
-    
-    <li>
-        <code>params.point</code>
-        (optional)
-        
-            &mdash; <span><p>point style.</p></span>
-        
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>params.point.color</code>
-        (optional)
-        
-            &mdash; <span><p>point color string css.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>params.point.line</code>
-        (optional)
-        
-            &mdash; <span><p>point line color string css.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>params.point.width</code>
-        (optional)
-        
-            &mdash; <span><p>point line width.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>params.point.opacity</code>
-        (optional)
-        
-            &mdash; <span><p>point opacity.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>params.point.radius</code>
-        (optional)
-        
-            &mdash; <span><p>point line radius</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-        
-    </li>
-    
-</ul>
 
         
     </li>
@@ -236,6 +81,248 @@
 
     
 
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill</span>
+        : <span class="type">object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>fill style.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill.color</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>fill color string css.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill.pattern</span>
+        : <span class="type">Image|Canvas</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>fill with pattern image.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill.opacity</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>fill opacity.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">stroke</span>
+        : <span class="type">object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>stroke style.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">stroke.color</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>stroke color string css.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">stroke.opacity</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>stroke opacity.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">stroke.width</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>stroke line width.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point</span>
+        : <span class="type">object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>point style.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point.color</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>point color string css.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point.line</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>point line color string css.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point.width</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>point line width.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point.opacity</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>point opacity.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point.radius</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>point line radius</p>
+        </div>
+    
+</div>
+
+            
+        
     
 
     
