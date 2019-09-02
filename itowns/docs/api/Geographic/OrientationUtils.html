@@ -25,8 +25,31 @@
     </h1>
 
     
+        <div class="description"><p>The OrientationUtils module provides methods to compute the quaternion that
+model a rotation provided in various conventions, including between different
+CRS.<br/>
+CRS-related methods return an OrientationFunction, so that you can
+create it once and apply it efficiently to many points of origin.</p></div>
+    
 
     
+
+    
+        <hr class="title-divider"/>
+        <h2>Example</h2>
+        
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// Compute the rotation around the point of origin from a frame aligned with Lambert93 axes (epsg:2154),
+// to the geocentric frame (epsg:4978)
+quat_crs2crs = OrientationUtils.quaternionFromCRSToCRS("EPSG:2154", "EPSG:4978")(origin);
+// Compute the rotation of a sensor platform defined by its attitude
+quat_attitude = OrientationUtils.quaternionFromAttitude(attitude);
+// Compute the rotation from the sensor platform frame to the geocentric frame
+quat = quat_crs2crs.multiply(quat_attitude);</code></pre>
+
 
     
 
@@ -42,168 +65,6 @@
 
 <div class="method">
     <h3>
-        <span class="method-name">globeQuaternionFromAttitude</span>
-        (
-
-
-    
-    
-        attitude:
-            <span class="type">Attitude</span>, 
-    
-        coordinate:
-            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>, 
-    
-        target:
-            <span class="type">THREE.Quaternion</span>
-    
-
-)
-        :
-            
-                <span class="type">THREE.Quaternion</span>
-
-            
-        
-    </h3>
-
-    
-        
-    
-
-    
-                <h4>Returns</h4>
-                
-                    <p>Quaternion representing the rotation</p>
-                
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>attitude</code>
-        
-        
-            &mdash; <span><p>Attitude with properties:
-(omega, phi, kappa), (roll, pitch, heading) or none.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>coordinate</code>
-        
-        
-            &mdash; <span><p>position on the globe</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>target</code>
-        
-        
-            &mdash; <span><p>Quaternion to set</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
-        <span class="method-name">localQuaternionFromAttitude</span>
-        (
-
-
-    
-    
-        attitude:
-            <span class="type">Attitude</span>, 
-    
-        target:
-            <span class="type">THREE.Quaternion</span>
-    
-
-)
-        :
-            
-                <span class="type">THREE.Quaternion</span>
-
-            
-        
-    </h3>
-
-    
-        
-    
-
-    
-                <h4>Returns</h4>
-                
-                    <p>Quaternion representing the rotation</p>
-                
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>attitude</code>
-        
-        
-            &mdash; <span><p>Attitude with properties:
-(omega, phi, kappa), (roll, pitch, heading) or none. Note that
-convergence of the meridians is not taken into account.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>target</code>
-        
-        
-            &mdash; <span><p>Quaternion to set</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
         <span class="method-name">quaternionFromAttitude</span>
         (
 
@@ -212,12 +73,6 @@ convergence of the meridians is not taken into account.</p></span>
     
         attitude:
             <span class="type">Attitude</span>, 
-    
-        coordinate:
-            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>, 
-    
-        needsENUFromGeodesicNormal:
-            <span class="type">Boolean</span>, 
     
         target:
             <span class="type">THREE.Quaternion</span>
@@ -235,8 +90,8 @@ convergence of the meridians is not taken into account.</p></span>
     
         
             <div class="description">
-                <p>Read rotation information (roll pitch heading or omega phi kappa),
-Create a ThreeJs quaternion representing a rotation.</p>
+                <p>Set the quaternion according to the rotation from the platform frame to
+the local frame.</p>
             </div>
         
     
@@ -244,7 +99,7 @@ Create a ThreeJs quaternion representing a rotation.</p>
     
                 <h4>Returns</h4>
                 
-                    <p>Quaternion representing the rotation</p>
+                    <p>target</p>
                 
 
     
@@ -257,29 +112,7 @@ Create a ThreeJs quaternion representing a rotation.</p>
         <code>attitude</code>
         
         
-            &mdash; <span><p>Attitude with properties:
-(omega, phi, kappa), (roll, pitch, heading) or none.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>coordinate</code>
-        
-        
-            &mdash; <span><p>position the oject (used to apply another rotation on Globe CRS)</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>needsENUFromGeodesicNormal</code>
-        
-        
-            &mdash; <span><p>should be true on globe CRS.
-If true, we will apply another rotation : The rotation use to create ENU local space at coordinate parameter position.</p></span>
+            &mdash; <span><p>Attitude</p></span>
         
 
         
@@ -287,9 +120,757 @@ If true, we will apply another rotation : The rotation use to create ENU local s
     
     <li>
         <code>target</code>
+        (default: <code>new THREE.Quaternion()</code>)
         
         
-            &mdash; <span><p>Quaternion to set</p></span>
+            &mdash; <span><p>output Quaternion</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">quaternionFromCRS</span>
+        (
+
+
+    
+    
+        crsOrProj:
+            <span class="type">string|Projection</span>
+    
+
+)
+        :
+            
+                <span class="type">OrientationFunction</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Compute the quaternion that models the rotation from the frame of the
+given crs to the local East North Up (ENU) frame.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the orientation function</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>crsOrProj</code>
+        
+        
+            &mdash; <span><p>the CRS of the source frame or its
+proj4-compatible object.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">quaternionFromCRSToCRS</span>
+        (
+
+
+    
+    
+        crsIn:
+            <span class="type">string</span>, 
+    
+        crsOut:
+            <span class="type">string</span>
+    
+
+)
+        :
+            
+                <span class="type">OrientationFunction</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Return the function that computes the quaternion that represents a
+rotation from coordinates in platform frame, defined using an <code>Attitude</code>
+relative to a local <code>crsIn</code> frame, to coordinates expressed in the target
+<code>crsOut</code> frame</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the orientation function</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>crsIn</code>
+        
+        
+            &mdash; <span><p>the CRS of the input frame.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>crsOut</code>
+        
+        
+            &mdash; <span><p>the CRS of the output frame.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">quaternionFromOmegaPhiKappa</span>
+        (
+
+
+    
+    
+        omega:
+            <span class="type">number</span>, 
+    
+        phi:
+            <span class="type">number</span>, 
+    
+        kappa:
+            <span class="type">number</span>, 
+    
+        target:
+            <span class="type">THREE.Quaternion</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Quaternion</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>From
+<a href="https://github.com/micmacIGN/Documentation/raw/master/DocMicMac.pdf">DocMicMac</a>,
+the transform from the platform frame to the local East, North, Up (ENU)
+frame is:</p>
+<pre class="prettyprint source"><code>RotationX(omega).RotationY(phi).RotationZ(kappa).RotationX(PI)
+RotationX(PI) &lt;=> Quaternion(1,0,0,0) : converts between the 2 conventions for the camera local frame:
+X right, Y bottom, Z front : convention in photogrammetry and computer vision
+X right, Y top,    Z back  : convention in webGL, threejs
+</code></pre>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>target</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>omega</code>
+        (optional)
+        
+            &mdash; <span><p>angle in degrees</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>phi</code>
+        (optional)
+        
+            &mdash; <span><p>angle in degrees</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>kappa</code>
+        (optional)
+        
+            &mdash; <span><p>angle in degrees</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target</code>
+        (default: <code>new THREE.Quaternion()</code>)
+        
+        
+            &mdash; <span><p>output Quaternion</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">quaternionFromRollPitchHeading</span>
+        (
+
+
+    
+    
+        roll:
+            <span class="type">number</span>, 
+    
+        pitch:
+            <span class="type">number</span>, 
+    
+        heading:
+            <span class="type">number</span>, 
+    
+        target:
+            <span class="type">THREE.Quaternion</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Quaternion</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>The transform from the platform frame to the local East, North, Up (ENU)
+frame is <code>RotationZ(heading).RotationX(pitch).RotationY(roll)</code></p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>target</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>roll</code>
+        (optional)
+        
+            &mdash; <span><p>angle in degrees</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>pitch</code>
+        (optional)
+        
+            &mdash; <span><p>angle in degrees</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>heading</code>
+        (optional)
+        
+            &mdash; <span><p>angle in degrees</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target</code>
+        (default: <code>new THREE.Quaternion()</code>)
+        
+        
+            &mdash; <span><p>output Quaternion</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">quaternionToCRS</span>
+        (
+
+
+    
+    
+        crsOrProj:
+            <span class="type">string|Projection</span>
+    
+
+)
+        :
+            
+                <span class="type">OrientationFunction</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Compute the quaternion that models the rotation from the local East North
+Up (ENU) frame to the frame of the given crs.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the orientation function</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>crsOrProj</code>
+        
+        
+            &mdash; <span><p>the CRS of the target frame or its
+proj4-compatible object.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">quaternionToGeocent</span>
+        (
+
+
+)
+        :
+            
+                <span class="type">OrientationFunction</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Set the quaternion according to the rotation from the East North Up (ENU)
+frame to the geocentric frame. The up direction of the ENU frame is
+provided by the normalized geodetic normal of the provided coordinates
+(geodeticNormal property).</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the orientation function</p>
+                
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">quaternionToLCC</span>
+        (
+
+
+    
+    
+        proj:
+            <span class="type">Projection</span>
+    
+
+)
+        :
+            
+                <span class="type">OrientationFunction</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Set the quaternion to correct for the
+<a href="https://geodesie.ign.fr/contenu/fichiers/documentation/algorithmes/alg0060.pdf">meridian convergence</a>
+of the East North Up (ENU) frame to the Lambert Conformal Conic (LCC) frame.
+This is a generally small rotation around Z.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the orientation function</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>proj</code>
+        
+        
+            &mdash; <span><p>the lcc projection (may be parsed using proj4)</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>proj.lat0</code>
+        
+        
+            &mdash; <span><p>the latitude of origin</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>proj.long0</code>
+        
+        
+            &mdash; <span><p>the longitude of the central meridian</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">quaternionToTMerc</span>
+        (
+
+
+    
+    
+        proj:
+            <span class="type">Projection</span>
+    
+
+)
+        :
+            
+                <span class="type">OrientationFunction</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Set the quaternion to correct for the
+<a href="https://geodesie.ign.fr/contenu/fichiers/documentation/algorithmes/alg0061.pdf">meridian convergence</a>
+of the East North Up (ENU) frame to the Transverse Mercator frame.
+This is a generally small rotation around Z.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the orientation function</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>proj</code>
+        
+        
+            &mdash; <span><p>the tmerc projection (may be parsed using proj4)</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>proj.e</code>
+        
+        
+            &mdash; <span><p>the excentricity of the ellipsoid (supersedes
+{proj.a} and {proj.b})</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>proj.a</code>
+        
+        
+            &mdash; <span><p>the semimajor radius of the ellipsoid axis</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>proj.b</code>
+        
+        
+            &mdash; <span><p>the semiminor radius of the ellipsoid axis</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>proj.long0</code>
+        
+        
+            &mdash; <span><p>the longitude of the central meridian</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">quaternionToUnimplemented</span>
+        (
+
+
+    
+    
+        proj:
+            <span class="type">Projection</span>
+    
+
+)
+        :
+            
+                <span class="type">OrientationFunction</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Warns for an unimplemented projection, sets the quaternion to the
+identity (0,0,0,1).</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the orientation function</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>proj</code>
+        
+        
+            &mdash; <span><p>the unimplemented projection (may be parsed
+using proj4)</p></span>
         
 
         
@@ -326,7 +907,7 @@ If true, we will apply another rotation : The rotation use to create ENU local s
 <ul class="params">
     
     <li>
-        <code>omega: <span class="type">Number</span></code>
+        <code>omega: <span class="type">number</span></code>
         
         
             &mdash; <span><p>angle in degrees</p></span>
@@ -336,7 +917,7 @@ If true, we will apply another rotation : The rotation use to create ENU local s
     </li>
     
     <li>
-        <code>phi: <span class="type">Number</span></code>
+        <code>phi: <span class="type">number</span></code>
         
         
             &mdash; <span><p>angle in degrees</p></span>
@@ -346,7 +927,7 @@ If true, we will apply another rotation : The rotation use to create ENU local s
     </li>
     
     <li>
-        <code>kappa: <span class="type">Number</span></code>
+        <code>kappa: <span class="type">number</span></code>
         
         
             &mdash; <span><p>angle in degrees</p></span>
@@ -356,7 +937,7 @@ If true, we will apply another rotation : The rotation use to create ENU local s
     </li>
     
     <li>
-        <code>roll: <span class="type">Number</span></code>
+        <code>roll: <span class="type">number</span></code>
         
         
             &mdash; <span><p>angle in degrees</p></span>
@@ -366,7 +947,7 @@ If true, we will apply another rotation : The rotation use to create ENU local s
     </li>
     
     <li>
-        <code>pitch: <span class="type">Number</span></code>
+        <code>pitch: <span class="type">number</span></code>
         
         
             &mdash; <span><p>angle in degrees</p></span>
@@ -376,7 +957,7 @@ If true, we will apply another rotation : The rotation use to create ENU local s
     </li>
     
     <li>
-        <code>heading: <span class="type">Number</span></code>
+        <code>heading: <span class="type">number</span></code>
         
         
             &mdash; <span><p>angle in degrees</p></span>
@@ -388,6 +969,94 @@ If true, we will apply another rotation : The rotation use to create ENU local s
 </ul>
 
 
+    
+        <div class="description">
+            <p>Properties are either defined as (omega, phi, kappa) or as (roll, pitch,
+heading) or all <code>undefined</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="typedef">
+    <h3>
+        <span class="typedef-name">OrientationFunction</span>
+        : <span class="type">function</span>
+    </h3>
+
+    
+    
+
+<ul class="params">
+    
+    <li>
+        <code>origin: <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span></code>
+        
+        
+            &mdash; <span><p>the origin of the local East North Up
+(ENU) frame</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target: <span class="type">THREE.Quaternion</span></code>
+        
+        
+            &mdash; <span><p>output Quaternion (default: <code>new THREE.Quaternion()</code>)</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+
+    
+        <div class="description">
+            <p>Functions of type OrientationFunction accept arguments <code>(origin, target)</code>
+and return the quaternion that models a rotation around the point of
+origin. If target is not provided, a new quaternion is created and
+returned instead.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="typedef">
+    <h3>
+        <span class="typedef-name">Projection</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+    
+
+<ul class="params">
+    
+    <li>
+        <code>projName: <span class="type">string</span></code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+
+    
+        <div class="description">
+            <p>A Projection object models a Coordinate Reference System (CRS).
+Such an object is usually created with proj4 using <code>proj4.defs(crs);</code></p>
+        </div>
     
 </div>
 
