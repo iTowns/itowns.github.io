@@ -26,36 +26,84 @@
 
     
         <div class="description"><p>A tooltip that can display some useful information about a feature when
-hovering it. Only works for layers using FileSource.</p></div>
+hovering it.</p></div>
+    
+
     
 
     
         <hr class="title-divider"/>
-        <h2>Constructor</h2>
+        <h2>Example</h2>
         
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// Initialize the FeatureToolTip
+FeatureToolTip.init(viewerDiv, view);
+
+// Add layers
+var wfsSource = new itowns.WFSSource(...);
+var wfsLayer = new itowns.ColorLayer(wfsSource...);
+view.addLayer(wfsLayer);
+
+var fileSource = new itowns.FileSource(...);
+var fileLayer = new itowns.GeometryLayer(fileSource...);
+view.addLayer(fileLayer);
+
+FeatureToolTip.addLayer(wfsLayer);
+FeatureToolTip.addLayer(fileLayer);</code></pre>
+
+
+    
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Static Methods</h2>
+        
+            
 
 <div class="method">
     <h3>
-        <span class="method-name">FeatureToolTip</span>
+        <span class="method-name">addLayer</span>
         (
 
 
     
     
-        viewer:
-            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
+        layer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>, 
     
         options:
             <span class="type">Object</span>
     
 
 )
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+
+            
         
     </h3>
 
     
+        
+            <div class="description">
+                <p>Add a layer to be picked by the tooltip.</p>
+            </div>
+        
+    
 
     
+                <h4>Returns</h4>
+                
+                    <p>The added layer.</p>
+                
 
     
         <h4>Parameters</h4>
@@ -64,10 +112,10 @@ hovering it. Only works for layers using FileSource.</p></div>
 <ul class="params">
     
     <li>
-        <code>viewer</code>
+        <code>layer</code>
         
         
-            &mdash; <span><p>The view to bind the tooltip to.</p></span>
+            &mdash; <span><p>The layer to add.</p></span>
         
 
         
@@ -86,11 +134,16 @@ hovering it. Only works for layers using FileSource.</p></div>
 <ul class="params">
     
     <li>
-        <code>options.precisionPx</code>
-        (default: <code>5</code>)
+        <code>options.filterGeometries</code>
+        (optional)
         
-        
-            &mdash; <span><p>The precision of the picking.</p></span>
+            &mdash; <span><p>A callback to filter
+geometries following a criteria, like an id found on FeatureGeometry
+properties.  This is useful to remove duplicates, for example when a
+feature is present on multiple tiles at the same time (see the
+example below).  This function takes two parameters: a list of
+features (usually a <code>Array&lt;Feature&gt;</code>) and the <code>Layer</code> associated to
+these features.</p></span>
         
 
         
@@ -100,32 +153,35 @@ hovering it. Only works for layers using FileSource.</p></div>
         <code>options.format</code>
         (optional)
         
-            &mdash; <span><p>A function that takes the name of the
-property currently being processed and its value, and gives the appropriate
-HTML output to it. If this method is specified, no others properties other
-than the ones handled in it will be displayed.</p></span>
+            &mdash; <span><p>A function that takes the name
+of the property currently being processed and its value, and gives
+the appropriate HTML output to it. If this method is specified, no
+others properties other than the ones handled in it will be
+displayed.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>options.filter</code>
+        <code>options.filterProperties</code>
         (optional)
         
-            &mdash; <span><p>An array of properties to filter.</p></span>
+            &mdash; <span><p>An array of
+properties to filter.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>options.filterAll</code>
+        <code>options.filterAllProperties</code>
         (default: <code>true</code>)
         
         
-            &mdash; <span><p>Filter all the properties.
-Default to true.</p></span>
+            &mdash; <span><p>Filter all the
+properties, and don't display anything besides the name of the layer
+the feature is attached to.</p></span>
         
 
         
@@ -141,29 +197,114 @@ Default to true.</p></span>
     
 
     
-</div>
-
-    
-
-    
-        <hr class="title-divider"/>
-        <h2>Example</h2>
         
+            <h4>Example</h4>
+            
 
 
     
 
-    <pre class="prettyprint source lang-js"><code>view.addEventListener(itowns.VIEW_EVENTS.LAYERS_INITIALIZED, function() {
-     new FeatureToolTip(view);
+    <pre class="prettyprint source lang-js"><code>FeatureToolTip.addLayer(wfsLayer, {
+     filterProperties: ['uuid', 'notes', 'classification'],
+     filterGeometries: (features, layer) => {
+         const idList = [];
+         return features.filter((f) => {
+             if (!idList.includes(f.geometry.properties.id)) {
+                 idList.push(f.geometry.properties.id);
+                 return f;
+             }
+         });
+     }
 });</code></pre>
 
 
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">init</span>
+        (
+
+
+    
+    
+        viewerDiv:
+            <span class="type">Element</span>, 
+    
+        viewer:
+            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Initialize the <code>FeatureToolTip</code> plugin for a specific view.</p>
+            </div>
+        
     
 
     
 
     
+        <h4>Parameters</h4>
+        
 
+<ul class="params">
+    
+    <li>
+        <code>viewerDiv</code>
+        
+        
+            &mdash; <span><p>The element containing the viewer.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>viewer</code>
+        
+        
+            &mdash; <span><p>The view to bind the tooltip to.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>const viewerDiv = document.getElementById('viewerDiv');
+const view = new GlobeView(viewerDiv, { longitude: 4, latitude: 45, altitude: 3000 });
+
+FeatureToolTip.init(viewerDiv, view);</code></pre>
+
+
+        
+    
+</div>
+
+            
+        
     
 
     

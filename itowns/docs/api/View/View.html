@@ -394,6 +394,9 @@ the preprocessing operation is done. This promise is also returned by
         event:
             <span class="type">event</span>, 
     
+        target:
+            <span class="type">THREE.Vector2</span>, 
+    
         touchIdx:
             <span class="type">number</span>
     
@@ -440,10 +443,20 @@ the preprocessing operation is done. This promise is also returned by
     </li>
     
     <li>
+        <code>target</code>
+        
+        
+            &mdash; <span><p>the target to set the view coords in</p></span>
+        
+
+        
+    </li>
+    
+    <li>
         <code>touchIdx</code>
+        (optional)
         
-        
-            &mdash; <span><p>finger index when using a TouchEvent (default: 0)</p></span>
+            &mdash; <span><p>finger index when using a TouchEvent</p></span>
         
 
         
@@ -537,6 +550,72 @@ of MAIN_LOOP_EVENTS.</p></span>
         
         
             &mdash; <span><p>optional arguments</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getDistanceFromCamera</span>
+        (
+
+
+    
+    
+        screenCoord:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Given a screen coordinates, get the distance between the projected
+coordinates and the camera associated to this view.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The distance in meters.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>screenCoord</code>
+        (optional)
+        
+            &mdash; <span><p>The screen coordinate to get the
+distance at. By default this is the middle of the screen.</p></span>
         
 
         
@@ -703,6 +782,86 @@ view.getLayers(layer => layer.id === 'itt');</code></pre>
 
 <div class="method">
     <h3>
+        <span class="method-name">getMetersToPixels</span>
+        (
+
+
+    
+    
+        meters:
+            <span class="type">number</span>, 
+    
+        screenCoord:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Get, for a specific screen coordinate, this size in pixels of a projected
+distance on the surface of the main layer of the view.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The projected distance in meters.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>meters</code>
+        (default: <code>1</code>)
+        
+        
+            &mdash; <span><p>The size, in meters, to get in pixels.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>screenCoord</code>
+        (optional)
+        
+            &mdash; <span><p>The screen coordinate to get the
+projected distance at. By default, this is the middle of the screen.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
         <span class="method-name">getParentLayer</span>
         (
 
@@ -820,6 +979,152 @@ This position is computed with depth buffer.</p>
         
         
             &mdash; <span><p>target. the result will be copied into this Vector3. If not present a new one will be created.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getPixelsToMeters</span>
+        (
+
+
+    
+    
+        pixels:
+            <span class="type">number</span>, 
+    
+        screenCoord:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Get, for a specific screen coordinate, the projected distance on the
+surface of the main layer of the view.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The projected distance in meters.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>pixels</code>
+        (default: <code>1</code>)
+        
+        
+            &mdash; <span><p>The size, in pixels, to get in meters.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>screenCoord</code>
+        (optional)
+        
+            &mdash; <span><p>The screen coordinate to get the
+projected distance at. By default, this is the middle of the screen.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getScale</span>
+        (
+
+
+    
+    
+        pitch:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Return the current zoom scale at the central point of the view. This
+function compute the scale of a map.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The zoom scale.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>pitch</code>
+        (default: <code>0.28</code>)
+        
+        
+            &mdash; <span><p>Screen pitch, in millimeters ; 0.28 by default</p></span>
         
 
         
@@ -963,6 +1268,116 @@ non-interactive events (e.g: texture loaded)</p>
     
 
     
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">pickFeaturesAt</span>
+        (
+
+
+    
+    
+        mouseOrEvt:
+            <span class="type">MouseEvent|Object</span>, 
+    
+        radius:
+            <span class="type">number</span>, 
+    
+        where:
+            <span class="type">Array.&lt;Layer></span>
+    
+
+)
+        :
+            
+                <span class="type">Object</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Returns features under the mouse, for a set of specified layers.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <ul>
+<li>An object, with a property per layer. For example,
+looking for features on layers <code>wfsBuilding</code> and <code>wfsRoads</code> will give an
+object like <code>{ wfsBuilding: [...], wfsRoads: [] }</code>. Each property is made
+of an array, that can be empty or filled with found features.</li>
+</ul>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>mouseOrEvt</code>
+        
+        
+            &mdash; <span><p>A MouseEvent, or a screen
+coordinates.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>radius</code>
+        (default: <code>3</code>)
+        
+        
+            &mdash; <span><p>The precision of the picking, in pixels.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>where</code>
+        (optional)
+        
+            &mdash; <span><p>The layers to look into. If not specified, all
+<code>GeometryLayer</code> and <code>ColorLayer</code> layers of this view will be looked in.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>view.pickFeaturesAt({ x, y });
+view.pickFeaturesAt({ x, y }, 1, ['wfsBuilding']);
+view.pickFeaturesAt({ x, y }, 3, ['wfsBuilding', myLayer]);</code></pre>
+
+
         
     
 </div>
