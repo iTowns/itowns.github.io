@@ -44,14 +44,16 @@ single instance.</p></div>
 
     <pre class="prettyprint source lang-js"><code>import Cache from './Cache';
 
-Cache.set('foo', { bar: 1 }, Cache.POLICIES.TEXTURE);
-Cache.set('acme', { bar: 32 });
+Cache.set({ bar: 1 }, Cache.POLICIES.TEXTURE, 'foo');
+Cache.set({ bar: 32 }, Cache.POLICIES.INFINITE, 'foo', 'toto');
 
 Cache.get('foo');
 
 Cache.delete('foo');
 
-Cache.clear();</code></pre>
+Cache.clear();
+
+Cache.flush();</code></pre>
 
 
     
@@ -105,16 +107,17 @@ Cache.clear();</code></pre>
 
     
     
-        key:
+        key1:
+            <span class="type">string</span>, 
+    
+        key2:
+            <span class="type">string</span>, 
+    
+        key3:
             <span class="type">string</span>
     
 
 )
-        :
-            
-                <span class="type">boolean</span>
-
-            
         
     </h3>
 
@@ -127,12 +130,6 @@ Cache.clear();</code></pre>
     
 
     
-                <h4>Returns</h4>
-                
-                    <ul>
-<li>Confirmation that the entry has been deleted.</li>
-</ul>
-                
 
     
         <h4>Parameters</h4>
@@ -141,8 +138,24 @@ Cache.clear();</code></pre>
 <ul class="params">
     
     <li>
-        <code>key</code>
+        <code>key1</code>
         
+        
+
+        
+    </li>
+    
+    <li>
+        <code>key2</code>
+        (optional)
+        
+
+        
+    </li>
+    
+    <li>
+        <code>key3</code>
+        (optional)
         
 
         
@@ -174,11 +187,6 @@ Cache.clear();</code></pre>
     
 
 )
-        :
-            
-                <span class="type">Object</span>
-
-            
         
     </h3>
 
@@ -195,14 +203,6 @@ clear the whole cache, use Cache.clear instead.</p>
     
 
     
-                <h4>Returns</h4>
-                
-                    <p>Statistics about the flush: <code>before</code> gives the number of
-entries before flushing, <code>after</code> the number after flushing, <code>hit</code> the
-number of total successful hit on resources in the cache, and <code>miss</code> the
-number of failed hit. The hit and miss are based since the last flush,
-and are reset on every flush.</p>
-                
 
     
         <h4>Parameters</h4>
@@ -212,7 +212,8 @@ and are reset on every flush.</p>
     
     <li>
         <code>time</code>
-        (optional)
+        (default: <code>Date.now()</code>)
+        
         
 
         
@@ -239,7 +240,13 @@ and are reset on every flush.</p>
 
     
     
-        key:
+        key1:
+            <span class="type">string</span>, 
+    
+        key2:
+            <span class="type">string</span>, 
+    
+        key3:
             <span class="type">string</span>
     
 
@@ -271,8 +278,24 @@ entry.</p>
 <ul class="params">
     
     <li>
-        <code>key</code>
+        <code>key1</code>
         
+        
+
+        
+    </li>
+    
+    <li>
+        <code>key2</code>
+        (optional)
+        
+
+        
+    </li>
+    
+    <li>
+        <code>key3</code>
+        (optional)
         
 
         
@@ -299,14 +322,20 @@ entry.</p>
 
     
     
-        key:
-            <span class="type">string</span>, 
-    
         value:
             <span class="type">Object</span>, 
     
         lifetime:
-            <span class="type">number</span>
+            <span class="type">number</span>, 
+    
+        key1:
+            <span class="type">string</span>, 
+    
+        key2:
+            <span class="type">string</span>, 
+    
+        key3:
+            <span class="type">string</span>
     
 
 )
@@ -321,9 +350,9 @@ entry.</p>
     
         
             <div class="description">
-                <p>Adds or updates an entry with a specified key. A lifetime can be added,
-by specifying a numerical value or using the Cache.POLICIES
-values. By default an entry has an infinite lifetime.</p>
+                <p>Adds or updates an entry with specified keys (up to 3). A lifetime can be
+added, by specifying a numerical value or using the Cache.POLICIES values. By default an entry has an infinite lifetime.
+Caution: it overrides any existing entry already set at this/those key/s.</p>
             </div>
         
     
@@ -341,14 +370,6 @@ values. By default an entry has an infinite lifetime.</p>
 <ul class="params">
     
     <li>
-        <code>key</code>
-        
-        
-
-        
-    </li>
-    
-    <li>
         <code>value</code>
         
         
@@ -358,6 +379,30 @@ values. By default an entry has an infinite lifetime.</p>
     
     <li>
         <code>lifetime</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>key1</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>key2</code>
+        (optional)
+        
+
+        
+    </li>
+    
+    <li>
+        <code>key3</code>
         (optional)
         
 
