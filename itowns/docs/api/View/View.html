@@ -255,9 +255,8 @@ has just been relaunched.</p></span>
             <div class="description">
                 <p>Add layer in viewer.
 The layer id must be unique.</p>
-<p>This function calls <code>preprocessDataLayer</code> of the relevant provider with this
-layer and set <code>layer.whenReady</code> to a promise that resolves when
-the preprocessing operation is done. This promise is also returned by
+<p>The <code>layer.whenReady</code> is a promise that resolves when
+the layer is done. This promise is also returned by
 <code>addLayer</code> allowing to chain call.</p>
             </div>
         
