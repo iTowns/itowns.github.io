@@ -93,26 +93,6 @@ will be merged as is in the layer.</p></span>
 <ul class="params">
     
     <li>
-        <code>config.url</code>
-        
-        
-            &mdash; <span><p>The base url.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>config.file</code>
-        
-        
-            &mdash; <span><p>file name.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
         <code>config.pointBudget</code>
         (default: <code>2000000</code>)
         
@@ -124,22 +104,21 @@ will be merged as is in the layer.</p></span>
     </li>
     
     <li>
-        <code>config.sseThreshold</code>
-        (default: <code>2</code>)
+        <code>config.source</code>
         
         
-            &mdash; <span><p>screen space error Threshold.</p></span>
+            &mdash; <span><p>Description and options of the source.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>config.fetchOptions</code>
-        (default: <code>{}</code>)
+        <code>config.sseThreshold</code>
+        (default: <code>2</code>)
         
         
-            &mdash; <span><p>fetch config.</p></span>
+            &mdash; <span><p>screen space error Threshold.</p></span>
         
 
         
@@ -212,8 +191,10 @@ will be merged as is in the layer.</p></span>
     <pre class="prettyprint source lang-js"><code>// Create a new point cloud layer
 const points = new PointCloudLayer('points',
  {
-     url: 'https://pointsClouds/',
-     file: 'points.js',
+     source: new PointCloudLayer({
+         url: 'https://pointsClouds/',
+         file: 'points.js',
+     }
  }, view);
 
 View.prototype.addLayer.call(view, points);</code></pre>
