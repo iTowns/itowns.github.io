@@ -228,7 +228,7 @@ specific strings that will be replaced by coordinates.</p>
 
     
 
-    <pre class="prettyprint source lang-js"><code>coords = new Coordinates('WMTS:WGS84', 12, 1410, 2072);
+    <pre class="prettyprint source lang-js"><code>coords = new Extent(CRS.formatToTms('EPSG:4326'), 12, 1410, 2072);
 source.url = 'http://server.geo/wmts/SERVICE=WMTS&TILEMATRIX=%TILEMATRIX&TILEROW=%ROW&TILECOL=%COL';
 url = URLBuilder.xyz(coords, source);
 
