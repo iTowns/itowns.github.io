@@ -93,10 +93,10 @@ will be merged as is in the layer.</p></span>
 <ul class="params">
     
     <li>
-        <code>config.url</code>
+        <code>config.source</code>
         
         
-            &mdash; <span><p>The url to a tileset JSON file.</p>
+            &mdash; <span><p>The source of 3d Tiles.</p>
 <p>name.</p></span>
         
 
@@ -138,7 +138,10 @@ will be merged as is in the layer.</p></span>
     <pre class="prettyprint source lang-js"><code>// Create a new Layer 3d-tiles For DiscreteLOD
 const l3dt = new C3DTilesLayer('3dtiles', {
      name: '3dtl',
-     url: 'https://tileset.json'}, view);
+     source: new C3DTilesSource({
+          url: 'https://tileset.json'
+     })
+}, view);
 View.prototype.addLayer.call(view, l3dt);</code></pre>
 
 
