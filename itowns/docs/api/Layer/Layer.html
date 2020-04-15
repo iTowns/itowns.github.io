@@ -27,7 +27,7 @@
     
         <div class="description"><p>Don't use directly constructor to instance a new Layer. Instead, use
 another available type of Layer, implement a new one inheriting from this
-one or use View#addLayer.</p></div>
+one or use <a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View#addLayer">View#addLayer</a>.</p></div>
     
 
     
@@ -146,6 +146,66 @@ layerToListen.addEventListener('opacity-property-changed', (event) => console.lo
             <p>Used to checkout whether this layer is a Layer.
 Default is true. You should not change this, as it is used internally for
 optimisation.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">ready</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>This property is false when the layer isn't added.
+It's true when the layer is added and all initializations are done.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">source</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>This source determines the datas to be displayed with the layer.
+The layer determines how this data are displayed.
+By example:</p>
+<ul>
+<li>For ColorLayer/ElevationLayer, the source datas are rasterised (if it's necessary).</li>
+<li>For GeometryLayer, the source datas are converted to meshes (not possible for the raster data sources).</li>
+</ul>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">whenReady</span>
+        : <span class="type">Promise</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>this promise is resolved when the layer is added and all initializations are done.
+This promise is resolved with this layer.
+This promise is returned by <a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View#addLayer">View#addLayer</a>.</p>
         </div>
     
 </div>
