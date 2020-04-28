@@ -175,13 +175,16 @@ Otherwise the lookup process starts from the root of <code>layer</code>.</p></sp
             <span class="type">number</span>, 
     
         tileHint:
-            <span class="type">Array.&lt;TileMesh></span>
+            <span class="type">Array.&lt;TileMesh></span>, 
+    
+        cache:
+            <span class="type">Object</span>
     
 
 )
         :
             
-                <span class="type">object</span>
+                <span class="type">Terrain</span>
 
             
         
@@ -190,10 +193,10 @@ Otherwise the lookup process starts from the root of <code>layer</code>.</p></sp
     
         
             <div class="description">
-                <p>Gives a terrain object, at a specific <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a>. The returned
+                <p>Gives a Terrain object, at a specific <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a>. The returned
 object is as follow:</p>
 <ul>
-<li><code>z</code>, the value in meters of the elevation at the coordinates</li>
+<li><code>coord</code>, Coordinate, coord.z is the value in meters of the elevation at the coordinates</li>
 <li><code>texture</code>, the texture where the <code>z</code> value has been read from</li>
 <li><code>tile</code>, the tile containing the texture</li>
 </ul>
@@ -204,7 +207,9 @@ object is as follow:</p>
     
                 <h4>Returns</h4>
                 
-                    <p>The terrain object.</p>
+                    <ul>
+<li>The Terrain object.</li>
+</ul>
                 
 
     
@@ -260,135 +265,87 @@ Otherwise the lookup process starts from the root of <code>layer</code>.</p></sp
         
     </li>
     
+    <li>
+        <code>cache</code>
+        (optional)
+        
+            &mdash; <span><p>Object to cache previous result and speed up the next `getTerrainObjectAt`` use.</p></span>
+        
+
+        
+    </li>
+    
 </ul>
 
     
 
     
         
+            <h4>Example</h4>
+            
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// place mesh on the ground
+const coord = new Coordinates('EPSG:4326', 6, 45);
+const result = DEMUtils.getTerrainObjectAt(view.tileLayer, coord)
+mesh.position.copy(result.coord.as(view.referenceCrs));
+view.scene.add(mesh);
+mesh.updateMatrixWorld();</code></pre>
+
+
+        
     
 </div>
 
-            <hr/>
+            
+        
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Types</h2>
         
             
 
-<div class="method">
+<div class="typedef">
     <h3>
-        <span class="method-name">placeObjectOnGround</span>
-        (
-
-
-    
-    
-        layer:
-            <span class="type"><a onclick="window.parent.goTo('api/Layer/TiledGeometryLayer.html','api/Layer/TiledGeometryLayer')" title="TiledGeometryLayer">TiledGeometryLayer</a></span>, 
-    
-        crs:
-            <span class="type">string</span>, 
-    
-        obj:
-            <span class="type">Object3D</span>, 
-    
-        options:
-            <span class="type">Object</span>, 
-    
-        tileHint:
-            <span class="type">Array.&lt;TileMesh></span>
-    
-
-)
-        :
-            
-                <span class="type">boolean</span>
-
-            
-        
+        <span class="typedef-name">Terrain</span>
+        : <span class="type">Object</span>
     </h3>
 
     
-        
-            <div class="description">
-                <p>Helper method that will position an object directly on the ground.</p>
-            </div>
-        
     
-
-    
-                <h4>Returns</h4>
-                
-                    <p>true if successful, false if we couldn't lookup the elevation at the given coords</p>
-                
-
-    
-        <h4>Parameters</h4>
-        
 
 <ul class="params">
     
     <li>
-        <code>layer</code>
+        <code>coord: <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span></code>
         
         
-            &mdash; <span><p>The tile layer owning the elevation
-textures we're going to query. This is typically a <code>GlobeLayer</code> or
-<code>PlanarLayer</code> (accessible through <code>view.tileLayer</code>).</p></span>
+            &mdash; <span><p>Pick coordinate with the elevation in coord.z.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>crs</code>
+        <code>texture: <span class="type">THREE.Texture</span></code>
         
         
-            &mdash; <span><p>The CRS used by the object coordinates. You
-probably want to use <code>view.referenceCRS</code> here.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>obj</code>
-        
-        
-            &mdash; <span><p>the object we want to modify.</p></span>
+            &mdash; <span><p>the picked elevation texture.
+The texture where the <code>z</code> value has been read from</p></span>
         
 
         
     </li>
     
     <li>
-        <code>options</code>
+        <code>tile: <span class="type"><a onclick="window.parent.goTo('api/Base/TileMesh.html','api/Base/TileMesh')" title="TileMesh">TileMesh</a></span></code>
         
         
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>options.method</code>
-        (default: <code>FAST_READ_Z</code>)
-        
-        
-            &mdash; <span><p>There are two available methods:
-<code>FAST_READ_Z</code> (default) or <code>PRECISE_READ_Z</code>. The first one is faster,
-while the second one is slower but gives better precision.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>options.modifyGeometry</code>
-        
-        
-            &mdash; <span><p>if unset/false, this function
-will modify object.position. If true, it will modify
-<code>obj.geometry.vertices</code> or <code>obj.geometry.attributes.position</code>.</p></span>
+            &mdash; <span><p>the picked tile and the tile containing the texture</p></span>
         
 
         
@@ -396,34 +353,12 @@ will modify object.position. If true, it will modify
     
 </ul>
 
-        
-    </li>
-    
-    <li>
-        <code>tileHint</code>
-        (optional)
-        
-            &mdash; <span><p>Optional array of tiles to speed up the
-process. You can give candidates tiles likely to contain <code>coord</code>.
-Otherwise the lookup process starts from the root of <code>layer</code>.</p></span>
-        
 
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
     
 </div>
 
             
         
-    
-
     
 
     
