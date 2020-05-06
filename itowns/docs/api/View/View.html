@@ -1284,13 +1284,13 @@ non-interactive events (e.g: texture loaded)</p>
     
     
         mouseOrEvt:
-            <span class="type">MouseEvent|Object</span>, 
+            <span class="type">Object</span>, 
     
         radius:
             <span class="type">number</span>, 
     
         where:
-            <span class="type">Array.&lt;Layer></span>
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a>|<a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>|string</span>
     
 
 )
@@ -1305,7 +1305,8 @@ non-interactive events (e.g: texture loaded)</p>
     
         
             <div class="description">
-                <p>Returns features under the mouse, for a set of specified layers.</p>
+                <p>Searches for <a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a> in <a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a>, under the mouse of at
+a specified coordinates, in this view.</p>
             </div>
         
     
@@ -1331,8 +1332,8 @@ of an array, that can be empty or filled with found features.</li>
         <code>mouseOrEvt</code>
         
         
-            &mdash; <span><p>A MouseEvent, or a screen
-coordinates.</p></span>
+            &mdash; <span><p>Mouse position in window coordinates (from
+the top left corner of the window) or <code>MouseEvent</code> or <code>TouchEvent</code>.</p></span>
         
 
         
@@ -1343,7 +1344,8 @@ coordinates.</p></span>
         (default: <code>3</code>)
         
         
-            &mdash; <span><p>The precision of the picking, in pixels.</p></span>
+            &mdash; <span><p>The picking will happen in a circle centered
+on mouseOrEvt. This is the radius of this circle, in pixels.</p></span>
         
 
         
@@ -1353,8 +1355,9 @@ coordinates.</p></span>
         <code>where</code>
         (optional)
         
-            &mdash; <span><p>The layers to look into. If not specified, all
-<code>GeometryLayer</code> and <code>ColorLayer</code> layers of this view will be looked in.</p></span>
+            &mdash; <span><p>The layers to look
+into. If not specified, all <a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a> and <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>
+layers of this view will be looked in.</p></span>
         
 
         
@@ -1373,8 +1376,8 @@ coordinates.</p></span>
     
 
     <pre class="prettyprint source lang-js"><code>view.pickFeaturesAt({ x, y });
-view.pickFeaturesAt({ x, y }, 1, ['wfsBuilding']);
-view.pickFeaturesAt({ x, y }, 3, ['wfsBuilding', myLayer]);</code></pre>
+view.pickFeaturesAt({ x, y }, 1, 'wfsBuilding');
+view.pickFeaturesAt({ x, y }, 3, 'wfsBuilding', myLayer);</code></pre>
 
 
         
@@ -1400,13 +1403,13 @@ view.pickFeaturesAt({ x, y }, 3, ['wfsBuilding', myLayer]);</code></pre>
             <span class="type">number</span>, 
     
         where:
-            <span class="type">*</span>
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>|string|Object3D</span>
     
 
 )
         :
             
-                <span class="type">Array</span>
+                <span class="type">Array.&lt;Object></span>
 
             
         
@@ -1415,7 +1418,9 @@ view.pickFeaturesAt({ x, y }, 3, ['wfsBuilding', myLayer]);</code></pre>
     
         
             <div class="description">
-                <p>Return objects from some layers/objects3d under the mouse in this view.</p>
+                <p>Searches for objects in <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a> and specified
+<code>THREE.Object3D</code>, under the mouse or at a specified coordinates, in this
+view.</p>
             </div>
         
     
@@ -1424,10 +1429,10 @@ view.pickFeaturesAt({ x, y }, 3, ['wfsBuilding', myLayer]);</code></pre>
                 <h4>Returns</h4>
                 
                     <ul>
-<li>an array of objects. Each element contains at least an object
-property which is the Object3D under the cursor. Then depending on the queried
-layer/source, there may be additionnal properties (coming from THREE.Raycaster
-for instance).</li>
+<li>An array of objects. Each element contains at least
+an object property which is the <code>THREE.Object3D</code> under the cursor. Then
+depending on the queried layer/source, there may be additionnal
+properties (coming from <code>THREE.Raycaster</code> for instance).</li>
 </ul>
                 
 
@@ -1441,8 +1446,8 @@ for instance).</li>
         <code>mouseOrEvt</code>
         
         
-            &mdash; <span><p>mouse position in window coordinates (0, 0 = top-left)
-or MouseEvent or TouchEvent</p></span>
+            &mdash; <span><p>Mouse position in window coordinates (from
+the top left corner of the window) or <code>MouseEvent</code> or <code>TouchEvent</code>.</p></span>
         
 
         
@@ -1450,10 +1455,10 @@ or MouseEvent or TouchEvent</p></span>
     
     <li>
         <code>radius</code>
+        (optional)
         
-        
-            &mdash; <span><p>picking will happen in a circle centered on mouseOrEvt. Radius
-is the radius of this circle, in pixels</p></span>
+            &mdash; <span><p>The picking will happen in a circle centered
+on mouseOrEvt. This is the radius of this circle, in pixels.</p></span>
         
 
         
@@ -1461,11 +1466,12 @@ is the radius of this circle, in pixels</p></span>
     
     <li>
         <code>where</code>
+        (optional)
         
-        
-            &mdash; <span><p>where to look for objects. Can be either: empty (= look
-in all layers with type == 'geometry'), layer ids or layers or a mix of all
-the above.</p></span>
+            &mdash; <span><p>Where to look for
+objects. It can be anything of <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, IDs of layers, or
+<code>THREE.Object3D</code>. If no location is specified, it will query on all
+<a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a> present in this <code>View</code>.</p></span>
         
 
         

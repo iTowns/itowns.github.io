@@ -175,6 +175,19 @@ outside of this extent.</p></span>
     </li>
     
     <li>
+        <code>options.layers</code>
+        
+        
+            &mdash; <span><p>Object containing subobject with
+informations on a specific layer. Informations available is <code>id</code>,
+<code>filterExpression</code>, <code>minzoom</code> and <code>maxzoom</code>. See <a onclick="window.parent.goTo('api/Source/VectorTilesSource.html','api/Source/VectorTilesSource')" title="VectorTilesSource">VectorTilesSource</a> for more precision. The key of each information is the
+<code>source-layer</code> property of the layer.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
         <code>options.isInverted</code>
         (optional)
         
@@ -183,17 +196,6 @@ correct value, true or false (default being false), if the computation of
 the coordinates needs to be inverted to same scheme as OSM, Google Maps
 or other system. See <a href="https://alastaira.wordpress.com/2011/07/06/converting-tms-tile-coordinates-to-googlebingosm-tile-coordinates">this link</a>
 for more informations.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>options.symbolToCircle</code>
-        (optional)
-        
-            &mdash; <span><p>If true, all symbols
-from a tile will be considered as circle, and render as circles.</p></span>
         
 
         

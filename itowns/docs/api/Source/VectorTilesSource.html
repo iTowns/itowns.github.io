@@ -25,7 +25,8 @@
     </h1>
 
     
-        <div class="description"><p>VectorTilesSource are object containing informations on how to fetch vector tiles resources.</p></div>
+        <div class="description"><p>VectorTilesSource are object containing informations on how to fetch vector
+tiles resources.</p></div>
     
 
     
@@ -68,6 +69,49 @@ VectorTilesSource and <a onclick="window.parent.goTo('api/Source/Source.html','a
         
 
         
+            
+
+<ul class="params">
+    
+    <li>
+        <code>source.style</code>
+        
+        
+            &mdash; <span><p>The URL of the JSON style, of the
+JSON style directly.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>source.sprite</code>
+        (optional)
+        
+            &mdash; <span><p>The base URL to load informations about
+the sprite of the style. If this is set, it overrides the <code>sprite</code> value
+of the <code>source.style</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>source.url</code>
+        (optional)
+        
+            &mdash; <span><p>The base URL to load the tiles. If no url
+is specified, it reads it from the loaded style. Read <a href="https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/">the Mapbox Style
+Specification</a>
+for more informations.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
     </li>
     
 </ul>
@@ -89,47 +133,32 @@ VectorTilesSource and <a onclick="window.parent.goTo('api/Source/Source.html','a
 
 <div class="property">
     <h3>
-        <span class="property-name">style</span>
-        : <span class="type">string</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>the url to json style.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">sprite</span>
-        : <span class="type">string</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>the base url to sprites folder.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
         <span class="property-name">filter</span>
         : <span class="type">function</span>
     </h3>
 
     
         <div class="description">
-            <p>function to filter vector tiles layers, the parameter function is a layer.</p>
+            <p>function to filter vector tiles layers, the
+parameter function is a layer.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">symbolToCircle</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>If true, all symbols from a tile
+will be considered as circle, and render as circles.</p>
         </div>
     
 </div>
