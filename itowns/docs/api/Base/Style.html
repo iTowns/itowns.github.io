@@ -866,14 +866,14 @@ properties of this style.</p>
 
 <div class="method">
     <h3>
-        <span class="method-name">getTextAnchorPositionInCSS</span>
+        <span class="method-name">getTextAnchorPosition</span>
         (
 
 
 )
         :
             
-                <span class="type">string</span>
+                <span class="type">Array.&lt;number></span>
 
             
         
@@ -882,8 +882,8 @@ properties of this style.</p>
     
         
             <div class="description">
-                <p>Get the CSS value corresponding to the anchor of the text. It is usually
-a <code>translate()</code> value to use with a <code>transform</code> property.</p>
+                <p>Gets the values corresponding to the anchor of the text. It is
+proportions, to use with a <code>translate()</code> and a <code>transform</code> property.</p>
             </div>
         
     
@@ -891,7 +891,7 @@ a <code>translate()</code> value to use with a <code>transform</code> property.<
     
                 <h4>Returns</h4>
                 
-                    <p>The CSS value.</p>
+                    <p>Two percentage values, for x and y respectively.</p>
                 
 
     
