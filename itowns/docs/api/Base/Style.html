@@ -51,7 +51,10 @@ main components in a <code>Style</code> object:</p>
     
     
         params:
-            <span class="type">Object</span>
+            <span class="type">Object</span>, 
+    
+        parent:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
     
 
 )
@@ -75,6 +78,17 @@ main components in a <code>Style</code> object:</p>
         
             &mdash; <span><p>An object that can contain all properties of
 a Style.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>parent</code>
+        (optional)
+        
+            &mdash; <span><p>The parent style, that is looked onto if a value
+is missing.</p></span>
         
 
         
@@ -160,13 +174,14 @@ Default is no value, indicating that no filling needs to be done.</p>
 <div class="property">
     <h3>
         <span class="property-name">fill.pattern</span>
-        : <span class="type">Image|Canvas</span>
+        : <span class="type">Image|Canvas|string</span>
     </h3>
 
     
         <div class="description">
-            <p>Defines a pattern to fill the surface
-with. See <a href="http://www.itowns-project.org/itowns/examples/#source_file_geojson_raster">this
+            <p>Defines a pattern to fill the
+surface with. It can be an <code>Image</code> to use directly, or an url to fetch the
+pattern from. See <a href="http://www.itowns-project.org/itowns/examples/#source_file_geojson_raster">this
 example</a>
 for how to use.</p>
         </div>
@@ -627,25 +642,7 @@ names, prioritized in the order it is set. Default is <code>Open Sans Regular, A
 
 <div class="property">
     <h3>
-        <span class="property-name">text.halo</span>
-        : <span class="type">Object</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>An object containing properties defining a
-halo around the text.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">text.halo.color</span>
+        <span class="property-name">text.haloColor</span>
         : <span class="type">string</span>
     </h3>
 
@@ -664,7 +661,7 @@ Default is <code>#000000</code>.</p>
 
 <div class="property">
     <h3>
-        <span class="property-name">text.halo.width</span>
+        <span class="property-name">text.haloWidth</span>
         : <span class="type">number</span>
     </h3>
 
@@ -682,7 +679,7 @@ Default is <code>0</code>.</p>
 
 <div class="property">
     <h3>
-        <span class="property-name">text.halo.blur</span>
+        <span class="property-name">text.haloBlur</span>
         : <span class="type">number</span>
     </h3>
 
