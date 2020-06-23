@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>C3DTBatchTable - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        C3DTBatchTable
+        
+    </h1>
+
+    
+        <div class="description"><p>A 3D Tiles
+<a href="https://github.com/AnalyticalGraphicsInc/3d-tiles/tree/master/specification/TileFormats/BatchTable">batch
+table</a>.</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">C3DTBatchTable</span>
+        (
+
+
+    
+    
+        buffer:
+            <span class="type">ArrayBuffer</span>, 
+    
+        binaryLength:
+            <span class="type">ArrayBuffer</span>, 
+    
+        batchLength:
+            <span class="type">number</span>, 
+    
+        registeredExtensions:
+            <span class="type">Object</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>buffer</code>
+        
+        
+            &mdash; <span><p>batch table buffer to parse.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>binaryLength</code>
+        
+        
+            &mdash; <span><p>the length of the binary part of
+the batch table (not supported yet)</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>batchLength</code>
+        
+        
+            &mdash; <span><p>the length of the batch.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>registeredExtensions</code>
+        
+        
+            &mdash; <span><p>extensions registered to the layer</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">type</span>
+        : <span class="type">C3DTilesTypes</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Used by 3D Tiles extensions
+(e.g. <a onclick="window.parent.goTo('api/3D%20Tiles/C3DTBatchTableHierarchyExtension.html','api/3D%20Tiles/C3DTBatchTableHierarchyExtension')" title="C3DTBatchTableHierarchyExtension">C3DTBatchTableHierarchyExtension</a>) to know in which context
+(i.e. for which 3D Tiles class) the parsing of the extension should be done.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">batchLength</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>the length of the batch.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">content</span>
+        : <span class="type">object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>the content of the batch table in the form:
+{property1: values[], property2: values[], ...}.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">extensions</span>
+        : <span class="type">object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>3D Tiles extensions of the batch table
+stored in the following format:
+{extensioName1: extensionObject1, extensioName2: extensionObject2, ...}</p>
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getInfoById</span>
+        (
+
+
+    
+    
+        batchID:
+            <span class="type">integer</span>
+    
+
+)
+        :
+            
+                <span class="type">Object</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Creates and returns a javascript object holding the displayable
+information from the batch table and from extensions of the batch table,
+for a given feature (identified with its batchID).</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <ul>
+<li>displayable information relative to the batch
+table and its extensions. Object is formatted as follow:
+{batchTable:
+{property1: value1
+property2: value2
+...}
+extensions:
+{extension1:
+{property1: value1
+...}
+extension2: {...}
+...}
+}</li>
+</ul>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>batchID</code>
+        
+        
+            &mdash; <span><p>id of the feature</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/3DTiles/C3DTBatchTable.js">
+            src/Core/3DTiles/C3DTBatchTable.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

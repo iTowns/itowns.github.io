@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>C3DTExtensions - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        C3DTExtensions
+        
+    </h1>
+
+    
+        <div class="description"><p>Class for managing
+<a href="https://github.com/AnalyticalGraphicsInc/3d-tiles/tree/master/extensions">3D Tiles extensions</a>.
+Extensions used in a 3D Tiles tileset must be registered in the iTowns' layer
+holding the tileset by the user with the registerExtension
+method. The extension must be registered together with a class holding the
+code to interpret the extension.
+An example of extension class is $3DTBatchTableHierarchyExtension.
+This extension has only one part situated in the batch table (but other
+extensions can have multiple parts, stored in different 3D Tiles classes
+such as tileset or bounding volume).</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">C3DTExtensions</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+
+    
+</div>
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Example</h2>
+        
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// Create a C3DTExtensions object
+const extensions = new itowns.C3DTExtensions();
+// Register an extension to it named "3DTILES_batch_table_hierarchy" and
+// a class itowns.C3DTBatchTableHierarchyExtension to the batch table part
+// (with [itowns.C3DTilesTypes.batchtable]). see C3DTilesTypes
+extensions.registerExtension("3DTILES_batch_table_hierarchy",
+{ [itowns.C3DTilesTypes.batchtable]: itowns.C3DTBatchTableHierarchyExtension });
+
+// Create a 3D Tiles layer with registered extensions
+var $3dTilesLayerBTHierarchy = new itowns.C3DTilesLayer('3d-tiles-bt-hierarchy', {
+     name: 'BTHierarchy',
+     source: new itowns.C3DTilesSource({
+         url: 'https://raw.githubusercontent.com/AnalyticalGraphicsInc/cesium/master/Apps/SampleData/Cesium3DTiles/Hierarchy/BatchTableHierarchy/tileset.json',
+         }),
+         registeredExtensions: extensions,
+     },
+view);</code></pre>
+
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getExtension</span>
+        (
+
+
+    
+    
+        extensionName:
+            <span class="type">string</span>, 
+    
+        type:
+            <span class="type">C3DTilesTypes</span>
+    
+
+)
+        :
+            
+                <span class="type">object</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Get an extension manager from its name and C3DTilesType</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <ul>
+<li>the extension manager corresponding to the
+extensioNname and type.</li>
+</ul>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extensionName</code>
+        
+        
+            &mdash; <span><p>name of the extension.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>type</code>
+        
+        
+            &mdash; <span><p>type of 3DTiles class (e.g. batch
+table, bounding volume, tileset, etc.)</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">isExtensionRegistered</span>
+        (
+
+
+    
+    
+        extensionName:
+            <span class="type">string</span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Test if an extension is registered</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <ul>
+<li>true if the extension is registered and false
+otherwise.</li>
+</ul>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extensionName</code>
+        
+        
+            &mdash; <span><p>Name of the extension</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">parseExtensions</span>
+        (
+
+
+    
+    
+        extensionsJSON:
+            <span class="type">object</span>, 
+    
+        type:
+            <span class="type">C3DTilesTypes</span>
+    
+
+)
+        :
+            
+                <span class="type">object</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Parses the extensions from a given JSON (extensionsJSON) by
+instanciating the right class from the registered extensions.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <ul>
+<li>An object with keys being the names of the
+extensions and values the instances of the extensions managers.</li>
+</ul>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extensionsJSON</code>
+        
+        
+            &mdash; <span><p>the JSON to parse extensions from.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>type</code>
+        
+        
+            &mdash; <span><p>type of class asking for extensions parsing
+has been called. For instance, if <a onclick="window.parent.goTo('api/3D%20Tiles/C3DTBatchTable.html','api/3D%20Tiles/C3DTBatchTable')" title="C3DTBatchTable">C3DTBatchTable</a> needs to
+parse its extensions, it will call parseExtension with the JSON to
+parse and C3DTilesTypes.batchtable as type.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">registerExtension</span>
+        (
+
+
+    
+    
+        extensionName:
+            <span class="type">string</span>, 
+    
+        extensionManagers:
+            <span class="type">object</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Register a 3D Tiles extension: Maps an extension name to the
+extensionsManagers (i.e. one class per 3D Tiles class (e.g.
+batch table or bounding volume).</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extensionName</code>
+        
+        
+            &mdash; <span><p>Name of the extension</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>extensionManagers</code>
+        
+        
+            &mdash; <span><p>An object mapping 3D Tiles
+classes names (see @link{C3DTilesTypes} to the extension managers
+corresponding to this class. These extension managers should be able
+to parse the extension fragment (done in the constructor) and should
+have a getInfoById method if they are related to the batch table class.
+See $3DTBatchTableHierarchyExtension for an example of
+extension class.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/3DTiles/C3DTExtensions.js">
+            src/Core/3DTiles/C3DTExtensions.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -71,8 +71,9 @@
         <code>id</code>
         
         
-            &mdash; <span><p>The id of the layer, that should be unique. It is
-not mandatory, but an error will be emitted if this layer is added a
+            &mdash; <span><p>The id of the layer, that should be unique.
+It is not mandatory, but an error will be emitted if this layer is
+added a
 <a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> that already has a layer going by that id.</p></span>
         
 
@@ -460,6 +461,149 @@ attach a layer.</p>
         
         
             &mdash; <span><p>The layer to detach.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">findBatchTable</span>
+        (
+
+
+    
+    
+        object:
+            <span class="type">THREE.Object3D</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/3D%20Tiles/C3DTBatchTable.html','api/3D%20Tiles/C3DTBatchTable')" title="C3DTBatchTable">C3DTBatchTable</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Finds the batch table of an object in a 3D Tiles layer. This is
+for instance needed when picking because we pick the geometric
+object which is not at the same level in the layer structure as
+the batch table. More details here on itowns internal
+organization of 3DTiles:
+https://github.com/MEPP-team/RICT/blob/master/Doc/iTowns/Doc.md#itowns-internal-organisation-of-3d-tiles-data</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <ul>
+<li>the batch table of the object</li>
+</ul>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>object</code>
+        
+        
+            &mdash; <span><p>a 3D geometric object</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getInfoFromIntersectObject</span>
+        (
+
+
+    
+    
+        intersects:
+            <span class="type">Array</span>
+    
+
+)
+        :
+            
+                <span class="type">Object</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Gets semantic information from batch table and batch table extensions
+of an intersected feature.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <ul>
+<li>an object containing the batch id, the
+information from the batch table and from the extension of the batch
+table for an intersected feature.</li>
+</ul>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>intersects</code>
+        
+        
+            &mdash; <span><p>@return An array containing all
+targets picked under specified coordinates. Intersects can be
+computed with view.pickObjectsAt(..). See fillHTMLWithPickingInfo()
+in 3dTilesHelper.js for an example.</p></span>
         
 
         
