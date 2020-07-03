@@ -280,8 +280,7 @@ When calling this method, two parameters are passed:</p>
  <li>`buildExtent : boolean` - True if the layer does not inherit from <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>.</li>
  <li>`crsIn : string` - The projection of the source.</li>
  <li>`crsOut : string` - The projection of the layer.</li>
- <li>`filteringExtent : Extent` - If the layer inherits from <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, it is set to the extent of destination, otherwise it is
- undefined.</li>
+ <li>`filteringExtent : Extent|boolean` - If the layer inherits from <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, it is set filtering with the extent, or extent file if it is true.</li>
  <li>`filter : function` - Property of the layer.</li>
  <li>`mergeFeatures : boolean (default true)` - Property of the layer,
  default to true.</li>
