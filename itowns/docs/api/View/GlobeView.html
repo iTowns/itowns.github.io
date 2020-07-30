@@ -129,6 +129,80 @@ var view = new itowns.GlobeView(viewerDiv, position);</code></pre>
     
 
     
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">addLayer</span>
+        (
+
+
+    
+    
+        layer:
+            <span class="type">LayerOptions|<a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a>|<a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Add layer in viewer.
+The layer id must be unique.</p>
+<p>The <code>layer.whenReady</code> is a promise that resolves when
+the layer is done. This promise is also returned by
+<code>addLayer</code> allowing to chain call.</p>
+<p>The layer added is attached, by default to <code>GlobeLayer</code> (<code>GlobeView.tileLayer</code>).
+If you want add a unattached layer use <code>View#addLayer</code> parent method.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>a promise resolved with the new layer object when it is fully initialized or rejected if any error occurred.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>layer</code>
+        
+        
+            &mdash; <span><p>The layer to add in view.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
 
     
 

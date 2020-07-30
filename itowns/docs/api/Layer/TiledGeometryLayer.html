@@ -27,7 +27,20 @@
     </h1>
 
     
-        <div class="description"><p>A layer extending the <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, but with a tiling notion.</p></div>
+        <div class="description"><p>A layer extending the <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, but with a tiling notion.</p>
+<p><code>TiledGeometryLayer</code> is the ground where <code>ColorLayer</code> and <code>ElevationLayer</code> are attached.
+<code>TiledGeometryLayer</code> is a quadtree data structure. At zoom 0,
+there is a single tile for the whole earth. At zoom level 1,
+the single tile splits into 4 tiles (2x2 tile square).
+Each zoom level quadtree divides the geometry tiles of the one before it.
+The camera distance determines how the tiles are subdivided for optimal data display.</p>
+<p>Some <code>GeometryLayer</code> can also be attached to the <code>TiledGeometryLayer</code> if they want to take advantage of the quadtree.</p>
+<p><img src="/docs/static/images/tiledGeometry.jpeg" alt="tiled geometry">
+<em>In <code>GlobeView</code>, <strong>red lines</strong> represents the <strong>WGS84 grid</strong> and <strong>orange lines</strong> the <strong>Pseudo-mercator grid</strong>.</em>
+<em>In this picture, there are tiles with 3 different zoom/levels.</em></p>
+<p>The zoom/level is based on <a href="https://en.wikipedia.org/wiki/Tiled_web_map">tiled web map</a>.
+It corresponds at meters by pixel. If the projection tile exceeds a certain pixel size (on screen)
+then it is subdivided into 4 tiles with a zoom greater than 1.</p></div>
     
 
     

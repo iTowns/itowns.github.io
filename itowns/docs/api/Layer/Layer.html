@@ -248,6 +248,63 @@ for a layer with vector tiles.</p>
     
 </div>
 
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">zoom</span>
+        : <span class="type">object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>This property is used only the layer is attached to <a onclick="window.parent.goTo('api/Layer/TiledGeometryLayer.html','api/Layer/TiledGeometryLayer')" title="TiledGeometryLayer">TiledGeometryLayer</a>.
+By example,
+The layer checks the tile zoom level to determine if the layer is visible in this tile.</p>
+<p><img src="/docs/static/images/wfszoommaxmin.jpeg" alt="tiled geometry">
+<em>In <code>GlobeView</code>, <strong>red lines</strong> represents the <strong>WGS84 grid</strong> and <strong>orange lines</strong> the Pseudo-mercator grid</em>
+<em>In this example <a href="http://www.itowns-project.org/itowns/examples/index.html#source_stream_wfs_3d">WFS to 3D objects</a>, the building layer zoom min is 14.</em>
+<em>In the lower part of the picture, the zoom tiles 14 have buildings, while in the upper part of the picture, the level 13 tiles have no buildings.</em></p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">zoom.max</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>this is the maximum zoom beyond which it'll be hidden.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">zoom.min</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>this is the minimum zoom from which it'll be visible.</p>
+        </div>
+    
+</div>
+
             
         
     
