@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PotreeSource - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        PotreeSource
+        
+            <span class="extends">extends <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a></span>
+        
+    </h1>
+
+    
+        <div class="description"><p>PotreeSource are object containing informations on how to fetch points cloud resources.</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">PotreeSource</span>
+        (
+
+
+    
+    
+        source:
+            <span class="type">Object</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>source</code>
+        
+        
+            &mdash; <span><p>An object that can contain all properties of a
+PotreeSource</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>source.url</code>
+        
+        
+            &mdash; <span><p>folder url.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>source.file</code>
+        
+        
+            &mdash; <span><p>cloud file name.</p>
+<p>This <code>cloud</code> file stores information about the potree cloud in JSON format. the structure is :</p>
+<ul>
+<li><strong><code>version</code></strong> - The cloud.js format may change over time. The version number is
+necessary so that parsers know how to interpret the data.</li>
+<li><strong><code>octreeDir</code></strong> - Directory or URL where node data is stored. Usually points to
+&quot;data&quot;.</li>
+<li><strong><code>boundingBox</code></strong> - Contains the minimum and maximum of the axis aligned bounding box. This bounding box is cubic and aligned to fit to the octree root.</li>
+<li><strong><code>tightBoundingBox</code></strong> - This bounding box thightly fits the point data.</li>
+<li><strong><code>pointAttributes</code></strong> - Declares the point data format. May be 'LAS', 'LAZ' or in case if the BINARY format an array of attributes like
+<code>['POSITION_CARTESIAN', 'COLOR_PACKED', 'INTENSITY']</code></li>
+<li><strong><code>POSITION_CARTESIAN</code></strong> - 3 x 32bit signed integers for x/y/z coordinates</li>
+<li><strong><code>COLOR_PACKED</code></strong> - 4 x unsigned byte for r,g,b,a colors.</li>
+<li><strong><code>spacing</code></strong> - The minimum distance between points at root level.</li>
+</ul>
+<pre class="prettyprint source"><code>{
+    version: '1.6',
+    octreeDir: 'data',
+    boundingBox: {
+        lx: -4.9854,
+        ly: 1.0366,
+        lz: -3.4494,
+        ux: 0.702300000000001,
+        uy: 6.7243,
+        uz: 2.2383
+    },
+    tightBoundingBox: {
+        lx: -4.9854,
+        ly: 1.0375,
+        lz: -3.4494,
+        ux: -0.7889,
+        uy: 6.7243,
+        uz: 1.1245
+    },
+    pointAttributes: [
+        'POSITION_CARTESIAN',
+        'COLOR_PACKED'
+    ],
+    spacing: 0.03,
+    scale: 0.001,
+    hierarchyStepSize: 5
+}
+</code></pre></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">extentInsideLimit</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Tests if an extent is inside the source limits.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>True if the extent is inside the limit, false otherwise.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span><p>Extent to test.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">extentsInsideLimit</span>
+        (
+
+
+    
+    
+        extents:
+            <span class="type">Array.&lt;Extent></span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Tests if an array of extents is inside the source limits.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>True if all extents are inside, false otherwise.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extents</code>
+        
+        
+            &mdash; <span><p>Array of extents to test.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">urlFromExtent</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type">string</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Generates an url from an extent. This url is a link to fetch the
+resources inside the extent.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The URL constructed from the extent.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span><p>Extent to convert in url.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Source/PotreeSource.js">
+            src/Source/PotreeSource.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>
