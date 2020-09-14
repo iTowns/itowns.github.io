@@ -22,6 +22,8 @@
     <h1>
         LabelLayer
         
+            <span class="extends">extends <a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+        
     </h1>
 
     
@@ -41,6 +43,15 @@ it work with it (see the <code>vector_tile_raster_2d</code> example).</p></div>
         (
 
 
+    
+    
+        id:
+            <span class="type">string</span>, 
+    
+        config:
+            <span class="type">Object</span>
+    
+
 )
         
     </h3>
@@ -48,6 +59,40 @@ it work with it (see the <code>vector_tile_raster_2d</code> example).</p></div>
     
 
     
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>id</code>
+        
+        
+            &mdash; <span><p>The id of the layer, that should be unique. It is
+not mandatory, but an error will be emitted if this layer is added a
+<a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> that already has a layer going by that id.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config</code>
+        (optional)
+        
+            &mdash; <span><p>Optional configuration, all elements in it
+will be merged as is in the layer. For example, if the configuration
+contains three elements <code>name, protocol, extent</code>, these elements will be
+available using <code>layer.name</code> or something else depending on the property
+name.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
 
     
 
@@ -75,23 +120,6 @@ it work with it (see the <code>vector_tile_raster_2d</code> example).</p></div>
             <p>Used to checkout whether this layer is a
 LabelLayer.  Default is true. You should not change this, as it is used
 internally for optimisation.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">crs</span>
-        : <span class="type">string</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>The crs of this layer.</p>
         </div>
     
 </div>
@@ -179,6 +207,150 @@ labels from.</p></span>
     </li>
     
 </ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">defineLayerProperty</span>
+        (
+
+
+    
+    
+        propertyName:
+            <span class="type">string</span>, 
+    
+        defaultValue:
+            <span class="type">*</span>, 
+    
+        onChange:
+            <span class="type">function</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Defines a property for this layer, with a default value and a callback
+executed when the property changes.
+<br><br>
+When changing the property, it also emits an event, named following this
+convention: <code>${propertyName}-property-changed</code>, with <code>${propertyName}</code>
+being replaced by the name of the property.  For example, if the added
+property name is <code>frozen</code>, it will emit a <code>frozen-property-changed</code>.
+<br><br></p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>propertyName</code>
+        
+        
+            &mdash; <span><p>The name of the property, also used in
+the emitted event name.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>defaultValue</code>
+        
+        
+            &mdash; <span><p>The default set value.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>onChange</code>
+        (optional)
+        
+            &mdash; <span><p>The function executed when the property is
+changed. Parameters are the layer the property is defined on, and the
+name of the property.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+        <caption>The emitted event has some properties assigned to it</caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>event = {
+    new: {
+        ${propertyName}: * // the new value of the property
+    },
+    previous: {
+        ${propertyName}: * // the previous value of the property
+    },
+    target: Layer // the layer it has been dispatched from
+    type: string // the name of the emitted event
+}</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">delete</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Remove and dispose all objects from layer.</p>
+            </div>
+        
+    
+
+    
 
     
 
