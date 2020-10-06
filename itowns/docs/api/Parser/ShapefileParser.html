@@ -56,12 +56,16 @@ Promise.all([
         shx: res[2],
         prj: res[3],
     }, {
-        buildExtent: true,
-        crsIn: 'EPSG:4326',
-        crsOut: view.tileLayer.extent.crs,
+           in: {
+             crs: 'EPSG:4326',
+        },
+        out: {
+            crs: view.tileLayer.extent.crs,
+            buildExtent: true,
+        }
     });
 }).then(function _(geojson) {
-    var source = new FileSource({ parsedData: geojson });
+    var source = new FileSource({ features: geojson });
     var layer = new ColorLayer('velib', { source  });
     view.addLayer(layer);
 });</code></pre>
@@ -91,7 +95,7 @@ Promise.all([
             <span class="type">Object</span>, 
     
         options:
-            <span class="type">geojsonParserOptions</span>
+            <span class="type"><a onclick="window.parent.goTo('api/Source/ParsingOptions.html','api/Source/ParsingOptions')" title="ParsingOptions">ParsingOptions</a></span>
     
 
 )
@@ -114,7 +118,7 @@ Promise.all([
     
                 <h4>Returns</h4>
                 
-                    <p>A promise resolving with a FeatureCollection.</p>
+                    <p>A promise resolving with a <a onclick="window.parent.goTo('api/Base/FeatureCollection.html','api/Base/FeatureCollection')" title="FeatureCollection">FeatureCollection</a>.</p>
                 
 
     
@@ -172,7 +176,7 @@ geometry.</p></span>
         <code>data.prj</code>
         (optional)
         
-            &mdash; <span><p>The coordinate system and projection
+            &mdash; <span><p>The coordinate system and crs projection
 information.</p></span>
         
 

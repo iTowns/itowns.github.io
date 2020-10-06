@@ -6,7 +6,7 @@
  * displayed are stored in the plugin. Use the method `register` to declare the
  * way a file is read, parsed and displayed.
  *
- * Note: only files with the projection `EPSG:4326` can be projected correctly
+ * Note: only files with the crs projection `EPSG:4326` can be projected correctly
  * using this plugin.
  *
  * @module DragNDrop
@@ -67,18 +67,22 @@ var DragNDrop = (function _() {
                 }
 
                 extension.parser(data, {
-                    buildExtent: true,
-                    crsIn: 'EPSG:4326',
-                    crsOut: (extension.mode == _GEOMETRY ? _view.referenceCrs : _view.tileLayer.extent.crs),
-                    mergeFeatures: true,
-                    withNormal: (extension.mode == _GEOMETRY),
-                    withAltitude: (extension.mode == _GEOMETRY),
-                }).then(function _(result) {
-                    var dimensions = result.extent.dimensions();
+                    in: {
+                        crs: 'EPSG:4326',
+                    },
+                    out: {
+                        crs: (extension.mode == _GEOMETRY ? _view.referenceCrs : _view.tileLayer.extent.crs),
+                        buildExtent: true,
+                        mergeFeatures: true,
+                        withNormal: (extension.mode == _GEOMETRY),
+                        withAltitude: (extension.mode == _GEOMETRY),
+                    },
+                }).then(function _(features) {
+                    var dimensions = features.extent.dimensions();
 
                     var source = new itowns.FileSource({
-                        parsedData: result,
-                        projection: 'EPSG:4326',
+                        features: features,
+                        crs: 'EPSG:4326',
                     });
 
                     var randomColor = Math.round(Math.random() * 0xffffff);
@@ -119,7 +123,7 @@ var DragNDrop = (function _() {
 
                     // Move the camera to the first vertex
                     itowns.CameraUtils.animateCameraToLookAtTarget(_view, _view.camera.camera3D, {
-                        coord: new itowns.Coordinates(result.crs, result.features[0].vertices),
+                        coord: new itowns.Coordinates(features.crs, features.features[0].vertices),
                         range: dimensions.x * dimensions.y * 1e6,
                     });
                 });

@@ -35,7 +35,7 @@ resource here:</p>
  <li>fetch the file, and give the data to the source using the `fetchedData`
  property.</li>
  <li>fetch the file, parse it and git the parsed data to the source using the
- `parsedData` property.</li>
+ `features` property.</li>
 </ul>
 See the examples below for real use cases.</div>
     
@@ -54,10 +54,7 @@ See the examples below for real use cases.</div>
     
     
         source:
-            <span class="type">Object</span>, 
-    
-        crsOut:
-            <span class="type">string</span>
+            <span class="type">Object</span>
     
 
 )
@@ -79,19 +76,8 @@ See the examples below for real use cases.</div>
         
         
             &mdash; <span><p>An object that can contain all properties of a
-FileSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. Only <code>projection</code> is mandatory, but if it
-presents in <code>parsedData</code> under the property <code>projection</code> or <code>crs</code>, it is
-fine.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>crsOut</code>
-        
-        
-            &mdash; <span><p>The projection of the output data after parsing.</p></span>
+FileSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. Only <code>crs</code> is mandatory, but if it
+presents in <code>features</code> under the property <code>crs</code>, it is fine.</p></span>
         
 
         
@@ -120,7 +106,7 @@ care of everything.</caption>
 
     <pre class="prettyprint source lang-js"><code>const kmlSource = new itowns.FileSource({
     url: 'https://raw.githubusercontent.com/iTowns/iTowns2-sample-data/master/croquis.kml',
-    projection: 'EPSG:4326',
+    crs: 'EPSG:4326',
     fetcher: itowns.Fetcher.xml,
     parser: itowns.KMLParser.parse,
 });
@@ -128,7 +114,7 @@ care of everything.</caption>
 const kmlLayer = new itowns.ColorLayer('Kml', {
     name: 'kml',
     transparent: true,
-    projection: view.tileLayer.extent.crs,
+    crs: view.tileLayer.extent.crs,
     source: kmlSource,
 });
 
@@ -145,7 +131,7 @@ itowns.Fetcher.xml('https://raw.githubusercontent.com/iTowns/iTowns2-sample-data
     .then(function _(gpx) {
         const gpxSource = new itowns.FileSource({
             data: gpx,
-            projection: 'EPSG:4326',
+            crs: 'EPSG:4326',
             parser: itowns.GpxParser.parse,
         });
 
@@ -177,17 +163,19 @@ ariege.convert = itowns.Feature2Mesh.convert({
 itowns.Fetcher.json('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements/09-ariege/departement-09-ariege.geojson')
     .then(function _(geojson) {
         return itowns.GeoJsonParser.parse(geojson, {
+            in: { in: 'EPSG:4326' },
+            out: {
+            crs: view.tileLayer.extent.crs,
             buildExtent: true,
-            crsIn: 'EPSG:4326',
-            crsOut: view.tileLayer.extent.crs,
             mergeFeatures: true,
             withNormal: false,
             withAltitude: false,
+            },
         });
-    }).then(function _(parsedData) {
+    }).then(function _(features) {
         ariege.source = new itowns.FileSource({
-            projection: 'EPSG:4326',
-            parsedData,
+            crs: 'EPSG:4326',
+            features,
         });
 
         return view.addLayer(ariegeLayer);
@@ -241,7 +229,7 @@ is stored in this property.</p>
 
 <div class="property">
     <h3>
-        <span class="property-name">parsedData</span>
+        <span class="property-name">features</span>
         : <span class="type">*</span>
     </h3>
 
@@ -373,6 +361,193 @@ resulting data is stored in this property.</p>
         
         
             &mdash; <span><p>Array of extents to test.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">loadData</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        out:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/FeatureBuildingOptions.html','api/Base/FeatureBuildingOptions')" title="FeatureBuildingOptions">FeatureBuildingOptions</a>|<a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Base/FeatureCollection.html','api/Base/FeatureCollection')" title="FeatureCollection">FeatureCollection</a>|Texture</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>load  data from cache or Fetch/Parse data.
+The loaded data is a Feature or Texture.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The parsed data.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span><p>extent requested parsed data.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>out</code>
+        
+        
+            &mdash; <span><p>The feature returned options</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">onLayerAdded</span>
+        (
+
+
+    
+    
+        options:
+            <span class="type">object</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Called when layer added.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>options</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">onLayerRemoved</span>
+        (
+
+
+    
+    
+        options:
+            <span class="type">options</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Called when layer removed.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>options</code>
+        (default: <code>{}</code>)
+        
+        
+            &mdash; <span><p>options</p></span>
         
 
         

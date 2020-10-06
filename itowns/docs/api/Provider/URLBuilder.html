@@ -130,7 +130,7 @@ source, using the letters <code>w, s, e, n</code> respectively for <code>WEST, S
     
 
     <pre class="prettyprint source lang-js"><code>extent = new Extent('EPSG:4326', 12, 14, 35, 46);
-source.projection = 'EPSG:4326';
+source.crs = 'EPSG:4326';
 source.url = 'http://server.geo/wms/BBOX=%bbox&FORMAT=jpg&SERVICE=WMS';
 url = URLBuilder.bbox(extent, source);
 

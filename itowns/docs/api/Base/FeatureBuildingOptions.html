@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>FeatureBuildingOptions - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        FeatureBuildingOptions
+        
+    </h1>
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">FeatureBuildingOptions</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">crs</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The CRS to convert the input coordinates to.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">filteringExtent</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a>|boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Optional filter to reject
+features outside of extent. Extent filetring is file extent if filteringExtent is true.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">buildExtent</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>If true the geometry will
+have an extent property containing the area covered by the geometry.
+True if the layer does not inherit from <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">forcedExtentCrs</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>force feature extent crs if buildExtent is true.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">filter</span>
+        : <span class="type">function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Filter function to remove features</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">mergeFeatures</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>If true all geometries are merged by type and multi-type</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">withNormal</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>If true each coordinate normal is computed.
+True if the layer inherits from <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">withAltitude</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>If true each coordinate altitude is kept
+True if the layer inherits from <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">overrideAltitudeInToZero</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>If true, the altitude of the source data isn't taken into account for 3D geometry convertions.
+the altitude will be override to 0. This can be useful if you don't have a DEM or provide a new one when converting (with Layer.convert).</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">style</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The style to inherit when creating
+style for all new features.</p>
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/Feature.js">
+            src/Core/Feature.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

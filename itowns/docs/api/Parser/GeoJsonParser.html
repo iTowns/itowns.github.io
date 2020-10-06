@@ -56,7 +56,7 @@ containing all necessary informations to display this GeoJSON.</p></div>
             <span class="type">string</span>, 
     
         options:
-            <span class="type">GeoJsonParser~GeoJsonParserOptions</span>
+            <span class="type"><a onclick="window.parent.goTo('api/Source/ParsingOptions.html','api/Source/ParsingOptions')" title="ParsingOptions">ParsingOptions</a></span>
     
 
 )
@@ -102,8 +102,7 @@ containing all necessary informations to display this GeoJSON.</p></div>
         <code>options</code>
         
         
-            &mdash; <span><p>Options controlling
-the parsing.</p></span>
+            &mdash; <span><p>Options controlling the parsing.</p></span>
         
 
         
@@ -122,128 +121,6 @@ the parsing.</p></span>
         
     
 
-    
-        <hr class="title-divider"/>
-        <h2>Types</h2>
-        
-            
-
-<div class="typedef">
-    <h3>
-        <span class="typedef-name">GeoJsonParserOptions</span>
-        : <span class="type">Object</span>
-    </h3>
-
-    
-    
-
-<ul class="params">
-    
-    <li>
-        <code>crsOut: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>The CRS to convert the input coordinates
-to.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>crsIn: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>Override the data CRS.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>filteringExtent: <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a>|boolean</span></code>
-        (optional)
-        
-            &mdash; <span><p>Optional filter to reject
-features outside of extent. Extent filetring is file extent if filteringExtent is true.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>buildExtent: <span class="type">boolean</span></code>
-        (optional)
-        
-            &mdash; <span><p>If true the geometry will
-have an extent property containing the area covered by the geom</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>filter: <span class="type">function</span></code>
-        (optional)
-        
-            &mdash; <span><p>Filter function to remove features</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>mergeFeatures: <span class="type">boolean</span></code>
-        (default: <code>true</code>)
-        
-        
-            &mdash; <span><p>If true all geometries are merged by type and multi-type</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>withNormal: <span class="type">boolean</span></code>
-        (default: <code>true</code>)
-        
-        
-            &mdash; <span><p>If true each coordinate normal is computed</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>withAltitude: <span class="type">boolean</span></code>
-        (default: <code>true</code>)
-        
-        
-            &mdash; <span><p>If true each coordinate altitude is kept</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>overrideAltitudeInToZero: <span class="type">boolean</span></code>
-        (optional)
-        
-            &mdash; <span><p>If true, the altitude of the source data isn't taken into account for 3D geometry convertions.
-the altitude will be override to 0. This can be useful if you don't have a DEM or provide a new one when converting (with Layer.convert).</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-
-    
-</div>
-
-            
-        
     
 
     
