@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>GlobeView - iTowns documentation</title>
+    <title>PlanarView - iTowns documentation</title>
 
     <script src="../../scripts/prettify/prettify.js"> </script>
     <script src="../../scripts/prettify/lang-css.js"> </script>
@@ -20,14 +20,12 @@
 <article>
 
     <h1>
-        GlobeView
+        PlanarView
         
             <span class="extends">extends <a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>
         
     </h1>
 
-    
-        <div class="description"><p>Creates a view of a globe.</p></div>
     
 
     
@@ -37,7 +35,7 @@
 
 <div class="method">
     <h3>
-        <span class="method-name">GlobeView</span>
+        <span class="method-name">PlanarView</span>
         (
 
 
@@ -46,8 +44,8 @@
         viewerDiv:
             <span class="type">HTMLDivElement</span>, 
     
-        placement:
-            <span class="type">CameraTransformOptions</span>, 
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
     
         options:
             <span class="type">object</span>
@@ -79,10 +77,10 @@ in the DOM.</p></span>
     </li>
     
     <li>
-        <code>placement</code>
+        <code>extent</code>
         
         
-            &mdash; <span><p>An object to place view</p></span>
+            &mdash; <span><p>The ground extent.</p></span>
         
 
         
@@ -114,28 +112,22 @@ in the DOM.</p></span>
 
 
     
-        <caption><b>Instance GlobeView.</b></caption>
-
-    
-
-    <pre class="prettyprint source lang-js"><code>var viewerDiv = document.getElementById('viewerDiv');
-const placement = {
-    coord: new itowns.Coordinates('EPSG:4326', 2.351323, 48.856712),
-    range: 25000000,
-}
-var view = new itowns.GlobeView(viewerDiv, placement);</code></pre>
-
-    
         <caption><b>Enable WebGl 1.0 instead of WebGl 2.0.</b></caption>
 
     
 
     <pre class="prettyprint source lang-js"><code>var viewerDiv = document.getElementById('viewerDiv');
-const placement = {
-    coord: new itowns.Coordinates('EPSG:4326', 2.351323, 48.856712),
-    range: 25000000,
-}
-var view = new itowns.GlobeView(viewerDiv, placement, {  renderer: { isWebGL2: false } });</code></pre>
+const extent = new Extent('EPSG:3946', 1837816.94334, 1847692.32501, 5170036.4587, 5178412.82698);
+var view = new itowns.GlobeView(viewerDiv, extent, {  renderer: { isWebGL2: false } });</code></pre>
+
+    
+        <caption><b>Instance with placement on the ground.</b></caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>var viewerDiv = document.getElementById('viewerDiv');
+const extent = new Extent('EPSG:3946', 1837816.94334, 1847692.32501, 5170036.4587, 5178412.82698);
+var view = new itowns.GlobeView(viewerDiv, extent, { placement: { heading: -49.6, range: 6200, tilt: 17 } });</code></pre>
 
 
     
@@ -229,7 +221,10 @@ has just been relaunched.</p></span>
     
     
         layer:
-            <span class="type">LayerOptions|<a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a>|<a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></span>
+            <span class="type">LayerOptions|<a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a>|<a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></span>, 
+    
+        parentLayer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
     
 
 )
@@ -249,8 +244,6 @@ The layer id must be unique.</p>
 <p>The <code>layer.whenReady</code> is a promise that resolves when
 the layer is done. This promise is also returned by
 <code>addLayer</code> allowing to chain call.</p>
-<p>The layer added is attached, by default to <code>GlobeLayer</code> (<code>GlobeView.tileLayer</code>).
-If you want add a unattached layer use <code>View#addLayer</code> parent method.</p>
             </div>
         
     
@@ -272,6 +265,16 @@ If you want add a unattached layer use <code>View#addLayer</code> parent method.
         
         
             &mdash; <span><p>The layer to add in view.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>parentLayer</code>
+        (optional)
+        
+            &mdash; <span><p>it's the layer to which the layer will be attached.</p></span>
         
 
         
@@ -1778,167 +1781,6 @@ the viewer with. By default it is the <code>clientHeight</code> of the <code>vie
 
 <div class="event">
     <h3>
-        <span class="event-name">initialized</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Fires when the view is completely loaded. Controls and view's functions can be called then.</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>target: <span class="type">view</span></code>
-        
-        
-            &mdash; <span><p>dispatched on view</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>initialized</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">layer-added</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Fires when a layer is added</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>layerId: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>the id of the layer</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>target: <span class="type">view</span></code>
-        
-        
-            &mdash; <span><p>dispatched on view</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>layers-added</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">layer-removed</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Fires when a layer is removed</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>layerId: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>the id of the layer</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>target: <span class="type">view</span></code>
-        
-        
-            &mdash; <span><p>dispatched on view</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>layers-added</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="event">
-    <h3>
         <span class="event-name">layers-initialized</span>
     </h3>
 
@@ -1975,173 +1817,6 @@ layers are ready.</p>
     
 </div>
 
-            <hr/>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">layers-order-changed</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Fires when the layers oder has changed</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>new: <span class="type">object</span></code>
-        
-        
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>new.sequence: <span class="type">array</span></code>
-        
-        
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>new.sequence.0: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the new layer at position 0</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>new.sequence.1: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the new layer at position 1</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>new.sequence.2: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the new layer at position 2</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-        
-    </li>
-    
-</ul>
-
-        
-    </li>
-    
-    <li>
-        <code>previous: <span class="type">object</span></code>
-        
-        
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>previous.sequence: <span class="type">array</span></code>
-        
-        
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>previous.sequence.0: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the previous layer at position 0</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>previous.sequence.1: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the previous layer at position 1</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>previous.sequence.2: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the previous layer at position 2</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-        
-    </li>
-    
-</ul>
-
-        
-    </li>
-    
-    <li>
-        <code>target: <span class="type">view</span></code>
-        
-        
-            &mdash; <span><p>dispatched on view</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>layers-order-changed</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
             
         
     
@@ -2150,8 +1825,8 @@ layers are ready.</p>
 
         <hr class="title-divider"/>
         <h2>Source</h2>
-        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/Prefab/GlobeView.js">
-            src/Core/Prefab/GlobeView.js
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/Prefab/PlanarView.js">
+            src/Core/Prefab/PlanarView.js
         </a>
 
 

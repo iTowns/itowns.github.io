@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Tutorial: WebGL 1.0/2.0</title>
+
+    <script src="../scripts/prettify/prettify.js"> </script>
+    <script src="../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../styles/itowns.css">
+</head>
+
+<body>
+
+<section>
+
+<header>
+    <h1>Tutorial: WebGL 1.0/2.0</h1>
+</header>
+
+<article>
+    <p><strong>iTowns</strong> supports <strong>WebGL 2.0</strong> and is enabled by default.
+If you want instance instance with <strong>WebGL 1.0</strong> use option  <strong><code>renderer: { isWebGL2: false }</code></strong> to instance the viewer.</p>
+<h3>Example to instance viewer in WebGL 2.0.</h3>
+<pre class="prettyprint source lang-js"><code>// for GlobeView
+const gView = new GlobeView(viewerDiv, placement);
+
+// for PlanarView
+const pView = new PlanarView(viewerDiv, extent);
+
+// for View
+const view = new View(crs, viewerDiv);
+
+// is version webgl 2.0 after instance?
+const isWebGL2 = view.mainLoop.gfxEngine.renderer.capabilities.isWebGL2; // true
+</code></pre>
+<h3>Example to instance viewer in WebGL 1.0.</h3>
+<pre class="prettyprint source lang-js"><code>// for GlobeView
+const gView = new GlobeView(viewerDiv, placement, {  renderer: { isWebGL2: false } });
+
+// for PlanarView
+const pView = new PlanarView(viewerDiv, extent, {  renderer: { isWebGL2: false } });
+
+// for View
+const view = new View(crs, viewerDiv, {  renderer: { isWebGL2: false } });
+
+// is version webgl 1.0 after instance?
+const isWebGL2 = view.mainLoop.gfxEngine.renderer.capabilities.isWebGL2; // false
+</code></pre>
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../scripts/linenumber.js"> </script>
+</body>
+</html>
