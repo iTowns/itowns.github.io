@@ -116,13 +116,25 @@ header of the file is contained in <code>userData</code>.</p>
 <ul class="params">
     
     <li>
-        <code>options.colorDepth</code>
+        <code>options.in.colorDepth</code>
         (default: <code>'auto'</code>)
         
         
             &mdash; <span><p>Does the color
 encoding is known ? Is it <code>8</code> or <code>16</code> bits ? By default it is to
 <code>'auto'</code>, but it will be more performant if a specific value is set.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.out.skip</code>
+        (default: <code>1</code>)
+        
+        
+            &mdash; <span><p>Read one point from every <code>skip</code>
+points.</p></span>
         
 
         
