@@ -68,7 +68,7 @@ from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source'
         
         
             &mdash; <span><p>An object that can contain all properties of a
-WMTSSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. Only <code>url</code> and <code>name</code> are mandatory.</p></span>
+WMTSSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. Only <code>url</code>, <code>name</code> and <code>crs</code> are mandatory.</p></span>
         
 
         
@@ -197,9 +197,7 @@ value is 'normal'.</p>
 
     
         <div class="description">
-            <p>The crs projection in which to fetch the data. If
-not specified, it is deduced from <code>tileMatrixSet</code>. Default value is
-'EPSG:3857'.</p>
+            <p>The crs projection in which to fetch the data.</p>
         </div>
     
 </div>
