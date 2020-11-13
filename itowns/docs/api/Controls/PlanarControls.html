@@ -25,20 +25,17 @@
     </h1>
 
     
-        <div class="description"><p>Camera controls adapted for a planar view, with animated movements.
-Usage is as follow:</p>
+        <div class="description"><p>Planar controls is a camera controller adapted for a planar view, with animated movements.
+Usage is as follow :</p>
 <ul>
- <li><b>Left mouse button:</b> drag the camera (translation on the (xy) world
- plane).</li>
- <li><b>Right mouse button:</b> pan the camera (translation on the vertical
- (z) axis of the world plane).</li>
- <li><b>CTRL + Left mouse button:</b> rotate the camera around the focus point.</li>
- <li><b>Wheel scrolling:</b> zoom toward the cursor position.</li>
- <li><b>Wheel clicking:</b> smart zoom toward the cursor position (animated).</li>
- <li><b>Y key:</b> go to the starting view (animated).</li>
- <li><b>T key:</b> go to the top view (animated).</li>
-</ul>
-<p>This controls needs to be instantiated after the camera setup.</p></div>
+    <li><b>Left mouse button:</b> drag the camera (translation on the (xy) world plane).</li>
+    <li><b>Right mouse button:</b> pan the camera (translation on the vertical (z) axis of the world plane).</li>
+    <li><b>CTRL + Left mouse button:</b> rotate the camera around the focus point.</li>
+    <li><b>Wheel scrolling:</b> zoom toward the cursor position.</li>
+    <li><b>Wheel clicking:</b> smart zoom toward the cursor position (animated).</li>
+    <li><b>Y key:</b> go to the starting view (animated).</li>
+    <li><b>T key:</b> go to the top view (animated).</li>
+</ul></div>
     
 
     
@@ -58,7 +55,7 @@ Usage is as follow:</p>
             <span class="type"><a onclick="window.parent.goTo('api/View/PlanarView.html','api/View/PlanarView')" title="PlanarView">PlanarView</a></span>, 
     
         options:
-            <span class="type">PlanarControls~PlanarControlsOptions</span>
+            <span class="type">object</span>
     
 
 )
@@ -79,90 +76,36 @@ Usage is as follow:</p>
         <code>view</code>
         
         
+            &mdash; <span><p>the view where the controls will be used</p></span>
+        
 
         
     </li>
     
     <li>
         <code>options</code>
-        (optional)
+        
         
 
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-</div>
-
-    
-
-    
-        <hr class="title-divider"/>
-        <h2>Example</h2>
-        
-
-
-    
-
-    <pre class="prettyprint source lang-js"><code>// From the orthographic example
-new itowns.PlanarControls(view, {
-    // We do not want the user to zoom out too much
-    maxAltitude: 40000000,
-    // We want to keep the rotation disabled, to only have a view from the top
-    enableRotation: false,
-    // Faster zoom in/out speed
-    zoomInFactor: 0.5,
-    zoomOutFactor: 0.5,
-    // Don't zoom too much on smart zoom
-    smartZoomHeightMax: 100000,
-});</code></pre>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-        <hr class="title-divider"/>
-        <h2>Types</h2>
         
             
-
-<div class="typedef">
-    <h3>
-        <span class="typedef-name">PlanarControlsOptions</span>
-        : <span class="type">Object</span>
-    </h3>
-
-    
-    
 
 <ul class="params">
     
     <li>
-        <code>enableRotation: <span class="type">boolean</span></code>
+        <code>options.enableRotation</code>
         (default: <code>true</code>)
         
         
-            &mdash; <span><p>Enable the rotation with the `CTRL</p>
-<ul>
-<li>Left mouse button` and in animations, like the smart zoom.</li>
-</ul></span>
+            &mdash; <span><p>Enable the rotation with the <code>CTRL + Left mouse button</code>
+and in animations, like the smart zoom.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>rotateSpeed: <span class="type">number</span></code>
+        <code>options.rotateSpeed</code>
         (default: <code>2.0</code>)
         
         
@@ -173,7 +116,7 @@ new itowns.PlanarControls(view, {
     </li>
     
     <li>
-        <code>maxPanSpeed: <span class="type">number</span></code>
+        <code>options.maxPanSpeed</code>
         (default: <code>15</code>)
         
         
@@ -184,7 +127,7 @@ new itowns.PlanarControls(view, {
     </li>
     
     <li>
-        <code>minPanSpeed: <span class="type">number</span></code>
+        <code>options.minPanSpeed</code>
         (default: <code>0.05</code>)
         
         
@@ -195,7 +138,7 @@ new itowns.PlanarControls(view, {
     </li>
     
     <li>
-        <code>zoomTravelTime: <span class="type">number</span></code>
+        <code>options.zoomTravelTime</code>
         (default: <code>0.2</code>)
         
         
@@ -206,31 +149,31 @@ new itowns.PlanarControls(view, {
     </li>
     
     <li>
-        <code>zoomInFactor: <span class="type">number</span></code>
-        (default: <code>0.25</code>)
+        <code>options.zoomInFactor</code>
+        (default: <code>0.025</code>)
         
         
-            &mdash; <span><p>Zoom movement is equal to the distance
-to the zoom target, multiplied by this factor when zooming in.</p></span>
+            &mdash; <span><p>Zoom movement is equal to the distance to the zoom
+target, multiplied by this factor when zooming in.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>zoomOutFactor: <span class="type">number</span></code>
+        <code>options.zoomOutFactor</code>
         (default: <code>0.4</code>)
         
         
-            &mdash; <span><p>Zoom movement is equal to the distance
-to the zoom target, multiplied by this factor when zooming out.</p></span>
+            &mdash; <span><p>Zoom movement is equal to the distance to the zoom
+target, multiplied by this factor when zooming out.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>maxAltitude: <span class="type">number</span></code>
+        <code>options.maxAltitude</code>
         (default: <code>12000</code>)
         
         
@@ -241,7 +184,7 @@ to the zoom target, multiplied by this factor when zooming out.</p></span>
     </li>
     
     <li>
-        <code>groundLevel: <span class="type">number</span></code>
+        <code>options.groundLevel</code>
         (default: <code>200</code>)
         
         
@@ -252,125 +195,122 @@ to the zoom target, multiplied by this factor when zooming out.</p></span>
     </li>
     
     <li>
-        <code>autoTravelTimeMin: <span class="type">number</span></code>
+        <code>options.autoTravelTimeMin</code>
         (default: <code>1.5</code>)
         
         
-            &mdash; <span><p>Minimum duration for animated
-travels with the <code>auto</code> parameter.</p></span>
+            &mdash; <span><p>Minimum duration for animated travels with the <code>auto</code>
+parameter.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>autoTravelTimeMax: <span class="type">number</span></code>
+        <code>options.autoTravelTimeMax</code>
         (default: <code>4</code>)
         
         
-            &mdash; <span><p>Maximum duration for animated
-travels with the <code>auto</code> parameter.</p></span>
+            &mdash; <span><p>Maximum duration for animated travels with the <code>auto</code>
+parameter.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>autoTravelTimeDist: <span class="type">number</span></code>
+        <code>options.autoTravelTimeDist</code>
         (default: <code>20000</code>)
         
         
-            &mdash; <span><p>Maximum travel distance for
-animated travel with the <code>auto</code> parameter.</p></span>
+            &mdash; <span><p>Maximum travel distance for animated travel with the
+<code>auto</code> parameter.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>smartZoomHeightMin: <span class="type">number</span></code>
+        <code>options.smartZoomHeightMin</code>
         (default: <code>75</code>)
         
         
-            &mdash; <span><p>Minimum height above ground
-reachable after a smart zoom.</p></span>
+            &mdash; <span><p>Minimum height above ground reachable after a smart
+zoom.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>smartZoomHeightMax: <span class="type">number</span></code>
+        <code>options.smartZoomHeightMax</code>
         (default: <code>500</code>)
         
         
-            &mdash; <span><p>Maximum height above ground
-reachable after a smart zoom.</p></span>
+            &mdash; <span><p>Maximum height above ground reachable after a smart
+zoom.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>instantTravel: <span class="type">boolean</span></code>
+        <code>options.instantTravel</code>
         (optional)
         
-            &mdash; <span><p>If set to true, animated travels
-will have no duration.</p></span>
+            &mdash; <span><p>If set to true, animated travels will have no duration.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>minZenithAngle: <span class="type">number</span></code>
+        <code>options.minZenithAngle</code>
         (optional)
         
-            &mdash; <span><p>The minimum reachable zenith angle for
-a camera rotation, in degrees.</p></span>
+            &mdash; <span><p>The minimum reachable zenith angle for a camera
+rotation, in degrees.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>maxZenithAngle: <span class="type">number</span></code>
+        <code>options.maxZenithAngle</code>
         (default: <code>82.5</code>)
         
         
-            &mdash; <span><p>The maximum reachable zenith angle
-for a camera rotation, in degrees.</p></span>
+            &mdash; <span><p>The maximum reachable zenith angle for a camera
+rotation, in degrees.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>focusOnMouseOver: <span class="type">boolean</span></code>
+        <code>options.focusOnMouseOver</code>
         (default: <code>true</code>)
         
         
-            &mdash; <span><p>Set the focus on the canvas if
-hovered.</p></span>
+            &mdash; <span><p>Set the focus on the canvas if hovered.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>focusOnMouseClick: <span class="type">boolean</span></code>
+        <code>options.focusOnMouseClick</code>
         (default: <code>true</code>)
         
         
-            &mdash; <span><p>Set the focus on the canvas if
-clicked.</p></span>
+            &mdash; <span><p>Set the focus on the canvas if clicked.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>handleCollision: <span class="type">boolean</span></code>
+        <code>options.handleCollision</code>
         (default: <code>true</code>)
         
         
@@ -380,16 +320,26 @@ clicked.</p></span>
     
 </ul>
 
+        
+    </li>
+    
+</ul>
 
     
-        <div class="description">
-            <p>Options for the instantiation of a <a onclick="window.parent.goTo('api/Controls/PlanarControls.html','api/Controls/PlanarControls')" title="PlanarControls">PlanarControls</a>.</p>
-        </div>
+
     
 </div>
 
-            
-        
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
