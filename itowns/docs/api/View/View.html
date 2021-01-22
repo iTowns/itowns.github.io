@@ -101,18 +101,7 @@
         <code>options.camera</code>
         (optional)
         
-            &mdash; <span><p>A camera to use with the view.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>options.cameraType</code>
-        (default: <code>CAMERA_TYPE.PERSPECTIVE</code>)
-        
-        
-            &mdash; <span><p>The type of the camera (<code>CAMERA_TYPE.PERSPECTIVE</code> or <code>CAMERA_TYPE.ORTHOGRAPHIC</code>).</p></span>
+            &mdash; <span><p>Options for the camera associated to the view. See <a onclick="window.parent.goTo('api/Renderer/Camera.html','api/Renderer/Camera')" title="Camera">Camera</a> options.</p></span>
         
 
         
@@ -182,6 +171,40 @@ added to viewerDiv (mutually exclusive with mainLoop)</p></span>
 </div>
 
     
+
+    
+        <hr class="title-divider"/>
+        <h2>Example</h2>
+        
+
+
+    
+        <caption><b>Create a view with a custom Three.js camera.</b></caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>var viewerDiv = document.getElementById('viewerDiv');
+var customCamera = itowns.THREE.PerspectiveCamera();
+var view = itowns.View('EPSG:4326', viewerDiv, { camera: { cameraThree: customCamera } });</code></pre>
+
+    
+        <caption><b>Create a view with an orthographic camera, and grant it with Three.js custom controls.</b></caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>var viewerDiv = document.getElementById('viewerDiv');
+var view = itowns.View('EPSG:4326', viewerDiv, { camera: { type: itowns.CAMERA_TYPE.ORTHOGRAPHIC } });
+var customControls = itowns.THREE.OrbitControls(view.camera.camera3D, viewerDiv);</code></pre>
+
+    
+        <caption><b>Enable WebGl 1.0 instead of WebGl 2.0.</b></caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>var viewerDiv = document.getElementById('viewerDiv');
+const extent = new Extent('EPSG:3946', 1837816.94334, 1847692.32501, 5170036.4587, 5178412.82698);
+var view = new itowns.View('EPSG:4326', viewerDiv, {  renderer: { isWebGL2: false } });</code></pre>
+
 
     
 
@@ -887,7 +910,7 @@ view.getLayers(layer => layer.id === 'itt');</code></pre>
     
         
             <div class="description">
-                <p>Get, for a specific screen coordinate, this size in pixels of a projected
+                <p>Get, for a specific screen coordinate, the size in pixels of a projected
 distance on the surface of the main layer of the view.</p>
             </div>
         
@@ -896,7 +919,7 @@ distance on the surface of the main layer of the view.</p>
     
                 <h4>Returns</h4>
                 
-                    <p>The projected distance in meters.</p>
+                    <p>The projected distance in pixels.</p>
                 
 
     

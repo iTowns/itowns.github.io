@@ -44,11 +44,8 @@
         view:
             <span class="type"><a onclick="window.parent.goTo('api/View/GlobeView.html','api/View/GlobeView')" title="GlobeView">GlobeView</a></span>, 
     
-        targetCoordinate:
+        placement:
             <span class="type">CameraTransformOptions</span>, 
-    
-        range:
-            <span class="type">number</span>, 
     
         options:
             <span class="type">object</span>
@@ -79,20 +76,11 @@
     </li>
     
     <li>
-        <code>targetCoordinate</code>
+        <code>placement</code>
         
         
-            &mdash; <span><p>the target looked by camera, at initialization</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>range</code>
-        
-        
-            &mdash; <span><p>distance between the target looked and camera, at initialization</p></span>
+            &mdash; <span><p>the camera placement options at initialisation, see
+CameraTransformOptions in CameraUtils.</p></span>
         
 
         
@@ -841,7 +829,7 @@ The tilt's interval is between 4 and 89.5 degree</p>
     
                 <h4>Returns</h4>
                 
-                    <p>A promise that resolves when transformation is oppered</p>
+                    <p>A promise that resolves when transformation is complete</p>
                 
 
     
