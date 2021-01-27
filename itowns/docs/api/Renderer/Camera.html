@@ -72,7 +72,7 @@
         <code>crs</code>
         
         
-            &mdash; <span><p>The camera's coordinate projection system</p></span>
+            &mdash; <span><p>The camera's coordinate projection system.</p></span>
         
 
         
@@ -82,8 +82,8 @@
         <code>width</code>
         
         
-            &mdash; <span><p>The width (in pixels) of the view the camera is
-associated to.</p></span>
+            &mdash; <span><p>The width (in pixels) of the view the
+camera is associated to.</p></span>
         
 
         
@@ -93,8 +93,8 @@ associated to.</p></span>
         <code>height</code>
         
         
-            &mdash; <span><p>The height (in pixels) of the view the camera is
-associated to.</p></span>
+            &mdash; <span><p>The height (in pixels) of the view the
+camera is associated to.</p></span>
         
 
         
@@ -116,7 +116,8 @@ associated to.</p></span>
         <code>options.cameraThree</code>
         (optional)
         
-            &mdash; <span><p>A custom Three.js camera object to wrap around.</p></span>
+            &mdash; <span><p>A custom Three.js camera object to wrap
+around.</p></span>
         
 
         
@@ -138,8 +139,8 @@ associated to.</p></span>
         (default: <code>50</code>)
         
         
-            &mdash; <span><p>The height of the extent that a camera from type
-<code>CAMERA_TYPE.ORTHOGRAPHIC</code> must cover initially.</p></span>
+            &mdash; <span><p>The height of the extent that a camera
+from type <code>CAMERA_TYPE.ORTHOGRAPHIC</code> must cover initially.</p></span>
         
 
         
@@ -162,6 +163,95 @@ associated to.</p></span>
     
 
     
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">crs</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The camera's coordinate projection system.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">camera3D</span>
+        : <span class="type">object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The Three.js camera that is wrapped around.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">width</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The width of the camera.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">height</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The height of the camera.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">_preSSE</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The precomputed constant part of the screen space error.</p>
+        </div>
+    
+</div>
+
+            
+        
+    
 
     
         <hr class="title-divider"/>
@@ -178,10 +268,10 @@ associated to.</p></span>
     
     
         view:
-            <span class="type">view</span>, 
+            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
     
         elevationLayer:
-            <span class="type">elevationLayer</span>, 
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/ElevationLayer.html','api/Layer/ElevationLayer')" title="ElevationLayer">ElevationLayer</a></span>, 
     
         minDistanceCollision:
             <span class="type">number</span>
@@ -194,8 +284,8 @@ associated to.</p></span>
     
         
             <div class="description">
-                <p>Test for collision between camera and a geometry layer (DTM/DSM) to adjust camera position
-It could be modified later to handle an array of geometry layers
+                <p>Test for collision between camera and a geometry layer (DTM/DSM) to adjust camera position.
+It could be modified later to handle an array of geometry layers.
 TODO Improve Coordinates class to handle altitude for any coordinate system (even projected one)</p>
             </div>
         
@@ -213,7 +303,8 @@ TODO Improve Coordinates class to handle altitude for any coordinate system (eve
         <code>view</code>
         
         
-            &mdash; <span><p>where we test the collision between geometry layers and the camera</p></span>
+            &mdash; <span><p>The view where we test the collision between geometry layers
+and the camera</p></span>
         
 
         
@@ -223,7 +314,8 @@ TODO Improve Coordinates class to handle altitude for any coordinate system (eve
         <code>elevationLayer</code>
         
         
-            &mdash; <span><p>(DTM/DSM) used to test the collision with the camera. Could be another geometry layer</p></span>
+            &mdash; <span><p>The elevation layer (DTM/DSM) used to test the collision
+with the camera. Could be another geometry layer.</p></span>
         
 
         
@@ -233,7 +325,8 @@ TODO Improve Coordinates class to handle altitude for any coordinate system (eve
         <code>minDistanceCollision</code>
         
         
-            &mdash; <span><p>the minimum distance allowed between the camera and the surface</p></span>
+            &mdash; <span><p>The minimum distance allowed between the camera and the
+surface.</p></span>
         
 
         
@@ -284,7 +377,7 @@ TODO Improve Coordinates class to handle altitude for any coordinate system (eve
     
                 <h4>Returns</h4>
                 
-                    <p>Coordinates object holding camera's position</p>
+                    <p>Coordinates object holding camera's position.</p>
                 
 
     
@@ -295,9 +388,9 @@ TODO Improve Coordinates class to handle altitude for any coordinate system (eve
     
     <li>
         <code>crs</code>
+        (optional)
         
-        
-            &mdash; <span><p>if defined (e.g 'EPSG:4236') the camera position will be returned in this CRS</p></span>
+            &mdash; <span><p>If defined (e.g 'EPSG:4326'), the camera position will be returned in this CRS.</p></span>
         
 
         
@@ -336,7 +429,7 @@ TODO Improve Coordinates class to handle altitude for any coordinate system (eve
         
             <div class="description">
                 <p>Set the position of the camera using a Coordinates object.
-If you want to modify the position directly using x,y,z value then use camera.camera3D.position.set(x, y, z)</p>
+If you want to modify the position directly using x,y,z values then use <code>camera.camera3D.position.set(x, y, z)</code></p>
             </div>
         
     
@@ -353,7 +446,7 @@ If you want to modify the position directly using x,y,z value then use camera.ca
         <code>position</code>
         
         
-            &mdash; <span><p>the new position of the camera</p></span>
+            &mdash; <span><p>The new position of the camera.</p></span>
         
 
         
