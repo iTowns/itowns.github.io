@@ -132,6 +132,96 @@
 
 <div class="method">
     <h3>
+        <span class="method-name">getCameraTransformOptionsFromExtent</span>
+        (
+
+
+    
+    
+        view:
+            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
+    
+        camera:
+            <span class="type"><a onclick="window.parent.goTo('api/Renderer/Camera.html','api/Renderer/Camera')" title="Camera">Camera</a></span>, 
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type">CameraUtils~CameraTransformOptions</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Compute the CameraTransformOptions that allow a given camera to display a given extent in its entirety.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The CameraTransformOptions allowing camera to display the extent.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>view</code>
+        
+        
+            &mdash; <span><p>The camera view</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>camera</code>
+        
+        
+            &mdash; <span><p>The camera to get the CameraTransformOptions from</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span><p>The extent the camera must display</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
         <span class="method-name">getDiffParams</span>
         (
 
@@ -470,7 +560,7 @@
             <span class="type"><a onclick="window.parent.goTo('api/Renderer/Camera.html','api/Renderer/Camera')" title="Camera">Camera</a></span>, 
     
         params:
-            <span class="type">CameraUtils~CameraTransformOptions</span>
+            <span class="type">CameraUtils~CameraTransformOptions|<a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
     
 
 )
