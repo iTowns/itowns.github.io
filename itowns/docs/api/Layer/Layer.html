@@ -78,11 +78,11 @@ not mandatory, but an error will be emitted if this layer is added a
     
     <li>
         <code>config</code>
-        (optional)
         
-            &mdash; <span><p>Optional configuration, all elements in it
+        
+            &mdash; <span><p>configuration, all elements in it
 will be merged as is in the layer. For example, if the configuration
-contains three elements <code>name, protocol, extent</code>, these elements will be
+contains three elements <code>name, extent</code>, these elements will be
 available using <code>layer.name</code> or something else depending on the property
 name.</p></span>
         
@@ -91,6 +91,18 @@ name.</p></span>
             
 
 <ul class="params">
+    
+    <li>
+        <code>config.source</code>
+        
+        
+            &mdash; <span><p>instantiated Source specifies data source to display.
+if config.source is a boolean, it can only be false. if config.source is false,
+the layer doesn't need Source (like debug Layer or procedural layer).</p></span>
+        
+
+        
+    </li>
     
     <li>
         <code>config.cacheLifeTime</code>
