@@ -89,23 +89,6 @@ name.</p></span>
         
 
         
-            
-
-<ul class="params">
-    
-    <li>
-        <code>config.source</code>
-        (optional)
-        
-            &mdash; <span><p>Description and options of the source.</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-        
     </li>
     
 </ul>
@@ -127,11 +110,12 @@ name.</p></span>
 
     <pre class="prettyprint source lang-js"><code>// Create an ElevationLayer
 const elevation = new ElevationLayer('IGN_MNT', {
-     source: {
-         url: 'http://server.geo/wmts/SERVICE=WMTS&TILEMATRIX=%TILEMATRIX&TILEROW=%ROW&TILECOL=%COL',
-         protocol: 'wmts',
-         format: 'image/x-bil;bits=32',
-     },
+     source: new WMTSSource({
+         "url": "https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts",
+          "crs": "EPSG:4326",
+          "format": "image/x-bil;bits=32",
+          "name": "ELEVATION.ELEVATIONGRIDCOVERAGE",
+     }),
 });
 
 // Add the layer
@@ -193,6 +177,61 @@ internally for optimisation.</p>
             <p>Used to apply a scale on the elevation value. It
 can be used for exageration of the elevation, like in <a href="https://www.itowns-project.org/itowns/examples/#plugins_pyramidal_tiff">this
 example</a>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">useColorTextureElevation</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>the elevation is computed with one color texture channel,
+<code>this.colorTextureElevationMaxZ</code> and <code>this.colorTextureElevationMinZ</code>.</p>
+<p>The formula is:</p>
+<pre class="prettyprint source lang-js"><code>elevation = color.r * (this.colorTextureElevationMaxZ - this.colorTextureElevationMinZ) + this.colorTextureElevationMinZ
+</code></pre>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">colorTextureElevationMinZ</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>elevation minimum in <code>useColorTextureElevation</code> mode.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">colorTextureElevationMaxZ</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>elevation maximum in <code>useColorTextureElevation</code> mode.</p>
         </div>
     
 </div>
@@ -397,6 +436,71 @@ name of the property.</p></span>
         
         
             &mdash; <span><p>The feature</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setupRasterNode</span>
+        (
+
+
+    
+    
+        node:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/TileMesh.html','api/Base/TileMesh')" title="TileMesh">TileMesh</a></span>
+    
+
+)
+        :
+            
+                <span class="type">RasterElevationTile</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Setup RasterElevationTile added to TileMesh. This RasterElevationTile handles
+the elevation texture to displace TileMesh vertices.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The raster elevation node added.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>node</code>
+        
+        
+            &mdash; <span><p>The node to apply new RasterElevationTile;</p></span>
         
 
         

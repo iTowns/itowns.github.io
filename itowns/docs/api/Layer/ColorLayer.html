@@ -128,12 +128,15 @@ name.</p></span>
 
     <pre class="prettyprint source lang-js"><code>// Create a ColorLayer
 const color = new ColorLayer('roads', {
-    source: {
+    source: new  SourceWMTS({
          protocol: 'wmts',
-         url: 'http://server.geo/wmts/SERVICE=WMTS&TILEMATRIX=%TILEMATRIX&TILEROW=%ROW&TILECOL=%COL',
+         url: 'http://server.geo/wmts/....',
          format: 'image/png',
-    }
-    transparent: true
+         name: 'nameService',
+         tileMatrixSet: 'PM',
+    }),
+    transparent: true,
+    opacity: 0.5,
 });
 
 // Add the layer
@@ -159,6 +162,114 @@ view.addLayer(color);</code></pre>
             <p>Used to checkout whether this layer is a
 ColorLayer. Default is true. You should not change this, as it is used
 internally for optimisation.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">style</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>default style apply layer features.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">visible</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>property to display or to hide layer.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">opacity</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>property to adjust transparency, opacity is between 0. and 1.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">transparent</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>specify if the layer could be transparent.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">noTextureParentOutsideLimit</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>don't parent texture if it's outside limit.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fx</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>special effects apply on raster color.
+if <code>fx</code> equals:</p>
+<ul>
+<li><code>0</code>: no special effect.</li>
+<li><code>&gt; 0. to &lt; 2.0</code>: light color to invisible effect.</li>
+<li><code>&gt;= 2</code>: white color to invisible effect.</li>
+</ul>
         </div>
     
 </div>
@@ -363,6 +474,71 @@ name of the property.</p></span>
         
         
             &mdash; <span><p>The feature</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setupRasterNode</span>
+        (
+
+
+    
+    
+        node:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/TileMesh.html','api/Base/TileMesh')" title="TileMesh">TileMesh</a></span>
+    
+
+)
+        :
+            
+                <span class="type">RasterColorTile</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Setup RasterColorTile added to TileMesh. This RasterColorTile handles
+the ColorLayer textures mapped on this TileMesh.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The raster color node added.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>node</code>
+        
+        
+            &mdash; <span><p>The node to apply new RasterColorTile;</p></span>
         
 
         
