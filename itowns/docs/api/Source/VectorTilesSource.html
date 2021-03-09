@@ -90,7 +90,18 @@ JSON style directly.</p></span>
         
             &mdash; <span><p>The base URL to load informations about
 the sprite of the style. If this is set, it overrides the <code>sprite</code> value
-of the <code>source.style</code>.</p></span>
+of the <code>source.style</code>. A style's sprite property supplies a URL template
+for loading small images.</p>
+<pre class="prettyprint source lang-js"><code>{
+     sprite: 'http//:xxxxx/maps/sprites/'
+}
+</code></pre>
+<p>A valid sprite source must supply two types of files:</p>
+<ul>
+<li>An index file, which is a JSON document containing a description of each image contained in the sprite.</li>
+<li>Image files, which are PNG images containing the sprite data.</li>
+</ul>
+<p>For more specification : <a href="https://docs.mapbox.com/mapbox-gl-js/style-spec/sprite/">the Mapbox sprite Specification</a></p></span>
         
 
         
@@ -104,6 +115,16 @@ of the <code>source.style</code>.</p></span>
 is specified, it reads it from the loaded style. Read <a href="https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/">the Mapbox Style
 Specification</a>
 for more informations.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>source.accessToken</code>
+        (optional)
+        
+            &mdash; <span><p>Mapbox access token</p></span>
         
 
         
