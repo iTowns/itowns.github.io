@@ -89,6 +89,9 @@ TMSSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Sourc
 
 
     
+        <caption><b>Source from OpenStreetMap server :</b></caption>
+
+    
 
     <pre class="prettyprint source lang-js"><code>// Create the source
 const tmsSource = new itowns.TMSSource({
@@ -108,6 +111,25 @@ const colorLayer = new itowns.ColorLayer('OPENSM', {
 
 // Add the layer
 view.addLayer(colorLayer);</code></pre>
+
+    
+        <caption><b>Source from Mapbox server :</b></caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// Create the source
+const orthoSource = new itowns.TMSSource({
+    url: 'https://api.mapbox.com/v4/mapbox.satellite/${z}/${x}/${y}.jpg?access_token=' + accessToken,
+    crs: 'EPSG:3857',
+};
+
+// Create the layer
+const imageryLayer = new itowns.ColorLayer("Ortho", {
+    source: orthoSource,
+};
+
+// Add the layer to the view
+view.addLayer(imageryLayer);</code></pre>
 
 
     
