@@ -48,7 +48,7 @@ can be a layer of buildings extruded from a a WFS stream.</p></div>
             <span class="type">string</span>, 
     
         object3d:
-            <span class="type">THREE.Object3d</span>, 
+            <span class="type">THREE.Object3D</span>, 
     
         config:
             <span class="type">Object</span>
@@ -84,9 +84,9 @@ not mandatory, but an error will be emitted if this layer is added a
         <code>object3d</code>
         
         
-            &mdash; <span><p>The object3d used to contain the
+            &mdash; <span><p>The object3D used to contain the
 geometry of the GeometryLayer. It is usually a <code>THREE.Group</code>, but it can
-be anything inheriting from a <code>THREE.Object3d</code>.</p></span>
+be anything inheriting from a <code>THREE.Object3D</code>.</p></span>
         
 
         
@@ -141,7 +141,7 @@ name.</p></span>
     
 
     <pre class="prettyprint source lang-js"><code>// Create a GeometryLayer
-const geometry = new GeometryLayer('buildings', {
+const geometry = new GeometryLayer('buildings', new THREE.Object3D(), {
      source: {
          url: 'http://server.geo/wfs?',
          protocol: 'wfs',
