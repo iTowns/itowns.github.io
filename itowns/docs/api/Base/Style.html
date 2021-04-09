@@ -728,7 +728,10 @@ Default is <code>0</code>.</p>
     
     
         domElement:
-            <span class="type">Element</span>
+            <span class="type">Element</span>, 
+    
+        sprites:
+            <span class="type">Object</span>
     
 
 )
@@ -757,6 +760,16 @@ properties of this style.</p>
         
         
             &mdash; <span><p>The element to set the style to.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>sprites</code>
+        
+        
+            &mdash; <span><p>the sprites.</p></span>
         
 
         
@@ -881,6 +894,72 @@ properties of this style.</p>
 
 <div class="method">
     <h3>
+        <span class="method-name">drawingStylefromContext</span>
+        (
+
+
+    
+    
+        context:
+            <span class="type">Object</span>
+    
+
+)
+        :
+            
+                <span class="type">Object</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Map drawing properties style (fill, stroke and point) from context to object.
+Only the necessary properties are mapped to object.
+if a property is expression, the mapped value will be the expression result depending on context.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>mapped style depending on context.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>context</code>
+        
+        
+            &mdash; <span><p>The context</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
         <span class="method-name">getTextAnchorPosition</span>
         (
 
@@ -928,7 +1007,7 @@ proportions, to use with a <code>translate()</code> and a <code>transform</code>
 
     
     
-        properties:
+        ctx:
             <span class="type">Object</span>
     
 
@@ -963,10 +1042,10 @@ replace the keys in <code>style.text.field</code>.</p>
 <ul class="params">
     
     <li>
-        <code>properties</code>
+        <code>ctx</code>
         
         
-            &mdash; <span><p>An object containing the properties to use.</p></span>
+            &mdash; <span><p>An object containing the feature context.</p></span>
         
 
         
@@ -1133,6 +1212,72 @@ replace the keys in <code>style.text.field</code>.</p>
     <li>
         <code>symbolToCircle</code>
         (optional)
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">symbolStylefromContext</span>
+        (
+
+
+    
+    
+        context:
+            <span class="type">Object</span>
+    
+
+)
+        :
+            
+                <span class="type">Object</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Map symbol properties style (symbol and icon) from context to object.
+Only the necessary properties are mapped to object.
+if a property is expression, the mapped value will be the expression result depending on context.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>mapped style depending on context.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>context</code>
+        
+        
+            &mdash; <span><p>The context</p></span>
         
 
         
