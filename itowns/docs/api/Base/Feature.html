@@ -26,7 +26,18 @@
 
     
         <div class="description"><p>This class improves and simplifies the construction and conversion of geographic data structures.
-It's an intermediary structure between geomatic formats and THREE objects.</p></div>
+It's an intermediary structure between geomatic formats and THREE objects.</p>
+<p><strong>Warning</strong>, the data (<code>extent</code> or <code>Coordinates</code>) can be stored in a local system.
+To use vertices or extent in <code>Feature.crs</code> projection,
+it's necessary to transform <code>Coordinates</code> or <code>Extent</code> by <code>FeatureCollection.matrixWorld</code>.</p>
+<pre class="prettyprint source lang-js"><code>// To have feature extent in featureCollection.crs projection:
+feature.extent.applyMatrix4(featureCollection.matrixWorld);
+
+// To have feature vertex in feature.crs projection:
+coord.crs = feature.crs;
+coord.setFromArray(feature.vertices)
+coord.applyMatrix4(featureCollection.matrixWorld);
+</code></pre></div>
     
 
     

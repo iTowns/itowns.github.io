@@ -22,6 +22,8 @@
     <h1>
         FeatureCollection
         
+            <span class="extends">extends THREE.Object3D</span>
+        
     </h1>
 
     
@@ -83,23 +85,6 @@
     
         <hr class="title-divider"/>
         <h2>Properties</h2>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">crs</span>
-        : <span class="type">string</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>The array of features composing the</p>
-        </div>
-    
-</div>
-
-            <hr/>
         
             
 
@@ -175,13 +160,13 @@ composing the collection.</p>
 
 <div class="property">
     <h3>
-        <span class="property-name">translation</span>
-        : <span class="type">THREE.Vector3</span>
+        <span class="property-name">size</span>
+        : <span class="type">number</span>
     </h3>
 
     
         <div class="description">
-            <p>Apply translation on vertices and extent to transform on coordinates system.</p>
+            <p>The size structure, it's 3 for 3d and 2 for 2d.</p>
         </div>
     
 </div>
@@ -192,14 +177,51 @@ composing the collection.</p>
 
 <div class="property">
     <h3>
-        <span class="property-name">scale</span>
-        : <span class="type">THREE.Vector3</span>
+        <span class="property-name">style</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
     </h3>
 
     
         <div class="description">
-            <p>Apply scale on vertices and extent to transform on coordinates system.</p>
-<p>An object regrouping a list of <a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="features">features</a> and the extent of this collection.</p>
+            <p>The collection style used to display the feature collection.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">isInverted</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>This option is to be set to the
+correct value, true or false (default being false), if the computation of
+the coordinates needs to be inverted to same scheme as OSM, Google Maps
+or other system. See <a href="https://alastaira.wordpress.com/2011/07/06/converting-tms-tile-coordinates-to-googlebingosm-tile-coordinates">this link</a>
+for more informations.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">matrixWorldInverse</span>
+        : <span class="type">THREE.Matrix4</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The matrix world inverse.</p>
         </div>
     
 </div>
@@ -501,71 +523,6 @@ new instance of typed Feature.</p>
 
 <div class="method">
     <h3>
-        <span class="method-name">transformCoordinates</span>
-        (
-
-
-    
-    
-        coordinates:
-            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
-    
-
-)
-        :
-            
-                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
-
-            
-        
-    </h3>
-
-    
-        
-            <div class="description">
-                <p>Transforms a given <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a>, using the translation and the
-scale of this collection.</p>
-            </div>
-        
-    
-
-    
-                <h4>Returns</h4>
-                
-                    <p>The same coordinates, with transformation applied.</p>
-                
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>coordinates</code>
-        
-        
-            &mdash; <span><p>The coordinates to transform</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
         <span class="method-name">updateExtent</span>
         (
 
@@ -600,6 +557,61 @@ scale of this collection.</p>
     <li>
         <code>extent</code>
         
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">updateMatrixWorld</span>
+        (
+
+
+    
+    
+        force:
+            <span class="type">booolean</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Updates the global transform of the object and its descendants.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>force</code>
+        
+        
+            &mdash; <span><p>The force</p></span>
         
 
         
