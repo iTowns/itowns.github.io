@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ShaderChunkManager - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        ShaderChunkManager
+        
+    </h1>
+
+    
+        <div class="description"><p>Constructs a new instance ShaderChunkManager.</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">ShaderChunkManager</span>
+        (
+
+
+    
+    
+        target:
+            <span class="type">Object</span>, 
+    
+        path:
+            <span class="type">string</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>target</code>
+        
+        
+            &mdash; <span><p>The target to install the chunks into.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>path</code>
+        (optional)
+        
+            &mdash; <span><p>A path to add before a chunk name as a prefix.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">target</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The target to install the chunks into.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">path</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>A path to add before a chunk name as a prefix.</p>
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">customBodyColorLayer</span>
+        (
+
+
+    
+    
+        body:
+            <span class="type">string</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Set the body ColorLayer shader.
+You could define you color terrain shader, with a header and a body.
+the header defines yours fonctions and the body defines the process on ColorLayer.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>body</code>
+        
+        
+            &mdash; <span><p>The glsl body</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+        <caption>Custom shader chunk</caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code> itowns.ShaderChunk.customHeaderColorLayer(`
+ // define yours methods
+ vec4 myColor(vec4 color, float a) {
+     return color * a;
+ }
+`);
+itowns.ShaderChunk.customBodyColorLayer(`
+ // the body set final color layer.
+ // layer.amount_effect is variable, it could be change in Layer instance.
+ color = myColor(color, layer.amount_effect)
+`);
+
+ var colorLayer = new itowns.ColorLayer('OPENSM', {
+   source,
+   type_effect: itowns.colorLayerEffects.customEffect,
+   amount_effect: 0.5,
+ });</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">customHeaderColorLayer</span>
+        (
+
+
+    
+    
+        header:
+            <span class="type">string</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Set the header ColorLayer shader.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>header</code>
+        
+        
+            &mdash; <span><p>The glsl header</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">install</span>
+        (
+
+
+    
+    
+        target:
+            <span class="type">Object</span>, 
+    
+        chunks:
+            <span class="type">Object</span>, 
+    
+        path:
+            <span class="type">string</span>
+    
+
+)
+        :
+            
+                <span class="type">Object</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Install chunks in a target, for example THREE.ShaderChunk, with adding an
+optional path.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The target with installed chunks.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>target</code>
+        
+        
+            &mdash; <span><p>The target to install the chunks into.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>chunks</code>
+        
+        
+            &mdash; <span><p>The chunks to install. The key of each chunk will be
+the name of installation of the chunk in the target (plus an optional path).</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>path</code>
+        (optional)
+        
+            &mdash; <span><p>A path to add before a chunk name as a prefix.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Renderer/Shader/ShaderChunk.js">
+            src/Renderer/Shader/ShaderChunk.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

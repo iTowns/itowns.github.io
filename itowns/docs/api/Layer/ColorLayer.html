@@ -49,7 +49,13 @@ roads displayed.</p></div>
             <span class="type">string</span>, 
     
         config:
-            <span class="type">Object</span>
+            <span class="type">Object</span>, 
+    
+        effect_type:
+            <span class="type">number</span>, 
+    
+        effect_parameter:
+            <span class="type">number</span>
     
 
 )
@@ -104,7 +110,55 @@ name.</p></span>
         
     </li>
     
+    <li>
+        <code>config.magFilter</code>
+        (optional)
+        
+            &mdash; <span><p>How the texture is sampled when a texel covers more than one pixel. <a href="https://threejs.org/docs/?q=texture#api/en/textures/Texture.magFilter">see</a></p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.minFilter</code>
+        (optional)
+        
+            &mdash; <span><p>How the texture is sampled when a texel covers less than one pixel. <a href="https://threejs.org/docs/?q=texture#api/en/textures/Texture.minFilter">see</a></p></span>
+        
+
+        
+    </li>
+    
 </ul>
+
+        
+    </li>
+    
+    <li>
+        <code>effect_type</code>
+        (optional)
+        
+            &mdash; <span><p>type effect to apply on raster color.
+if <code>effect_type</code> equals:</p>
+<ul>
+<li><code>0</code>: no special effect.</li>
+<li><code>1</code>: light color to invisible effect.</li>
+<li><code>2</code>: white color to invisible effect.</li>
+<li><code>3</code>: custom shader effect (defined <code>ShaderChunk.customBodyColorLayer</code> and <code>ShaderChunk.customHeaderColorLayer</code>).</li>
+</ul></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>effect_parameter</code>
+        (default: <code>1.0</code>)
+        
+        
+            &mdash; <span><p>amount value used with effect applied on raster color.</p></span>
+        
 
         
     </li>
@@ -257,19 +311,37 @@ internally for optimisation.</p>
 
 <div class="property">
     <h3>
-        <span class="property-name">fx</span>
+        <span class="property-name">effect_type</span>
         : <span class="type">number</span>
     </h3>
 
     
         <div class="description">
-            <p>special effects apply on raster color.
-if <code>fx</code> equals:</p>
+            <p>type effect to apply on raster color.
+if <code>effect_type</code> equals:</p>
 <ul>
 <li><code>0</code>: no special effect.</li>
-<li><code>&gt; 0. to &lt; 2.0</code>: light color to invisible effect.</li>
-<li><code>&gt;= 2</code>: white color to invisible effect.</li>
+<li><code>1</code>: light color to invisible effect.</li>
+<li><code>2</code>: white color to invisible effect.</li>
+<li><code>3</code>: custom shader effect (defined <code>ShaderChunk.customBodyColorLayer</code> and <code>ShaderChunk.customHeaderColorLayer</code>).</li>
 </ul>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">effect_parameter</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>amount value used with effect applied on raster color.</p>
         </div>
     
 </div>
