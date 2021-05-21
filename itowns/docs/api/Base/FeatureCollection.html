@@ -27,7 +27,19 @@
     </h1>
 
     
-        <div class="description"><p>Constructs a new instance.</p></div>
+        <div class="description"><p>An object regrouping a list of <a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="features">features</a> and the extent of this collection.
+<strong>Warning</strong>, the data (<code>extent</code> or <code>Coordinates</code>) can be stored in a local system.
+To use <code>Feature</code> vertices or <code>FeatureCollection/Feature</code> extent in FeatureCollection.crs projection,
+it's necessary to transform <code>Coordinates</code> or <code>Extent</code> by <code>FeatureCollection.matrixWorld</code>.</p>
+<pre class="prettyprint source lang-js"><code>// To have featureCollection extent in featureCollection.crs projection:
+featureCollection.extent.applyMatrix4(featureCollection.matrixWorld);
+
+// To have feature vertex in featureCollection.crs projection:
+const vertices = featureCollection.features[0].vertices;
+coord.crs = featureCollection.crs;
+coord.setFromArray(vertices)
+coord.applyMatrix4(featureCollection.matrixWorld);
+</code></pre></div>
     
 
     
@@ -115,7 +127,11 @@ collection.</p>
     
         <div class="description">
             <p>The 2D extent containing all the features
-composing the collection.</p>
+composing the collection. The extent projection is the same local projection <code>FeatureCollection</code>.
+To transform <code>FeatureCollection.extent</code> to <code>FeatureCollection.crs</code> projection, the transformation matrix must be applied.</p>
+<p><strong>WARNING</strong> if crs is <code>EPSG:4978</code> because the 3d geocentric system doesn't work with 2D <code>Extent</code>,
+The FeatureCollection.extent projection is the original projection.
+In this case, there isn't need to transform the extent.</p>
         </div>
     
 </div>
