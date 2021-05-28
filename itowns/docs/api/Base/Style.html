@@ -172,7 +172,7 @@ the style. It can helps sorting and prioritizing features if needed.</p>
 <div class="property">
     <h3>
         <span class="property-name">fill.color</span>
-        : <span class="type">string</span>
+        : <span class="type">string|function</span>
     </h3>
 
     
@@ -180,7 +180,8 @@ the style. It can helps sorting and prioritizing features if needed.</p>
             <p>Defines the main color of the filling. Can be
 any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid color
 string</a>.
-Default is no value, indicating that no filling needs to be done.</p>
+Default is no value, indicating that no filling needs to be done.
+If the <code>Layer</code> is a <code>GeometryLayer</code> you could use <code>THREE.Color</code>.</p>
         </div>
     
 </div>
@@ -192,7 +193,7 @@ Default is no value, indicating that no filling needs to be done.</p>
 <div class="property">
     <h3>
         <span class="property-name">fill.pattern</span>
-        : <span class="type">Image|Canvas|string</span>
+        : <span class="type">Image|Canvas|string|function</span>
     </h3>
 
     
@@ -213,13 +214,52 @@ for how to use.</p>
 <div class="property">
     <h3>
         <span class="property-name">fill.opacity</span>
-        : <span class="type">number</span>
+        : <span class="type">number|function</span>
     </h3>
 
     
         <div class="description">
             <p>The opacity of the color or the
-pattern. Can be between <code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.</p>
+pattern. Can be between <code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.
+For a <code>GeometryLayer</code>, this opacity property isn't used.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill.base_altitude</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p><code>GeometryLayer</code> Style, defines altitude
+for each Coordinates.
+If <code>base_altitude</code> is <code>undefined</code>, the original altitude is kept, and if it doesn't exist
+then the altitude value is set to 0.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill.extrusion_height</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p><code>GeometryLayer</code> Style, if defined,
+polygons will be extruded by the specified amount</p>
         </div>
     
 </div>
@@ -248,14 +288,15 @@ pattern. Can be between <code>0.0</code> and <code>1.0</code>. Default is <code>
 <div class="property">
     <h3>
         <span class="property-name">stroke.color</span>
-        : <span class="type">string</span>
+        : <span class="type">string|function</span>
     </h3>
 
     
         <div class="description">
             <p>The color of the line. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
 color string</a>.
-Default is no value, indicating that no stroke needs to be done.</p>
+Default is no value, indicating that no stroke needs to be done.
+If the <code>Layer</code> is a <code>GeometryLayer</code> you could use <code>THREE.Color</code>.</p>
         </div>
     
 </div>
@@ -267,13 +308,14 @@ Default is no value, indicating that no stroke needs to be done.</p>
 <div class="property">
     <h3>
         <span class="property-name">stroke.opacity</span>
-        : <span class="type">number</span>
+        : <span class="type">number|function</span>
     </h3>
 
     
         <div class="description">
             <p>The opacity of the line. Can be between
-<code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.</p>
+<code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.
+For a <code>GeometryLayer</code>, this opacity property isn't used.</p>
         </div>
     
 </div>
@@ -285,12 +327,32 @@ Default is no value, indicating that no stroke needs to be done.</p>
 <div class="property">
     <h3>
         <span class="property-name">stroke.width</span>
-        : <span class="type">number</span>
+        : <span class="type">number|function</span>
     </h3>
 
     
         <div class="description">
             <p>The width of the line. Default is <code>1.0</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">stroke.base_altitude</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p><code>GeometryLayer</code> Style, defines altitude
+for each Coordinates.
+If <code>base_altitude</code> is <code>undefined</code>, the original altitude is kept, and if it doesn't exist
+then the altitude value is set to 0.</p>
         </div>
     
 </div>
@@ -319,7 +381,7 @@ Default is no value, indicating that no stroke needs to be done.</p>
 <div class="property">
     <h3>
         <span class="property-name">point.color</span>
-        : <span class="type">string</span>
+        : <span class="type">string|function</span>
     </h3>
 
     
@@ -338,7 +400,7 @@ Default is no value, indicating that no point will be shown.</p>
 <div class="property">
     <h3>
         <span class="property-name">point.radius</span>
-        : <span class="type">number</span>
+        : <span class="type">number|function</span>
     </h3>
 
     
@@ -356,14 +418,15 @@ is <code>2.0</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">point.line</span>
-        : <span class="type">string</span>
+        : <span class="type">string|function</span>
     </h3>
 
     
         <div class="description">
             <p>The color of the border of the point. Can be
 any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid color
-string</a>.</p>
+string</a>.
+It's not supported with a <code>GeometryLayer</code>.</p>
         </div>
     
 </div>
@@ -375,7 +438,7 @@ string</a>.</p>
 <div class="property">
     <h3>
         <span class="property-name">point.width</span>
-        : <span class="type">number</span>
+        : <span class="type">number|function</span>
     </h3>
 
     
@@ -393,13 +456,34 @@ is <code>0.0</code> (no border).</p>
 <div class="property">
     <h3>
         <span class="property-name">point.opacity</span>
-        : <span class="type">number</span>
+        : <span class="type">number|function</span>
     </h3>
 
     
         <div class="description">
             <p>The opacity of the point. Can be between
-<code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.</p>
+<code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.
+It's not supported with a <code>GeometryLayer</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point.base_altitude</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p><code>GeometryLayer</code> Style, defines altitude
+for each Coordinates.
+If <code>base_altitude</code> is <code>undefined</code>, the original altitude is kept, and if it doesn't exist
+then the altitude value is set to 0.</p>
         </div>
     
 </div>
@@ -428,7 +512,7 @@ is <code>0.0</code> (no border).</p>
 <div class="property">
     <h3>
         <span class="property-name">text.field</span>
-        : <span class="type">string</span>
+        : <span class="type">string|function</span>
     </h3>
 
     
@@ -456,7 +540,7 @@ in <code>Marrakesh - مراكش</code> for example.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.color</span>
-        : <span class="type">string</span>
+        : <span class="type">string|function</span>
     </h3>
 
     
@@ -475,7 +559,7 @@ Default is <code>#000000</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.anchor</span>
-        : <span class="type">string</span>
+        : <span class="type">string|function</span>
     </h3>
 
     
@@ -495,7 +579,7 @@ or <code>bottom-right</code>. Default is <code>center</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.offset</span>
-        : <span class="type">Array</span>
+        : <span class="type">Array|function</span>
     </h3>
 
     
@@ -514,7 +598,7 @@ is <code>[0, 0]</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.padding</span>
-        : <span class="type">number</span>
+        : <span class="type">number|function</span>
     </h3>
 
     
@@ -532,7 +616,7 @@ Default is <code>2</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.size</span>
-        : <span class="type">number</span>
+        : <span class="type">number|function</span>
     </h3>
 
     
@@ -550,7 +634,7 @@ Default is <code>2</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.wrap</span>
-        : <span class="type">number</span>
+        : <span class="type">number|function</span>
     </h3>
 
     
@@ -568,7 +652,7 @@ is wrapped, because the string is too long. Default is <code>10</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.spacing</span>
-        : <span class="type">number</span>
+        : <span class="type">number|function</span>
     </h3>
 
     
@@ -586,7 +670,7 @@ Default is <code>0</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.transform</span>
-        : <span class="type">string</span>
+        : <span class="type">string|function</span>
     </h3>
 
     
@@ -606,7 +690,7 @@ Default is <code>none</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.justify</span>
-        : <span class="type">string</span>
+        : <span class="type">string|function</span>
     </h3>
 
     
@@ -625,7 +709,7 @@ Default is <code>center</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.opacity</span>
-        : <span class="type">number</span>
+        : <span class="type">number|function</span>
     </h3>
 
     
@@ -643,7 +727,7 @@ Default is <code>center</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.font</span>
-        : <span class="type">Array</span>
+        : <span class="type">Array|function</span>
     </h3>
 
     
@@ -661,7 +745,7 @@ names, prioritized in the order it is set. Default is <code>Open Sans Regular, A
 <div class="property">
     <h3>
         <span class="property-name">text.haloColor</span>
-        : <span class="type">string</span>
+        : <span class="type">string|function</span>
     </h3>
 
     
@@ -680,7 +764,7 @@ Default is <code>#000000</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.haloWidth</span>
-        : <span class="type">number</span>
+        : <span class="type">number|function</span>
     </h3>
 
     
@@ -698,7 +782,7 @@ Default is <code>0</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.haloBlur</span>
-        : <span class="type">number</span>
+        : <span class="type">number|function</span>
     </h3>
 
     

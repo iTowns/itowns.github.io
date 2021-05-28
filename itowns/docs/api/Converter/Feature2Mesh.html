@@ -91,36 +91,6 @@ a THREE.Group.</p>
 <ul class="params">
     
     <li>
-        <code>options.altitude</code>
-        
-        
-            &mdash; <span><p>define the base altitude of the mesh</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>options.extrude</code>
-        
-        
-            &mdash; <span><p>if defined, polygons will be extruded by the specified amount</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>options.color</code>
-        
-        
-            &mdash; <span><p>define per feature color</p></span>
-        
-
-        
-    </li>
-    
-    <li>
         <code>options.batchId</code>
         (optional)
         
@@ -155,14 +125,8 @@ a THREE.Group.</p>
     type: 'geometry',
     update: itowns.FeatureProcessing.update,
     convert: itowns.Feature2Mesh.convert({
-        color: colorBuildings,
         batchId: (property, featureId) => featureId,
-        altitude: altitudeBuildings,
-        extrude: extrudeBuildings }),
-    onMeshCreated: function scaleZ(mesh) {
-        mesh.scale.z = 0.01;
-        meshes.push(mesh);
-    },
+    }),
     filter: acceptFeature,
     source,
 });</code></pre>
@@ -177,14 +141,8 @@ a THREE.Group.</p>
     type: 'geometry',
     update: itowns.FeatureProcessing.update,
     convert: itowns.Feature2Mesh.convert({
-        color: colorBuildings,
         batchId: (property, featureId) => property.house ? 10 : featureId,
-        altitude: altitudeBuildings,
-        extrude: extrudeBuildings }),
-    onMeshCreated: function scaleZ(mesh) {
-        mesh.scale.z = 0.01;
-        meshes.push(mesh);
-    },
+        }),
     filter: acceptFeature,
     source,
 });</code></pre>

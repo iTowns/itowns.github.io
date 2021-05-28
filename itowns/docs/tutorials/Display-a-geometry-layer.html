@@ -136,9 +136,9 @@ with it, so we can declare a simple anonymous object.</li>
 called to update the layer each time the rendering loop is called. For now
 let's simply put <code>itowns.FeatureProcessing.update</code> and don't touch this
 method.</li>
-<li>the third parameter is <code>convert</code>, that is more interesting to us. It is the
-method that will tell how to use the data to convert it to meshes, and do
-other operations on it.</li>
+<li><code>Convert</code> method to convert <code>FeatureCollection</code> to <code>THREE.Mesh</code>.</li>
+<li>the third parameter is <code>Style</code>, that is more interesting to us. It is the
+Object that will tell how to use the data to stylize the meshes.</li>
 </ul>
 <p>Trying this code will result in... nothing visually ! The data was processed and
 displayed, but it is hidden under the elevation layer. If we remove the
@@ -147,7 +147,7 @@ have indeed been added. So let's place the data on the elevation layer !</p>
 <p><img src="images/Display-a-geometry-layer-1.png" alt="Flat buildings on GeometryLayer"></p>
 <h2>Placing the data on the ground</h2>
 <p>To achieve the positionning relative to the elevation layer, we will need to add
-a parameter to the <code>convert</code> property: <code>altitude</code>, a method that will help us.</p>
+a parameter to the <code>Style</code> property: <code>base_altitude</code>, a method that will help us.</p>
 <pre class="prettyprint source lang-js"><code>function setAltitude(properties) {
     console.log(properties);
 }
@@ -161,8 +161,11 @@ var geometrySource = new itowns.WFSSource({
 var geometryLayer = new itowns.GeometryLayer('Buildings', new itowns.THREE.Group(), {
     source: geometrySource,
     update: itowns.FeatureProcessing.update,
-    convert: itowns.Feature2Mesh.convert({
-        altitude: setAltitude
+    convert: itowns.Feature2Mesh.convert(),
+    style: new itowns.Style({
+        fill: {
+            base_altitude: setAltitude,
+        }
     }),
     zoom: { min: 14 },
 });
@@ -202,8 +205,8 @@ this problem, let's lower the altitude with the height of the building:</p>
 ? Let's give them volume !</p>
 <p><img src="images/Display-a-geometry-layer-2.png" alt="Still flat buildings on GeometryLayer"></p>
 <h2>Extruding the data</h2>
-<p>Like the altitude, the volume of a building can be changed using the <code>extrude</code>
-parameter of the <code>convert</code> property.</p>
+<p>Like the altitude, the volume of a building can be changed using the <code>extrusion_height</code>
+parameter of the <code>Style</code> property.</p>
 <pre class="prettyprint source lang-js"><code>function setExtrusion(properties) {
     return properties.hauteur;
 }
@@ -217,9 +220,12 @@ var geometrySource = new itowns.WFSSource({
 var geometryLayer = new itowns.GeometryLayer('Buildings', new itowns.THREE.Group(), {
     source: geometrySource,
     update: itowns.FeatureProcessing.update,
-    convert: itowns.Feature2Mesh.convert({
-        altitude: setAltitude,
-        extrude: setExtrusion,
+    convert: itowns.Feature2Mesh.convert(),
+    style: new itowns.Style({
+        fill: {
+            base_altitude: setAltitude,
+            extrusion_height: setExtrusion,
+        }
     }),
     zoom: { min: 14 },
 });
@@ -234,7 +240,7 @@ nice view of our buildings:</p>
 <h2>Coloring the data</h2>
 <p>We are not yet touching the color of the buildings. This results in every
 building being randomly colored at each time. To solve this, as we did before,
-we can add a <code>color</code> parameter to the <code>convert</code> property.</p>
+we can add a <code>color</code> parameter to the <code>Style</code> property.</p>
 <pre class="prettyprint source lang-js"><code>function setColor(properties) {
     return new itowns.THREE.Color(0xaaaaaa);
 }
@@ -248,10 +254,13 @@ var geometrySource = new itowns.WFSSource({
 var geometryLayer = new itowns.GeometryLayer('Buildings', new itowns.THREE.Group(), {
     source: geometrySource,
     update: itowns.FeatureProcessing.update,
-    convert: itowns.Feature2Mesh.convert({
-        altitude: setAltitude,
-        extrude: setExtrusion,
-        color: setColor
+    convert: itowns.Feature2Mesh.convert(),
+    style: new itowns.Style({
+        fill: {
+            color: setColor
+            base_altitude: setAltitude,
+            extrusion_height: setExtrusion,
+        },
     }),
     zoom: { min: 14 },
 });
@@ -362,10 +371,13 @@ layer on a globe, and change some things on this layer. Here is the final code:<
             var geometryLayer = new itowns.GeometryLayer('Buildings', new itowns.THREE.Group(), {
                 source: geometrySource,
                 update: itowns.FeatureProcessing.update,
-                convert: itowns.Feature2Mesh.convert({
-                    altitude: setAltitude,
-                    extrude: setExtrusion,
-                    color: setColor
+                convert: itowns.Feature2Mesh.convert(),
+                style: new itowns.Style({
+                    fill: {
+                        color: setColor
+                        base_altitude: setAltitude,
+                        extrusion_height: setExtrusion,
+                    },
                 }),
                 zoom: { min: 14 },
             });
