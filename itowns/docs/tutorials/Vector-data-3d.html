@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Tutorial : Vector visualization - As 3D objects</title>
+
+    <script src="../scripts/prettify/prettify.js"> </script>
+    <script src="../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../styles/itowns.css">
+</head>
+
+<body>
+
+<section>
+
+<header>
+    <h1>Tutorial : Vector visualization - As 3D objects</h1>
+</header>
+
+<article>
+    <p>The goal of this tutorial is to give a brief example on how to use iTowns to visualize some vector data as 3D objects.
+These vector data shall represent buildings and be displayed on the <code>GlobeView</code> we created in the <a href="Raster-data-WGS84.html">WGS84 tutorial</a>.</p>
+<h2>Preparing the field</h2>
+<p>To display our buildings, we are going to use the data created in the <a href="Raster-data-WGS84.html">WGS84 tutorial</a>. As we are trying to display some buildings,
+let's move closer to the ground to see something and let's give the camera an initial rotation.
+For this, we need to change the starting position to something more appropriate. We also need to modify the elevation
+layer to a more precise one.</p>
+<pre class="prettyprint source lang-html"><code>&lt;!DOCTYPE html>
+&lt;html>
+    &lt;head>
+        &lt;meta charset=&quot;UTF-8&quot;>
+        &lt;title>Display a geometry layer with iTowns&lt;/title>
+        &lt;style>
+            html { height: 100%; }
+            body { margin: 0; overflow: hidden; height: 100%; }
+            #viewerDiv { margin: auto; height: 100%; width: 100%; padding: 0; }
+            canvas { display: block }
+        &lt;/style>
+     &lt;/head>
+     &lt;body>
+        &lt;div id=&quot;viewerDiv&quot;>&lt;/div>
+        &lt;script src=&quot;js/itowns.js&quot;>&lt;/script>
+        &lt;script type=&quot;text/javascript&quot;>
+            var viewerDiv = document.getElementById('viewerDiv');
+            var placement = {
+                coord: new itowns.Coordinates('EPSG:4326', 4.818, 45.7354),
+                range: 1000,
+                tilt: 20,
+            };
+            var view = new itowns.GlobeView(viewerDiv, placement);
+            
+            var colorSource = new itowns.WMTSSource({
+                url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+                crs: 'EPSG:3857',
+                name: 'ORTHOIMAGERY.ORTHOPHOTOS',
+                tileMatrixSet: 'PM',
+                format: 'image/jpeg'
+            });
+            
+            var colorLayer = new itowns.ColorLayer('Ortho', {
+                source: colorSource,
+            });
+            
+            view.addLayer(colorLayer);
+            
+            var elevationSource = new itowns.WMTSSource({
+                url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+                crs: 'EPSG:4326',
+                name: 'ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES',
+                tileMatrixSet: 'WGS84G',
+                format: 'image/x-bil;bits=32',
+                tileMatrixSetLimits: {
+                    11: {
+                        minTileRow: 442,
+                        maxTileRow: 1267,
+                        minTileCol: 1344,
+                        maxTileCol: 2683
+                    },
+                    12: {
+                        minTileRow: 885,
+                        maxTileRow: 2343,
+                        minTileCol: 3978,
+                        maxTileCol: 5126
+                    },
+                    13: {
+                        minTileRow: 1770,
+                        maxTileRow: 4687,
+                        minTileCol: 7957,
+                        maxTileCol: 10253
+                    },
+                    14: {
+                        minTileRow: 3540,
+                        maxTileRow: 9375,
+                        minTileCol: 15914,
+                        maxTileCol: 20507
+                    }
+                }
+            });
+            
+            var elevationLayer = new itowns.ElevationLayer('MNT_WORLD', {
+                source: elevationSource,
+            });
+            
+            view.addLayer(elevationLayer);
+        &lt;/script>
+     &lt;/body>
+&lt;/html>
+</code></pre>
+<h2>Adding a GeometryLayer</h2>
+<p>We want to create and add a layer containing geometries. The best candidate here
+is <code><a onclick="window.parent.goTo('api/Layer/FeatureGeometryLayer.html','api/Layer/FeatureGeometryLayer')" title="FeatureGeometryLayer">FeatureGeometryLayer</a></code>, which is a pre-made type of <code><a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></code>
+adapted to our use case. Reading the documentation, adding this type
+of layer is similar to the other layers. So before declaring the layer, let's
+instantiate the source.</p>
+<pre class="prettyprint source lang-js"><code>var geometrySource = new itowns.WFSSource({
+    url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wfs?',
+    typeName: 'BDTOPO_BDD_WLD_WGS84G:bati_indifferencie',
+    crs: 'EPSG:4326',
+});
+</code></pre>
+<p>With our source instantiated, we can create our <code>FeatureGeometryLayer</code>, giving it the usual <code>id</code> and <code>source</code> parameters :</p>
+<pre class="prettyprint source lang-js"><code>var geometryLayer = new itowns.FeatureGeometryLayer('Buildings', {
+    source: geometrySource,
+    zoom: { min: 14 },
+});
+
+view.addLayer(geometryLayer);
+</code></pre>
+<p>We also added a minimal <code>zoom</code> parameter to prevent our data being displayed under a certain
+zoom level at which we would be too far from the data to distinguish them.</p>
+<p>Trying this code will result visually in the following.</p>
+<p><img src="images/Vector-data-3d-1.png" alt="geometry_layer_without_altitude"></p>
+<p>We can see the polygons fetched from the data source, each representing a building.
+However, these polygons are not on the ground.
+Indeed, they were placed after the 3D positions stored in the data, which in our case represent points on the roof of buildings.
+So let's start modifying these polygons' altitude to place them on the ground !</p>
+<h2>Placing the data on the ground</h2>
+<p>To achieve the positioning relative to the elevation layer, we will need to add
+a parameter to the <code>FeatureGeometryLayer</code>, which is its <code><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></code>.
+As mentioned in the <a href="Fundamentals.html">fundamentals</a> tutorial, we can modify the appearance and positioning of polygons thanks to the <code>fill</code> property of <code>Style</code>.
+The altitude at which polygons are displayed can be modified using the <code>base_altitude</code> parameter, which we set as follows :</p>
+<pre class="prettyprint source lang-js"><code>function setAltitude(properties) {
+    console.log(properties);
+}
+
+var geometrySource = new itowns.WFSSource({
+    url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wfs?',
+    typeName: 'BDTOPO_BDD_WLD_WGS84G:bati_indifferencie',
+    crs: 'EPSG:4326',
+});
+
+var geometryLayer = new itowns.FeatureGeometryLayer('Buildings', {
+    source: geometrySource,
+    zoom: { min: 14 },
+    style: new itowns.Style({
+        fill: {
+            base_altitude: setAltitude,
+        }
+    }),
+});
+
+view.addLayer(geometryLayer);
+</code></pre>
+<p>If we take a look using <code>console.log(properties);</code> at what we have in the
+<code>properties</code> object, we will get a lot of output. Our data being constituted of
+multiple buildings, we get an output for each building. Looking closer to an
+output, here is what we can obtain :</p>
+<pre class="prettyprint source lang-js"><code>geometry_name: &quot;the_geom&quot;
+hauteur: 9
+id: &quot;bati_indifferencie.19138409&quot;
+origin_bat: &quot;Cadastre&quot;
+prec_alti: 5
+prec_plani: 2.5
+z_max: 83.7
+z_min: 83.7
+</code></pre>
+<p>Reading the documentation of the database we are querying (<a href="http://professionnels.ign.fr/doc/DC_BDTOPO_3-0.pdf">section 9.1, page
+84</a>, in French), we have an
+explanation on each property. To help us place the data correctly, let's use the
+<code>z_min</code> and the <code>hauteur</code> properties.
+The first one corresponds to the altitude of the building roof, and the second one specifies its height.
+We can therefore set the base altitude of our buildings by removing the value of <code>hauteur</code> to the value of <code>z_min</code> :</p>
+<pre class="prettyprint source lang-js"><code>function setAltitude(properties) {
+    return properties.z_min - properties.hauteur;
+}
+</code></pre>
+<p>Now we can't see completely our buildings. What can we do about that
+? Let's give them volume !</p>
+<p><img src="images/Vector-data-3d-2.png" alt="Still flat buildings on GeometryLayer"></p>
+<h2>Extruding the data</h2>
+<p>Like the altitude, the volume of buildings can be changed using the <code>extrusion_height</code>
+parameter of the <code>Style.fill</code> property.</p>
+<pre class="prettyprint source lang-js"><code>function setExtrusion(properties) {
+    return properties.hauteur;
+}
+
+var geometrySource = new itowns.WFSSource({
+    url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wfs?',
+    typeName: 'BDTOPO_BDD_WLD_WGS84G:bati_indifferencie',
+    crs: 'EPSG:4326',
+});
+
+var geometryLayer = new itowns.FeatureGeometryLayer('Buildings', {
+    source: geometrySource,
+    zoom: { min: 14 },
+    style: new itowns.Style({
+        fill: {
+            base_altitude: setAltitude,
+            extrusion_height: setExtrusion,
+        }
+    }),
+});
+
+view.addLayer(geometryLayer);
+</code></pre>
+<p>The parameter <code>properties</code> of the <code>setExtrusion</code> method is the same as in
+<code>setAltitude</code>. We noticed there is a <code>hauteur</code> (<code>height</code> in French) property that
+we could use to set the height of the building. Moving around with this gives a
+nice view of our buildings :</p>
+<p><img src="images/Vector-data-3d-3.png" alt="Extruded buildings on GeometryLayer"></p>
+<h2>Coloring the data</h2>
+<p>We are not yet touching the color of the buildings. This results in every
+building being randomly colored at each time. To solve this, as we did before,
+we can add a <code>color</code> parameter to the <code>Style.fill</code> property.</p>
+<pre class="prettyprint source lang-js"><code>function setColor(properties) {
+    return new itowns.THREE.Color(0xaaaaaa);
+}
+
+var geometrySource = new itowns.WFSSource({
+    url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wfs?',
+    typeName: 'BDTOPO_BDD_WLD_WGS84G:bati_indifferencie',
+    crs: 'EPSG:4326',
+});
+
+var geometryLayer = new itowns.FeatureGeometryLayer('Buildings', {
+    source: geometrySource,
+    zoom: { min: 14 },
+    style: new itowns.Style({
+        fill: {
+            color: setColor,
+            base_altitude: setAltitude,
+            extrusion_height: setExtrusion,
+        },
+    }),
+});
+
+view.addLayer(geometryLayer);
+</code></pre>
+<p>For each building, a new color is created (using <code>THREE.Color</code>), and this results
+in all buildings being colored in a light gray.</p>
+<p><img src="images/Vector-data-3d-4.png" alt="Extruded and colored buildings on GeometryLayer"></p>
+<h2>Result</h2>
+<p>Congratulations ! By reaching here, we know how to display a simple <code>FeatureGeometryLayer</code>
+on a <code>GlobeView</code>, and change the appearance and positioning of this layer. Here is the final code:</p>
+<pre class="prettyprint source lang-html"><code>&lt;!DOCTYPE html>
+&lt;html>
+    &lt;head>
+        &lt;meta charset=&quot;UTF-8&quot;>
+        &lt;title>Simple globe with iTowns&lt;/title>
+        &lt;style>
+            html { height: 100%; }
+            body { margin: 0; overflow: hidden; height: 100%; }
+            #viewerDiv { margin: auto; height: 100%; width: 100%; padding: 0; }
+            canvas { display: block }
+        &lt;/style>
+     &lt;/head>
+     &lt;body>
+        &lt;div id=&quot;viewerDiv&quot;>&lt;/div>
+        &lt;script src=&quot;js/itowns.js&quot;>&lt;/script>
+        &lt;script type=&quot;text/javascript&quot;>
+            var viewerDiv = document.getElementById('viewerDiv');
+            var placement = {
+                coord: new itowns.Coordinates('EPSG:4326', 4.818, 45.7354),
+                range: 1E3,
+                tilt: 20,
+            };
+            var view = new itowns.GlobeView(viewerDiv, placement);
+
+            var colorSource = new itowns.WMTSSource({
+                url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+                crs: 'EPSG:3857',
+                name: 'ORTHOIMAGERY.ORTHOPHOTOS',
+                tileMatrixSet: 'PM',
+                format: 'image/jpeg'
+            });
+
+            var colorLayer = new itowns.ColorLayer('Ortho', {
+                source: colorSource,
+            });
+
+            view.addLayer(colorLayer);
+
+            var elevationSource = new itowns.WMTSSource({
+                url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+                crs: 'EPSG:4326',
+                name: 'ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES',
+                tileMatrixSet: 'WGS84G',
+                format: 'image/x-bil;bits=32',
+                tileMatrixSetLimits: {
+                    11: {
+                        minTileRow: 442,
+                        maxTileRow: 1267,
+                        minTileCol: 1344,
+                        maxTileCol: 2683
+                    },
+                    12: {
+                        minTileRow: 885,
+                        maxTileRow: 2343,
+                        minTileCol: 3978,
+                        maxTileCol: 5126
+                    },
+                    13: {
+                        minTileRow: 1770,
+                        maxTileRow: 4687,
+                        minTileCol: 7957,
+                        maxTileCol: 10253
+                    },
+                    14: {
+                        minTileRow: 3540,
+                        maxTileRow: 9375,
+                        minTileCol: 15914,
+                        maxTileCol: 20507
+                    }
+                }
+            });
+
+            var elevationLayer = new itowns.ElevationLayer('MNT_WORLD', {
+                source: elevationSource,
+            });
+
+            view.addLayer(elevationLayer);
+
+            function setAltitude(properties) {
+                return properties.z_min - properties.hauteur;
+            }
+
+            function setExtrusion(properties) {
+                return properties.hauteur;
+            }
+
+            function setColor(properties) {
+                return new itowns.THREE.Color(0xaaaaaa);
+            }
+
+            var geometrySource = new itowns.WFSSource({
+                url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wfs?',
+                typeName: 'BDTOPO_BDD_WLD_WGS84G:bati_indifferencie',
+                crs: 'EPSG:4326',
+            });
+
+            var geometryLayer = new itowns.FeatureGeometryLayer('Buildings', {
+                source: geometrySource,
+                zoom: { min: 14 },
+                style: new itowns.Style({
+                    fill: {
+                        color: setColor,
+                        base_altitude: setAltitude,
+                        extrusion_height: setExtrusion,
+                    },
+                }),
+            });
+
+            view.addLayer(geometryLayer);
+        &lt;/script>
+     &lt;/body>
+&lt;/html>
+</code></pre>
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../scripts/linenumber.js"> </script>
+</body>
+</html>
