@@ -25,13 +25,13 @@ It can display a wide range of data such as ortho-images, Digital Elevation Mode
 <p>ITowns is based on <a href="https://threejs.org/">Three.js</a>, which is a javascript library that implements WebGL to render sophisticated 3D Geometry on a webpage.</p>
 <p>In this tutorial, we shall be introduced to the fundamentals of iTowns : how it displays geographic data.</p>
 <hr>
-<h2>Data visualization with iTowns</h2>
-<p>The support to display anything within iTowns is called a <code>View</code>.</p>
-<p>To provide geographic data visualization, a <code>View</code> contains a combination of <code>Layers</code> which, in a digital map environment, are visual representations of any geographic data.
+<h2>The View</h2>
+<p>The support to display anything within iTowns is called a <code><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></code>.</p>
+<p>To provide geographic data visualization, a <code><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></code> contains a combination of <a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="<code>Layers</code>"><code>Layers</code></a> which, in a digital map environment, are visual representations of any geographic data.
 In other words, all data that are displayed using iTowns are supported by some <code>Layer</code>.</p>
 <p>Each <code>View</code> in iTowns displays 3D data in a unique Coordinates Reference System (CRS).
 Yet, the data displayed within a <code>View</code> do not necessarily have to be in the <code>View</code>'s CRS.
-ITowns comes with two pre-made <code>View</code> types : <code>GlobeView</code> and <code>PlanarView</code>.
+ITowns comes with two pre-made <code>View</code> types : <code><a onclick="window.parent.goTo('api/View/GlobeView.html','api/View/GlobeView')" title="GlobeView">GlobeView</a></code> and <code><a onclick="window.parent.goTo('api/View/PlanarView.html','api/View/PlanarView')" title="PlanarView">PlanarView</a></code>.
 Each of these allows visualizing data from different types (raster or vector) and from different CRS.
 On this matter, iTowns distinguishes two cases :</p>
 <ul>
@@ -46,24 +46,25 @@ However, if their source CRS defines a local projection (such as <a href="https:
 <li>a <code>GlobeView</code> allows displaying multiple raster data from two different source CRS : <a href="https://epsg.io/4326">WGS 84</a> and <a href="https://epsg.io/3857">Pseudo-Mercator</a>,</li>
 <li>a <code>PlanarView</code> allows displaying multiple raster data, but all those data sources must have the same CRS.</li>
 </ul>
-<p>Tutorials of how to create and use the two <code>View</code> types can be found <a href="Raster-data-WGS84.html">here</a> for the <code>GlobeView</code> and <a href="Raster-data-Lambert93.html">here</a> for the <code>PlanarView</code>.</p>
+<p>→<a href="Raster-data-WGS84.html"><strong><code>Visit GlobeView tutorial</code></strong></a></p>
+<p>→<a href="Raster-data-Lambert93.html"><strong><code>Visit PlanarView tutorial</code></strong></a></p>
 <hr>
-<h2>The data supported by iTowns</h2>
+<h2>Protocols and data formats</h2>
 <p>ITowns comes with a wide range of compatible data sources.
 It can be used to display data from web servers that use protocols such as Web Map (Tile) Service (<a href="https://www.ogc.org/standards/wms">WMS</a> and <a href="https://www.ogc.org/standards/wmts">WMTS</a>), Web Feature Service (<a href="https://www.ogc.org/standards/wfs">WFS</a>) and Tile Map Service (<a href="https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification">TMS</a>).
 Data from user given files can also be displayed.</p>
 <p>Regarding data formats, iTowns offers several possibilities : <a href="https://docs.mapbox.com/help/glossary/vector-tiles/">vector tile</a> resources from <a href="https://www.mapbox.com/">MapBox</a>, <a href="https://github.com/potree/potree">Potree</a> 3D point clouds, oriented images, <a href="https://geojson.org/">GeoJSON</a>, <a href="https://www.ogc.org/standards/kml">KML</a> or <a href="https://www.topografix.com/gpx.asp">GPX</a>.</p>
 <hr>
-<h2>The support for visualized data</h2>
-<p>It was earlier mentioned that data are displayed as <code>Layers</code> within iTowns.
+<h2>Layers</h2>
+<p>It was earlier mentioned that data are displayed as <a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="<code>Layers</code>"><code>Layers</code></a> within iTowns.
 Several specific types of <code>Layers</code> exist, the use of which depends on the data to display :</p>
 <ul>
-<li><code>ColorLayer</code> can be used to display raster graphics or vector data projected on the ground (left picture in the table bellow),</li>
-<li><code>ElevationLayer</code> can be used to display 3D elevation models (center picture in the table bellow),</li>
-<li><code>GeometryLayer</code> can be used to display 3D objects, such as geometric shapes or buildings modelling (right picture in the table bellow).</li>
-<li><code>FeatureGeometryLayer</code> is a pre-configured <code>GeometryLayer</code> which simplifies its implementation in given cases.</li>
-<li><code>PointCloudLayer</code> can be used to display 3D point clouds.</li>
-<li><code>OrientedImageLayer</code> can be used to display some oriented images.</li>
+<li><code><a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a></code> can be used to display raster graphics or vector data projected on the ground (left picture in the table bellow),</li>
+<li><code><a onclick="window.parent.goTo('api/Layer/ElevationLayer.html','api/Layer/ElevationLayer')" title="ElevationLayer">ElevationLayer</a></code> can be used to display 3D elevation models (center picture in the table bellow),</li>
+<li><code><a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></code> can be used to display 3D objects, such as geometric shapes or buildings modelling (right picture in the table bellow).</li>
+<li><code><a onclick="window.parent.goTo('api/Layer/FeatureGeometryLayer.html','api/Layer/FeatureGeometryLayer')" title="FeatureGeometryLayer">FeatureGeometryLayer</a></code> is a pre-configured <code><a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></code> which simplifies its implementation in given cases.</li>
+<li><code><a onclick="window.parent.goTo('api/Layer/PointCloudLayer.html','api/Layer/PointCloudLayer')" title="PointCloudLayer">PointCloudLayer</a></code> can be used to display 3D point clouds.</li>
+<li><code><a onclick="window.parent.goTo('api/Layer/OrientedImageLayer.html','api/Layer/OrientedImageLayer')" title="OrientedImageLayer">OrientedImageLayer</a></code> can be used to display some oriented images.</li>
 </ul>
 <table>
 <thead>
@@ -82,8 +83,8 @@ Several specific types of <code>Layers</code> exist, the use of which depends on
 </tbody>
 </table>
 <hr>
-<h2>Vector data appearance</h2>
-<p>ITowns can display vector data in two ways : the data can be displayed in a <code>View</code> as 3D objects, or as entities that are projected on the ground.
+<h2>Style</h2>
+<p>ITowns can display vector data in two ways : the data can be displayed in a <code><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></code> as 3D objects, or as entities that are projected on the ground.
 You can see bellow pictures illustrating the two cases.</p>
 <table>
 <thead>
@@ -99,7 +100,7 @@ You can see bellow pictures illustrating the two cases.</p>
 </tr>
 </tbody>
 </table>
-<p>In both ways, the appearance and positioning of the vector data can be adjusted by modifying the <code>Style</code> parameter of the <code>Layer</code> the data are displayed in.
+<p>In both ways, the appearance and positioning of the vector data can be adjusted by modifying the <code><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></code> parameter of the <code>Layer</code> the data are displayed in.
 The <code>Style</code> in iTowns comes with several properties :</p>
 <ul>
 <li><code>fill</code> allows defining style rules for polygons interior,</li>
@@ -123,21 +124,21 @@ The content and appearance of the labels can be set the same way as for the poly
 For instance, setting <code>text.field</code> to <code>'{name}'</code> will display a label on each point that has a <code>name</code> property within the vector data.
 The content of the label will be the content stored in the data under the <code>name</code> property.</p>
 <h3>Vector data projected on the ground</h3>
-<p>When vector data are flattened on the ground, they are displayed in a <code>ColorLayer</code>.
+<p>When vector data are flattened on the ground, they are displayed in a <code><a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a></code>.
 In that case, the data basically consist in polygons, lines or points.
-Their appearance can be adjusted by modifying the <code>Style</code> of the <code>ColorLayer</code>.
+Their appearance can be adjusted by modifying the <code><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></code> of the <code><a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a></code>.
 Yet, their positioning can't be modified since it is computed so that tey appear projected on the ground.</p>
-<p>Tutorial on how to modify the appearance of some vector data displayed on the ground can be found <a href="Vector-data-on-ground.html">here</a>.</p>
+<p>→<a href="Vector-data-on-ground.html"><strong><code>Visit tutorial</code></strong></a></p>
 <h3>Vector data displayed as 3D objects</h3>
-<p>In the case of vector data represented as 3D objects, the data are displayed in a <code>GeometryLayer</code>.
-The appearance and positioning of the vector data can be adjusted by modifying the <code>Style</code> of the <code>GeometryLayer</code>.
+<p>In the case of vector data represented as 3D objects, the data are displayed in a <code><a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></code>.
+The appearance and positioning of the vector data can be adjusted by modifying the <code><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></code> of the <code><a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></code>.
 Two parameters allow modifying the data position :</p>
 <ul>
 <li><code>base_altitude</code> which defines the altitude at the base of the 3D objects ;</li>
 <li><code>extrusion_height</code> which defines the height of the 3D objects, giving them volume.</li>
 </ul>
 <p>For example, given a set of polygons, setting <code>fill.base_altitude</code> to <code>500</code> and <code>fill.extrusion_height</code> to <code>20</code> will render extruded polygon expanding between 500 and 520 meters of altitude.</p>
-<p>You can find tutorial on how to use the <code>base_altitude</code> and <code>extrusion_height</code> parameters <a href="Vector-data-3d.html">here</a>.</p>
+<p>→<a href="Vector-data-3d.html"><strong><code>Visit tutorial</code></strong></a></p>
 </article>
 
 </section>
