@@ -34,7 +34,13 @@ main components in a <code>Style</code> object:</p>
 <li><code>stroke</code> is for all lines and polygons edges</li>
 <li><code>point</code> is for all points</li>
 <li><code>text</code> contains all <a onclick="window.parent.goTo('api/Base/Label.html','api/Base/Label')" title="Label">Label</a> related things</li>
-</ul></div>
+</ul>
+<p>Many style property can be set to functions. When that is the case, the function's
+return type must necessarily be the same as the types (other than function) of the property.
+For instance, if the <code>fill.pattern</code> property is set to a function, this function must return
+an <code>Image</code>, a <code>Canvas</code>, or <code>String</code>.
+The first parameter of functions used to set <code>Style</code> properties is always an object containing
+the properties of the features displayed with the current <code>Style</code> instance.</p></div>
     
 
     
