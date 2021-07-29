@@ -565,7 +565,7 @@ Default is <code>#000000</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.anchor</span>
-        : <span class="type">string|function</span>
+        : <span class="type">string|Array.&lt;number>|function</span>
     </h3>
 
     
@@ -574,6 +574,10 @@ Default is <code>#000000</code>.</p>
 position (see <a onclick="window.parent.goTo('api/Base/Label.html','api/Base/Label')" title="Label">Label</a> for the position). Can be a few value: <code>top</code>,
 <code>left</code>, <code>bottom</code>, <code>right</code>, <code>center</code>, <code>top-left</code>, <code>top-right</code>, <code>bottom-left</code>
 or <code>bottom-right</code>. Default is <code>center</code>.</p>
+<p>It can also be defined as an Array of two numbers. Each number defines an offset (in
+fraction of the label width and height) between the label position and the top-left
+corner of the text. The first value is the horizontal offset, and the second is the
+vertical offset. For example, <code>[-0.5, -0.5]</code> will be equivalent to <code>center</code>.</p>
         </div>
     
 </div>
@@ -795,6 +799,94 @@ Default is <code>0</code>.</p>
         <div class="description">
             <p>The blur value of the halo, in pixels.
 Default is <code>0</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">icon</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Defines the appearance of icons attached to label.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">icon.source</span>
+        : <span class="type">String</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The url of the icons' image file.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">icon.key</span>
+        : <span class="type">String</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The key of the icons' image in a vector tile data set.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">icon.anchor</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The anchor of the icon compared to the label position.
+Can be <code>left</code>, <code>bottom</code>, <code>right</code>, <code>center</code>, <code>top-left</code>, <code>top-right</code>, <code>bottom-left</code>
+or <code>bottom-right</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">icon.size</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>If the icon's image is passed with <code>icon.source</code> or
+<code>icon.key</code>, it size when displayed on screen is multiplied by <code>icon.size</code>. Default is <code>1</code>.</p>
         </div>
     
 </div>
