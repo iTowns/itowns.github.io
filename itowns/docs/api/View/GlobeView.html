@@ -428,7 +428,7 @@ If you want add a unattached layer use <code>View#addLayer</code> parent method.
 )
         :
             
-                <span class="type">THREE.Vector2</span>
+                <span class="type">THREE.Vector2|undefined</span>
 
             
         
@@ -446,7 +446,8 @@ If you want add a unattached layer use <code>View#addLayer</code> parent method.
                 <h4>Returns</h4>
                 
                     <ul>
-<li>view coordinates (in pixels, 0-0 = top-left of the View)</li>
+<li>view coordinates (in pixels, 0-0 = top-left of the View).
+If the event is neither a <code>MouseEvent</code> nor a <code>TouchEvent</code>, the return is <code>undefined</code>.</li>
 </ul>
                 
 
