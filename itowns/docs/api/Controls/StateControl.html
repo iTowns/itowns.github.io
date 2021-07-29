@@ -26,7 +26,7 @@
 
     
         <div class="description"><p>It represents the control's states.
-Each state is a control mode of the camera and how to interact with
+Each State is a control mode of the camera and how to interact with
 the interface to activate this mode.</p></div>
     
 
@@ -59,10 +59,194 @@ the interface to activate this mode.</p></div>
     
 
     
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">NONE</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State when camera is idle.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">ORBIT</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera orbiting movement : the camera moves around its
+target at a constant distance from it.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">DOLLY</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera dolly movement : the camera moves forward or
+backward from its target.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">PAN</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera pan movement : the camera moves parallel to the
+current view plane.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">MOVE_GLOBE</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera drag movement : the camera is moved around the view
+to give the feeling that the view is dragged under a static camera.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">PANORAMIC</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera panoramic movement : the camera is rotated around
+its own position.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">TRAVEL_IN</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera travel in movement : the camera is zoomed in toward
+a given position. The choice of the target position is made in the Controls
+associated to this StateControl.
+This state can only be associated to double click on mouse buttons (left or right)
+or a keyboard key.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">TRAVEL_OUT</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera travel out movement : the camera is zoomed out from
+a given position. The choice of the target position is made in the Controls
+associated to this StateControl.
+This state can only be associated to double click on mouse buttons (left or right)
+or a keyboard key. It is disabled by default.</p>
+        </div>
+    
+</div>
+
+            
+        
+    
 
     
         <hr class="title-divider"/>
         <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">dispose</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Remove all event listeners created within this instance of <code>StateControl</code></p>
+            </div>
+        
+    
+
+    
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
         
             
 
@@ -78,7 +262,10 @@ the interface to activate this mode.</p></div>
             <span class="type">Number</span>, 
     
         keyboard:
-            <span class="type">Number</span>
+            <span class="type">Number</span>, 
+    
+        double:
+            <span class="type">Boolean</span>
     
 
 )
@@ -130,11 +317,96 @@ the interface to activate this mode.</p></div>
         
     </li>
     
+    <li>
+        <code>double</code>
+        (optional)
+        
+            &mdash; <span><p>Value of the searched state <code>double</code> property</p></span>
+        
+
+        
+    </li>
+    
 </ul>
 
     
 
     
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setFromOptions</span>
+        (
+
+
+    
+    
+        options:
+            <span class="type">Object</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Set the current StateControl State properties to given values.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>options</code>
+        
+        
+            &mdash; <span><p>Object containing the <code>State</code> values to set current <code>StateControl</code> properties to.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// Switch bindings for PAN and MOVE_GLOBE actions :
+view.controls.states.setFromOptions({
+    PAN: {
+       enable: true,
+       mouseButton: itowns.THREE.MOUSE.LEFT,
+    },
+    MOVE_GLOBE: {
+        enable: true,
+        mouseButton: itowns.THREE.MOUSE.RIGHT,
+    },
+};</code></pre>
+
+
         
     
 </div>
@@ -209,6 +481,84 @@ the interface to activate this mode.</p></div>
 
     
 
+    
+        <hr class="title-divider"/>
+        <h2>Types</h2>
+        
+            
+
+<div class="typedef">
+    <h3>
+        <span class="typedef-name">State</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+    
+
+<ul class="params">
+    
+    <li>
+        <code>enable: <span class="type">boolean</span></code>
+        (default: <code>true</code>)
+        
+        
+            &mdash; <span><p>Indicate whether the state is enabled or not.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>mouseButton: <span class="type">Number</span></code>
+        (optional)
+        
+            &mdash; <span><p>The mouse button bound to this state.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>keyboard: <span class="type">Number</span></code>
+        (optional)
+        
+            &mdash; <span><p>The keyCode of the keyboard input bound to this state.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>finger: <span class="type">Number</span></code>
+        (optional)
+        
+            &mdash; <span><p>The number of fingers on the pad bound to this state.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>double: <span class="type">boolean</span></code>
+        (optional)
+        
+            &mdash; <span><p>True if the mouse button bound to this state must be pressed twice. For
+example, if <code>double</code> is set to true with a <code>mouseButton</code> set to left click,
+the State will be bound to a double click mouse button.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+
+    
+</div>
+
+            
+        
     
 
     
