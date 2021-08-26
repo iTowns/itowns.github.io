@@ -271,7 +271,7 @@ or a keyboard key. It is disabled by default.</p>
 )
         :
             
-                <span class="type">state</span>
+                <span class="type">State</span>
 
             
         
@@ -376,7 +376,9 @@ or a keyboard key. It is disabled by default.</p>
         <code>options</code>
         
         
-            &mdash; <span><p>Object containing the <code>State</code> values to set current <code>StateControl</code> properties to.</p></span>
+            &mdash; <span><p>Object containing the <code>State</code> values to set current <code>StateControl</code> properties to.
+The <code>enable</code> property do not necessarily need to be specified. In that case, the
+previous value of this property will be kept for the new State.</p></span>
         
 
         
@@ -394,15 +396,16 @@ or a keyboard key. It is disabled by default.</p>
 
     
 
-    <pre class="prettyprint source lang-js"><code>// Switch bindings for PAN and MOVE_GLOBE actions :
+    <pre class="prettyprint source lang-js"><code>// Switch bindings for PAN and MOVE_GLOBE actions, and disabling PANORAMIC movement :
 view.controls.states.setFromOptions({
     PAN: {
-       enable: true,
-       mouseButton: itowns.THREE.MOUSE.LEFT,
+        mouseButton: itowns.THREE.MOUSE.LEFT,
     },
     MOVE_GLOBE: {
-        enable: true,
         mouseButton: itowns.THREE.MOUSE.RIGHT,
+    },
+    PANORAMIC: {
+        enable: false,
     },
 };</code></pre>
 
