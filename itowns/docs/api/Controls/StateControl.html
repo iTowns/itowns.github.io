@@ -180,10 +180,9 @@ its own position.</p>
     
         <div class="description">
             <p>State describing camera travel in movement : the camera is zoomed in toward
-a given position. The choice of the target position is made in the Controls
-associated to this StateControl.
-This state can only be associated to double click on mouse buttons (left or right)
-or a keyboard key.</p>
+a given position. The target position depends on the key/mouse binding of this
+state. If bound to a mouse button, the target position is the mouse position.
+Otherwise, it is the center of the screen.</p>
         </div>
     
 </div>
@@ -201,10 +200,9 @@ or a keyboard key.</p>
     
         <div class="description">
             <p>State describing camera travel out movement : the camera is zoomed out from
-a given position. The choice of the target position is made in the Controls
-associated to this StateControl.
-This state can only be associated to double click on mouse buttons (left or right)
-or a keyboard key. It is disabled by default.</p>
+a given position. The target position depends on the key/mouse binding of this
+state. If bound to a mouse button, the target position is the mouse position.
+Otherwise, it is the center of the screen. It is disabled by default.</p>
         </div>
     
 </div>
@@ -280,7 +278,8 @@ or a keyboard key. It is disabled by default.</p>
     
         
             <div class="description">
-                <p>get the state corresponding to the mouse button and the keyboard key</p>
+                <p>get the state corresponding to the mouse button and the keyboard key. If the input relates to a trigger - a
+single event which triggers movement, without the move of the mouse for instance -, dispatch a relevant event.</p>
             </div>
         
     
