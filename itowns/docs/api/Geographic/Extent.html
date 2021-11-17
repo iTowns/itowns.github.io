@@ -26,7 +26,8 @@
 
     
         <div class="description"><p>Extent is geographical bounding rectangle defined by 4 limits: west, east, south and north.
-If crs is tiled projection (WMTS or TMS), the extent is defined by zoom, row and column.</p></div>
+If crs is tiled projection (WMTS or TMS), the extent is defined by zoom, row and column.</p>
+<p>Warning, using geocentric projection isn't consistent with geographical extent.</p></div>
     
 
     
@@ -1655,7 +1656,7 @@ order of the sections is [NW, NE, SW, SE].</p>
             <span class="type">string</span>, 
     
         box:
-            <span class="type">THREE.Box2</span>
+            <span class="type">THREE.Box3</span>
     
 
 )
@@ -1670,7 +1671,10 @@ order of the sections is [NW, NE, SW, SE].</p>
     
         
             <div class="description">
-                <p>Instance Extent with THREE.Box2</p>
+                <p>Instance Extent with THREE.Box3.</p>
+<p>If crs is a geocentric projection, the <code>box3.min</code> and <code>box3.max</code>
+should be the geocentric coordinates of <code>min</code> and <code>max</code> of a <code>box3</code>
+in local tangent plane.</p>
             </div>
         
     
