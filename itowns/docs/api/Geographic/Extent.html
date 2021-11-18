@@ -728,6 +728,72 @@ east-north corner</p></span>
 
 <div class="method">
     <h3>
+        <span class="method-name">earthEuclideanDimensions</span>
+        (
+
+
+    
+    
+        target:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Earth euclidean dimensions are two earth euclidean distances between west/east and south/north.
+Earth euclidean distance chord is calculated in a ellispoid space.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>Earth euclidean dimensions</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>target</code>
+        (default: <code>new THREE.Vector2()</code>)
+        
+        
+            &mdash; <span><p>The target</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
         <span class="method-name">expandByCoordinates</span>
         (
 
@@ -833,6 +899,73 @@ for the coordinates values to belong to this Extent object</p>
         
         
             &mdash; <span><p>The coordinate on south-north</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">geodesicDimensions</span>
+        (
+
+
+    
+    
+        target:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Geodesic dimensions are two planar distances west/east and south/north.
+Geodesic distance is calculated in an ellispoid space as the distance
+across the curved surface of the world.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>Planar dimensions</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>target</code>
+        (default: <code>new THREE.Vector2()</code>)
+        
+        
+            &mdash; <span><p>The target</p></span>
         
 
         
@@ -1172,6 +1305,72 @@ point.</p></span>
         
         
             &mdash; <span><p>copy the result to target.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">planarDimensions</span>
+        (
+
+
+    
+    
+        target:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Planar dimensions are two planar distances west/east and south/north.
+Planar distance straight-line Euclidean distance calculated in a 2D Cartesian coordinate system.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>Planar dimensions</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>target</code>
+        (default: <code>new THREE.Vector2()</code>)
+        
+        
+            &mdash; <span><p>The target</p></span>
         
 
         
