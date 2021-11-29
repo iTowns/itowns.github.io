@@ -79,6 +79,25 @@
 
 <div class="property">
     <h3>
+        <span class="property-name">structure</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>data structure type : 2d or 3d.
+If the structure is 3d, the feature have 3 dimensions by vertices positions and
+a normal for each vertices.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
         <span class="property-name">filteringExtent</span>
         : <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a>|boolean</span>
     </h3>
@@ -86,7 +105,7 @@
     
         <div class="description">
             <p>Optional filter to reject
-features outside of extent. Extent filetring is file extent if filteringExtent is true.</p>
+features outside of extent. Extent filtering is file extent if filteringExtent is true.</p>
         </div>
     
 </div>
@@ -105,6 +124,7 @@ features outside of extent. Extent filetring is file extent if filteringExtent i
         <div class="description">
             <p>If true the geometry will
 have an extent property containing the area covered by the geometry.
+Default value is false if <code>structure</code> parameter is set to '3d', and true otherwise.
 True if the layer does not inherit from <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>.</p>
         </div>
     
@@ -156,26 +176,7 @@ True if the layer does not inherit from <a onclick="window.parent.goTo('api/Laye
 
     
         <div class="description">
-            <p>If true all geometries are merged by type and multi-type</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">structure</span>
-        : <span class="type">string</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>data structure type : 2d or 3d.
-If the structure is 3d, the feature have 3 dimensions by vertices positions and
-a normal for each vertices.</p>
+            <p>If true all geometries are merged by type and multi-type.</p>
         </div>
     
 </div>
