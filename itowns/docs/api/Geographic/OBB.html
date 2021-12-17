@@ -401,14 +401,8 @@ The OBB resulted can be only in the system 'EPSG:3946'.</p>
 
     
     
-        min:
-            <span class="type">number</span>, 
-    
-        max:
-            <span class="type">number</span>, 
-    
-        scale:
-            <span class="type">number</span>
+        elevation:
+            <span class="type">Object</span>
     
 
 )
@@ -418,7 +412,7 @@ The OBB resulted can be only in the system 'EPSG:3946'.</p>
     
         
             <div class="description">
-                <p>Update z min and z max of oriented bounding box</p>
+                <p>Update z min, z max and z scale of oriented bounding box</p>
             </div>
         
     
@@ -432,8 +426,19 @@ The OBB resulted can be only in the system 'EPSG:3946'.</p>
 <ul class="params">
     
     <li>
-        <code>min</code>
+        <code>elevation</code>
+        (default: <code>{}</code>)
         
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>elevation.min</code>
+        (optional)
         
             &mdash; <span><p>The minimum of oriented bounding box</p></span>
         
@@ -442,8 +447,8 @@ The OBB resulted can be only in the system 'EPSG:3946'.</p>
     </li>
     
     <li>
-        <code>max</code>
-        
+        <code>elevation.max</code>
+        (optional)
         
             &mdash; <span><p>The maximum of oriented bounding box</p></span>
         
@@ -452,9 +457,16 @@ The OBB resulted can be only in the system 'EPSG:3946'.</p>
     </li>
     
     <li>
-        <code>scale</code>
+        <code>elevation.scale</code>
+        (optional)
         
+            &mdash; <span><p>The scale of oriented bounding box Z axis</p></span>
         
+
+        
+    </li>
+    
+</ul>
 
         
     </li>
