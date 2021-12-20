@@ -51571,6 +51571,7 @@
 			this.width = 1;
 			this.height = 20;
 			this._modifiable = true;
+			this.isGeocentric = false;
 
 			this.sphereGeometry = new SphereGeometry(0.4, 10, 10);
 			this.color = new Color(0xff0000);
@@ -51680,6 +51681,7 @@
 						e.viewer.scene.pointclouds);
 
 					if (I) {
+						this.isGeocentric = e.viewer;
 						let i = this.spheres.indexOf(e.drag.object);
 						if (i !== -1) {
 							this.setPosition(i, I.location);
@@ -51829,19 +51831,41 @@
 				}
 
 				if (leftBox) {
-					let start = leftVertex;
-					let end = point;
-					let length = start.clone().setZ(0).distanceTo(end.clone().setZ(0));
-					leftBox.scale.set(length, 1000000, this.width);
-					leftBox.up.set(0, 0, 1);
+					if (this.isGeocentric) {
+						const line = new Line3(leftVertex, point);
+						let length = line.distance() || 1;
 
-					let center = new Vector3().addVectors(start, end).multiplyScalar(0.5);
-					let diff = new Vector3().subVectors(end, start);
-					let target = new Vector3(diff.y, -diff.x, 0);
+						leftBox.scale.set(length, 1000000, this.width);
+						let center = line.getCenter(new Vector3());
 
-					leftBox.position.set(0, 0, 0);
-					leftBox.lookAt(target);
-					leftBox.position.copy(center);
+						leftBox.position.copy(center);
+						leftBox.quaternion.identity();
+						leftBox.lookAt(new Vector3());
+						leftBox.rotateX(-Math.PI * 0.5);
+
+						leftBox.updateMatrixWorld(true);
+						const h = line.end.clone();
+						leftBox.worldToLocal(h);
+
+						h.multiply(leftBox.scale);
+						const d = new Vector2(h.z, h.x);
+						leftBox.rotateY(d.angle() + Math.PI * 0.5);
+
+					} else {
+						let start = leftVertex;
+						let end = point;
+						let length = start.clone().setZ(0).distanceTo(end.clone().setZ(0));
+						leftBox.scale.set(length, 1000000, this.width);
+						leftBox.up.set(0, 0, 1);
+
+						let center = new Vector3().addVectors(start, end).multiplyScalar(0.5);
+						let diff = new Vector3().subVectors(end, start);
+						let target = new Vector3(diff.y, -diff.x, 0);
+
+						leftBox.position.set(0, 0, 0);
+						leftBox.lookAt(target);
+						leftBox.position.copy(center);
+					}
 				}
 
 				centroid.add(point);
@@ -51850,10 +51874,12 @@
 			}
 			centroid.multiplyScalar(1 / this.points.length);
 
-			for (let i = 0; i < this.boxes.length; i++) {
-				let box = this.boxes[i];
+			if (!this.isGeocentric) {
+				for (let i = 0; i < this.boxes.length; i++) {
+					let box = this.boxes[i];
 
-				box.position.z = min.z + (max.z - min.z) / 2;
+					box.position.z = min.z + (max.z - min.z) / 2;
+				}
 			}
 		}
 
@@ -53464,7 +53490,7 @@
 	}
 
 	class Measure extends Object3D {
-		constructor () {
+		constructor (viewer) {
 			super();
 
 			this.constructor.counter = (this.constructor.counter === undefined) ? 0 : this.constructor.counter + 1;
@@ -53511,6 +53537,7 @@
 			this.add(this.circleCenter);
 
 			this.add(this.azimuth.node);
+			this.isGeocentric = viewer.isGeocentric;
 
 		}
 
@@ -53797,7 +53824,7 @@
 				{ // coordinate labels
 					let coordinateLabel = this.coordinateLabels[0];
 					
-					let msg = position.toArray().map(p => Utils.addCommas(p.toFixed(2))).join(" / ");
+					let msg = this.measureCoordinateCallback(position).toArray().map(p => Utils.addCommas(p.toFixed(2))).join(" / ");
 					coordinateLabel.setText(msg);
 
 					coordinateLabel.visible = this.showCoordinates;
@@ -53900,15 +53927,29 @@
 				this.heightLabel.visible = this.showHeight;
 
 				if (this.showHeight) {
+
 					let sorted = this.points.slice().sort((a, b) => a.position.z - b.position.z);
+					if (this.isGeocentric) {
+						sorted = this.points.slice().sort((a, b) => a.position.length() - b.position.length());
+					}
+
 					let lowPoint = sorted[0].position.clone();
 					let highPoint = sorted[sorted.length - 1].position.clone();
+
 					let min = lowPoint.z;
 					let max = highPoint.z;
+					if (this.isGeocentric) {
+						min = lowPoint.length();
+						max = highPoint.length();
+					}
 					let height = max - min;
 
 					let start = new Vector3(highPoint.x, highPoint.y, min);
 					let end = new Vector3(highPoint.x, highPoint.y, max);
+					if (this.isGeocentric) {
+						start = highPoint.clone().sub(highPoint.clone().normalize().multiplyScalar( height) );
+						end = highPoint.clone();
+					}
 
 					heightEdge.position.copy(lowPoint);
 
@@ -60281,6 +60322,7 @@ out highp vec4 pc_fragColor;
 		}
 
 		nodeIntersectsProfile (node, profile) {
+			// return this.nodeIntersectsProfile_2 (node, profile);
 			let bbWorld = node.boundingBox.clone().applyMatrix4(this.matrixWorld);
 			let bsWorld = bbWorld.getBoundingSphere(new Sphere());
 
@@ -60300,6 +60342,18 @@ out highp vec4 pc_fragColor;
 			//console.log(`${node.name}: ${intersects}`);
 
 			return intersects;
+		}
+
+		nodeIntersectsProfile_2 (node, profile) {
+			let bbWorld = node.boundingBox.clone(); // .applyMatrix4(this.matrixWorld);
+			let bsWorld = bbWorld.getBoundingSphere(new Sphere());
+
+			const matInv = new Matrix4().copy(this.matrixWorld).invert();
+
+			const pointsProfile = profile.points.map(p => p.clone().applyMatrix4(matInv));
+			const bboxProfile = new Box3().setFromPoints(pointsProfile);
+
+			return bbWorld.intersectsBox(bboxProfile);
 		}
 
 		deepestNodeAt(position){
@@ -63716,13 +63770,14 @@ out highp vec4 pc_fragColor;
 				let start = profile.points[i];
 				let end = profile.points[i + 1];
 
-				let startGround = new Vector3(start.x, start.y, 0);
-				let endGround = new Vector3(end.x, end.y, 0);
+				let startGround = new Vector3(start.x, start.y, start.z);
+				let endGround = new Vector3(end.x, end.y, end.z);
 
 				let center = new Vector3().addVectors(endGround, startGround).multiplyScalar(0.5);
 				let length = startGround.distanceTo(endGround);
 				let side = new Vector3().subVectors(endGround, startGround).normalize();
-				let up = new Vector3(0, 0, 1);
+				// let up = new THREE.Vector3(0, 0, 1);
+				let up = start.clone().normalize();
 				let forward = new Vector3().crossVectors(side, up).normalize();
 				let N = forward;
 				let cutPlane = new Plane().setFromNormalAndCoplanarPoint(N, startGround);
@@ -63784,17 +63839,20 @@ out highp vec4 pc_fragColor;
 				let node = stack.pop();
 				let weight = node.boundingSphere.radius;
 
-				this.priorityQueue.push({node: node, weight: weight});
+		   		if (!this.priorityQueue.content.find(e => e.node.name == node.name)) {
 
-				// add children that intersect the cutting plane
-				if (node.level < this.maxDepth) {
-					for (let i = 0; i < 8; i++) {
-						let child = node.children[i];
-						if (child && this.pointcloud.nodeIntersectsProfile(child, this.profile)) {
-							stack.push(child);
+					this.priorityQueue.push({node: node, weight: weight});
+
+					// add children that intersect the cutting plane
+					if (node.level < this.maxDepth) {
+						for (let i = 0; i < 8; i++) {
+							let child = node.children[i];
+							if (child && this.pointcloud.nodeIntersectsProfile(child, this.profile)) {
+								stack.push(child);
+							}
 						}
 					}
-				}
+	    		}
 			}
 		}
 
@@ -63884,7 +63942,7 @@ out highp vec4 pc_fragColor;
 			yield true;
 		};
 
-		* getAccepted(numPoints, node, matrix, segment, segmentDir, points, totalMileage){
+		* getAccepted(numPoints, node, matrix, segment, segmentDir, points, totalMileage, nodeMatrix){
 			let checkpoint = performance.now();
 
 			let accepted = new Uint32Array(numPoints);
@@ -63896,6 +63954,12 @@ out highp vec4 pc_fragColor;
 			let svp = new Vector3();
 
 			let view = new Float32Array(node.geometry.attributes.position.array);
+
+			const end = new itowns.Coordinates('EPSG:4978', segment.end.x, segment.end.y, segment.end.z).as('EPSG:2154').toVector3();
+			const start = new itowns.Coordinates('EPSG:4978', segment.start.x, segment.start.y, segment.start.z).as('EPSG:2154').toVector3();
+			let sv = new Vector3().subVectors(end, start).setZ(0);
+
+			let segmentDirL93 = sv.clone().normalize();
 
 			for (let i = 0; i < numPoints; i++) {
 
@@ -63909,18 +63973,26 @@ out highp vec4 pc_fragColor;
 				let centerDistance = Math.abs(segment.halfPlane.distanceToPoint(pos));
 
 				if (distance < this.profile.width / 2 && centerDistance < segment.length / 2) {
-					svp.subVectors(pos, segment.start);
-					let localMileage = segmentDir.dot(svp);
+					const coord = new itowns.Coordinates('EPSG:4978', pos.x, pos.y, pos.z).as('EPSG:2154').toVector3();
+					svp.subVectors(coord, start);
+					let localMileage = segmentDirL93.dot(svp);
 
 					accepted[numAccepted] = i;
 					mileage[numAccepted] = localMileage + totalMileage;
-					points.boundingBox.expandByPoint(pos);
+					points.boundingBox.expandByPoint(coord);
 
-					pos.sub(this.pointcloud.position);
+					// pos.sub(this.pointcloud.position);
 
-					acceptedPositions[3 * numAccepted + 0] = pos.x;
-					acceptedPositions[3 * numAccepted + 1] = pos.y;
-					acceptedPositions[3 * numAccepted + 2] = pos.z;
+					// pos.set(
+					// 	view[i * 3 + 0],
+					// 	view[i * 3 + 1],
+					// 	view[i * 3 + 2]);
+
+					// pos.applyMatrix4(nodeMatrix);
+
+					acceptedPositions[3 * numAccepted + 0] = coord.x;
+					acceptedPositions[3 * numAccepted + 1] = coord.y;
+					acceptedPositions[3 * numAccepted + 2] = coord.z;
 
 					numAccepted++;
 				}
@@ -64003,7 +64075,7 @@ out highp vec4 pc_fragColor;
 					let accepted = null;
 					let mileage = null;
 					let acceptedPositions = null;
-					for(let result of this.getAccepted(numPoints, node, matrix, segment, segmentDir, points,totalMileage)){
+					for(let result of this.getAccepted(numPoints, node, matrix, segment, segmentDir, points,totalMileage, nodeMatrix)){
 						if(!result){
 							let duration = performance.now() - checkpoint;
 							//console.log(`getPointsInsideProfile yield after ${duration}ms`);
@@ -65036,7 +65108,7 @@ out highp vec4 pc_fragColor;
 			return;
 		}
 
-		const measure = new Measure();
+		const measure = new Measure(this.viewer);
 
 		measure.uuid = data.uuid;
 		measure.name = data.name;
@@ -68326,7 +68398,8 @@ out highp vec4 pc_fragColor;
 		startInsertion (args = {}) {
 			let domElement = this.viewer.renderer.domElement;
 
-			let measure = new Measure();
+			let measure = new Measure(this.viewer);
+			measure.measureCoordinateCallback = this.viewer.measureCoordinateCallback;
 
 			this.dispatchEvent({
 				type: 'start_inserting_measurement',
@@ -68735,7 +68808,7 @@ out highp vec4 pc_fragColor;
 		startInsertion (args = {}) {
 			let domElement = this.viewer.renderer.domElement;
 
-			let profile = new Profile();
+			let profile = new Profile(this.viewer);
 			profile.name = args.name || 'Profile';
 
 			this.dispatchEvent({
@@ -70030,6 +70103,11 @@ out highp vec4 pc_fragColor;
 					// let pp = new THREE.Vector4(wp.x, wp.y, wp.z).applyMatrix4(camera.projectionMatrix);
 					let w = Math.abs((wp.z / 5));
 					volume.scale.set(w, w, w);
+
+					// Volume orientation to earth center
+					if (this.viewer.isGeocentric) {
+						volume.lookAt(new Vector3());
+					}
 				}
 			};
 
@@ -70239,7 +70317,9 @@ out highp vec4 pc_fragColor;
 			renderer.render(viewer.clippingTool.sceneMarker, viewer.scene.cameraScreenSpace); //viewer.scene.cameraScreenSpace);
 			renderer.render(viewer.clippingTool.sceneVolume, camera);
 
-			renderer.render(viewer.controls.sceneControls, camera);
+			if (viewer.controls) {
+				renderer.render(viewer.controls.sceneControls, camera);
+			}
 			
 			renderer.clearDepth();
 			
@@ -70593,7 +70673,9 @@ out highp vec4 pc_fragColor;
 
 			viewer.dispatchEvent({type: "render.pass.perspective_overlay",viewer: viewer});
 
-			viewer.renderer.render(viewer.controls.sceneControls, camera);
+			if (viewer.controls) {
+				viewer.renderer.render(viewer.controls.sceneControls, camera);
+			}
 			viewer.renderer.render(viewer.clippingTool.sceneVolume, camera);
 			viewer.renderer.render(viewer.transformationTool.scene, camera);
 			
@@ -70906,7 +70988,9 @@ out highp vec4 pc_fragColor;
 
 			viewer.dispatchEvent({type: "render.pass.perspective_overlay",viewer: viewer});
 
-			viewer.renderer.render(viewer.controls.sceneControls, camera);
+			if (viewer.controls) {
+				viewer.renderer.render(viewer.controls.sceneControls, camera);
+			}
 			viewer.renderer.render(viewer.clippingTool.sceneVolume, camera);
 			viewer.renderer.render(viewer.transformationTool.scene, camera);
 
@@ -94135,13 +94219,14 @@ out highp vec4 pc_fragColor;
 
 	class ProfileFakeOctree extends PointCloudTree{
 
-		constructor(octree){
+		constructor(octree, isGeocentric = false){
 			super();
 
 			this.trueOctree = octree;
 			this.pcoGeometry = octree.pcoGeometry;
 			this.points = [];
 			this.visibleNodes = [];
+			this.isGeocentric = true;
 			
 			//this.material = this.trueOctree.material;
 			this.material = new PointCloudMaterial$1();
@@ -94208,11 +94293,13 @@ out highp vec4 pc_fragColor;
 					};
 				}
 
-				truePos.set(
-					data.data.position[3 * i + 0] + this.trueOctree.position.x,
-					data.data.position[3 * i + 1] + this.trueOctree.position.y,
-					data.data.position[3 * i + 2] + this.trueOctree.position.z,
-				);
+				// Copy local position
+				truePos.fromArray(data.data.position, 3 * i);
+
+				// place in world
+				if (!this.isGeocentric) {
+					truePos.add(this.trueOctree.position);
+				}
 
 				let x = data.data.mileage[i];
 				let y = 0;
@@ -94422,18 +94509,24 @@ out highp vec4 pc_fragColor;
 					if (closest) {
 						let point = closest.point;
 
-						let position = new Float64Array([
-							point.position[0] + closest.pointcloud.position.x,
-							point.position[1] + closest.pointcloud.position.y,
-							point.position[2] + closest.pointcloud.position.z
-						]);
+						let position;
+						let altitude;
+
+						if (this.viewer.isGeocentric) {
+							position = new itowns.Coordinates(this.viewer.crs, ...point.position);
+							altitude = position.z;
+							position = position.as('EPSG:4978', position).toVector3();
+						} else {
+							position = new Vector3().fromArray(point.position).add(closest.pointcloud.position);
+							altitude = position.z;
+						}
 
 						this.elRoot.find('#profileSelectionProperties').fadeIn(200);
 						this.pickSphere.visible = true;
 						this.pickSphere.scale.set(0.5 * radius, 0.5 * radius, 0.5 * radius);
-						this.pickSphere.position.set(point.mileage, 0, position[2]);
+						this.pickSphere.position.set(point.mileage, 0, altitude);
 
-						this.viewerPickSphere.position.set(...position);
+						this.viewerPickSphere.position.copy(position);
 						
 						if(!this.viewer.scene.scene.children.includes(this.viewerPickSphere)){
 							this.viewer.scene.scene.add(this.viewerPickSphere);
@@ -94643,7 +94736,11 @@ out highp vec4 pc_fragColor;
 					for (let i = 0; i < points.numPoints; i++) {
 
 						let m = points.data.mileage[i] - mileage;
-						let e = points.data.position[3 * i + 2] - elevation + pointcloud.position.z;
+						let e = points.data.position[3 * i + 2] - elevation;
+						if (!this.viewer.isGeocentric) {
+							e += pointcloud.position.z;
+						}
+
 						let r = Math.sqrt(m * m + e * e);
 
 						const withinDistance = r < radius && r < closest.distance;
@@ -94792,7 +94889,7 @@ out highp vec4 pc_fragColor;
 
 			let entry = this.pointclouds.get(pointcloud);
 			if(!entry){
-				entry = new ProfileFakeOctree(pointcloud);
+				entry = new ProfileFakeOctree(pointcloud, this.viewer.isGeocentric);
 				this.pointclouds.set(pointcloud, entry);
 				this.profileScene.add(entry);
 
@@ -112202,6 +112299,9 @@ ENDSEC
 			this.edlOpacity = 1.0;
 			this.useEDL = false;
 			this.description = "";
+			this.dynamicNearFar = args.dynamicNearFar == undefined ? true : args.dynamicNearFar;
+			this.isGeocentric = args.isGeocentric == undefined ? true : args.isGeocentric;
+			this.crs = args.crs;
 
 			this.classifications = ClassificationScheme.DEFAULT;
 
@@ -112386,6 +112486,8 @@ ENDSEC
 
 			this.loadGUI = this.loadGUI.bind(this);
 
+			this.measureCoordinateCallback = args.measureCoordinateCallback || (value => value);
+			
 			this.annotationTool = new AnnotationTool(this);
 			this.measuringTool = new MeasuringTool(this);
 			this.profileTool = new ProfileTool(this);
@@ -112497,8 +112599,10 @@ ENDSEC
 				}
 
 				this.controls = controls;
-				this.controls.enabled = true;
-				this.inputHandler.addInputListener(this.controls);
+				if (this.controls) {
+					this.controls.enabled = true;
+					this.inputHandler.addInputListener(this.controls);
+				}
 			}
 		}
 
@@ -113790,7 +113894,7 @@ ENDSEC
 				}
 				const tEnd = performance.now();
 
-				if(result.lowestSpacing !== Infinity){
+				if(this.dynamicNearFar && result.lowestSpacing !== Infinity){
 					let near = result.lowestSpacing * 10.0;
 					let far = -this.getBoundingBox().applyMatrix4(camera.matrixWorldInverse).min.z;
 
