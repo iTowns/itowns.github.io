@@ -46,8 +46,7 @@
 		"navigation_cube_control": "Navigation cube",
 		"remove_all_clipping_volumes": "Remove all clipping volumes",
 		"compass": "Compass",
-		"camera_animation": "Camera Animation",
-        "divider_measurement": "Measurement"
+		"camera_animation": "Camera Animation"
 	},
 	"appearance": {
 		"nb_max_pts": "Point budget", 
@@ -74,10 +73,7 @@
 		"length_unit": "Length unit",
 		"freeze": "Lock view",
 		"language": "Language",
-		"backface_culling": "Backface Culling",
-		"edl_divider": "Eye-Dome-Lighting",
-        "bg_divider": "Background",
-        "other_divider": "Other"
+		"backface_culling": "Backface Culling"
 	},
 	"measurements": {
 		"clip": "clip",
