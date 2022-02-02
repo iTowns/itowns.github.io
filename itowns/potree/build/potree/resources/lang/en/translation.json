@@ -11,7 +11,8 @@
 		"classification_filter_opt": "Classification filter",
 		"filters_opt": "Filters",
 		"parameters_opt": "Other settings",
-		"about_opt": "About"
+		"about_opt": "About",
+        "coord": "Coordinates"
 	},
 	"tt": {
 		"angle_measurement": "Angle measurement",
@@ -46,7 +47,8 @@
 		"navigation_cube_control": "Navigation cube",
 		"remove_all_clipping_volumes": "Remove all clipping volumes",
 		"compass": "Compass",
-		"camera_animation": "Camera Animation"
+		"camera_animation": "Camera Animation",
+        "divider_measurement": "Measurement"
 	},
 	"appearance": {
 		"nb_max_pts": "Point budget", 
@@ -73,7 +75,10 @@
 		"length_unit": "Length unit",
 		"freeze": "Lock view",
 		"language": "Language",
-		"backface_culling": "Backface Culling"
+		"backface_culling": "Backface Culling",
+		"edl_divider": "Eye-Dome-Lighting",
+        "bg_divider": "Background",
+        "other_divider": "Other"
 	},
 	"measurements": {
 		"clip": "clip",
@@ -101,6 +106,14 @@
 		"gps_time": "GPS Time"
 	},
 	"settings": {
-		"language": "Language"
+		"language": "Language",
+		"mode_simple": "Simple mode",
+		"mode_expert": "Expert mode"
+	},
+	"nav_help": {
+		"title": "Navigation help"
+	},
+	"simple_attribut": {
+		"title": "Attributs"
 	}
 }
