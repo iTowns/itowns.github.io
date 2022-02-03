@@ -102980,7 +102980,7 @@ ENDSEC
 			<div class="measurement_content selectable">
 				<span class="coordinates_table_container"></span>
 				<br>
-				<span style="font-weight: bold">Area: </span>
+				<span style="font-weight: bold">Area: </span>: 
 				<span id="measurement_area"></span>
 
 				<!-- ACTIONS -->
@@ -103174,7 +103174,7 @@ ENDSEC
 			<div class="measurement_content selectable">
 				<span class="coordinates_table_container"></span>
 				<br>
-				<span id="height_label">Height: </span><br>
+				<span id="height_label" data-i18n="measurements.height"></span>: <br>
 
 				<!-- ACTIONS -->
 				<div style="display: flex; margin-top: 12px">
@@ -104327,7 +104327,7 @@ ENDSEC
 				<li><span data-i18n="appearance.point_opacity"></span>:<span id="lblOpacity"></span><div id="sldOpacity"></div></li>
 
 				<div class="divider">
-					<span>Attribute</span>
+					<span data-i18n="tt.attribute"></span>
 				</div>
 
 				<li>
@@ -104349,12 +104349,12 @@ ENDSEC
 
 				<div id="materials.rgb_container">
 					<div class="divider">
-						<span>RGB</span>
+						<span data-i18n="attribute.rgb"></span>
 					</div>
 
-					<li>Gamma: <span id="lblRGBGamma"></span> <div id="sldRGBGamma"></div>	</li>
-					<li>Brightness: <span id="lblRGBBrightness"></span> <div id="sldRGBBrightness"></div>	</li>
-					<li>Contrast: <span id="lblRGBContrast"></span> <div id="sldRGBContrast"></div>	</li>
+					<li><span data-i18n="attribute.gamma"></span> : <span id="lblRGBGamma"></span> <div id="sldRGBGamma"></div>	</li>
+					<li><span data-i18n="attribute.brightness"></span> : <span id="lblRGBBrightness"></span> <div id="sldRGBBrightness"></div>	</li>
+					<li><span data-i18n="attribute.contrast"></span> : <span id="lblRGBContrast"></span> <div id="sldRGBContrast"></div>	</li>
 				</div>
 
 				<div id="materials.extra_container">
@@ -104371,7 +104371,7 @@ ENDSEC
 				
 				<div id="materials.matcap_container">
 					<div class="divider">
-						<span>MATCAP</span>
+						<span data-i18n="attribute.matcap"></span>
 					</div>
 
 					<li>
@@ -104381,7 +104381,7 @@ ENDSEC
 
 				<div id="materials.color_container">
 					<div class="divider">
-						<span>Color</span>
+						<span data-i18n="attribute.color"></span>
 					</div>
 
 					<input id="materials.color.picker" />
@@ -104390,21 +104390,21 @@ ENDSEC
 
 				<div id="materials.elevation_container">
 					<div class="divider">
-						<span>Elevation</span>
+						<span data-i18n="attribute.elevation"></span>
 					</div>
 
 					<li><span data-i18n="appearance.elevation_range"></span>: <span id="lblHeightRange"></span> <div id="sldHeightRange"></div>	</li>
 
 					<li>
 						<selectgroup id="gradient_repeat_option">
-							<option id="gradient_repeat_clamp" value="CLAMP">Clamp</option>
-							<option id="gradient_repeat_repeat" value="REPEAT">Repeat</option>
-							<option id="gradient_repeat_mirrored_repeat" value="MIRRORED_REPEAT">Mirrored Repeat</option>
+							<option id="gradient_repeat_clamp" value="CLAMP"><span data-i18n="attribute.clamp"></span></option>
+							<option id="gradient_repeat_repeat" value="REPEAT"><span data-i18n="attribute.repeat"></span></option>
+							<option id="gradient_repeat_mirrored_repeat" value="MIRRORED_REPEAT"><span data-i18n="attribute.mirrored_repeat"</span></option>
 						</selectgroup>
 					</li>
 
 					<li>
-						<span>Gradient Scheme:</span>
+						<span data-i18n="attribute.gradient_scheme"> :</span>
 						<div id="elevation_gradient_scheme_selection" style="display: flex; padding: 1em 0em">
 						</div>
 					</li>
@@ -104420,25 +104420,25 @@ ENDSEC
 
 				<div id="materials.intensity_container">
 					<div class="divider">
-						<span>Intensity</span>
+						<span data-i18n="attribute.intensity"></span>
 					</div>
 
-					<li>Range: <span id="lblIntensityRange"></span> <div id="sldIntensityRange"></div>	</li>
-					<li>Gamma: <span id="lblIntensityGamma"></span> <div id="sldIntensityGamma"></div>	</li>
-					<li>Brightness: <span id="lblIntensityBrightness"></span> <div id="sldIntensityBrightness"></div>	</li>
-					<li>Contrast: <span id="lblIntensityContrast"></span> <div id="sldIntensityContrast"></div>	</li>
+					<li><span data-i18n="attribute.range"></span> : <span id="lblIntensityRange"></span> <div id="sldIntensityRange"></div>	</li>
+					<li><span data-i18n="attribute.gamma"></span> : <span id="lblIntensityGamma"></span> <div id="sldIntensityGamma"></div>	</li>
+					<li><span data-i18n="attribute.brightness"></span> : <span id="lblIntensityBrightness"></span> <div id="sldIntensityBrightness"></div>	</li>
+					<li><span data-i18n="attribute.contrast"></span> : <span id="lblIntensityContrast"></span> <div id="sldIntensityContrast"></div>	</li>
 				</div>
 
 				<div id="materials.gpstime_container">
 					<div class="divider">
-						<span>GPS Time</span>
+						<span data-i18n="attribute.gps_time"></span>
 					</div>
 
 				</div>
 				
 				<div id="materials.index_container">
 					<div class="divider">
-						<span>Indices</span>
+						<span data-i18n="attribute.indices"></span>
 					</div>
 				</div>
 
@@ -105214,7 +105214,8 @@ ENDSEC
 
 		addLevel(){
 			const elLevel = document.createElement("li");
-			const elRange = document.createTextNode("Range: ");
+			const elRange = document.createElement("span");
+			elRange.innerHTML = `<span data-i18n="tt.range"></span> : `;
 			const label = document.createElement("span");
 			const slider = document.createElement("div");
 
@@ -105292,7 +105293,7 @@ ENDSEC
 				let [min, max] = $(slider).slider("option", "values");
 				let strMin = format$1(min);
 				let strMax = format$1(max);
-				let strLabel = `${strMin} to ${strMax}`;
+				let strLabel = `${strMin} <span data-i18n="tt.to"></span> ${strMax}`;
 
 				label.innerHTML = strLabel;
 			}
@@ -110351,7 +110352,7 @@ ENDSEC
 
 			{ // SHOW / HIDE Measurements
 				let elShow = $("#measurement_options_show");
-				elShow.selectgroup({title: "Show/Hide labels"});
+				elShow.selectgroup({dataI18n: "tt.show_hide_labels"});
 
 				elShow.find("input").click( (e) => {
 					const show = e.target.value === "SHOW";
@@ -111210,7 +111211,7 @@ ENDSEC
 				<li>
 					<label style="whitespace: nowrap">
 						<input id="toggleClassificationFilters" type="checkbox" checked/>
-						<span>show/hide all</span>
+						<span data-i18n="tt.classification_show_hide_all"></span>
 					</label>
 				</li>
 			`);
@@ -111227,7 +111228,7 @@ ENDSEC
 			const addInvertButton = () => { 
 				const element = $(`
 				<li>
-					<input type="button" value="invert" />
+					<input type="button" data-i18n="[value]tt.classification_invert" value="invert" />
 				</li>
 			`);
 
@@ -120617,6 +120618,7 @@ ENDSEC
 				}, function (t) {
 					// Start translation once everything is loaded
 					$('body').i18n();
+					$('#optPointSizing').selectmenu("refresh");
 				});
 
 				$(() => {
@@ -121883,7 +121885,9 @@ ENDSEC
 
 				let elFieldset = $(`
 				<fieldset style="border: none; margin: 0px; padding: 0px">
-					<legend>${groupTitle}</legend>
+					<legend ${args.dataI18n ? `data-i18n=${args.dataI18n}` : ""}>
+						${args.dataI18n ? "" : groupTitle}
+					</legend>
 					<span style="display: flex">
 
 					</span>
