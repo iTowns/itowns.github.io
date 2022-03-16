@@ -42,7 +42,7 @@
     
     
         view:
-            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
+            <span class="type"><a onclick="window.parent.goTo('api/View/GlobeView.html','api/View/GlobeView')" title="GlobeView">GlobeView</a></span>, 
     
         options:
             <span class="type">Object</span>
@@ -67,7 +67,8 @@
         
         
             &mdash; <span><p>The iTowns view the navigation should be linked
-to.</p></span>
+to. For the moment, only <code><a onclick="window.parent.goTo('api/View/GlobeView.html','api/View/GlobeView')" title="GlobeView">GlobeView</a></code>
+is supported.</p></span>
         
 
         
@@ -87,7 +88,7 @@ to.</p></span>
     
     <li>
         <code>options.parentElement</code>
-        (default: <code>document.body</code>)
+        (default: <code>view.domElement</code>)
         
         
             &mdash; <span><p>The parent HTML container of the div which
@@ -272,6 +273,95 @@ y-axis.</p></span>
     
         <div class="description">
             <p>The parent HTML container of <code>this.domElement</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">onClick</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>An object containing methods which are executed when clicking one of the
+default navigation buttons. These default buttons are the compass, the
+3D toggle, zoom-in and zoom-out buttons. The <code>onClick</code> object can be
+modified by user in order to implement custom behaviour on default
+buttons.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">onClick.compass</span>
+        : <span class="type">function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The method ran when clicking the compass button.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">onClick.toggle3D</span>
+        : <span class="type">function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The method ran when clicking the 3D/2D button.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">onClick.zoomIn</span>
+        : <span class="type">function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The method ran when clicking the zoom-in button.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">onClick.zoomOut</span>
+        : <span class="type">function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The method ran when clicking the zoom-out button.</p>
         </div>
     
 </div>
