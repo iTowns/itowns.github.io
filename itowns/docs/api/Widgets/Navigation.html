@@ -247,6 +247,27 @@ y-axis.</p></span>
     
 
     
+        <hr class="title-divider"/>
+        <h2>Example</h2>
+        
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// Create a Navigation widget in the bottom-right corner of an iTowns view domElement
+const navigation = new Navigation(view, { position: 'bottom-right' };
+
+// Change the tooltip for the compass :
+navigation.compass.title = 'new tooltip';
+
+// Change the method ran when clicking zoom-in button :
+function newMethod() {
+    // do something
+}
+navigation.zoomIn.onclick = newMethod;</code></pre>
+
+
+    
 
     
         <hr class="title-divider"/>
@@ -290,17 +311,13 @@ y-axis.</p></span>
 
 <div class="property">
     <h3>
-        <span class="property-name">onClick</span>
-        : <span class="type">Object</span>
+        <span class="property-name">compass</span>
+        : <span class="type">HTMLButtonElement</span>
     </h3>
 
     
         <div class="description">
-            <p>An object containing methods which are executed when clicking one of the
-default navigation buttons. These default buttons are the compass, the
-3D toggle, zoom-in and zoom-out buttons. The <code>onClick</code> object can be
-modified by user in order to implement custom behaviour on default
-buttons.</p>
+            <p>The HTML button for the compass.</p>
         </div>
     
 </div>
@@ -311,13 +328,13 @@ buttons.</p>
 
 <div class="property">
     <h3>
-        <span class="property-name">onClick.compass</span>
-        : <span class="type">function</span>
+        <span class="property-name">toggle3D</span>
+        : <span class="type">HTMLButtonElement</span>
     </h3>
 
     
         <div class="description">
-            <p>The method ran when clicking the compass button.</p>
+            <p>The HTML button for the 3D/2D toggle button.</p>
         </div>
     
 </div>
@@ -328,13 +345,13 @@ buttons.</p>
 
 <div class="property">
     <h3>
-        <span class="property-name">onClick.toggle3D</span>
-        : <span class="type">function</span>
+        <span class="property-name">zoomIn</span>
+        : <span class="type">HTMLButtonElement</span>
     </h3>
 
     
         <div class="description">
-            <p>The method ran when clicking the 3D/2D button.</p>
+            <p>The HTML button for the zoom-in button.</p>
         </div>
     
 </div>
@@ -345,30 +362,13 @@ buttons.</p>
 
 <div class="property">
     <h3>
-        <span class="property-name">onClick.zoomIn</span>
-        : <span class="type">function</span>
+        <span class="property-name">zoomOut</span>
+        : <span class="type">HTMLButtonElement</span>
     </h3>
 
     
         <div class="description">
-            <p>The method ran when clicking the zoom-in button.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">onClick.zoomOut</span>
-        : <span class="type">function</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>The method ran when clicking the zoom-out button.</p>
+            <p>The HTML button for the zoom-out button.</p>
         </div>
     
 </div>
@@ -397,7 +397,10 @@ buttons.</p>
         content:
             <span class="type">string</span>, 
     
-        actionOnClick:
+        title:
+            <span class="type">string</span>, 
+    
+        onclick:
             <span class="type">function</span>, 
     
         parentId:
@@ -451,7 +454,19 @@ buttons.</p>
     </li>
     
     <li>
-        <code>actionOnClick</code>
+        <code>title</code>
+        (default: <code>''</code>)
+        
+        
+            &mdash; <span><p>An HTML string defining information on the button. This string will be
+displayed in a tooltip when hovering the button.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>onclick</code>
         (optional)
         
             &mdash; <span><p>The method that should be executed when the button is clicked on.</p></span>
