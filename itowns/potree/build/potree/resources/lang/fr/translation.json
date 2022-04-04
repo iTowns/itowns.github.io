@@ -10,7 +10,7 @@
         "filters_opt": "Filtres",
         "parameters_opt": "Autres paramètres",
         "about_opt": "À propos",
-        "coord": "Coordonnées"
+        "coord": "Coordonnées du curseur"
     },
     "tt": {
         "angle_measurement": "Mesurer un angle",

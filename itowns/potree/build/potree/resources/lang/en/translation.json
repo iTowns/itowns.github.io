@@ -11,7 +11,8 @@
 		"classification_filter_opt": "Classification filter",
 		"filters_opt": "Filters",
 		"parameters_opt": "Other settings",
-		"about_opt": "About"
+		"about_opt": "About",
+		"coord": "Cursor coordinates"
 	},
 	"tt": {
 		"angle_measurement": "Angle measurement",
