@@ -49,14 +49,8 @@ and their conversion (<code>convert</code> method),</p></div>
         id:
             <span class="type">string</span>, 
     
-        config:
-            <span class="type">Object</span>, 
-    
-        options.batchId:
-            <span class="type">function</span>, 
-    
-        config.object3d:
-            <span class="type">THREE.Object3D</span>
+        options:
+            <span class="type">Object</span>
     
 
 )
@@ -86,7 +80,7 @@ not mandatory, but an error will be emitted if this layer is added a
     </li>
     
     <li>
-        <code>config</code>
+        <code>options</code>
         (optional)
         
             &mdash; <span><p>Optional configuration, all elements in it
@@ -94,7 +88,9 @@ will be merged as is in the layer.</p></span>
         
 
         
-    </li>
+            
+
+<ul class="params">
     
     <li>
         <code>options.batchId</code>
@@ -109,12 +105,51 @@ As the batchId is using an unsigned int structure on 32 bits, the batchId could 
     </li>
     
     <li>
-        <code>config.object3d</code>
+        <code>options.object3d</code>
         (default: <code>new THREE.Group()</code>)
         
         
             &mdash; <span><p>root object3d layer.</p></span>
         
+
+        
+    </li>
+    
+    <li>
+        <code>options.onMeshCreated</code>
+        (optional)
+        
+            &mdash; <span><p>this callback is called when the mesh is created. The callback parameters are the
+<code>mesh</code> and the <code>context</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.accurate</code>
+        (default: <code>TRUE</code>)
+        
+        
+            &mdash; <span><p>If <code>accurate</code> is <code>true</code>, data are re-projected with maximum geographical accuracy.
+With <code>true</code>, <code>proj4</code> is used to transform data source.</p>
+<p>If <code>accurate</code> is <code>false</code>, re-projecting is faster but less accurate.
+With <code>false</code>, an affine transformation is used to transform data source.
+This method is an approximation. The error increases with the extent
+dimension of the object or queries.</p>
+<p>For example :</p>
+<ul>
+<li>for a <strong>100</strong> meter dimension, there's a difference of <strong>0.001</strong> meter with the accurate method</li>
+<li>for a <strong>500</strong> meter dimension, there's a difference of <strong>0.05</strong> meter with the accurate method</li>
+<li>for a <strong>20000</strong> meter dimension, there's a difference of <strong>40</strong> meter with the accurate method</li>
+</ul>
+<p><strong>WARNING</strong> If the source is <code>VectorTilesSource</code> then <code>accurate</code> is always false.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
 
         
     </li>
