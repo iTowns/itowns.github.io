@@ -122549,6 +122549,7 @@ ENDSEC
 	exports.ProfileData = ProfileData;
 	exports.ProfileRequest = ProfileRequest;
 	exports.ProfileTool = ProfileTool;
+	exports.PropertiesPanel = PropertiesPanel;
 	exports.Renderer = Renderer;
 	exports.Scene = Scene$1;
 	exports.ScreenBoxSelectTool = ScreenBoxSelectTool;
