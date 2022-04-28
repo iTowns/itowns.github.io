@@ -89,9 +89,7 @@
         "gps_time": "GPS Time"
     },
     "settings": {
-        "language": "Langue",
-        "mode_simple": "Mode simplifié",
-        "mode_expert": "Mode expert"
+        "language": "Langue"
     },
     "attribute" : {
         "rgb": "RGB",
@@ -110,11 +108,5 @@
         "contrast": "Contraste",
         "gps_time": "Temps GPS",
         "indices": "Indices"
-    },
-    "nav_help": {
-        "title": "Aide à la navigation"
-    },
-    "simple_attribut": {
-        "title": "Attributs"
     }
 }

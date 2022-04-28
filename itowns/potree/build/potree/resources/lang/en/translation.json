@@ -124,9 +124,7 @@
 		"gps_time": "GPS Time"
 	},
 	"settings": {
-		"language": "Language",
-		"mode_simple": "Simple mode",
-		"mode_expert": "Expert mode"
+		"language": "Language"
 	},
 	"attribute" : {
 		"rgb": "RGB",
@@ -145,11 +143,5 @@
 		"contrast": "Contrast",
 		"gps_time": "GPS Time",
 		"indices": "Indices"
-	},
-		"nav_help": {
-		"title": "Navigation help"
-	},
-	"simple_attribut": {
-		"title": "Attributs"
 	}
 }
