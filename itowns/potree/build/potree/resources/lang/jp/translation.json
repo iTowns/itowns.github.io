@@ -31,6 +31,7 @@
     "appearance": {
         "nb_max_pts": "表示するポイント数を設定", 
         "point_size": "点サイズを設定",
+		"min_point_size": "最小サイズ",
         "point_opacity": "不透明度",
         "field_view": "視野",
         "point_size_type": "点タイプ設定",

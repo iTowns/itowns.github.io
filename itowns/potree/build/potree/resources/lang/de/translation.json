@@ -38,6 +38,7 @@
     "appearance": {
         "nb_max_pts": "Max Punkte", 
         "point_size": "Punktgrösse",
+		"min_point_size": "Mindestmaß",
         "point_opacity": "Deckkraft",
         "field_view": "Sichtfeld",
         "point_size_type": "Punktgrösse",

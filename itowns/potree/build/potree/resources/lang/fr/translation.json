@@ -50,6 +50,7 @@
     "appearance": {
         "nb_max_pts": "Nb points max", 
         "point_size": "Taille des points",
+		"min_point_size": "Taille minimum",
         "point_opacity": "Opacité",
         "field_view": "Angle de vue",
         "point_size_type": "Type de taille",

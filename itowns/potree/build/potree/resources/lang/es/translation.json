@@ -46,6 +46,7 @@
 	"appearance": {
 		"nb_max_pts": "Presupuesto de puntos", 
 		"point_size": "Tamaño del punto",
+		"min_point_size": "Tamaño mínimo",
 		"point_opacity": "Opacidad",
 		"field_view": "Campo de visión",
 		"point_size_type": "Dimensionamiento de puntos",
