@@ -185,10 +185,10 @@
 
 	/**
 	 * @license
-	 * Copyright 2010-2022 Three.js Authors
+	 * Copyright 2010-2021 Three.js Authors
 	 * SPDX-License-Identifier: MIT
 	 */
-	const REVISION = '137';
+	const REVISION = '135';
 	const MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };
 	const TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
 	const CullFaceNone = 0;
@@ -274,18 +274,21 @@
 	const HalfFloatType = 1016;
 	const UnsignedShort4444Type = 1017;
 	const UnsignedShort5551Type = 1018;
+	const UnsignedShort565Type = 1019;
 	const UnsignedInt248Type$1 = 1020;
 	const AlphaFormat = 1021;
 	const RGBFormat = 1022;
 	const RGBAFormat = 1023;
 	const LuminanceFormat = 1024;
 	const LuminanceAlphaFormat = 1025;
+	const RGBEFormat = RGBAFormat;
 	const DepthFormat = 1026;
 	const DepthStencilFormat = 1027;
 	const RedFormat = 1028;
 	const RedIntegerFormat = 1029;
 	const RGFormat = 1030;
 	const RGIntegerFormat = 1031;
+	const RGBIntegerFormat = 1032;
 	const RGBAIntegerFormat = 1033;
 
 	const RGB_S3TC_DXT1_Format = 33776;
@@ -314,6 +317,20 @@
 	const RGBA_ASTC_12x10_Format = 37820;
 	const RGBA_ASTC_12x12_Format = 37821;
 	const RGBA_BPTC_Format = 36492;
+	const SRGB8_ALPHA8_ASTC_4x4_Format = 37840;
+	const SRGB8_ALPHA8_ASTC_5x4_Format = 37841;
+	const SRGB8_ALPHA8_ASTC_5x5_Format = 37842;
+	const SRGB8_ALPHA8_ASTC_6x5_Format = 37843;
+	const SRGB8_ALPHA8_ASTC_6x6_Format = 37844;
+	const SRGB8_ALPHA8_ASTC_8x5_Format = 37845;
+	const SRGB8_ALPHA8_ASTC_8x6_Format = 37846;
+	const SRGB8_ALPHA8_ASTC_8x8_Format = 37847;
+	const SRGB8_ALPHA8_ASTC_10x5_Format = 37848;
+	const SRGB8_ALPHA8_ASTC_10x6_Format = 37849;
+	const SRGB8_ALPHA8_ASTC_10x8_Format = 37850;
+	const SRGB8_ALPHA8_ASTC_10x10_Format = 37851;
+	const SRGB8_ALPHA8_ASTC_12x10_Format = 37852;
+	const SRGB8_ALPHA8_ASTC_12x12_Format = 37853;
 	const LoopOnce = 2200;
 	const LoopRepeat = 2201;
 	const LoopPingPong = 2202;
@@ -330,6 +347,11 @@
 	const TriangleFanDrawMode = 2;
 	const LinearEncoding = 3000;
 	const sRGBEncoding = 3001;
+	const GammaEncoding = 3007;
+	const RGBEEncoding = 3002;
+	const RGBM7Encoding = 3004;
+	const RGBM16Encoding = 3005;
+	const RGBDEncoding = 3006;
 	const BasicDepthPacking = 3200;
 	const RGBADepthPacking = 3201;
 	const TangentSpaceNormalMap = 0;
@@ -365,8 +387,6 @@
 
 	const GLSL1 = '100';
 	const GLSL3 = '300 es';
-
-	const _SRGBAFormat = 1035; // fallback for WebGL 1
 
 	/**
 	 * https://github.com/mrdoob/eventdispatcher.js/
@@ -1531,17 +1551,19 @@
 
 	Matrix3.prototype.isMatrix3 = true;
 
-	function arrayNeedsUint32( array ) {
+	function arrayMax( array ) {
 
-		// assumes larger values usually on last
+		if ( array.length === 0 ) return - Infinity;
 
-		for ( let i = array.length - 1; i >= 0; -- i ) {
+		let max = array[ 0 ];
 
-			if ( array[ i ] > 65535 ) return true;
+		for ( let i = 1, l = array.length; i < l; ++ i ) {
+
+			if ( array[ i ] > max ) max = array[ i ];
 
 		}
 
-		return false;
+		return max;
 
 	}
 
@@ -1569,568 +1591,41 @@
 
 	}
 
-	const _colorKeywords = { 'aliceblue': 0xF0F8FF, 'antiquewhite': 0xFAEBD7, 'aqua': 0x00FFFF, 'aquamarine': 0x7FFFD4, 'azure': 0xF0FFFF,
-		'beige': 0xF5F5DC, 'bisque': 0xFFE4C4, 'black': 0x000000, 'blanchedalmond': 0xFFEBCD, 'blue': 0x0000FF, 'blueviolet': 0x8A2BE2,
-		'brown': 0xA52A2A, 'burlywood': 0xDEB887, 'cadetblue': 0x5F9EA0, 'chartreuse': 0x7FFF00, 'chocolate': 0xD2691E, 'coral': 0xFF7F50,
-		'cornflowerblue': 0x6495ED, 'cornsilk': 0xFFF8DC, 'crimson': 0xDC143C, 'cyan': 0x00FFFF, 'darkblue': 0x00008B, 'darkcyan': 0x008B8B,
-		'darkgoldenrod': 0xB8860B, 'darkgray': 0xA9A9A9, 'darkgreen': 0x006400, 'darkgrey': 0xA9A9A9, 'darkkhaki': 0xBDB76B, 'darkmagenta': 0x8B008B,
-		'darkolivegreen': 0x556B2F, 'darkorange': 0xFF8C00, 'darkorchid': 0x9932CC, 'darkred': 0x8B0000, 'darksalmon': 0xE9967A, 'darkseagreen': 0x8FBC8F,
-		'darkslateblue': 0x483D8B, 'darkslategray': 0x2F4F4F, 'darkslategrey': 0x2F4F4F, 'darkturquoise': 0x00CED1, 'darkviolet': 0x9400D3,
-		'deeppink': 0xFF1493, 'deepskyblue': 0x00BFFF, 'dimgray': 0x696969, 'dimgrey': 0x696969, 'dodgerblue': 0x1E90FF, 'firebrick': 0xB22222,
-		'floralwhite': 0xFFFAF0, 'forestgreen': 0x228B22, 'fuchsia': 0xFF00FF, 'gainsboro': 0xDCDCDC, 'ghostwhite': 0xF8F8FF, 'gold': 0xFFD700,
-		'goldenrod': 0xDAA520, 'gray': 0x808080, 'green': 0x008000, 'greenyellow': 0xADFF2F, 'grey': 0x808080, 'honeydew': 0xF0FFF0, 'hotpink': 0xFF69B4,
-		'indianred': 0xCD5C5C, 'indigo': 0x4B0082, 'ivory': 0xFFFFF0, 'khaki': 0xF0E68C, 'lavender': 0xE6E6FA, 'lavenderblush': 0xFFF0F5, 'lawngreen': 0x7CFC00,
-		'lemonchiffon': 0xFFFACD, 'lightblue': 0xADD8E6, 'lightcoral': 0xF08080, 'lightcyan': 0xE0FFFF, 'lightgoldenrodyellow': 0xFAFAD2, 'lightgray': 0xD3D3D3,
-		'lightgreen': 0x90EE90, 'lightgrey': 0xD3D3D3, 'lightpink': 0xFFB6C1, 'lightsalmon': 0xFFA07A, 'lightseagreen': 0x20B2AA, 'lightskyblue': 0x87CEFA,
-		'lightslategray': 0x778899, 'lightslategrey': 0x778899, 'lightsteelblue': 0xB0C4DE, 'lightyellow': 0xFFFFE0, 'lime': 0x00FF00, 'limegreen': 0x32CD32,
-		'linen': 0xFAF0E6, 'magenta': 0xFF00FF, 'maroon': 0x800000, 'mediumaquamarine': 0x66CDAA, 'mediumblue': 0x0000CD, 'mediumorchid': 0xBA55D3,
-		'mediumpurple': 0x9370DB, 'mediumseagreen': 0x3CB371, 'mediumslateblue': 0x7B68EE, 'mediumspringgreen': 0x00FA9A, 'mediumturquoise': 0x48D1CC,
-		'mediumvioletred': 0xC71585, 'midnightblue': 0x191970, 'mintcream': 0xF5FFFA, 'mistyrose': 0xFFE4E1, 'moccasin': 0xFFE4B5, 'navajowhite': 0xFFDEAD,
-		'navy': 0x000080, 'oldlace': 0xFDF5E6, 'olive': 0x808000, 'olivedrab': 0x6B8E23, 'orange': 0xFFA500, 'orangered': 0xFF4500, 'orchid': 0xDA70D6,
-		'palegoldenrod': 0xEEE8AA, 'palegreen': 0x98FB98, 'paleturquoise': 0xAFEEEE, 'palevioletred': 0xDB7093, 'papayawhip': 0xFFEFD5, 'peachpuff': 0xFFDAB9,
-		'peru': 0xCD853F, 'pink': 0xFFC0CB, 'plum': 0xDDA0DD, 'powderblue': 0xB0E0E6, 'purple': 0x800080, 'rebeccapurple': 0x663399, 'red': 0xFF0000, 'rosybrown': 0xBC8F8F,
-		'royalblue': 0x4169E1, 'saddlebrown': 0x8B4513, 'salmon': 0xFA8072, 'sandybrown': 0xF4A460, 'seagreen': 0x2E8B57, 'seashell': 0xFFF5EE,
-		'sienna': 0xA0522D, 'silver': 0xC0C0C0, 'skyblue': 0x87CEEB, 'slateblue': 0x6A5ACD, 'slategray': 0x708090, 'slategrey': 0x708090, 'snow': 0xFFFAFA,
-		'springgreen': 0x00FF7F, 'steelblue': 0x4682B4, 'tan': 0xD2B48C, 'teal': 0x008080, 'thistle': 0xD8BFD8, 'tomato': 0xFF6347, 'turquoise': 0x40E0D0,
-		'violet': 0xEE82EE, 'wheat': 0xF5DEB3, 'white': 0xFFFFFF, 'whitesmoke': 0xF5F5F5, 'yellow': 0xFFFF00, 'yellowgreen': 0x9ACD32 };
+	/**
+	  * cyrb53 hash for string from: https://stackoverflow.com/a/52171480
+	  *
+	  * Public Domain, @bryc - https://stackoverflow.com/users/815680/bryc
+	  *
+	  * It is roughly similar to the well-known MurmurHash/xxHash algorithms. It uses a combination
+	  * of multiplication and Xorshift to generate the hash, but not as thorough. As a result it's
+	  * faster than either would be in JavaScript and significantly simpler to implement. Keep in
+	  * mind this is not a secure algorithm, if privacy/security is a concern, this is not for you.
+	  *
+	  * @param {string} str
+	  * @param {number} seed, default 0
+	  * @returns number
+	  */
+	function hashString( str, seed = 0 ) {
 
-	const _hslA = { h: 0, s: 0, l: 0 };
-	const _hslB = { h: 0, s: 0, l: 0 };
+		let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
 
-	function hue2rgb( p, q, t ) {
+		for ( let i = 0, ch; i < str.length; i ++ ) {
 
-		if ( t < 0 ) t += 1;
-		if ( t > 1 ) t -= 1;
-		if ( t < 1 / 6 ) return p + ( q - p ) * 6 * t;
-		if ( t < 1 / 2 ) return q;
-		if ( t < 2 / 3 ) return p + ( q - p ) * 6 * ( 2 / 3 - t );
-		return p;
+			ch = str.charCodeAt( i );
+
+			h1 = Math.imul( h1 ^ ch, 2654435761 );
+
+			h2 = Math.imul( h2 ^ ch, 1597334677 );
+
+		}
+
+		h1 = Math.imul( h1 ^ ( h1 >>> 16 ), 2246822507 ) ^ Math.imul( h2 ^ ( h2 >>> 13 ), 3266489909 );
+
+		h2 = Math.imul( h2 ^ ( h2 >>> 16 ), 2246822507 ) ^ Math.imul( h1 ^ ( h1 >>> 13 ), 3266489909 );
+
+		return 4294967296 * ( 2097151 & h2 ) + ( h1 >>> 0 );
 
 	}
-
-	function SRGBToLinear( c ) {
-
-		return ( c < 0.04045 ) ? c * 0.0773993808 : Math.pow( c * 0.9478672986 + 0.0521327014, 2.4 );
-
-	}
-
-	function LinearToSRGB( c ) {
-
-		return ( c < 0.0031308 ) ? c * 12.92 : 1.055 * ( Math.pow( c, 0.41666 ) ) - 0.055;
-
-	}
-
-	class Color {
-
-		constructor( r, g, b ) {
-
-			if ( g === undefined && b === undefined ) {
-
-				// r is THREE.Color, hex or string
-				return this.set( r );
-
-			}
-
-			return this.setRGB( r, g, b );
-
-		}
-
-		set( value ) {
-
-			if ( value && value.isColor ) {
-
-				this.copy( value );
-
-			} else if ( typeof value === 'number' ) {
-
-				this.setHex( value );
-
-			} else if ( typeof value === 'string' ) {
-
-				this.setStyle( value );
-
-			}
-
-			return this;
-
-		}
-
-		setScalar( scalar ) {
-
-			this.r = scalar;
-			this.g = scalar;
-			this.b = scalar;
-
-			return this;
-
-		}
-
-		setHex( hex ) {
-
-			hex = Math.floor( hex );
-
-			this.r = ( hex >> 16 & 255 ) / 255;
-			this.g = ( hex >> 8 & 255 ) / 255;
-			this.b = ( hex & 255 ) / 255;
-
-			return this;
-
-		}
-
-		setRGB( r, g, b ) {
-
-			this.r = r;
-			this.g = g;
-			this.b = b;
-
-			return this;
-
-		}
-
-		setHSL( h, s, l ) {
-
-			// h,s,l ranges are in 0.0 - 1.0
-			h = euclideanModulo( h, 1 );
-			s = clamp( s, 0, 1 );
-			l = clamp( l, 0, 1 );
-
-			if ( s === 0 ) {
-
-				this.r = this.g = this.b = l;
-
-			} else {
-
-				const p = l <= 0.5 ? l * ( 1 + s ) : l + s - ( l * s );
-				const q = ( 2 * l ) - p;
-
-				this.r = hue2rgb( q, p, h + 1 / 3 );
-				this.g = hue2rgb( q, p, h );
-				this.b = hue2rgb( q, p, h - 1 / 3 );
-
-			}
-
-			return this;
-
-		}
-
-		setStyle( style ) {
-
-			function handleAlpha( string ) {
-
-				if ( string === undefined ) return;
-
-				if ( parseFloat( string ) < 1 ) {
-
-					console.warn( 'THREE.Color: Alpha component of ' + style + ' will be ignored.' );
-
-				}
-
-			}
-
-
-			let m;
-
-			if ( m = /^((?:rgb|hsl)a?)\(([^\)]*)\)/.exec( style ) ) {
-
-				// rgb / hsl
-
-				let color;
-				const name = m[ 1 ];
-				const components = m[ 2 ];
-
-				switch ( name ) {
-
-					case 'rgb':
-					case 'rgba':
-
-						if ( color = /^\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec( components ) ) {
-
-							// rgb(255,0,0) rgba(255,0,0,0.5)
-							this.r = Math.min( 255, parseInt( color[ 1 ], 10 ) ) / 255;
-							this.g = Math.min( 255, parseInt( color[ 2 ], 10 ) ) / 255;
-							this.b = Math.min( 255, parseInt( color[ 3 ], 10 ) ) / 255;
-
-							handleAlpha( color[ 4 ] );
-
-							return this;
-
-						}
-
-						if ( color = /^\s*(\d+)\%\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec( components ) ) {
-
-							// rgb(100%,0%,0%) rgba(100%,0%,0%,0.5)
-							this.r = Math.min( 100, parseInt( color[ 1 ], 10 ) ) / 100;
-							this.g = Math.min( 100, parseInt( color[ 2 ], 10 ) ) / 100;
-							this.b = Math.min( 100, parseInt( color[ 3 ], 10 ) ) / 100;
-
-							handleAlpha( color[ 4 ] );
-
-							return this;
-
-						}
-
-						break;
-
-					case 'hsl':
-					case 'hsla':
-
-						if ( color = /^\s*(\d*\.?\d+)\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec( components ) ) {
-
-							// hsl(120,50%,50%) hsla(120,50%,50%,0.5)
-							const h = parseFloat( color[ 1 ] ) / 360;
-							const s = parseInt( color[ 2 ], 10 ) / 100;
-							const l = parseInt( color[ 3 ], 10 ) / 100;
-
-							handleAlpha( color[ 4 ] );
-
-							return this.setHSL( h, s, l );
-
-						}
-
-						break;
-
-				}
-
-			} else if ( m = /^\#([A-Fa-f\d]+)$/.exec( style ) ) {
-
-				// hex color
-
-				const hex = m[ 1 ];
-				const size = hex.length;
-
-				if ( size === 3 ) {
-
-					// #ff0
-					this.r = parseInt( hex.charAt( 0 ) + hex.charAt( 0 ), 16 ) / 255;
-					this.g = parseInt( hex.charAt( 1 ) + hex.charAt( 1 ), 16 ) / 255;
-					this.b = parseInt( hex.charAt( 2 ) + hex.charAt( 2 ), 16 ) / 255;
-
-					return this;
-
-				} else if ( size === 6 ) {
-
-					// #ff0000
-					this.r = parseInt( hex.charAt( 0 ) + hex.charAt( 1 ), 16 ) / 255;
-					this.g = parseInt( hex.charAt( 2 ) + hex.charAt( 3 ), 16 ) / 255;
-					this.b = parseInt( hex.charAt( 4 ) + hex.charAt( 5 ), 16 ) / 255;
-
-					return this;
-
-				}
-
-			}
-
-			if ( style && style.length > 0 ) {
-
-				return this.setColorName( style );
-
-			}
-
-			return this;
-
-		}
-
-		setColorName( style ) {
-
-			// color keywords
-			const hex = _colorKeywords[ style.toLowerCase() ];
-
-			if ( hex !== undefined ) {
-
-				// red
-				this.setHex( hex );
-
-			} else {
-
-				// unknown color
-				console.warn( 'THREE.Color: Unknown color ' + style );
-
-			}
-
-			return this;
-
-		}
-
-		clone() {
-
-			return new this.constructor( this.r, this.g, this.b );
-
-		}
-
-		copy( color ) {
-
-			this.r = color.r;
-			this.g = color.g;
-			this.b = color.b;
-
-			return this;
-
-		}
-
-		copySRGBToLinear( color ) {
-
-			this.r = SRGBToLinear( color.r );
-			this.g = SRGBToLinear( color.g );
-			this.b = SRGBToLinear( color.b );
-
-			return this;
-
-		}
-
-		copyLinearToSRGB( color ) {
-
-			this.r = LinearToSRGB( color.r );
-			this.g = LinearToSRGB( color.g );
-			this.b = LinearToSRGB( color.b );
-
-			return this;
-
-		}
-
-		convertSRGBToLinear() {
-
-			this.copySRGBToLinear( this );
-
-			return this;
-
-		}
-
-		convertLinearToSRGB() {
-
-			this.copyLinearToSRGB( this );
-
-			return this;
-
-		}
-
-		getHex() {
-
-			return ( this.r * 255 ) << 16 ^ ( this.g * 255 ) << 8 ^ ( this.b * 255 ) << 0;
-
-		}
-
-		getHexString() {
-
-			return ( '000000' + this.getHex().toString( 16 ) ).slice( - 6 );
-
-		}
-
-		getHSL( target ) {
-
-			// h,s,l ranges are in 0.0 - 1.0
-
-			const r = this.r, g = this.g, b = this.b;
-
-			const max = Math.max( r, g, b );
-			const min = Math.min( r, g, b );
-
-			let hue, saturation;
-			const lightness = ( min + max ) / 2.0;
-
-			if ( min === max ) {
-
-				hue = 0;
-				saturation = 0;
-
-			} else {
-
-				const delta = max - min;
-
-				saturation = lightness <= 0.5 ? delta / ( max + min ) : delta / ( 2 - max - min );
-
-				switch ( max ) {
-
-					case r: hue = ( g - b ) / delta + ( g < b ? 6 : 0 ); break;
-					case g: hue = ( b - r ) / delta + 2; break;
-					case b: hue = ( r - g ) / delta + 4; break;
-
-				}
-
-				hue /= 6;
-
-			}
-
-			target.h = hue;
-			target.s = saturation;
-			target.l = lightness;
-
-			return target;
-
-		}
-
-		getStyle() {
-
-			return 'rgb(' + ( ( this.r * 255 ) | 0 ) + ',' + ( ( this.g * 255 ) | 0 ) + ',' + ( ( this.b * 255 ) | 0 ) + ')';
-
-		}
-
-		offsetHSL( h, s, l ) {
-
-			this.getHSL( _hslA );
-
-			_hslA.h += h; _hslA.s += s; _hslA.l += l;
-
-			this.setHSL( _hslA.h, _hslA.s, _hslA.l );
-
-			return this;
-
-		}
-
-		add( color ) {
-
-			this.r += color.r;
-			this.g += color.g;
-			this.b += color.b;
-
-			return this;
-
-		}
-
-		addColors( color1, color2 ) {
-
-			this.r = color1.r + color2.r;
-			this.g = color1.g + color2.g;
-			this.b = color1.b + color2.b;
-
-			return this;
-
-		}
-
-		addScalar( s ) {
-
-			this.r += s;
-			this.g += s;
-			this.b += s;
-
-			return this;
-
-		}
-
-		sub( color ) {
-
-			this.r = Math.max( 0, this.r - color.r );
-			this.g = Math.max( 0, this.g - color.g );
-			this.b = Math.max( 0, this.b - color.b );
-
-			return this;
-
-		}
-
-		multiply( color ) {
-
-			this.r *= color.r;
-			this.g *= color.g;
-			this.b *= color.b;
-
-			return this;
-
-		}
-
-		multiplyScalar( s ) {
-
-			this.r *= s;
-			this.g *= s;
-			this.b *= s;
-
-			return this;
-
-		}
-
-		lerp( color, alpha ) {
-
-			this.r += ( color.r - this.r ) * alpha;
-			this.g += ( color.g - this.g ) * alpha;
-			this.b += ( color.b - this.b ) * alpha;
-
-			return this;
-
-		}
-
-		lerpColors( color1, color2, alpha ) {
-
-			this.r = color1.r + ( color2.r - color1.r ) * alpha;
-			this.g = color1.g + ( color2.g - color1.g ) * alpha;
-			this.b = color1.b + ( color2.b - color1.b ) * alpha;
-
-			return this;
-
-		}
-
-		lerpHSL( color, alpha ) {
-
-			this.getHSL( _hslA );
-			color.getHSL( _hslB );
-
-			const h = lerp( _hslA.h, _hslB.h, alpha );
-			const s = lerp( _hslA.s, _hslB.s, alpha );
-			const l = lerp( _hslA.l, _hslB.l, alpha );
-
-			this.setHSL( h, s, l );
-
-			return this;
-
-		}
-
-		equals( c ) {
-
-			return ( c.r === this.r ) && ( c.g === this.g ) && ( c.b === this.b );
-
-		}
-
-		fromArray( array, offset = 0 ) {
-
-			this.r = array[ offset ];
-			this.g = array[ offset + 1 ];
-			this.b = array[ offset + 2 ];
-
-			return this;
-
-		}
-
-		toArray( array = [], offset = 0 ) {
-
-			array[ offset ] = this.r;
-			array[ offset + 1 ] = this.g;
-			array[ offset + 2 ] = this.b;
-
-			return array;
-
-		}
-
-		fromBufferAttribute( attribute, index ) {
-
-			this.r = attribute.getX( index );
-			this.g = attribute.getY( index );
-			this.b = attribute.getZ( index );
-
-			if ( attribute.normalized === true ) {
-
-				// assuming Uint8Array
-
-				this.r /= 255;
-				this.g /= 255;
-				this.b /= 255;
-
-			}
-
-			return this;
-
-		}
-
-		toJSON() {
-
-			return this.getHex();
-
-		}
-
-	}
-
-	Color.NAMES = _colorKeywords;
-
-	Color.prototype.isColor = true;
-	Color.prototype.r = 1;
-	Color.prototype.g = 1;
-	Color.prototype.b = 1;
 
 	let _canvas;
 
@@ -2193,68 +1688,6 @@
 
 		}
 
-		static sRGBToLinear( image ) {
-
-			if ( ( typeof HTMLImageElement !== 'undefined' && image instanceof HTMLImageElement ) ||
-				( typeof HTMLCanvasElement !== 'undefined' && image instanceof HTMLCanvasElement ) ||
-				( typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap ) ) {
-
-				const canvas = createElementNS( 'canvas' );
-
-				canvas.width = image.width;
-				canvas.height = image.height;
-
-				const context = canvas.getContext( '2d' );
-				context.drawImage( image, 0, 0, image.width, image.height );
-
-				const imageData = context.getImageData( 0, 0, image.width, image.height );
-				const data = imageData.data;
-
-				for ( let i = 0; i < data.length; i ++ ) {
-
-					data[ i ] = SRGBToLinear( data[ i ] / 255 ) * 255;
-
-				}
-
-				context.putImageData( imageData, 0, 0 );
-
-				return canvas;
-
-			} else if ( image.data ) {
-
-				const data = image.data.slice( 0 );
-
-				for ( let i = 0; i < data.length; i ++ ) {
-
-					if ( data instanceof Uint8Array || data instanceof Uint8ClampedArray ) {
-
-						data[ i ] = Math.floor( SRGBToLinear( data[ i ] / 255 ) * 255 );
-
-					} else {
-
-						// assuming float
-
-						data[ i ] = SRGBToLinear( data[ i ] );
-
-					}
-
-				}
-
-				return {
-					data: data,
-					width: image.width,
-					height: image.height
-				};
-
-			} else {
-
-				console.warn( 'THREE.ImageUtils.sRGBToLinear(): Unsupported image type. No color space conversion applied.' );
-				return image;
-
-			}
-
-		}
-
 	}
 
 	let textureId = 0;
@@ -2312,8 +1745,7 @@
 			this.version = 0;
 			this.onUpdate = null;
 
-			this.isRenderTargetTexture = false; // indicates whether a texture belongs to a render target or not
-			this.needsPMREMUpdate = false; // indicates whether this texture should be processed by PMREMGenerator or not (only relevant for render target textures)
+			this.isRenderTargetTexture = false;
 
 		}
 
@@ -3363,10 +2795,7 @@
 			this.viewport.copy( source.viewport );
 
 			this.texture = source.texture.clone();
-
-			// ensure image object is not shared, see #20328
-
-			this.texture.image = Object.assign( {}, source.texture.image );
+			this.texture.image = { ...this.texture.image }; // See #20328.
 
 			this.depthBuffer = source.depthBuffer;
 			this.stencilBuffer = source.stencilBuffer;
@@ -4096,7 +3525,7 @@
 
 		slerpQuaternions( qa, qb, t ) {
 
-			return this.copy( qa ).slerp( qb, t );
+			this.copy( qa ).slerp( qb, t );
 
 		}
 
@@ -5028,11 +4457,11 @@
 
 		}
 
-		setFromObject( object, precise = false ) {
+		setFromObject( object ) {
 
 			this.makeEmpty();
 
-			return this.expandByObject( object, precise );
+			return this.expandByObject( object );
 
 		}
 
@@ -5107,7 +4536,7 @@
 
 		}
 
-		expandByObject( object, precise = false ) {
+		expandByObject( object ) {
 
 			// Computes the world-axis-aligned bounding box of an object (including its children),
 			// accounting for both the object's, and children's, world transforms
@@ -5118,30 +4547,16 @@
 
 			if ( geometry !== undefined ) {
 
-				if ( precise && geometry.attributes != undefined && geometry.attributes.position !== undefined ) {
+				if ( geometry.boundingBox === null ) {
 
-					const position = geometry.attributes.position;
-					for ( let i = 0, l = position.count; i < l; i ++ ) {
-
-						_vector$b.fromBufferAttribute( position, i ).applyMatrix4( object.matrixWorld );
-						this.expandByPoint( _vector$b );
-
-					}
-
-				} else {
-
-					if ( geometry.boundingBox === null ) {
-
-						geometry.computeBoundingBox();
-
-					}
-
-					_box$3.copy( geometry.boundingBox );
-					_box$3.applyMatrix4( object.matrixWorld );
-
-					this.union( _box$3 );
+					geometry.computeBoundingBox();
 
 				}
+
+				_box$3.copy( geometry.boundingBox );
+				_box$3.applyMatrix4( object.matrixWorld );
+
+				this.union( _box$3 );
 
 			}
 
@@ -5149,7 +4564,7 @@
 
 			for ( let i = 0, l = children.length; i < l; i ++ ) {
 
-				this.expandByObject( children[ i ], precise );
+				this.expandByObject( children[ i ] );
 
 			}
 
@@ -5640,16 +5055,7 @@
 			// 1) Enclose the farthest point on the other sphere into this sphere.
 			// 2) Enclose the opposite point of the farthest point into this sphere.
 
-			 if ( this.center.equals( sphere.center ) === true ) {
-
-				 _toFarthestPoint.set( 0, 0, 1 ).multiplyScalar( sphere.radius );
-
-
-			} else {
-
-				_toFarthestPoint.subVectors( sphere.center, this.center ).normalize().multiplyScalar( sphere.radius );
-
-			}
+			_toFarthestPoint.subVectors( sphere.center, this.center ).normalize().multiplyScalar( sphere.radius );
 
 			this.expandByPoint( _v1$6.copy( sphere.center ).add( _toFarthestPoint ) );
 			this.expandByPoint( _v1$6.copy( sphere.center ).sub( _toFarthestPoint ) );
@@ -5772,7 +5178,7 @@
 
 		distanceSqToSegment( v0, v1, optionalPointOnRay, optionalPointOnSegment ) {
 
-			// from https://github.com/pmjoniak/GeometricTools/blob/master/GTEngine/Include/Mathematics/GteDistRaySegment.h
+			// from http://www.geometrictools.com/GTEngine/Include/Mathematics/GteDistRaySegment.h
 			// It returns the min distance between the ray and the segment
 			// defined by v0 and v1
 			// It can also set two optional targets :
@@ -6071,7 +5477,7 @@
 
 			// Compute the offset origin, edges, and normal.
 
-			// from https://github.com/pmjoniak/GeometricTools/blob/master/GTEngine/Include/Mathematics/GteIntrRay3Triangle3.h
+			// from http://www.geometrictools.com/GTEngine/Include/Mathematics/GteIntrRay3Triangle3.h
 
 			_edge1.subVectors( b, a );
 			_edge2.subVectors( c, a );
@@ -7914,7 +7320,7 @@
 
 		}
 
-		raycast( /* raycaster, intersects */ ) {}
+		raycast() {}
 
 		traverse( callback ) {
 
@@ -8653,6 +8059,7 @@
 			this.vertexColors = false;
 
 			this.opacity = 1;
+			this.format = RGBAFormat;
 			this.transparent = false;
 
 			this.blendSrc = SrcAlphaFactor;
@@ -8934,6 +8341,7 @@
 			if ( this.vertexColors ) data.vertexColors = true;
 
 			if ( this.opacity < 1 ) data.opacity = this.opacity;
+			if ( this.format !== RGBAFormat ) data.format = this.format;
 			if ( this.transparent === true ) data.transparent = this.transparent;
 
 			data.depthFunc = this.depthFunc;
@@ -9030,6 +8438,7 @@
 			this.vertexColors = source.vertexColors;
 
 			this.opacity = source.opacity;
+			this.format = source.format;
 			this.transparent = source.transparent;
 
 			this.blendSrc = source.blendSrc;
@@ -9113,6 +8522,607 @@
 	}
 
 	Material.prototype.isMaterial = true;
+
+	const _colorKeywords = { 'aliceblue': 0xF0F8FF, 'antiquewhite': 0xFAEBD7, 'aqua': 0x00FFFF, 'aquamarine': 0x7FFFD4, 'azure': 0xF0FFFF,
+		'beige': 0xF5F5DC, 'bisque': 0xFFE4C4, 'black': 0x000000, 'blanchedalmond': 0xFFEBCD, 'blue': 0x0000FF, 'blueviolet': 0x8A2BE2,
+		'brown': 0xA52A2A, 'burlywood': 0xDEB887, 'cadetblue': 0x5F9EA0, 'chartreuse': 0x7FFF00, 'chocolate': 0xD2691E, 'coral': 0xFF7F50,
+		'cornflowerblue': 0x6495ED, 'cornsilk': 0xFFF8DC, 'crimson': 0xDC143C, 'cyan': 0x00FFFF, 'darkblue': 0x00008B, 'darkcyan': 0x008B8B,
+		'darkgoldenrod': 0xB8860B, 'darkgray': 0xA9A9A9, 'darkgreen': 0x006400, 'darkgrey': 0xA9A9A9, 'darkkhaki': 0xBDB76B, 'darkmagenta': 0x8B008B,
+		'darkolivegreen': 0x556B2F, 'darkorange': 0xFF8C00, 'darkorchid': 0x9932CC, 'darkred': 0x8B0000, 'darksalmon': 0xE9967A, 'darkseagreen': 0x8FBC8F,
+		'darkslateblue': 0x483D8B, 'darkslategray': 0x2F4F4F, 'darkslategrey': 0x2F4F4F, 'darkturquoise': 0x00CED1, 'darkviolet': 0x9400D3,
+		'deeppink': 0xFF1493, 'deepskyblue': 0x00BFFF, 'dimgray': 0x696969, 'dimgrey': 0x696969, 'dodgerblue': 0x1E90FF, 'firebrick': 0xB22222,
+		'floralwhite': 0xFFFAF0, 'forestgreen': 0x228B22, 'fuchsia': 0xFF00FF, 'gainsboro': 0xDCDCDC, 'ghostwhite': 0xF8F8FF, 'gold': 0xFFD700,
+		'goldenrod': 0xDAA520, 'gray': 0x808080, 'green': 0x008000, 'greenyellow': 0xADFF2F, 'grey': 0x808080, 'honeydew': 0xF0FFF0, 'hotpink': 0xFF69B4,
+		'indianred': 0xCD5C5C, 'indigo': 0x4B0082, 'ivory': 0xFFFFF0, 'khaki': 0xF0E68C, 'lavender': 0xE6E6FA, 'lavenderblush': 0xFFF0F5, 'lawngreen': 0x7CFC00,
+		'lemonchiffon': 0xFFFACD, 'lightblue': 0xADD8E6, 'lightcoral': 0xF08080, 'lightcyan': 0xE0FFFF, 'lightgoldenrodyellow': 0xFAFAD2, 'lightgray': 0xD3D3D3,
+		'lightgreen': 0x90EE90, 'lightgrey': 0xD3D3D3, 'lightpink': 0xFFB6C1, 'lightsalmon': 0xFFA07A, 'lightseagreen': 0x20B2AA, 'lightskyblue': 0x87CEFA,
+		'lightslategray': 0x778899, 'lightslategrey': 0x778899, 'lightsteelblue': 0xB0C4DE, 'lightyellow': 0xFFFFE0, 'lime': 0x00FF00, 'limegreen': 0x32CD32,
+		'linen': 0xFAF0E6, 'magenta': 0xFF00FF, 'maroon': 0x800000, 'mediumaquamarine': 0x66CDAA, 'mediumblue': 0x0000CD, 'mediumorchid': 0xBA55D3,
+		'mediumpurple': 0x9370DB, 'mediumseagreen': 0x3CB371, 'mediumslateblue': 0x7B68EE, 'mediumspringgreen': 0x00FA9A, 'mediumturquoise': 0x48D1CC,
+		'mediumvioletred': 0xC71585, 'midnightblue': 0x191970, 'mintcream': 0xF5FFFA, 'mistyrose': 0xFFE4E1, 'moccasin': 0xFFE4B5, 'navajowhite': 0xFFDEAD,
+		'navy': 0x000080, 'oldlace': 0xFDF5E6, 'olive': 0x808000, 'olivedrab': 0x6B8E23, 'orange': 0xFFA500, 'orangered': 0xFF4500, 'orchid': 0xDA70D6,
+		'palegoldenrod': 0xEEE8AA, 'palegreen': 0x98FB98, 'paleturquoise': 0xAFEEEE, 'palevioletred': 0xDB7093, 'papayawhip': 0xFFEFD5, 'peachpuff': 0xFFDAB9,
+		'peru': 0xCD853F, 'pink': 0xFFC0CB, 'plum': 0xDDA0DD, 'powderblue': 0xB0E0E6, 'purple': 0x800080, 'rebeccapurple': 0x663399, 'red': 0xFF0000, 'rosybrown': 0xBC8F8F,
+		'royalblue': 0x4169E1, 'saddlebrown': 0x8B4513, 'salmon': 0xFA8072, 'sandybrown': 0xF4A460, 'seagreen': 0x2E8B57, 'seashell': 0xFFF5EE,
+		'sienna': 0xA0522D, 'silver': 0xC0C0C0, 'skyblue': 0x87CEEB, 'slateblue': 0x6A5ACD, 'slategray': 0x708090, 'slategrey': 0x708090, 'snow': 0xFFFAFA,
+		'springgreen': 0x00FF7F, 'steelblue': 0x4682B4, 'tan': 0xD2B48C, 'teal': 0x008080, 'thistle': 0xD8BFD8, 'tomato': 0xFF6347, 'turquoise': 0x40E0D0,
+		'violet': 0xEE82EE, 'wheat': 0xF5DEB3, 'white': 0xFFFFFF, 'whitesmoke': 0xF5F5F5, 'yellow': 0xFFFF00, 'yellowgreen': 0x9ACD32 };
+
+	const _hslA = { h: 0, s: 0, l: 0 };
+	const _hslB = { h: 0, s: 0, l: 0 };
+
+	function hue2rgb( p, q, t ) {
+
+		if ( t < 0 ) t += 1;
+		if ( t > 1 ) t -= 1;
+		if ( t < 1 / 6 ) return p + ( q - p ) * 6 * t;
+		if ( t < 1 / 2 ) return q;
+		if ( t < 2 / 3 ) return p + ( q - p ) * 6 * ( 2 / 3 - t );
+		return p;
+
+	}
+
+	function SRGBToLinear( c ) {
+
+		return ( c < 0.04045 ) ? c * 0.0773993808 : Math.pow( c * 0.9478672986 + 0.0521327014, 2.4 );
+
+	}
+
+	function LinearToSRGB( c ) {
+
+		return ( c < 0.0031308 ) ? c * 12.92 : 1.055 * ( Math.pow( c, 0.41666 ) ) - 0.055;
+
+	}
+
+	class Color {
+
+		constructor( r, g, b ) {
+
+			if ( g === undefined && b === undefined ) {
+
+				// r is THREE.Color, hex or string
+				return this.set( r );
+
+			}
+
+			return this.setRGB( r, g, b );
+
+		}
+
+		set( value ) {
+
+			if ( value && value.isColor ) {
+
+				this.copy( value );
+
+			} else if ( typeof value === 'number' ) {
+
+				this.setHex( value );
+
+			} else if ( typeof value === 'string' ) {
+
+				this.setStyle( value );
+
+			}
+
+			return this;
+
+		}
+
+		setScalar( scalar ) {
+
+			this.r = scalar;
+			this.g = scalar;
+			this.b = scalar;
+
+			return this;
+
+		}
+
+		setHex( hex ) {
+
+			hex = Math.floor( hex );
+
+			this.r = ( hex >> 16 & 255 ) / 255;
+			this.g = ( hex >> 8 & 255 ) / 255;
+			this.b = ( hex & 255 ) / 255;
+
+			return this;
+
+		}
+
+		setRGB( r, g, b ) {
+
+			this.r = r;
+			this.g = g;
+			this.b = b;
+
+			return this;
+
+		}
+
+		setHSL( h, s, l ) {
+
+			// h,s,l ranges are in 0.0 - 1.0
+			h = euclideanModulo( h, 1 );
+			s = clamp( s, 0, 1 );
+			l = clamp( l, 0, 1 );
+
+			if ( s === 0 ) {
+
+				this.r = this.g = this.b = l;
+
+			} else {
+
+				const p = l <= 0.5 ? l * ( 1 + s ) : l + s - ( l * s );
+				const q = ( 2 * l ) - p;
+
+				this.r = hue2rgb( q, p, h + 1 / 3 );
+				this.g = hue2rgb( q, p, h );
+				this.b = hue2rgb( q, p, h - 1 / 3 );
+
+			}
+
+			return this;
+
+		}
+
+		setStyle( style ) {
+
+			function handleAlpha( string ) {
+
+				if ( string === undefined ) return;
+
+				if ( parseFloat( string ) < 1 ) {
+
+					console.warn( 'THREE.Color: Alpha component of ' + style + ' will be ignored.' );
+
+				}
+
+			}
+
+
+			let m;
+
+			if ( m = /^((?:rgb|hsl)a?)\(([^\)]*)\)/.exec( style ) ) {
+
+				// rgb / hsl
+
+				let color;
+				const name = m[ 1 ];
+				const components = m[ 2 ];
+
+				switch ( name ) {
+
+					case 'rgb':
+					case 'rgba':
+
+						if ( color = /^\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec( components ) ) {
+
+							// rgb(255,0,0) rgba(255,0,0,0.5)
+							this.r = Math.min( 255, parseInt( color[ 1 ], 10 ) ) / 255;
+							this.g = Math.min( 255, parseInt( color[ 2 ], 10 ) ) / 255;
+							this.b = Math.min( 255, parseInt( color[ 3 ], 10 ) ) / 255;
+
+							handleAlpha( color[ 4 ] );
+
+							return this;
+
+						}
+
+						if ( color = /^\s*(\d+)\%\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec( components ) ) {
+
+							// rgb(100%,0%,0%) rgba(100%,0%,0%,0.5)
+							this.r = Math.min( 100, parseInt( color[ 1 ], 10 ) ) / 100;
+							this.g = Math.min( 100, parseInt( color[ 2 ], 10 ) ) / 100;
+							this.b = Math.min( 100, parseInt( color[ 3 ], 10 ) ) / 100;
+
+							handleAlpha( color[ 4 ] );
+
+							return this;
+
+						}
+
+						break;
+
+					case 'hsl':
+					case 'hsla':
+
+						if ( color = /^\s*(\d*\.?\d+)\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec( components ) ) {
+
+							// hsl(120,50%,50%) hsla(120,50%,50%,0.5)
+							const h = parseFloat( color[ 1 ] ) / 360;
+							const s = parseInt( color[ 2 ], 10 ) / 100;
+							const l = parseInt( color[ 3 ], 10 ) / 100;
+
+							handleAlpha( color[ 4 ] );
+
+							return this.setHSL( h, s, l );
+
+						}
+
+						break;
+
+				}
+
+			} else if ( m = /^\#([A-Fa-f\d]+)$/.exec( style ) ) {
+
+				// hex color
+
+				const hex = m[ 1 ];
+				const size = hex.length;
+
+				if ( size === 3 ) {
+
+					// #ff0
+					this.r = parseInt( hex.charAt( 0 ) + hex.charAt( 0 ), 16 ) / 255;
+					this.g = parseInt( hex.charAt( 1 ) + hex.charAt( 1 ), 16 ) / 255;
+					this.b = parseInt( hex.charAt( 2 ) + hex.charAt( 2 ), 16 ) / 255;
+
+					return this;
+
+				} else if ( size === 6 ) {
+
+					// #ff0000
+					this.r = parseInt( hex.charAt( 0 ) + hex.charAt( 1 ), 16 ) / 255;
+					this.g = parseInt( hex.charAt( 2 ) + hex.charAt( 3 ), 16 ) / 255;
+					this.b = parseInt( hex.charAt( 4 ) + hex.charAt( 5 ), 16 ) / 255;
+
+					return this;
+
+				}
+
+			}
+
+			if ( style && style.length > 0 ) {
+
+				return this.setColorName( style );
+
+			}
+
+			return this;
+
+		}
+
+		setColorName( style ) {
+
+			// color keywords
+			const hex = _colorKeywords[ style.toLowerCase() ];
+
+			if ( hex !== undefined ) {
+
+				// red
+				this.setHex( hex );
+
+			} else {
+
+				// unknown color
+				console.warn( 'THREE.Color: Unknown color ' + style );
+
+			}
+
+			return this;
+
+		}
+
+		clone() {
+
+			return new this.constructor( this.r, this.g, this.b );
+
+		}
+
+		copy( color ) {
+
+			this.r = color.r;
+			this.g = color.g;
+			this.b = color.b;
+
+			return this;
+
+		}
+
+		copyGammaToLinear( color, gammaFactor = 2.0 ) {
+
+			this.r = Math.pow( color.r, gammaFactor );
+			this.g = Math.pow( color.g, gammaFactor );
+			this.b = Math.pow( color.b, gammaFactor );
+
+			return this;
+
+		}
+
+		copyLinearToGamma( color, gammaFactor = 2.0 ) {
+
+			const safeInverse = ( gammaFactor > 0 ) ? ( 1.0 / gammaFactor ) : 1.0;
+
+			this.r = Math.pow( color.r, safeInverse );
+			this.g = Math.pow( color.g, safeInverse );
+			this.b = Math.pow( color.b, safeInverse );
+
+			return this;
+
+		}
+
+		convertGammaToLinear( gammaFactor ) {
+
+			this.copyGammaToLinear( this, gammaFactor );
+
+			return this;
+
+		}
+
+		convertLinearToGamma( gammaFactor ) {
+
+			this.copyLinearToGamma( this, gammaFactor );
+
+			return this;
+
+		}
+
+		copySRGBToLinear( color ) {
+
+			this.r = SRGBToLinear( color.r );
+			this.g = SRGBToLinear( color.g );
+			this.b = SRGBToLinear( color.b );
+
+			return this;
+
+		}
+
+		copyLinearToSRGB( color ) {
+
+			this.r = LinearToSRGB( color.r );
+			this.g = LinearToSRGB( color.g );
+			this.b = LinearToSRGB( color.b );
+
+			return this;
+
+		}
+
+		convertSRGBToLinear() {
+
+			this.copySRGBToLinear( this );
+
+			return this;
+
+		}
+
+		convertLinearToSRGB() {
+
+			this.copyLinearToSRGB( this );
+
+			return this;
+
+		}
+
+		getHex() {
+
+			return ( this.r * 255 ) << 16 ^ ( this.g * 255 ) << 8 ^ ( this.b * 255 ) << 0;
+
+		}
+
+		getHexString() {
+
+			return ( '000000' + this.getHex().toString( 16 ) ).slice( - 6 );
+
+		}
+
+		getHSL( target ) {
+
+			// h,s,l ranges are in 0.0 - 1.0
+
+			const r = this.r, g = this.g, b = this.b;
+
+			const max = Math.max( r, g, b );
+			const min = Math.min( r, g, b );
+
+			let hue, saturation;
+			const lightness = ( min + max ) / 2.0;
+
+			if ( min === max ) {
+
+				hue = 0;
+				saturation = 0;
+
+			} else {
+
+				const delta = max - min;
+
+				saturation = lightness <= 0.5 ? delta / ( max + min ) : delta / ( 2 - max - min );
+
+				switch ( max ) {
+
+					case r: hue = ( g - b ) / delta + ( g < b ? 6 : 0 ); break;
+					case g: hue = ( b - r ) / delta + 2; break;
+					case b: hue = ( r - g ) / delta + 4; break;
+
+				}
+
+				hue /= 6;
+
+			}
+
+			target.h = hue;
+			target.s = saturation;
+			target.l = lightness;
+
+			return target;
+
+		}
+
+		getStyle() {
+
+			return 'rgb(' + ( ( this.r * 255 ) | 0 ) + ',' + ( ( this.g * 255 ) | 0 ) + ',' + ( ( this.b * 255 ) | 0 ) + ')';
+
+		}
+
+		offsetHSL( h, s, l ) {
+
+			this.getHSL( _hslA );
+
+			_hslA.h += h; _hslA.s += s; _hslA.l += l;
+
+			this.setHSL( _hslA.h, _hslA.s, _hslA.l );
+
+			return this;
+
+		}
+
+		add( color ) {
+
+			this.r += color.r;
+			this.g += color.g;
+			this.b += color.b;
+
+			return this;
+
+		}
+
+		addColors( color1, color2 ) {
+
+			this.r = color1.r + color2.r;
+			this.g = color1.g + color2.g;
+			this.b = color1.b + color2.b;
+
+			return this;
+
+		}
+
+		addScalar( s ) {
+
+			this.r += s;
+			this.g += s;
+			this.b += s;
+
+			return this;
+
+		}
+
+		sub( color ) {
+
+			this.r = Math.max( 0, this.r - color.r );
+			this.g = Math.max( 0, this.g - color.g );
+			this.b = Math.max( 0, this.b - color.b );
+
+			return this;
+
+		}
+
+		multiply( color ) {
+
+			this.r *= color.r;
+			this.g *= color.g;
+			this.b *= color.b;
+
+			return this;
+
+		}
+
+		multiplyScalar( s ) {
+
+			this.r *= s;
+			this.g *= s;
+			this.b *= s;
+
+			return this;
+
+		}
+
+		lerp( color, alpha ) {
+
+			this.r += ( color.r - this.r ) * alpha;
+			this.g += ( color.g - this.g ) * alpha;
+			this.b += ( color.b - this.b ) * alpha;
+
+			return this;
+
+		}
+
+		lerpColors( color1, color2, alpha ) {
+
+			this.r = color1.r + ( color2.r - color1.r ) * alpha;
+			this.g = color1.g + ( color2.g - color1.g ) * alpha;
+			this.b = color1.b + ( color2.b - color1.b ) * alpha;
+
+			return this;
+
+		}
+
+		lerpHSL( color, alpha ) {
+
+			this.getHSL( _hslA );
+			color.getHSL( _hslB );
+
+			const h = lerp( _hslA.h, _hslB.h, alpha );
+			const s = lerp( _hslA.s, _hslB.s, alpha );
+			const l = lerp( _hslA.l, _hslB.l, alpha );
+
+			this.setHSL( h, s, l );
+
+			return this;
+
+		}
+
+		equals( c ) {
+
+			return ( c.r === this.r ) && ( c.g === this.g ) && ( c.b === this.b );
+
+		}
+
+		fromArray( array, offset = 0 ) {
+
+			this.r = array[ offset ];
+			this.g = array[ offset + 1 ];
+			this.b = array[ offset + 2 ];
+
+			return this;
+
+		}
+
+		toArray( array = [], offset = 0 ) {
+
+			array[ offset ] = this.r;
+			array[ offset + 1 ] = this.g;
+			array[ offset + 2 ] = this.b;
+
+			return array;
+
+		}
+
+		fromBufferAttribute( attribute, index ) {
+
+			this.r = attribute.getX( index );
+			this.g = attribute.getY( index );
+			this.b = attribute.getZ( index );
+
+			if ( attribute.normalized === true ) {
+
+				// assuming Uint8Array
+
+				this.r /= 255;
+				this.g /= 255;
+				this.b /= 255;
+
+			}
+
+			return this;
+
+		}
+
+		toJSON() {
+
+			return this.getHex();
+
+		}
+
+	}
+
+	Color.NAMES = _colorKeywords;
+
+	Color.prototype.isColor = true;
+	Color.prototype.r = 1;
+	Color.prototype.g = 1;
+	Color.prototype.b = 1;
 
 	/**
 	 * parameters = {
@@ -9722,7 +9732,7 @@
 
 	}
 
-	let _id$1 = 0;
+	let _id = 0;
 
 	const _m1 = /*@__PURE__*/ new Matrix4();
 	const _obj = /*@__PURE__*/ new Object3D();
@@ -9737,7 +9747,7 @@
 
 			super();
 
-			Object.defineProperty( this, 'id', { value: _id$1 ++ } );
+			Object.defineProperty( this, 'id', { value: _id ++ } );
 
 			this.uuid = generateUUID();
 
@@ -9771,7 +9781,7 @@
 
 			if ( Array.isArray( index ) ) {
 
-				this.index = new ( arrayNeedsUint32( index ) ? Uint32BufferAttribute : Uint16BufferAttribute )( index, 1 );
+				this.index = new ( arrayMax( index ) > 65535 ? Uint32BufferAttribute : Uint16BufferAttribute )( index, 1 );
 
 			} else {
 
@@ -12064,8 +12074,6 @@
 
 			renderer.xr.enabled = currentXrEnabled;
 
-			renderTarget.texture.needsPMREMUpdate = true;
-
 		}
 
 	}
@@ -12128,6 +12136,8 @@
 
 			this.texture.generateMipmaps = options.generateMipmaps !== undefined ? options.generateMipmaps : false;
 			this.texture.minFilter = options.minFilter !== undefined ? options.minFilter : LinearFilter;
+
+			this.texture._needsFlipEnvMap = false;
 
 		}
 
@@ -12963,7 +12973,7 @@
 
 	var common = "#define PI 3.141592653589793\n#define PI2 6.283185307179586\n#define PI_HALF 1.5707963267948966\n#define RECIPROCAL_PI 0.3183098861837907\n#define RECIPROCAL_PI2 0.15915494309189535\n#define EPSILON 1e-6\n#ifndef saturate\n#define saturate( a ) clamp( a, 0.0, 1.0 )\n#endif\n#define whiteComplement( a ) ( 1.0 - saturate( a ) )\nfloat pow2( const in float x ) { return x*x; }\nfloat pow3( const in float x ) { return x*x*x; }\nfloat pow4( const in float x ) { float x2 = x*x; return x2*x2; }\nfloat max3( const in vec3 v ) { return max( max( v.x, v.y ), v.z ); }\nfloat average( const in vec3 color ) { return dot( color, vec3( 0.3333 ) ); }\nhighp float rand( const in vec2 uv ) {\n\tconst highp float a = 12.9898, b = 78.233, c = 43758.5453;\n\thighp float dt = dot( uv.xy, vec2( a,b ) ), sn = mod( dt, PI );\n\treturn fract( sin( sn ) * c );\n}\n#ifdef HIGH_PRECISION\n\tfloat precisionSafeLength( vec3 v ) { return length( v ); }\n#else\n\tfloat precisionSafeLength( vec3 v ) {\n\t\tfloat maxComponent = max3( abs( v ) );\n\t\treturn length( v / maxComponent ) * maxComponent;\n\t}\n#endif\nstruct IncidentLight {\n\tvec3 color;\n\tvec3 direction;\n\tbool visible;\n};\nstruct ReflectedLight {\n\tvec3 directDiffuse;\n\tvec3 directSpecular;\n\tvec3 indirectDiffuse;\n\tvec3 indirectSpecular;\n};\nstruct GeometricContext {\n\tvec3 position;\n\tvec3 normal;\n\tvec3 viewDir;\n#ifdef USE_CLEARCOAT\n\tvec3 clearcoatNormal;\n#endif\n};\nvec3 transformDirection( in vec3 dir, in mat4 matrix ) {\n\treturn normalize( ( matrix * vec4( dir, 0.0 ) ).xyz );\n}\nvec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {\n\treturn normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );\n}\nmat3 transposeMat3( const in mat3 m ) {\n\tmat3 tmp;\n\ttmp[ 0 ] = vec3( m[ 0 ].x, m[ 1 ].x, m[ 2 ].x );\n\ttmp[ 1 ] = vec3( m[ 0 ].y, m[ 1 ].y, m[ 2 ].y );\n\ttmp[ 2 ] = vec3( m[ 0 ].z, m[ 1 ].z, m[ 2 ].z );\n\treturn tmp;\n}\nfloat linearToRelativeLuminance( const in vec3 color ) {\n\tvec3 weights = vec3( 0.2126, 0.7152, 0.0722 );\n\treturn dot( weights, color.rgb );\n}\nbool isPerspectiveMatrix( mat4 m ) {\n\treturn m[ 2 ][ 3 ] == - 1.0;\n}\nvec2 equirectUv( in vec3 dir ) {\n\tfloat u = atan( dir.z, dir.x ) * RECIPROCAL_PI2 + 0.5;\n\tfloat v = asin( clamp( dir.y, - 1.0, 1.0 ) ) * RECIPROCAL_PI + 0.5;\n\treturn vec2( u, v );\n}";
 
-	var cube_uv_reflection_fragment = "#ifdef ENVMAP_TYPE_CUBE_UV\n\t#define cubeUV_maxMipLevel 8.0\n\t#define cubeUV_minMipLevel 4.0\n\t#define cubeUV_maxTileSize 256.0\n\t#define cubeUV_minTileSize 16.0\n\tfloat getFace( vec3 direction ) {\n\t\tvec3 absDirection = abs( direction );\n\t\tfloat face = - 1.0;\n\t\tif ( absDirection.x > absDirection.z ) {\n\t\t\tif ( absDirection.x > absDirection.y )\n\t\t\t\tface = direction.x > 0.0 ? 0.0 : 3.0;\n\t\t\telse\n\t\t\t\tface = direction.y > 0.0 ? 1.0 : 4.0;\n\t\t} else {\n\t\t\tif ( absDirection.z > absDirection.y )\n\t\t\t\tface = direction.z > 0.0 ? 2.0 : 5.0;\n\t\t\telse\n\t\t\t\tface = direction.y > 0.0 ? 1.0 : 4.0;\n\t\t}\n\t\treturn face;\n\t}\n\tvec2 getUV( vec3 direction, float face ) {\n\t\tvec2 uv;\n\t\tif ( face == 0.0 ) {\n\t\t\tuv = vec2( direction.z, direction.y ) / abs( direction.x );\n\t\t} else if ( face == 1.0 ) {\n\t\t\tuv = vec2( - direction.x, - direction.z ) / abs( direction.y );\n\t\t} else if ( face == 2.0 ) {\n\t\t\tuv = vec2( - direction.x, direction.y ) / abs( direction.z );\n\t\t} else if ( face == 3.0 ) {\n\t\t\tuv = vec2( - direction.z, direction.y ) / abs( direction.x );\n\t\t} else if ( face == 4.0 ) {\n\t\t\tuv = vec2( - direction.x, direction.z ) / abs( direction.y );\n\t\t} else {\n\t\t\tuv = vec2( direction.x, direction.y ) / abs( direction.z );\n\t\t}\n\t\treturn 0.5 * ( uv + 1.0 );\n\t}\n\tvec3 bilinearCubeUV( sampler2D envMap, vec3 direction, float mipInt ) {\n\t\tfloat face = getFace( direction );\n\t\tfloat filterInt = max( cubeUV_minMipLevel - mipInt, 0.0 );\n\t\tmipInt = max( mipInt, cubeUV_minMipLevel );\n\t\tfloat faceSize = exp2( mipInt );\n\t\tfloat texelSize = 1.0 / ( 3.0 * cubeUV_maxTileSize );\n\t\tvec2 uv = getUV( direction, face ) * ( faceSize - 1.0 ) + 0.5;\n\t\tif ( face > 2.0 ) {\n\t\t\tuv.y += faceSize;\n\t\t\tface -= 3.0;\n\t\t}\n\t\tuv.x += face * faceSize;\n\t\tif ( mipInt < cubeUV_maxMipLevel ) {\n\t\t\tuv.y += 2.0 * cubeUV_maxTileSize;\n\t\t}\n\t\tuv.y += filterInt * 2.0 * cubeUV_minTileSize;\n\t\tuv.x += 3.0 * max( 0.0, cubeUV_maxTileSize - 2.0 * faceSize );\n\t\tuv *= texelSize;\n\t\treturn texture2D( envMap, uv ).rgb;\n\t}\n\t#define r0 1.0\n\t#define v0 0.339\n\t#define m0 - 2.0\n\t#define r1 0.8\n\t#define v1 0.276\n\t#define m1 - 1.0\n\t#define r4 0.4\n\t#define v4 0.046\n\t#define m4 2.0\n\t#define r5 0.305\n\t#define v5 0.016\n\t#define m5 3.0\n\t#define r6 0.21\n\t#define v6 0.0038\n\t#define m6 4.0\n\tfloat roughnessToMip( float roughness ) {\n\t\tfloat mip = 0.0;\n\t\tif ( roughness >= r1 ) {\n\t\t\tmip = ( r0 - roughness ) * ( m1 - m0 ) / ( r0 - r1 ) + m0;\n\t\t} else if ( roughness >= r4 ) {\n\t\t\tmip = ( r1 - roughness ) * ( m4 - m1 ) / ( r1 - r4 ) + m1;\n\t\t} else if ( roughness >= r5 ) {\n\t\t\tmip = ( r4 - roughness ) * ( m5 - m4 ) / ( r4 - r5 ) + m4;\n\t\t} else if ( roughness >= r6 ) {\n\t\t\tmip = ( r5 - roughness ) * ( m6 - m5 ) / ( r5 - r6 ) + m5;\n\t\t} else {\n\t\t\tmip = - 2.0 * log2( 1.16 * roughness );\t\t}\n\t\treturn mip;\n\t}\n\tvec4 textureCubeUV( sampler2D envMap, vec3 sampleDir, float roughness ) {\n\t\tfloat mip = clamp( roughnessToMip( roughness ), m0, cubeUV_maxMipLevel );\n\t\tfloat mipF = fract( mip );\n\t\tfloat mipInt = floor( mip );\n\t\tvec3 color0 = bilinearCubeUV( envMap, sampleDir, mipInt );\n\t\tif ( mipF == 0.0 ) {\n\t\t\treturn vec4( color0, 1.0 );\n\t\t} else {\n\t\t\tvec3 color1 = bilinearCubeUV( envMap, sampleDir, mipInt + 1.0 );\n\t\t\treturn vec4( mix( color0, color1, mipF ), 1.0 );\n\t\t}\n\t}\n#endif";
+	var cube_uv_reflection_fragment = "#ifdef ENVMAP_TYPE_CUBE_UV\n\t#define cubeUV_maxMipLevel 8.0\n\t#define cubeUV_minMipLevel 4.0\n\t#define cubeUV_maxTileSize 256.0\n\t#define cubeUV_minTileSize 16.0\n\tfloat getFace( vec3 direction ) {\n\t\tvec3 absDirection = abs( direction );\n\t\tfloat face = - 1.0;\n\t\tif ( absDirection.x > absDirection.z ) {\n\t\t\tif ( absDirection.x > absDirection.y )\n\t\t\t\tface = direction.x > 0.0 ? 0.0 : 3.0;\n\t\t\telse\n\t\t\t\tface = direction.y > 0.0 ? 1.0 : 4.0;\n\t\t} else {\n\t\t\tif ( absDirection.z > absDirection.y )\n\t\t\t\tface = direction.z > 0.0 ? 2.0 : 5.0;\n\t\t\telse\n\t\t\t\tface = direction.y > 0.0 ? 1.0 : 4.0;\n\t\t}\n\t\treturn face;\n\t}\n\tvec2 getUV( vec3 direction, float face ) {\n\t\tvec2 uv;\n\t\tif ( face == 0.0 ) {\n\t\t\tuv = vec2( direction.z, direction.y ) / abs( direction.x );\n\t\t} else if ( face == 1.0 ) {\n\t\t\tuv = vec2( - direction.x, - direction.z ) / abs( direction.y );\n\t\t} else if ( face == 2.0 ) {\n\t\t\tuv = vec2( - direction.x, direction.y ) / abs( direction.z );\n\t\t} else if ( face == 3.0 ) {\n\t\t\tuv = vec2( - direction.z, direction.y ) / abs( direction.x );\n\t\t} else if ( face == 4.0 ) {\n\t\t\tuv = vec2( - direction.x, direction.z ) / abs( direction.y );\n\t\t} else {\n\t\t\tuv = vec2( direction.x, direction.y ) / abs( direction.z );\n\t\t}\n\t\treturn 0.5 * ( uv + 1.0 );\n\t}\n\tvec3 bilinearCubeUV( sampler2D envMap, vec3 direction, float mipInt ) {\n\t\tfloat face = getFace( direction );\n\t\tfloat filterInt = max( cubeUV_minMipLevel - mipInt, 0.0 );\n\t\tmipInt = max( mipInt, cubeUV_minMipLevel );\n\t\tfloat faceSize = exp2( mipInt );\n\t\tfloat texelSize = 1.0 / ( 3.0 * cubeUV_maxTileSize );\n\t\tvec2 uv = getUV( direction, face ) * ( faceSize - 1.0 );\n\t\tvec2 f = fract( uv );\n\t\tuv += 0.5 - f;\n\t\tif ( face > 2.0 ) {\n\t\t\tuv.y += faceSize;\n\t\t\tface -= 3.0;\n\t\t}\n\t\tuv.x += face * faceSize;\n\t\tif ( mipInt < cubeUV_maxMipLevel ) {\n\t\t\tuv.y += 2.0 * cubeUV_maxTileSize;\n\t\t}\n\t\tuv.y += filterInt * 2.0 * cubeUV_minTileSize;\n\t\tuv.x += 3.0 * max( 0.0, cubeUV_maxTileSize - 2.0 * faceSize );\n\t\tuv *= texelSize;\n\t\tvec3 tl = envMapTexelToLinear( texture2D( envMap, uv ) ).rgb;\n\t\tuv.x += texelSize;\n\t\tvec3 tr = envMapTexelToLinear( texture2D( envMap, uv ) ).rgb;\n\t\tuv.y += texelSize;\n\t\tvec3 br = envMapTexelToLinear( texture2D( envMap, uv ) ).rgb;\n\t\tuv.x -= texelSize;\n\t\tvec3 bl = envMapTexelToLinear( texture2D( envMap, uv ) ).rgb;\n\t\tvec3 tm = mix( tl, tr, f.x );\n\t\tvec3 bm = mix( bl, br, f.x );\n\t\treturn mix( tm, bm, f.y );\n\t}\n\t#define r0 1.0\n\t#define v0 0.339\n\t#define m0 - 2.0\n\t#define r1 0.8\n\t#define v1 0.276\n\t#define m1 - 1.0\n\t#define r4 0.4\n\t#define v4 0.046\n\t#define m4 2.0\n\t#define r5 0.305\n\t#define v5 0.016\n\t#define m5 3.0\n\t#define r6 0.21\n\t#define v6 0.0038\n\t#define m6 4.0\n\tfloat roughnessToMip( float roughness ) {\n\t\tfloat mip = 0.0;\n\t\tif ( roughness >= r1 ) {\n\t\t\tmip = ( r0 - roughness ) * ( m1 - m0 ) / ( r0 - r1 ) + m0;\n\t\t} else if ( roughness >= r4 ) {\n\t\t\tmip = ( r1 - roughness ) * ( m4 - m1 ) / ( r1 - r4 ) + m1;\n\t\t} else if ( roughness >= r5 ) {\n\t\t\tmip = ( r4 - roughness ) * ( m5 - m4 ) / ( r4 - r5 ) + m4;\n\t\t} else if ( roughness >= r6 ) {\n\t\t\tmip = ( r5 - roughness ) * ( m6 - m5 ) / ( r5 - r6 ) + m5;\n\t\t} else {\n\t\t\tmip = - 2.0 * log2( 1.16 * roughness );\t\t}\n\t\treturn mip;\n\t}\n\tvec4 textureCubeUV( sampler2D envMap, vec3 sampleDir, float roughness ) {\n\t\tfloat mip = clamp( roughnessToMip( roughness ), m0, cubeUV_maxMipLevel );\n\t\tfloat mipF = fract( mip );\n\t\tfloat mipInt = floor( mip );\n\t\tvec3 color0 = bilinearCubeUV( envMap, sampleDir, mipInt );\n\t\tif ( mipF == 0.0 ) {\n\t\t\treturn vec4( color0, 1.0 );\n\t\t} else {\n\t\t\tvec3 color1 = bilinearCubeUV( envMap, sampleDir, mipInt + 1.0 );\n\t\t\treturn vec4( mix( color0, color1, mipF ), 1.0 );\n\t\t}\n\t}\n#endif";
 
 	var defaultnormal_vertex = "vec3 transformedNormal = objectNormal;\n#ifdef USE_INSTANCING\n\tmat3 m = mat3( instanceMatrix );\n\ttransformedNormal /= vec3( dot( m[ 0 ], m[ 0 ] ), dot( m[ 1 ], m[ 1 ] ), dot( m[ 2 ], m[ 2 ] ) );\n\ttransformedNormal = m * transformedNormal;\n#endif\ntransformedNormal = normalMatrix * transformedNormal;\n#ifdef FLIP_SIDED\n\ttransformedNormal = - transformedNormal;\n#endif\n#ifdef USE_TANGENT\n\tvec3 transformedTangent = ( modelViewMatrix * vec4( objectTangent, 0.0 ) ).xyz;\n\t#ifdef FLIP_SIDED\n\t\ttransformedTangent = - transformedTangent;\n\t#endif\n#endif";
 
@@ -12971,15 +12981,15 @@
 
 	var displacementmap_vertex = "#ifdef USE_DISPLACEMENTMAP\n\ttransformed += normalize( objectNormal ) * ( texture2D( displacementMap, vUv ).x * displacementScale + displacementBias );\n#endif";
 
-	var emissivemap_fragment = "#ifdef USE_EMISSIVEMAP\n\tvec4 emissiveColor = texture2D( emissiveMap, vUv );\n\ttotalEmissiveRadiance *= emissiveColor.rgb;\n#endif";
+	var emissivemap_fragment = "#ifdef USE_EMISSIVEMAP\n\tvec4 emissiveColor = texture2D( emissiveMap, vUv );\n\temissiveColor.rgb = emissiveMapTexelToLinear( emissiveColor ).rgb;\n\ttotalEmissiveRadiance *= emissiveColor.rgb;\n#endif";
 
 	var emissivemap_pars_fragment = "#ifdef USE_EMISSIVEMAP\n\tuniform sampler2D emissiveMap;\n#endif";
 
 	var encodings_fragment = "gl_FragColor = linearToOutputTexel( gl_FragColor );";
 
-	var encodings_pars_fragment = "vec4 LinearToLinear( in vec4 value ) {\n\treturn value;\n}\nvec4 LinearTosRGB( in vec4 value ) {\n\treturn vec4( mix( pow( value.rgb, vec3( 0.41666 ) ) * 1.055 - vec3( 0.055 ), value.rgb * 12.92, vec3( lessThanEqual( value.rgb, vec3( 0.0031308 ) ) ) ), value.a );\n}";
+	var encodings_pars_fragment = "\nvec4 LinearToLinear( in vec4 value ) {\n\treturn value;\n}\nvec4 GammaToLinear( in vec4 value, in float gammaFactor ) {\n\treturn vec4( pow( value.rgb, vec3( gammaFactor ) ), value.a );\n}\nvec4 LinearToGamma( in vec4 value, in float gammaFactor ) {\n\treturn vec4( pow( value.rgb, vec3( 1.0 / gammaFactor ) ), value.a );\n}\nvec4 sRGBToLinear( in vec4 value ) {\n\treturn vec4( mix( pow( value.rgb * 0.9478672986 + vec3( 0.0521327014 ), vec3( 2.4 ) ), value.rgb * 0.0773993808, vec3( lessThanEqual( value.rgb, vec3( 0.04045 ) ) ) ), value.a );\n}\nvec4 LinearTosRGB( in vec4 value ) {\n\treturn vec4( mix( pow( value.rgb, vec3( 0.41666 ) ) * 1.055 - vec3( 0.055 ), value.rgb * 12.92, vec3( lessThanEqual( value.rgb, vec3( 0.0031308 ) ) ) ), value.a );\n}\nvec4 RGBEToLinear( in vec4 value ) {\n\treturn vec4( value.rgb * exp2( value.a * 255.0 - 128.0 ), 1.0 );\n}\nvec4 LinearToRGBE( in vec4 value ) {\n\tfloat maxComponent = max( max( value.r, value.g ), value.b );\n\tfloat fExp = clamp( ceil( log2( maxComponent ) ), -128.0, 127.0 );\n\treturn vec4( value.rgb / exp2( fExp ), ( fExp + 128.0 ) / 255.0 );\n}\nvec4 RGBMToLinear( in vec4 value, in float maxRange ) {\n\treturn vec4( value.rgb * value.a * maxRange, 1.0 );\n}\nvec4 LinearToRGBM( in vec4 value, in float maxRange ) {\n\tfloat maxRGB = max( value.r, max( value.g, value.b ) );\n\tfloat M = clamp( maxRGB / maxRange, 0.0, 1.0 );\n\tM = ceil( M * 255.0 ) / 255.0;\n\treturn vec4( value.rgb / ( M * maxRange ), M );\n}\nvec4 RGBDToLinear( in vec4 value, in float maxRange ) {\n\treturn vec4( value.rgb * ( ( maxRange / 255.0 ) / value.a ), 1.0 );\n}\nvec4 LinearToRGBD( in vec4 value, in float maxRange ) {\n\tfloat maxRGB = max( value.r, max( value.g, value.b ) );\n\tfloat D = max( maxRange / maxRGB, 1.0 );\n\tD = clamp( floor( D ) / 255.0, 0.0, 1.0 );\n\treturn vec4( value.rgb * ( D * ( 255.0 / maxRange ) ), D );\n}";
 
-	var envmap_fragment = "#ifdef USE_ENVMAP\n\t#ifdef ENV_WORLDPOS\n\t\tvec3 cameraToFrag;\n\t\tif ( isOrthographic ) {\n\t\t\tcameraToFrag = normalize( vec3( - viewMatrix[ 0 ][ 2 ], - viewMatrix[ 1 ][ 2 ], - viewMatrix[ 2 ][ 2 ] ) );\n\t\t} else {\n\t\t\tcameraToFrag = normalize( vWorldPosition - cameraPosition );\n\t\t}\n\t\tvec3 worldNormal = inverseTransformDirection( normal, viewMatrix );\n\t\t#ifdef ENVMAP_MODE_REFLECTION\n\t\t\tvec3 reflectVec = reflect( cameraToFrag, worldNormal );\n\t\t#else\n\t\t\tvec3 reflectVec = refract( cameraToFrag, worldNormal, refractionRatio );\n\t\t#endif\n\t#else\n\t\tvec3 reflectVec = vReflect;\n\t#endif\n\t#ifdef ENVMAP_TYPE_CUBE\n\t\tvec4 envColor = textureCube( envMap, vec3( flipEnvMap * reflectVec.x, reflectVec.yz ) );\n\t#elif defined( ENVMAP_TYPE_CUBE_UV )\n\t\tvec4 envColor = textureCubeUV( envMap, reflectVec, 0.0 );\n\t#else\n\t\tvec4 envColor = vec4( 0.0 );\n\t#endif\n\t#ifdef ENVMAP_BLENDING_MULTIPLY\n\t\toutgoingLight = mix( outgoingLight, outgoingLight * envColor.xyz, specularStrength * reflectivity );\n\t#elif defined( ENVMAP_BLENDING_MIX )\n\t\toutgoingLight = mix( outgoingLight, envColor.xyz, specularStrength * reflectivity );\n\t#elif defined( ENVMAP_BLENDING_ADD )\n\t\toutgoingLight += envColor.xyz * specularStrength * reflectivity;\n\t#endif\n#endif";
+	var envmap_fragment = "#ifdef USE_ENVMAP\n\t#ifdef ENV_WORLDPOS\n\t\tvec3 cameraToFrag;\n\t\tif ( isOrthographic ) {\n\t\t\tcameraToFrag = normalize( vec3( - viewMatrix[ 0 ][ 2 ], - viewMatrix[ 1 ][ 2 ], - viewMatrix[ 2 ][ 2 ] ) );\n\t\t} else {\n\t\t\tcameraToFrag = normalize( vWorldPosition - cameraPosition );\n\t\t}\n\t\tvec3 worldNormal = inverseTransformDirection( normal, viewMatrix );\n\t\t#ifdef ENVMAP_MODE_REFLECTION\n\t\t\tvec3 reflectVec = reflect( cameraToFrag, worldNormal );\n\t\t#else\n\t\t\tvec3 reflectVec = refract( cameraToFrag, worldNormal, refractionRatio );\n\t\t#endif\n\t#else\n\t\tvec3 reflectVec = vReflect;\n\t#endif\n\t#ifdef ENVMAP_TYPE_CUBE\n\t\tvec4 envColor = textureCube( envMap, vec3( flipEnvMap * reflectVec.x, reflectVec.yz ) );\n\t\tenvColor = envMapTexelToLinear( envColor );\n\t#elif defined( ENVMAP_TYPE_CUBE_UV )\n\t\tvec4 envColor = textureCubeUV( envMap, reflectVec, 0.0 );\n\t#else\n\t\tvec4 envColor = vec4( 0.0 );\n\t#endif\n\t#ifdef ENVMAP_BLENDING_MULTIPLY\n\t\toutgoingLight = mix( outgoingLight, outgoingLight * envColor.xyz, specularStrength * reflectivity );\n\t#elif defined( ENVMAP_BLENDING_MIX )\n\t\toutgoingLight = mix( outgoingLight, envColor.xyz, specularStrength * reflectivity );\n\t#elif defined( ENVMAP_BLENDING_ADD )\n\t\toutgoingLight += envColor.xyz * specularStrength * reflectivity;\n\t#endif\n#endif";
 
 	var envmap_common_pars_fragment = "#ifdef USE_ENVMAP\n\tuniform float envMapIntensity;\n\tuniform float flipEnvMap;\n\t#ifdef ENVMAP_TYPE_CUBE\n\t\tuniform samplerCube envMap;\n\t#else\n\t\tuniform sampler2D envMap;\n\t#endif\n\t\n#endif";
 
@@ -12997,9 +13007,9 @@
 
 	var fog_pars_fragment = "#ifdef USE_FOG\n\tuniform vec3 fogColor;\n\tvarying float vFogDepth;\n\t#ifdef FOG_EXP2\n\t\tuniform float fogDensity;\n\t#else\n\t\tuniform float fogNear;\n\t\tuniform float fogFar;\n\t#endif\n#endif";
 
-	var gradientmap_pars_fragment = "#ifdef USE_GRADIENTMAP\n\tuniform sampler2D gradientMap;\n#endif\nvec3 getGradientIrradiance( vec3 normal, vec3 lightDirection ) {\n\tfloat dotNL = dot( normal, lightDirection );\n\tvec2 coord = vec2( dotNL * 0.5 + 0.5, 0.0 );\n\t#ifdef USE_GRADIENTMAP\n\t\treturn vec3( texture2D( gradientMap, coord ).r );\n\t#else\n\t\treturn ( coord.x < 0.7 ) ? vec3( 0.7 ) : vec3( 1.0 );\n\t#endif\n}";
+	var gradientmap_pars_fragment = "#ifdef USE_GRADIENTMAP\n\tuniform sampler2D gradientMap;\n#endif\nvec3 getGradientIrradiance( vec3 normal, vec3 lightDirection ) {\n\tfloat dotNL = dot( normal, lightDirection );\n\tvec2 coord = vec2( dotNL * 0.5 + 0.5, 0.0 );\n\t#ifdef USE_GRADIENTMAP\n\t\treturn texture2D( gradientMap, coord ).rgb;\n\t#else\n\t\treturn ( coord.x < 0.7 ) ? vec3( 0.7 ) : vec3( 1.0 );\n\t#endif\n}";
 
-	var lightmap_fragment = "#ifdef USE_LIGHTMAP\n\tvec4 lightMapTexel = texture2D( lightMap, vUv2 );\n\tvec3 lightMapIrradiance = lightMapTexel.rgb * lightMapIntensity;\n\t#ifndef PHYSICALLY_CORRECT_LIGHTS\n\t\tlightMapIrradiance *= PI;\n\t#endif\n\treflectedLight.indirectDiffuse += lightMapIrradiance;\n#endif";
+	var lightmap_fragment = "#ifdef USE_LIGHTMAP\n\tvec4 lightMapTexel = texture2D( lightMap, vUv2 );\n\tvec3 lightMapIrradiance = lightMapTexelToLinear( lightMapTexel ).rgb * lightMapIntensity;\n\t#ifndef PHYSICALLY_CORRECT_LIGHTS\n\t\tlightMapIrradiance *= PI;\n\t#endif\n\treflectedLight.indirectDiffuse += lightMapIrradiance;\n#endif";
 
 	var lightmap_pars_fragment = "#ifdef USE_LIGHTMAP\n\tuniform sampler2D lightMap;\n\tuniform float lightMapIntensity;\n#endif";
 
@@ -13017,13 +13027,13 @@
 
 	var lights_phong_pars_fragment = "varying vec3 vViewPosition;\nstruct BlinnPhongMaterial {\n\tvec3 diffuseColor;\n\tvec3 specularColor;\n\tfloat specularShininess;\n\tfloat specularStrength;\n};\nvoid RE_Direct_BlinnPhong( const in IncidentLight directLight, const in GeometricContext geometry, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {\n\tfloat dotNL = saturate( dot( geometry.normal, directLight.direction ) );\n\tvec3 irradiance = dotNL * directLight.color;\n\treflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );\n\treflectedLight.directSpecular += irradiance * BRDF_BlinnPhong( directLight.direction, geometry.viewDir, geometry.normal, material.specularColor, material.specularShininess ) * material.specularStrength;\n}\nvoid RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in GeometricContext geometry, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {\n\treflectedLight.indirectDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );\n}\n#define RE_Direct\t\t\t\tRE_Direct_BlinnPhong\n#define RE_IndirectDiffuse\t\tRE_IndirectDiffuse_BlinnPhong\n#define Material_LightProbeLOD( material )\t(0)";
 
-	var lights_physical_fragment = "PhysicalMaterial material;\nmaterial.diffuseColor = diffuseColor.rgb * ( 1.0 - metalnessFactor );\nvec3 dxy = max( abs( dFdx( geometryNormal ) ), abs( dFdy( geometryNormal ) ) );\nfloat geometryRoughness = max( max( dxy.x, dxy.y ), dxy.z );\nmaterial.roughness = max( roughnessFactor, 0.0525 );material.roughness += geometryRoughness;\nmaterial.roughness = min( material.roughness, 1.0 );\n#ifdef IOR\n\t#ifdef SPECULAR\n\t\tfloat specularIntensityFactor = specularIntensity;\n\t\tvec3 specularColorFactor = specularColor;\n\t\t#ifdef USE_SPECULARINTENSITYMAP\n\t\t\tspecularIntensityFactor *= texture2D( specularIntensityMap, vUv ).a;\n\t\t#endif\n\t\t#ifdef USE_SPECULARCOLORMAP\n\t\t\tspecularColorFactor *= texture2D( specularColorMap, vUv ).rgb;\n\t\t#endif\n\t\tmaterial.specularF90 = mix( specularIntensityFactor, 1.0, metalnessFactor );\n\t#else\n\t\tfloat specularIntensityFactor = 1.0;\n\t\tvec3 specularColorFactor = vec3( 1.0 );\n\t\tmaterial.specularF90 = 1.0;\n\t#endif\n\tmaterial.specularColor = mix( min( pow2( ( ior - 1.0 ) / ( ior + 1.0 ) ) * specularColorFactor, vec3( 1.0 ) ) * specularIntensityFactor, diffuseColor.rgb, metalnessFactor );\n#else\n\tmaterial.specularColor = mix( vec3( 0.04 ), diffuseColor.rgb, metalnessFactor );\n\tmaterial.specularF90 = 1.0;\n#endif\n#ifdef USE_CLEARCOAT\n\tmaterial.clearcoat = clearcoat;\n\tmaterial.clearcoatRoughness = clearcoatRoughness;\n\tmaterial.clearcoatF0 = vec3( 0.04 );\n\tmaterial.clearcoatF90 = 1.0;\n\t#ifdef USE_CLEARCOATMAP\n\t\tmaterial.clearcoat *= texture2D( clearcoatMap, vUv ).x;\n\t#endif\n\t#ifdef USE_CLEARCOAT_ROUGHNESSMAP\n\t\tmaterial.clearcoatRoughness *= texture2D( clearcoatRoughnessMap, vUv ).y;\n\t#endif\n\tmaterial.clearcoat = saturate( material.clearcoat );\tmaterial.clearcoatRoughness = max( material.clearcoatRoughness, 0.0525 );\n\tmaterial.clearcoatRoughness += geometryRoughness;\n\tmaterial.clearcoatRoughness = min( material.clearcoatRoughness, 1.0 );\n#endif\n#ifdef USE_SHEEN\n\tmaterial.sheenColor = sheenColor;\n\t#ifdef USE_SHEENCOLORMAP\n\t\tmaterial.sheenColor *= texture2D( sheenColorMap, vUv ).rgb;\n\t#endif\n\tmaterial.sheenRoughness = clamp( sheenRoughness, 0.07, 1.0 );\n\t#ifdef USE_SHEENROUGHNESSMAP\n\t\tmaterial.sheenRoughness *= texture2D( sheenRoughnessMap, vUv ).a;\n\t#endif\n#endif";
+	var lights_physical_fragment = "PhysicalMaterial material;\nmaterial.diffuseColor = diffuseColor.rgb * ( 1.0 - metalnessFactor );\nvec3 dxy = max( abs( dFdx( geometryNormal ) ), abs( dFdy( geometryNormal ) ) );\nfloat geometryRoughness = max( max( dxy.x, dxy.y ), dxy.z );\nmaterial.roughness = max( roughnessFactor, 0.0525 );material.roughness += geometryRoughness;\nmaterial.roughness = min( material.roughness, 1.0 );\n#ifdef IOR\n\t#ifdef SPECULAR\n\t\tfloat specularIntensityFactor = specularIntensity;\n\t\tvec3 specularColorFactor = specularColor;\n\t\t#ifdef USE_SPECULARINTENSITYMAP\n\t\t\tspecularIntensityFactor *= texture2D( specularIntensityMap, vUv ).a;\n\t\t#endif\n\t\t#ifdef USE_SPECULARCOLORMAP\n\t\t\tspecularColorFactor *= specularColorMapTexelToLinear( texture2D( specularColorMap, vUv ) ).rgb;\n\t\t#endif\n\t\tmaterial.specularF90 = mix( specularIntensityFactor, 1.0, metalnessFactor );\n\t#else\n\t\tfloat specularIntensityFactor = 1.0;\n\t\tvec3 specularColorFactor = vec3( 1.0 );\n\t\tmaterial.specularF90 = 1.0;\n\t#endif\n\tmaterial.specularColor = mix( min( pow2( ( ior - 1.0 ) / ( ior + 1.0 ) ) * specularColorFactor, vec3( 1.0 ) ) * specularIntensityFactor, diffuseColor.rgb, metalnessFactor );\n#else\n\tmaterial.specularColor = mix( vec3( 0.04 ), diffuseColor.rgb, metalnessFactor );\n\tmaterial.specularF90 = 1.0;\n#endif\n#ifdef USE_CLEARCOAT\n\tmaterial.clearcoat = clearcoat;\n\tmaterial.clearcoatRoughness = clearcoatRoughness;\n\tmaterial.clearcoatF0 = vec3( 0.04 );\n\tmaterial.clearcoatF90 = 1.0;\n\t#ifdef USE_CLEARCOATMAP\n\t\tmaterial.clearcoat *= texture2D( clearcoatMap, vUv ).x;\n\t#endif\n\t#ifdef USE_CLEARCOAT_ROUGHNESSMAP\n\t\tmaterial.clearcoatRoughness *= texture2D( clearcoatRoughnessMap, vUv ).y;\n\t#endif\n\tmaterial.clearcoat = saturate( material.clearcoat );\tmaterial.clearcoatRoughness = max( material.clearcoatRoughness, 0.0525 );\n\tmaterial.clearcoatRoughness += geometryRoughness;\n\tmaterial.clearcoatRoughness = min( material.clearcoatRoughness, 1.0 );\n#endif\n#ifdef USE_SHEEN\n\tmaterial.sheenColor = sheenColor;\n\t#ifdef USE_SHEENCOLORMAP\n\t\tmaterial.sheenColor *= sheenColorMapTexelToLinear( texture2D( sheenColorMap, vUv ) ).rgb;\n\t#endif\n\tmaterial.sheenRoughness = clamp( sheenRoughness, 0.07, 1.0 );\n\t#ifdef USE_SHEENROUGHNESSMAP\n\t\tmaterial.sheenRoughness *= texture2D( sheenRoughnessMap, vUv ).a;\n\t#endif\n#endif";
 
-	var lights_physical_pars_fragment = "struct PhysicalMaterial {\n\tvec3 diffuseColor;\n\tfloat roughness;\n\tvec3 specularColor;\n\tfloat specularF90;\n\t#ifdef USE_CLEARCOAT\n\t\tfloat clearcoat;\n\t\tfloat clearcoatRoughness;\n\t\tvec3 clearcoatF0;\n\t\tfloat clearcoatF90;\n\t#endif\n\t#ifdef USE_SHEEN\n\t\tvec3 sheenColor;\n\t\tfloat sheenRoughness;\n\t#endif\n};\nvec3 clearcoatSpecular = vec3( 0.0 );\nvec3 sheenSpecular = vec3( 0.0 );\nfloat IBLSheenBRDF( const in vec3 normal, const in vec3 viewDir, const in float roughness) {\n\tfloat dotNV = saturate( dot( normal, viewDir ) );\n\tfloat r2 = roughness * roughness;\n\tfloat a = roughness < 0.25 ? -339.2 * r2 + 161.4 * roughness - 25.9 : -8.48 * r2 + 14.3 * roughness - 9.95;\n\tfloat b = roughness < 0.25 ? 44.0 * r2 - 23.7 * roughness + 3.26 : 1.97 * r2 - 3.27 * roughness + 0.72;\n\tfloat DG = exp( a * dotNV + b ) + ( roughness < 0.25 ? 0.0 : 0.1 * ( roughness - 0.25 ) );\n\treturn saturate( DG * RECIPROCAL_PI );\n}\nvec2 DFGApprox( const in vec3 normal, const in vec3 viewDir, const in float roughness ) {\n\tfloat dotNV = saturate( dot( normal, viewDir ) );\n\tconst vec4 c0 = vec4( - 1, - 0.0275, - 0.572, 0.022 );\n\tconst vec4 c1 = vec4( 1, 0.0425, 1.04, - 0.04 );\n\tvec4 r = roughness * c0 + c1;\n\tfloat a004 = min( r.x * r.x, exp2( - 9.28 * dotNV ) ) * r.x + r.y;\n\tvec2 fab = vec2( - 1.04, 1.04 ) * a004 + r.zw;\n\treturn fab;\n}\nvec3 EnvironmentBRDF( const in vec3 normal, const in vec3 viewDir, const in vec3 specularColor, const in float specularF90, const in float roughness ) {\n\tvec2 fab = DFGApprox( normal, viewDir, roughness );\n\treturn specularColor * fab.x + specularF90 * fab.y;\n}\nvoid computeMultiscattering( const in vec3 normal, const in vec3 viewDir, const in vec3 specularColor, const in float specularF90, const in float roughness, inout vec3 singleScatter, inout vec3 multiScatter ) {\n\tvec2 fab = DFGApprox( normal, viewDir, roughness );\n\tvec3 FssEss = specularColor * fab.x + specularF90 * fab.y;\n\tfloat Ess = fab.x + fab.y;\n\tfloat Ems = 1.0 - Ess;\n\tvec3 Favg = specularColor + ( 1.0 - specularColor ) * 0.047619;\tvec3 Fms = FssEss * Favg / ( 1.0 - Ems * Favg );\n\tsingleScatter += FssEss;\n\tmultiScatter += Fms * Ems;\n}\n#if NUM_RECT_AREA_LIGHTS > 0\n\tvoid RE_Direct_RectArea_Physical( const in RectAreaLight rectAreaLight, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {\n\t\tvec3 normal = geometry.normal;\n\t\tvec3 viewDir = geometry.viewDir;\n\t\tvec3 position = geometry.position;\n\t\tvec3 lightPos = rectAreaLight.position;\n\t\tvec3 halfWidth = rectAreaLight.halfWidth;\n\t\tvec3 halfHeight = rectAreaLight.halfHeight;\n\t\tvec3 lightColor = rectAreaLight.color;\n\t\tfloat roughness = material.roughness;\n\t\tvec3 rectCoords[ 4 ];\n\t\trectCoords[ 0 ] = lightPos + halfWidth - halfHeight;\t\trectCoords[ 1 ] = lightPos - halfWidth - halfHeight;\n\t\trectCoords[ 2 ] = lightPos - halfWidth + halfHeight;\n\t\trectCoords[ 3 ] = lightPos + halfWidth + halfHeight;\n\t\tvec2 uv = LTC_Uv( normal, viewDir, roughness );\n\t\tvec4 t1 = texture2D( ltc_1, uv );\n\t\tvec4 t2 = texture2D( ltc_2, uv );\n\t\tmat3 mInv = mat3(\n\t\t\tvec3( t1.x, 0, t1.y ),\n\t\t\tvec3(    0, 1,    0 ),\n\t\t\tvec3( t1.z, 0, t1.w )\n\t\t);\n\t\tvec3 fresnel = ( material.specularColor * t2.x + ( vec3( 1.0 ) - material.specularColor ) * t2.y );\n\t\treflectedLight.directSpecular += lightColor * fresnel * LTC_Evaluate( normal, viewDir, position, mInv, rectCoords );\n\t\treflectedLight.directDiffuse += lightColor * material.diffuseColor * LTC_Evaluate( normal, viewDir, position, mat3( 1.0 ), rectCoords );\n\t}\n#endif\nvoid RE_Direct_Physical( const in IncidentLight directLight, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {\n\tfloat dotNL = saturate( dot( geometry.normal, directLight.direction ) );\n\tvec3 irradiance = dotNL * directLight.color;\n\t#ifdef USE_CLEARCOAT\n\t\tfloat dotNLcc = saturate( dot( geometry.clearcoatNormal, directLight.direction ) );\n\t\tvec3 ccIrradiance = dotNLcc * directLight.color;\n\t\tclearcoatSpecular += ccIrradiance * BRDF_GGX( directLight.direction, geometry.viewDir, geometry.clearcoatNormal, material.clearcoatF0, material.clearcoatF90, material.clearcoatRoughness );\n\t#endif\n\t#ifdef USE_SHEEN\n\t\tsheenSpecular += irradiance * BRDF_Sheen( directLight.direction, geometry.viewDir, geometry.normal, material.sheenColor, material.sheenRoughness );\n\t#endif\n\treflectedLight.directSpecular += irradiance * BRDF_GGX( directLight.direction, geometry.viewDir, geometry.normal, material.specularColor, material.specularF90, material.roughness );\n\treflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );\n}\nvoid RE_IndirectDiffuse_Physical( const in vec3 irradiance, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {\n\treflectedLight.indirectDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );\n}\nvoid RE_IndirectSpecular_Physical( const in vec3 radiance, const in vec3 irradiance, const in vec3 clearcoatRadiance, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight) {\n\t#ifdef USE_CLEARCOAT\n\t\tclearcoatSpecular += clearcoatRadiance * EnvironmentBRDF( geometry.clearcoatNormal, geometry.viewDir, material.clearcoatF0, material.clearcoatF90, material.clearcoatRoughness );\n\t#endif\n\t#ifdef USE_SHEEN\n\t\tsheenSpecular += irradiance * material.sheenColor * IBLSheenBRDF( geometry.normal, geometry.viewDir, material.sheenRoughness );\n\t#endif\n\tvec3 singleScattering = vec3( 0.0 );\n\tvec3 multiScattering = vec3( 0.0 );\n\tvec3 cosineWeightedIrradiance = irradiance * RECIPROCAL_PI;\n\tcomputeMultiscattering( geometry.normal, geometry.viewDir, material.specularColor, material.specularF90, material.roughness, singleScattering, multiScattering );\n\tvec3 diffuse = material.diffuseColor * ( 1.0 - ( singleScattering + multiScattering ) );\n\treflectedLight.indirectSpecular += radiance * singleScattering;\n\treflectedLight.indirectSpecular += multiScattering * cosineWeightedIrradiance;\n\treflectedLight.indirectDiffuse += diffuse * cosineWeightedIrradiance;\n}\n#define RE_Direct\t\t\t\tRE_Direct_Physical\n#define RE_Direct_RectArea\t\tRE_Direct_RectArea_Physical\n#define RE_IndirectDiffuse\t\tRE_IndirectDiffuse_Physical\n#define RE_IndirectSpecular\t\tRE_IndirectSpecular_Physical\nfloat computeSpecularOcclusion( const in float dotNV, const in float ambientOcclusion, const in float roughness ) {\n\treturn saturate( pow( dotNV + ambientOcclusion, exp2( - 16.0 * roughness - 1.0 ) ) - 1.0 + ambientOcclusion );\n}";
+	var lights_physical_pars_fragment = "struct PhysicalMaterial {\n\tvec3 diffuseColor;\n\tfloat roughness;\n\tvec3 specularColor;\n\tfloat specularF90;\n\t#ifdef USE_CLEARCOAT\n\t\tfloat clearcoat;\n\t\tfloat clearcoatRoughness;\n\t\tvec3 clearcoatF0;\n\t\tfloat clearcoatF90;\n\t#endif\n\t#ifdef USE_SHEEN\n\t\tvec3 sheenColor;\n\t\tfloat sheenRoughness;\n\t#endif\n};\nvec3 clearcoatSpecular = vec3( 0.0 );\nvec2 DFGApprox( const in vec3 normal, const in vec3 viewDir, const in float roughness ) {\n\tfloat dotNV = saturate( dot( normal, viewDir ) );\n\tconst vec4 c0 = vec4( - 1, - 0.0275, - 0.572, 0.022 );\n\tconst vec4 c1 = vec4( 1, 0.0425, 1.04, - 0.04 );\n\tvec4 r = roughness * c0 + c1;\n\tfloat a004 = min( r.x * r.x, exp2( - 9.28 * dotNV ) ) * r.x + r.y;\n\tvec2 fab = vec2( - 1.04, 1.04 ) * a004 + r.zw;\n\treturn fab;\n}\nvec3 EnvironmentBRDF( const in vec3 normal, const in vec3 viewDir, const in vec3 specularColor, const in float specularF90, const in float roughness ) {\n\tvec2 fab = DFGApprox( normal, viewDir, roughness );\n\treturn specularColor * fab.x + specularF90 * fab.y;\n}\nvoid computeMultiscattering( const in vec3 normal, const in vec3 viewDir, const in vec3 specularColor, const in float specularF90, const in float roughness, inout vec3 singleScatter, inout vec3 multiScatter ) {\n\tvec2 fab = DFGApprox( normal, viewDir, roughness );\n\tvec3 FssEss = specularColor * fab.x + specularF90 * fab.y;\n\tfloat Ess = fab.x + fab.y;\n\tfloat Ems = 1.0 - Ess;\n\tvec3 Favg = specularColor + ( 1.0 - specularColor ) * 0.047619;\tvec3 Fms = FssEss * Favg / ( 1.0 - Ems * Favg );\n\tsingleScatter += FssEss;\n\tmultiScatter += Fms * Ems;\n}\n#if NUM_RECT_AREA_LIGHTS > 0\n\tvoid RE_Direct_RectArea_Physical( const in RectAreaLight rectAreaLight, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {\n\t\tvec3 normal = geometry.normal;\n\t\tvec3 viewDir = geometry.viewDir;\n\t\tvec3 position = geometry.position;\n\t\tvec3 lightPos = rectAreaLight.position;\n\t\tvec3 halfWidth = rectAreaLight.halfWidth;\n\t\tvec3 halfHeight = rectAreaLight.halfHeight;\n\t\tvec3 lightColor = rectAreaLight.color;\n\t\tfloat roughness = material.roughness;\n\t\tvec3 rectCoords[ 4 ];\n\t\trectCoords[ 0 ] = lightPos + halfWidth - halfHeight;\t\trectCoords[ 1 ] = lightPos - halfWidth - halfHeight;\n\t\trectCoords[ 2 ] = lightPos - halfWidth + halfHeight;\n\t\trectCoords[ 3 ] = lightPos + halfWidth + halfHeight;\n\t\tvec2 uv = LTC_Uv( normal, viewDir, roughness );\n\t\tvec4 t1 = texture2D( ltc_1, uv );\n\t\tvec4 t2 = texture2D( ltc_2, uv );\n\t\tmat3 mInv = mat3(\n\t\t\tvec3( t1.x, 0, t1.y ),\n\t\t\tvec3(    0, 1,    0 ),\n\t\t\tvec3( t1.z, 0, t1.w )\n\t\t);\n\t\tvec3 fresnel = ( material.specularColor * t2.x + ( vec3( 1.0 ) - material.specularColor ) * t2.y );\n\t\treflectedLight.directSpecular += lightColor * fresnel * LTC_Evaluate( normal, viewDir, position, mInv, rectCoords );\n\t\treflectedLight.directDiffuse += lightColor * material.diffuseColor * LTC_Evaluate( normal, viewDir, position, mat3( 1.0 ), rectCoords );\n\t}\n#endif\nvoid RE_Direct_Physical( const in IncidentLight directLight, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {\n\tfloat dotNL = saturate( dot( geometry.normal, directLight.direction ) );\n\tvec3 irradiance = dotNL * directLight.color;\n\t#ifdef USE_CLEARCOAT\n\t\tfloat dotNLcc = saturate( dot( geometry.clearcoatNormal, directLight.direction ) );\n\t\tvec3 ccIrradiance = dotNLcc * directLight.color;\n\t\tclearcoatSpecular += ccIrradiance * BRDF_GGX( directLight.direction, geometry.viewDir, geometry.clearcoatNormal, material.clearcoatF0, material.clearcoatF90, material.clearcoatRoughness );\n\t#endif\n\t#ifdef USE_SHEEN\n\t\treflectedLight.directSpecular += irradiance * BRDF_Sheen( directLight.direction, geometry.viewDir, geometry.normal, material.sheenColor, material.sheenRoughness );\n\t#endif\n\treflectedLight.directSpecular += irradiance * BRDF_GGX( directLight.direction, geometry.viewDir, geometry.normal, material.specularColor, material.specularF90, material.roughness );\n\treflectedLight.directDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );\n}\nvoid RE_IndirectDiffuse_Physical( const in vec3 irradiance, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight ) {\n\treflectedLight.indirectDiffuse += irradiance * BRDF_Lambert( material.diffuseColor );\n}\nvoid RE_IndirectSpecular_Physical( const in vec3 radiance, const in vec3 irradiance, const in vec3 clearcoatRadiance, const in GeometricContext geometry, const in PhysicalMaterial material, inout ReflectedLight reflectedLight) {\n\t#ifdef USE_CLEARCOAT\n\t\tclearcoatSpecular += clearcoatRadiance * EnvironmentBRDF( geometry.clearcoatNormal, geometry.viewDir, material.clearcoatF0, material.clearcoatF90, material.clearcoatRoughness );\n\t#endif\n\tvec3 singleScattering = vec3( 0.0 );\n\tvec3 multiScattering = vec3( 0.0 );\n\tvec3 cosineWeightedIrradiance = irradiance * RECIPROCAL_PI;\n\tcomputeMultiscattering( geometry.normal, geometry.viewDir, material.specularColor, material.specularF90, material.roughness, singleScattering, multiScattering );\n\tvec3 diffuse = material.diffuseColor * ( 1.0 - ( singleScattering + multiScattering ) );\n\treflectedLight.indirectSpecular += radiance * singleScattering;\n\treflectedLight.indirectSpecular += multiScattering * cosineWeightedIrradiance;\n\treflectedLight.indirectDiffuse += diffuse * cosineWeightedIrradiance;\n}\n#define RE_Direct\t\t\t\tRE_Direct_Physical\n#define RE_Direct_RectArea\t\tRE_Direct_RectArea_Physical\n#define RE_IndirectDiffuse\t\tRE_IndirectDiffuse_Physical\n#define RE_IndirectSpecular\t\tRE_IndirectSpecular_Physical\nfloat computeSpecularOcclusion( const in float dotNV, const in float ambientOcclusion, const in float roughness ) {\n\treturn saturate( pow( dotNV + ambientOcclusion, exp2( - 16.0 * roughness - 1.0 ) ) - 1.0 + ambientOcclusion );\n}";
 
 	var lights_fragment_begin = "\nGeometricContext geometry;\ngeometry.position = - vViewPosition;\ngeometry.normal = normal;\ngeometry.viewDir = ( isOrthographic ) ? vec3( 0, 0, 1 ) : normalize( vViewPosition );\n#ifdef USE_CLEARCOAT\n\tgeometry.clearcoatNormal = clearcoatNormal;\n#endif\nIncidentLight directLight;\n#if ( NUM_POINT_LIGHTS > 0 ) && defined( RE_Direct )\n\tPointLight pointLight;\n\t#if defined( USE_SHADOWMAP ) && NUM_POINT_LIGHT_SHADOWS > 0\n\tPointLightShadow pointLightShadow;\n\t#endif\n\t#pragma unroll_loop_start\n\tfor ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {\n\t\tpointLight = pointLights[ i ];\n\t\tgetPointLightInfo( pointLight, geometry, directLight );\n\t\t#if defined( USE_SHADOWMAP ) && ( UNROLLED_LOOP_INDEX < NUM_POINT_LIGHT_SHADOWS )\n\t\tpointLightShadow = pointLightShadows[ i ];\n\t\tdirectLight.color *= all( bvec2( directLight.visible, receiveShadow ) ) ? getPointShadow( pointShadowMap[ i ], pointLightShadow.shadowMapSize, pointLightShadow.shadowBias, pointLightShadow.shadowRadius, vPointShadowCoord[ i ], pointLightShadow.shadowCameraNear, pointLightShadow.shadowCameraFar ) : 1.0;\n\t\t#endif\n\t\tRE_Direct( directLight, geometry, material, reflectedLight );\n\t}\n\t#pragma unroll_loop_end\n#endif\n#if ( NUM_SPOT_LIGHTS > 0 ) && defined( RE_Direct )\n\tSpotLight spotLight;\n\t#if defined( USE_SHADOWMAP ) && NUM_SPOT_LIGHT_SHADOWS > 0\n\tSpotLightShadow spotLightShadow;\n\t#endif\n\t#pragma unroll_loop_start\n\tfor ( int i = 0; i < NUM_SPOT_LIGHTS; i ++ ) {\n\t\tspotLight = spotLights[ i ];\n\t\tgetSpotLightInfo( spotLight, geometry, directLight );\n\t\t#if defined( USE_SHADOWMAP ) && ( UNROLLED_LOOP_INDEX < NUM_SPOT_LIGHT_SHADOWS )\n\t\tspotLightShadow = spotLightShadows[ i ];\n\t\tdirectLight.color *= all( bvec2( directLight.visible, receiveShadow ) ) ? getShadow( spotShadowMap[ i ], spotLightShadow.shadowMapSize, spotLightShadow.shadowBias, spotLightShadow.shadowRadius, vSpotShadowCoord[ i ] ) : 1.0;\n\t\t#endif\n\t\tRE_Direct( directLight, geometry, material, reflectedLight );\n\t}\n\t#pragma unroll_loop_end\n#endif\n#if ( NUM_DIR_LIGHTS > 0 ) && defined( RE_Direct )\n\tDirectionalLight directionalLight;\n\t#if defined( USE_SHADOWMAP ) && NUM_DIR_LIGHT_SHADOWS > 0\n\tDirectionalLightShadow directionalLightShadow;\n\t#endif\n\t#pragma unroll_loop_start\n\tfor ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {\n\t\tdirectionalLight = directionalLights[ i ];\n\t\tgetDirectionalLightInfo( directionalLight, geometry, directLight );\n\t\t#if defined( USE_SHADOWMAP ) && ( UNROLLED_LOOP_INDEX < NUM_DIR_LIGHT_SHADOWS )\n\t\tdirectionalLightShadow = directionalLightShadows[ i ];\n\t\tdirectLight.color *= all( bvec2( directLight.visible, receiveShadow ) ) ? getShadow( directionalShadowMap[ i ], directionalLightShadow.shadowMapSize, directionalLightShadow.shadowBias, directionalLightShadow.shadowRadius, vDirectionalShadowCoord[ i ] ) : 1.0;\n\t\t#endif\n\t\tRE_Direct( directLight, geometry, material, reflectedLight );\n\t}\n\t#pragma unroll_loop_end\n#endif\n#if ( NUM_RECT_AREA_LIGHTS > 0 ) && defined( RE_Direct_RectArea )\n\tRectAreaLight rectAreaLight;\n\t#pragma unroll_loop_start\n\tfor ( int i = 0; i < NUM_RECT_AREA_LIGHTS; i ++ ) {\n\t\trectAreaLight = rectAreaLights[ i ];\n\t\tRE_Direct_RectArea( rectAreaLight, geometry, material, reflectedLight );\n\t}\n\t#pragma unroll_loop_end\n#endif\n#if defined( RE_IndirectDiffuse )\n\tvec3 iblIrradiance = vec3( 0.0 );\n\tvec3 irradiance = getAmbientLightIrradiance( ambientLightColor );\n\tirradiance += getLightProbeIrradiance( lightProbe, geometry.normal );\n\t#if ( NUM_HEMI_LIGHTS > 0 )\n\t\t#pragma unroll_loop_start\n\t\tfor ( int i = 0; i < NUM_HEMI_LIGHTS; i ++ ) {\n\t\t\tirradiance += getHemisphereLightIrradiance( hemisphereLights[ i ], geometry.normal );\n\t\t}\n\t\t#pragma unroll_loop_end\n\t#endif\n#endif\n#if defined( RE_IndirectSpecular )\n\tvec3 radiance = vec3( 0.0 );\n\tvec3 clearcoatRadiance = vec3( 0.0 );\n#endif";
 
-	var lights_fragment_maps = "#if defined( RE_IndirectDiffuse )\n\t#ifdef USE_LIGHTMAP\n\t\tvec4 lightMapTexel = texture2D( lightMap, vUv2 );\n\t\tvec3 lightMapIrradiance = lightMapTexel.rgb * lightMapIntensity;\n\t\t#ifndef PHYSICALLY_CORRECT_LIGHTS\n\t\t\tlightMapIrradiance *= PI;\n\t\t#endif\n\t\tirradiance += lightMapIrradiance;\n\t#endif\n\t#if defined( USE_ENVMAP ) && defined( STANDARD ) && defined( ENVMAP_TYPE_CUBE_UV )\n\t\tiblIrradiance += getIBLIrradiance( geometry.normal );\n\t#endif\n#endif\n#if defined( USE_ENVMAP ) && defined( RE_IndirectSpecular )\n\tradiance += getIBLRadiance( geometry.viewDir, geometry.normal, material.roughness );\n\t#ifdef USE_CLEARCOAT\n\t\tclearcoatRadiance += getIBLRadiance( geometry.viewDir, geometry.clearcoatNormal, material.clearcoatRoughness );\n\t#endif\n#endif";
+	var lights_fragment_maps = "#if defined( RE_IndirectDiffuse )\n\t#ifdef USE_LIGHTMAP\n\t\tvec4 lightMapTexel = texture2D( lightMap, vUv2 );\n\t\tvec3 lightMapIrradiance = lightMapTexelToLinear( lightMapTexel ).rgb * lightMapIntensity;\n\t\t#ifndef PHYSICALLY_CORRECT_LIGHTS\n\t\t\tlightMapIrradiance *= PI;\n\t\t#endif\n\t\tirradiance += lightMapIrradiance;\n\t#endif\n\t#if defined( USE_ENVMAP ) && defined( STANDARD ) && defined( ENVMAP_TYPE_CUBE_UV )\n\t\tiblIrradiance += getIBLIrradiance( geometry.normal );\n\t#endif\n#endif\n#if defined( USE_ENVMAP ) && defined( RE_IndirectSpecular )\n\tradiance += getIBLRadiance( geometry.viewDir, geometry.normal, material.roughness );\n\t#ifdef USE_CLEARCOAT\n\t\tclearcoatRadiance += getIBLRadiance( geometry.viewDir, geometry.clearcoatNormal, material.clearcoatRoughness );\n\t#endif\n#endif";
 
 	var lights_fragment_end = "#if defined( RE_IndirectDiffuse )\n\tRE_IndirectDiffuse( irradiance, geometry, material, reflectedLight );\n#endif\n#if defined( RE_IndirectSpecular )\n\tRE_IndirectSpecular( radiance, iblIrradiance, clearcoatRadiance, geometry, material, reflectedLight );\n#endif";
 
@@ -13035,11 +13045,11 @@
 
 	var logdepthbuf_vertex = "#ifdef USE_LOGDEPTHBUF\n\t#ifdef USE_LOGDEPTHBUF_EXT\n\t\tvFragDepth = 1.0 + gl_Position.w;\n\t\tvIsPerspective = float( isPerspectiveMatrix( projectionMatrix ) );\n\t#else\n\t\tif ( isPerspectiveMatrix( projectionMatrix ) ) {\n\t\t\tgl_Position.z = log2( max( EPSILON, gl_Position.w + 1.0 ) ) * logDepthBufFC - 1.0;\n\t\t\tgl_Position.z *= gl_Position.w;\n\t\t}\n\t#endif\n#endif";
 
-	var map_fragment = "#ifdef USE_MAP\n\tvec4 sampledDiffuseColor = texture2D( map, vUv );\n\t#ifdef DECODE_VIDEO_TEXTURE\n\t\tsampledDiffuseColor = vec4( mix( pow( sampledDiffuseColor.rgb * 0.9478672986 + vec3( 0.0521327014 ), vec3( 2.4 ) ), sampledDiffuseColor.rgb * 0.0773993808, vec3( lessThanEqual( sampledDiffuseColor.rgb, vec3( 0.04045 ) ) ) ), sampledDiffuseColor.w );\n\t#endif\n\tdiffuseColor *= sampledDiffuseColor;\n#endif";
+	var map_fragment = "#ifdef USE_MAP\n\tvec4 texelColor = texture2D( map, vUv );\n\ttexelColor = mapTexelToLinear( texelColor );\n\tdiffuseColor *= texelColor;\n#endif";
 
 	var map_pars_fragment = "#ifdef USE_MAP\n\tuniform sampler2D map;\n#endif";
 
-	var map_particle_fragment = "#if defined( USE_MAP ) || defined( USE_ALPHAMAP )\n\tvec2 uv = ( uvTransform * vec3( gl_PointCoord.x, 1.0 - gl_PointCoord.y, 1 ) ).xy;\n#endif\n#ifdef USE_MAP\n\tdiffuseColor *= texture2D( map, uv );\n#endif\n#ifdef USE_ALPHAMAP\n\tdiffuseColor.a *= texture2D( alphaMap, uv ).g;\n#endif";
+	var map_particle_fragment = "#if defined( USE_MAP ) || defined( USE_ALPHAMAP )\n\tvec2 uv = ( uvTransform * vec3( gl_PointCoord.x, 1.0 - gl_PointCoord.y, 1 ) ).xy;\n#endif\n#ifdef USE_MAP\n\tvec4 mapTexel = texture2D( map, uv );\n\tdiffuseColor *= mapTexelToLinear( mapTexel );\n#endif\n#ifdef USE_ALPHAMAP\n\tdiffuseColor.a *= texture2D( alphaMap, uv ).g;\n#endif";
 
 	var map_particle_pars_fragment = "#if defined( USE_MAP ) || defined( USE_ALPHAMAP )\n\tuniform mat3 uvTransform;\n#endif\n#ifdef USE_MAP\n\tuniform sampler2D map;\n#endif\n#ifdef USE_ALPHAMAP\n\tuniform sampler2D alphaMap;\n#endif";
 
@@ -13047,11 +13057,11 @@
 
 	var metalnessmap_pars_fragment = "#ifdef USE_METALNESSMAP\n\tuniform sampler2D metalnessMap;\n#endif";
 
-	var morphnormal_vertex = "#ifdef USE_MORPHNORMALS\n\tobjectNormal *= morphTargetBaseInfluence;\n\t#ifdef MORPHTARGETS_TEXTURE\n\t\tfor ( int i = 0; i < MORPHTARGETS_COUNT; i ++ ) {\n\t\t\tif ( morphTargetInfluences[ i ] != 0.0 ) objectNormal += getMorph( gl_VertexID, i, 1, 2 ) * morphTargetInfluences[ i ];\n\t\t}\n\t#else\n\t\tobjectNormal += morphNormal0 * morphTargetInfluences[ 0 ];\n\t\tobjectNormal += morphNormal1 * morphTargetInfluences[ 1 ];\n\t\tobjectNormal += morphNormal2 * morphTargetInfluences[ 2 ];\n\t\tobjectNormal += morphNormal3 * morphTargetInfluences[ 3 ];\n\t#endif\n#endif";
+	var morphnormal_vertex = "#ifdef USE_MORPHNORMALS\n\tobjectNormal *= morphTargetBaseInfluence;\n\t#ifdef MORPHTARGETS_TEXTURE\n\t\tfor ( int i = 0; i < MORPHTARGETS_COUNT; i ++ ) {\n\t\t\tif ( morphTargetInfluences[ i ] > 0.0 ) objectNormal += getMorph( gl_VertexID, i, 1, 2 ) * morphTargetInfluences[ i ];\n\t\t}\n\t#else\n\t\tobjectNormal += morphNormal0 * morphTargetInfluences[ 0 ];\n\t\tobjectNormal += morphNormal1 * morphTargetInfluences[ 1 ];\n\t\tobjectNormal += morphNormal2 * morphTargetInfluences[ 2 ];\n\t\tobjectNormal += morphNormal3 * morphTargetInfluences[ 3 ];\n\t#endif\n#endif";
 
 	var morphtarget_pars_vertex = "#ifdef USE_MORPHTARGETS\n\tuniform float morphTargetBaseInfluence;\n\t#ifdef MORPHTARGETS_TEXTURE\n\t\tuniform float morphTargetInfluences[ MORPHTARGETS_COUNT ];\n\t\tuniform sampler2DArray morphTargetsTexture;\n\t\tuniform vec2 morphTargetsTextureSize;\n\t\tvec3 getMorph( const in int vertexIndex, const in int morphTargetIndex, const in int offset, const in int stride ) {\n\t\t\tfloat texelIndex = float( vertexIndex * stride + offset );\n\t\t\tfloat y = floor( texelIndex / morphTargetsTextureSize.x );\n\t\t\tfloat x = texelIndex - y * morphTargetsTextureSize.x;\n\t\t\tvec3 morphUV = vec3( ( x + 0.5 ) / morphTargetsTextureSize.x, y / morphTargetsTextureSize.y, morphTargetIndex );\n\t\t\treturn texture( morphTargetsTexture, morphUV ).xyz;\n\t\t}\n\t#else\n\t\t#ifndef USE_MORPHNORMALS\n\t\t\tuniform float morphTargetInfluences[ 8 ];\n\t\t#else\n\t\t\tuniform float morphTargetInfluences[ 4 ];\n\t\t#endif\n\t#endif\n#endif";
 
-	var morphtarget_vertex = "#ifdef USE_MORPHTARGETS\n\ttransformed *= morphTargetBaseInfluence;\n\t#ifdef MORPHTARGETS_TEXTURE\n\t\tfor ( int i = 0; i < MORPHTARGETS_COUNT; i ++ ) {\n\t\t\t#ifndef USE_MORPHNORMALS\n\t\t\t\tif ( morphTargetInfluences[ i ] != 0.0 ) transformed += getMorph( gl_VertexID, i, 0, 1 ) * morphTargetInfluences[ i ];\n\t\t\t#else\n\t\t\t\tif ( morphTargetInfluences[ i ] != 0.0 ) transformed += getMorph( gl_VertexID, i, 0, 2 ) * morphTargetInfluences[ i ];\n\t\t\t#endif\n\t\t}\n\t#else\n\t\ttransformed += morphTarget0 * morphTargetInfluences[ 0 ];\n\t\ttransformed += morphTarget1 * morphTargetInfluences[ 1 ];\n\t\ttransformed += morphTarget2 * morphTargetInfluences[ 2 ];\n\t\ttransformed += morphTarget3 * morphTargetInfluences[ 3 ];\n\t\t#ifndef USE_MORPHNORMALS\n\t\t\ttransformed += morphTarget4 * morphTargetInfluences[ 4 ];\n\t\t\ttransformed += morphTarget5 * morphTargetInfluences[ 5 ];\n\t\t\ttransformed += morphTarget6 * morphTargetInfluences[ 6 ];\n\t\t\ttransformed += morphTarget7 * morphTargetInfluences[ 7 ];\n\t\t#endif\n\t#endif\n#endif";
+	var morphtarget_vertex = "#ifdef USE_MORPHTARGETS\n\ttransformed *= morphTargetBaseInfluence;\n\t#ifdef MORPHTARGETS_TEXTURE\n\t\tfor ( int i = 0; i < MORPHTARGETS_COUNT; i ++ ) {\n\t\t\t#ifndef USE_MORPHNORMALS\n\t\t\t\tif ( morphTargetInfluences[ i ] > 0.0 ) transformed += getMorph( gl_VertexID, i, 0, 1 ) * morphTargetInfluences[ i ];\n\t\t\t#else\n\t\t\t\tif ( morphTargetInfluences[ i ] > 0.0 ) transformed += getMorph( gl_VertexID, i, 0, 2 ) * morphTargetInfluences[ i ];\n\t\t\t#endif\n\t\t}\n\t#else\n\t\ttransformed += morphTarget0 * morphTargetInfluences[ 0 ];\n\t\ttransformed += morphTarget1 * morphTargetInfluences[ 1 ];\n\t\ttransformed += morphTarget2 * morphTargetInfluences[ 2 ];\n\t\ttransformed += morphTarget3 * morphTargetInfluences[ 3 ];\n\t\t#ifndef USE_MORPHNORMALS\n\t\t\ttransformed += morphTarget4 * morphTargetInfluences[ 4 ];\n\t\t\ttransformed += morphTarget5 * morphTargetInfluences[ 5 ];\n\t\t\ttransformed += morphTarget6 * morphTargetInfluences[ 6 ];\n\t\t\ttransformed += morphTarget7 * morphTargetInfluences[ 7 ];\n\t\t#endif\n\t#endif\n#endif";
 
 	var normal_fragment_begin = "float faceDirection = gl_FrontFacing ? 1.0 : - 1.0;\n#ifdef FLAT_SHADED\n\tvec3 fdx = vec3( dFdx( vViewPosition.x ), dFdx( vViewPosition.y ), dFdx( vViewPosition.z ) );\n\tvec3 fdy = vec3( dFdy( vViewPosition.x ), dFdy( vViewPosition.y ), dFdy( vViewPosition.z ) );\n\tvec3 normal = normalize( cross( fdx, fdy ) );\n#else\n\tvec3 normal = normalize( vNormal );\n\t#ifdef DOUBLE_SIDED\n\t\tnormal = normal * faceDirection;\n\t#endif\n\t#ifdef USE_TANGENT\n\t\tvec3 tangent = normalize( vTangent );\n\t\tvec3 bitangent = normalize( vBitangent );\n\t\t#ifdef DOUBLE_SIDED\n\t\t\ttangent = tangent * faceDirection;\n\t\t\tbitangent = bitangent * faceDirection;\n\t\t#endif\n\t\t#if defined( TANGENTSPACE_NORMALMAP ) || defined( USE_CLEARCOAT_NORMALMAP )\n\t\t\tmat3 vTBN = mat3( tangent, bitangent, normal );\n\t\t#endif\n\t#endif\n#endif\nvec3 geometryNormal = normal;";
 
@@ -13113,7 +13123,7 @@
 
 	var transmission_fragment = "#ifdef USE_TRANSMISSION\n\tfloat transmissionAlpha = 1.0;\n\tfloat transmissionFactor = transmission;\n\tfloat thicknessFactor = thickness;\n\t#ifdef USE_TRANSMISSIONMAP\n\t\ttransmissionFactor *= texture2D( transmissionMap, vUv ).r;\n\t#endif\n\t#ifdef USE_THICKNESSMAP\n\t\tthicknessFactor *= texture2D( thicknessMap, vUv ).g;\n\t#endif\n\tvec3 pos = vWorldPosition;\n\tvec3 v = normalize( cameraPosition - pos );\n\tvec3 n = inverseTransformDirection( normal, viewMatrix );\n\tvec4 transmission = getIBLVolumeRefraction(\n\t\tn, v, roughnessFactor, material.diffuseColor, material.specularColor, material.specularF90,\n\t\tpos, modelMatrix, viewMatrix, projectionMatrix, ior, thicknessFactor,\n\t\tattenuationColor, attenuationDistance );\n\ttotalDiffuse = mix( totalDiffuse, transmission.rgb, transmissionFactor );\n\ttransmissionAlpha = mix( transmissionAlpha, transmission.a, transmissionFactor );\n#endif";
 
-	var transmission_pars_fragment = "#ifdef USE_TRANSMISSION\n\tuniform float transmission;\n\tuniform float thickness;\n\tuniform float attenuationDistance;\n\tuniform vec3 attenuationColor;\n\t#ifdef USE_TRANSMISSIONMAP\n\t\tuniform sampler2D transmissionMap;\n\t#endif\n\t#ifdef USE_THICKNESSMAP\n\t\tuniform sampler2D thicknessMap;\n\t#endif\n\tuniform vec2 transmissionSamplerSize;\n\tuniform sampler2D transmissionSamplerMap;\n\tuniform mat4 modelMatrix;\n\tuniform mat4 projectionMatrix;\n\tvarying vec3 vWorldPosition;\n\tvec3 getVolumeTransmissionRay( const in vec3 n, const in vec3 v, const in float thickness, const in float ior, const in mat4 modelMatrix ) {\n\t\tvec3 refractionVector = refract( - v, normalize( n ), 1.0 / ior );\n\t\tvec3 modelScale;\n\t\tmodelScale.x = length( vec3( modelMatrix[ 0 ].xyz ) );\n\t\tmodelScale.y = length( vec3( modelMatrix[ 1 ].xyz ) );\n\t\tmodelScale.z = length( vec3( modelMatrix[ 2 ].xyz ) );\n\t\treturn normalize( refractionVector ) * thickness * modelScale;\n\t}\n\tfloat applyIorToRoughness( const in float roughness, const in float ior ) {\n\t\treturn roughness * clamp( ior * 2.0 - 2.0, 0.0, 1.0 );\n\t}\n\tvec4 getTransmissionSample( const in vec2 fragCoord, const in float roughness, const in float ior ) {\n\t\tfloat framebufferLod = log2( transmissionSamplerSize.x ) * applyIorToRoughness( roughness, ior );\n\t\t#ifdef TEXTURE_LOD_EXT\n\t\t\treturn texture2DLodEXT( transmissionSamplerMap, fragCoord.xy, framebufferLod );\n\t\t#else\n\t\t\treturn texture2D( transmissionSamplerMap, fragCoord.xy, framebufferLod );\n\t\t#endif\n\t}\n\tvec3 applyVolumeAttenuation( const in vec3 radiance, const in float transmissionDistance, const in vec3 attenuationColor, const in float attenuationDistance ) {\n\t\tif ( attenuationDistance == 0.0 ) {\n\t\t\treturn radiance;\n\t\t} else {\n\t\t\tvec3 attenuationCoefficient = -log( attenuationColor ) / attenuationDistance;\n\t\t\tvec3 transmittance = exp( - attenuationCoefficient * transmissionDistance );\t\t\treturn transmittance * radiance;\n\t\t}\n\t}\n\tvec4 getIBLVolumeRefraction( const in vec3 n, const in vec3 v, const in float roughness, const in vec3 diffuseColor,\n\t\tconst in vec3 specularColor, const in float specularF90, const in vec3 position, const in mat4 modelMatrix,\n\t\tconst in mat4 viewMatrix, const in mat4 projMatrix, const in float ior, const in float thickness,\n\t\tconst in vec3 attenuationColor, const in float attenuationDistance ) {\n\t\tvec3 transmissionRay = getVolumeTransmissionRay( n, v, thickness, ior, modelMatrix );\n\t\tvec3 refractedRayExit = position + transmissionRay;\n\t\tvec4 ndcPos = projMatrix * viewMatrix * vec4( refractedRayExit, 1.0 );\n\t\tvec2 refractionCoords = ndcPos.xy / ndcPos.w;\n\t\trefractionCoords += 1.0;\n\t\trefractionCoords /= 2.0;\n\t\tvec4 transmittedLight = getTransmissionSample( refractionCoords, roughness, ior );\n\t\tvec3 attenuatedColor = applyVolumeAttenuation( transmittedLight.rgb, length( transmissionRay ), attenuationColor, attenuationDistance );\n\t\tvec3 F = EnvironmentBRDF( n, v, specularColor, specularF90, roughness );\n\t\treturn vec4( ( 1.0 - F ) * attenuatedColor * diffuseColor, transmittedLight.a );\n\t}\n#endif";
+	var transmission_pars_fragment = "#ifdef USE_TRANSMISSION\n\tuniform float transmission;\n\tuniform float thickness;\n\tuniform float attenuationDistance;\n\tuniform vec3 attenuationColor;\n\t#ifdef USE_TRANSMISSIONMAP\n\t\tuniform sampler2D transmissionMap;\n\t#endif\n\t#ifdef USE_THICKNESSMAP\n\t\tuniform sampler2D thicknessMap;\n\t#endif\n\tuniform vec2 transmissionSamplerSize;\n\tuniform sampler2D transmissionSamplerMap;\n\tuniform mat4 modelMatrix;\n\tuniform mat4 projectionMatrix;\n\tvarying vec3 vWorldPosition;\n\tvec3 getVolumeTransmissionRay( vec3 n, vec3 v, float thickness, float ior, mat4 modelMatrix ) {\n\t\tvec3 refractionVector = refract( - v, normalize( n ), 1.0 / ior );\n\t\tvec3 modelScale;\n\t\tmodelScale.x = length( vec3( modelMatrix[ 0 ].xyz ) );\n\t\tmodelScale.y = length( vec3( modelMatrix[ 1 ].xyz ) );\n\t\tmodelScale.z = length( vec3( modelMatrix[ 2 ].xyz ) );\n\t\treturn normalize( refractionVector ) * thickness * modelScale;\n\t}\n\tfloat applyIorToRoughness( float roughness, float ior ) {\n\t\treturn roughness * clamp( ior * 2.0 - 2.0, 0.0, 1.0 );\n\t}\n\tvec4 getTransmissionSample( vec2 fragCoord, float roughness, float ior ) {\n\t\tfloat framebufferLod = log2( transmissionSamplerSize.x ) * applyIorToRoughness( roughness, ior );\n\t\t#ifdef TEXTURE_LOD_EXT\n\t\t\treturn texture2DLodEXT( transmissionSamplerMap, fragCoord.xy, framebufferLod );\n\t\t#else\n\t\t\treturn texture2D( transmissionSamplerMap, fragCoord.xy, framebufferLod );\n\t\t#endif\n\t}\n\tvec3 applyVolumeAttenuation( vec3 radiance, float transmissionDistance, vec3 attenuationColor, float attenuationDistance ) {\n\t\tif ( attenuationDistance == 0.0 ) {\n\t\t\treturn radiance;\n\t\t} else {\n\t\t\tvec3 attenuationCoefficient = -log( attenuationColor ) / attenuationDistance;\n\t\t\tvec3 transmittance = exp( - attenuationCoefficient * transmissionDistance );\t\t\treturn transmittance * radiance;\n\t\t}\n\t}\n\tvec4 getIBLVolumeRefraction( vec3 n, vec3 v, float roughness, vec3 diffuseColor, vec3 specularColor, float specularF90,\n\t\tvec3 position, mat4 modelMatrix, mat4 viewMatrix, mat4 projMatrix, float ior, float thickness,\n\t\tvec3 attenuationColor, float attenuationDistance ) {\n\t\tvec3 transmissionRay = getVolumeTransmissionRay( n, v, thickness, ior, modelMatrix );\n\t\tvec3 refractedRayExit = position + transmissionRay;\n\t\tvec4 ndcPos = projMatrix * viewMatrix * vec4( refractedRayExit, 1.0 );\n\t\tvec2 refractionCoords = ndcPos.xy / ndcPos.w;\n\t\trefractionCoords += 1.0;\n\t\trefractionCoords /= 2.0;\n\t\tvec4 transmittedLight = getTransmissionSample( refractionCoords, roughness, ior );\n\t\tvec3 attenuatedColor = applyVolumeAttenuation( transmittedLight.rgb, length( transmissionRay ), attenuationColor, attenuationDistance );\n\t\tvec3 F = EnvironmentBRDF( n, v, specularColor, specularF90, roughness );\n\t\treturn vec4( ( 1.0 - F ) * attenuatedColor * diffuseColor, transmittedLight.a );\n\t}\n#endif";
 
 	var uv_pars_fragment = "#if ( defined( USE_UV ) && ! defined( UVS_VERTEX_ONLY ) )\n\tvarying vec2 vUv;\n#endif";
 
@@ -13131,7 +13141,7 @@
 
 	const vertex$g = "varying vec2 vUv;\nuniform mat3 uvTransform;\nvoid main() {\n\tvUv = ( uvTransform * vec3( uv, 1 ) ).xy;\n\tgl_Position = vec4( position.xy, 1.0, 1.0 );\n}";
 
-	const fragment$g = "uniform sampler2D t2D;\nvarying vec2 vUv;\nvoid main() {\n\tgl_FragColor = texture2D( t2D, vUv );\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n}";
+	const fragment$g = "uniform sampler2D t2D;\nvarying vec2 vUv;\nvoid main() {\n\tvec4 texColor = texture2D( t2D, vUv );\n\tgl_FragColor = mapTexelToLinear( texColor );\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n}";
 
 	const vertex$f = "varying vec3 vWorldDirection;\n#include <common>\nvoid main() {\n\tvWorldDirection = transformDirection( position, modelMatrix );\n\t#include <begin_vertex>\n\t#include <project_vertex>\n\tgl_Position.z = gl_Position.w;\n}";
 
@@ -13147,7 +13157,7 @@
 
 	const vertex$c = "varying vec3 vWorldDirection;\n#include <common>\nvoid main() {\n\tvWorldDirection = transformDirection( position, modelMatrix );\n\t#include <begin_vertex>\n\t#include <project_vertex>\n}";
 
-	const fragment$c = "uniform sampler2D tEquirect;\nvarying vec3 vWorldDirection;\n#include <common>\nvoid main() {\n\tvec3 direction = normalize( vWorldDirection );\n\tvec2 sampleUV = equirectUv( direction );\n\tgl_FragColor = texture2D( tEquirect, sampleUV );\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n}";
+	const fragment$c = "uniform sampler2D tEquirect;\nvarying vec3 vWorldDirection;\n#include <common>\nvoid main() {\n\tvec3 direction = normalize( vWorldDirection );\n\tvec2 sampleUV = equirectUv( direction );\n\tvec4 texColor = texture2D( tEquirect, sampleUV );\n\tgl_FragColor = mapTexelToLinear( texColor );\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n}";
 
 	const vertex$b = "uniform float scale;\nattribute float lineDistance;\nvarying float vLineDistance;\n#include <common>\n#include <color_pars_vertex>\n#include <fog_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\tvLineDistance = scale * lineDistance;\n\t#include <color_vertex>\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <project_vertex>\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n\t#include <fog_vertex>\n}";
 
@@ -13155,7 +13165,7 @@
 
 	const vertex$a = "#include <common>\n#include <uv_pars_vertex>\n#include <uv2_pars_vertex>\n#include <envmap_pars_vertex>\n#include <color_pars_vertex>\n#include <fog_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\t#include <uv2_vertex>\n\t#include <color_vertex>\n\t#if defined ( USE_ENVMAP ) || defined ( USE_SKINNING )\n\t\t#include <beginnormal_vertex>\n\t\t#include <morphnormal_vertex>\n\t\t#include <skinbase_vertex>\n\t\t#include <skinnormal_vertex>\n\t\t#include <defaultnormal_vertex>\n\t#endif\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <project_vertex>\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n\t#include <worldpos_vertex>\n\t#include <envmap_vertex>\n\t#include <fog_vertex>\n}";
 
-	const fragment$a = "uniform vec3 diffuse;\nuniform float opacity;\n#ifndef FLAT_SHADED\n\tvarying vec3 vNormal;\n#endif\n#include <common>\n#include <dithering_pars_fragment>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <alphatest_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <envmap_common_pars_fragment>\n#include <envmap_pars_fragment>\n#include <cube_uv_reflection_fragment>\n#include <fog_pars_fragment>\n#include <specularmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <color_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\t#include <specularmap_fragment>\n\tReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n\t#ifdef USE_LIGHTMAP\n\t\tvec4 lightMapTexel= texture2D( lightMap, vUv2 );\n\t\treflectedLight.indirectDiffuse += lightMapTexel.rgb * lightMapIntensity;\n\t#else\n\t\treflectedLight.indirectDiffuse += vec3( 1.0 );\n\t#endif\n\t#include <aomap_fragment>\n\treflectedLight.indirectDiffuse *= diffuseColor.rgb;\n\tvec3 outgoingLight = reflectedLight.indirectDiffuse;\n\t#include <envmap_fragment>\n\t#include <output_fragment>\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n\t#include <premultiplied_alpha_fragment>\n\t#include <dithering_fragment>\n}";
+	const fragment$a = "uniform vec3 diffuse;\nuniform float opacity;\n#ifndef FLAT_SHADED\n\tvarying vec3 vNormal;\n#endif\n#include <common>\n#include <dithering_pars_fragment>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <alphatest_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <envmap_common_pars_fragment>\n#include <envmap_pars_fragment>\n#include <cube_uv_reflection_fragment>\n#include <fog_pars_fragment>\n#include <specularmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <color_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\t#include <specularmap_fragment>\n\tReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n\t#ifdef USE_LIGHTMAP\n\t\tvec4 lightMapTexel= texture2D( lightMap, vUv2 );\n\t\treflectedLight.indirectDiffuse += lightMapTexelToLinear( lightMapTexel ).rgb * lightMapIntensity;\n\t#else\n\t\treflectedLight.indirectDiffuse += vec3( 1.0 );\n\t#endif\n\t#include <aomap_fragment>\n\treflectedLight.indirectDiffuse *= diffuseColor.rgb;\n\tvec3 outgoingLight = reflectedLight.indirectDiffuse;\n\t#include <envmap_fragment>\n\t#include <output_fragment>\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n\t#include <premultiplied_alpha_fragment>\n\t#include <dithering_fragment>\n}";
 
 	const vertex$9 = "#define LAMBERT\nvarying vec3 vLightFront;\nvarying vec3 vIndirectFront;\n#ifdef DOUBLE_SIDED\n\tvarying vec3 vLightBack;\n\tvarying vec3 vIndirectBack;\n#endif\n#include <common>\n#include <uv_pars_vertex>\n#include <uv2_pars_vertex>\n#include <envmap_pars_vertex>\n#include <bsdfs>\n#include <lights_pars_begin>\n#include <color_pars_vertex>\n#include <fog_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <shadowmap_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\t#include <uv2_vertex>\n\t#include <color_vertex>\n\t#include <beginnormal_vertex>\n\t#include <morphnormal_vertex>\n\t#include <skinbase_vertex>\n\t#include <skinnormal_vertex>\n\t#include <defaultnormal_vertex>\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <project_vertex>\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n\t#include <worldpos_vertex>\n\t#include <envmap_vertex>\n\t#include <lights_lambert_vertex>\n\t#include <shadowmap_vertex>\n\t#include <fog_vertex>\n}";
 
@@ -13163,11 +13173,11 @@
 
 	const vertex$8 = "#define MATCAP\nvarying vec3 vViewPosition;\n#include <common>\n#include <uv_pars_vertex>\n#include <color_pars_vertex>\n#include <displacementmap_pars_vertex>\n#include <fog_pars_vertex>\n#include <normal_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\t#include <color_vertex>\n\t#include <beginnormal_vertex>\n\t#include <morphnormal_vertex>\n\t#include <skinbase_vertex>\n\t#include <skinnormal_vertex>\n\t#include <defaultnormal_vertex>\n\t#include <normal_vertex>\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <displacementmap_vertex>\n\t#include <project_vertex>\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n\t#include <fog_vertex>\n\tvViewPosition = - mvPosition.xyz;\n}";
 
-	const fragment$8 = "#define MATCAP\nuniform vec3 diffuse;\nuniform float opacity;\nuniform sampler2D matcap;\nvarying vec3 vViewPosition;\n#include <common>\n#include <dithering_pars_fragment>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <alphatest_pars_fragment>\n#include <fog_pars_fragment>\n#include <normal_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <color_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\t#include <normal_fragment_begin>\n\t#include <normal_fragment_maps>\n\tvec3 viewDir = normalize( vViewPosition );\n\tvec3 x = normalize( vec3( viewDir.z, 0.0, - viewDir.x ) );\n\tvec3 y = cross( viewDir, x );\n\tvec2 uv = vec2( dot( x, normal ), dot( y, normal ) ) * 0.495 + 0.5;\n\t#ifdef USE_MATCAP\n\t\tvec4 matcapColor = texture2D( matcap, uv );\n\t#else\n\t\tvec4 matcapColor = vec4( vec3( mix( 0.2, 0.8, uv.y ) ), 1.0 );\n\t#endif\n\tvec3 outgoingLight = diffuseColor.rgb * matcapColor.rgb;\n\t#include <output_fragment>\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n\t#include <premultiplied_alpha_fragment>\n\t#include <dithering_fragment>\n}";
+	const fragment$8 = "#define MATCAP\nuniform vec3 diffuse;\nuniform float opacity;\nuniform sampler2D matcap;\nvarying vec3 vViewPosition;\n#include <common>\n#include <dithering_pars_fragment>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <alphatest_pars_fragment>\n#include <fog_pars_fragment>\n#include <normal_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <color_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\t#include <normal_fragment_begin>\n\t#include <normal_fragment_maps>\n\tvec3 viewDir = normalize( vViewPosition );\n\tvec3 x = normalize( vec3( viewDir.z, 0.0, - viewDir.x ) );\n\tvec3 y = cross( viewDir, x );\n\tvec2 uv = vec2( dot( x, normal ), dot( y, normal ) ) * 0.495 + 0.5;\n\t#ifdef USE_MATCAP\n\t\tvec4 matcapColor = texture2D( matcap, uv );\n\t\tmatcapColor = matcapTexelToLinear( matcapColor );\n\t#else\n\t\tvec4 matcapColor = vec4( 1.0 );\n\t#endif\n\tvec3 outgoingLight = diffuseColor.rgb * matcapColor.rgb;\n\t#include <output_fragment>\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n\t#include <premultiplied_alpha_fragment>\n\t#include <dithering_fragment>\n}";
 
 	const vertex$7 = "#define NORMAL\n#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( TANGENTSPACE_NORMALMAP )\n\tvarying vec3 vViewPosition;\n#endif\n#include <common>\n#include <uv_pars_vertex>\n#include <displacementmap_pars_vertex>\n#include <normal_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\t#include <beginnormal_vertex>\n\t#include <morphnormal_vertex>\n\t#include <skinbase_vertex>\n\t#include <skinnormal_vertex>\n\t#include <defaultnormal_vertex>\n\t#include <normal_vertex>\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <displacementmap_vertex>\n\t#include <project_vertex>\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( TANGENTSPACE_NORMALMAP )\n\tvViewPosition = - mvPosition.xyz;\n#endif\n}";
 
-	const fragment$7 = "#define NORMAL\nuniform float opacity;\n#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( TANGENTSPACE_NORMALMAP )\n\tvarying vec3 vViewPosition;\n#endif\n#include <packing>\n#include <uv_pars_fragment>\n#include <normal_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\t#include <logdepthbuf_fragment>\n\t#include <normal_fragment_begin>\n\t#include <normal_fragment_maps>\n\tgl_FragColor = vec4( packNormalToRGB( normal ), opacity );\n\t#ifdef OPAQUE\n\t\tgl_FragColor.a = 1.0;\n\t#endif\n}";
+	const fragment$7 = "#define NORMAL\nuniform float opacity;\n#if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( TANGENTSPACE_NORMALMAP )\n\tvarying vec3 vViewPosition;\n#endif\n#include <packing>\n#include <uv_pars_fragment>\n#include <normal_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\t#include <logdepthbuf_fragment>\n\t#include <normal_fragment_begin>\n\t#include <normal_fragment_maps>\n\tgl_FragColor = vec4( packNormalToRGB( normal ), opacity );\n}";
 
 	const vertex$6 = "#define PHONG\nvarying vec3 vViewPosition;\n#include <common>\n#include <uv_pars_vertex>\n#include <uv2_pars_vertex>\n#include <displacementmap_pars_vertex>\n#include <envmap_pars_vertex>\n#include <color_pars_vertex>\n#include <fog_pars_vertex>\n#include <normal_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <shadowmap_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\t#include <uv2_vertex>\n\t#include <color_vertex>\n\t#include <beginnormal_vertex>\n\t#include <morphnormal_vertex>\n\t#include <skinbase_vertex>\n\t#include <skinnormal_vertex>\n\t#include <defaultnormal_vertex>\n\t#include <normal_vertex>\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <displacementmap_vertex>\n\t#include <project_vertex>\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n\tvViewPosition = - mvPosition.xyz;\n\t#include <worldpos_vertex>\n\t#include <envmap_vertex>\n\t#include <shadowmap_vertex>\n\t#include <fog_vertex>\n}";
 
@@ -13175,7 +13185,7 @@
 
 	const vertex$5 = "#define STANDARD\nvarying vec3 vViewPosition;\n#ifdef USE_TRANSMISSION\n\tvarying vec3 vWorldPosition;\n#endif\n#include <common>\n#include <uv_pars_vertex>\n#include <uv2_pars_vertex>\n#include <displacementmap_pars_vertex>\n#include <color_pars_vertex>\n#include <fog_pars_vertex>\n#include <normal_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <shadowmap_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\t#include <uv2_vertex>\n\t#include <color_vertex>\n\t#include <beginnormal_vertex>\n\t#include <morphnormal_vertex>\n\t#include <skinbase_vertex>\n\t#include <skinnormal_vertex>\n\t#include <defaultnormal_vertex>\n\t#include <normal_vertex>\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <displacementmap_vertex>\n\t#include <project_vertex>\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n\tvViewPosition = - mvPosition.xyz;\n\t#include <worldpos_vertex>\n\t#include <shadowmap_vertex>\n\t#include <fog_vertex>\n#ifdef USE_TRANSMISSION\n\tvWorldPosition = worldPosition.xyz;\n#endif\n}";
 
-	const fragment$5 = "#define STANDARD\n#ifdef PHYSICAL\n\t#define IOR\n\t#define SPECULAR\n#endif\nuniform vec3 diffuse;\nuniform vec3 emissive;\nuniform float roughness;\nuniform float metalness;\nuniform float opacity;\n#ifdef IOR\n\tuniform float ior;\n#endif\n#ifdef SPECULAR\n\tuniform float specularIntensity;\n\tuniform vec3 specularColor;\n\t#ifdef USE_SPECULARINTENSITYMAP\n\t\tuniform sampler2D specularIntensityMap;\n\t#endif\n\t#ifdef USE_SPECULARCOLORMAP\n\t\tuniform sampler2D specularColorMap;\n\t#endif\n#endif\n#ifdef USE_CLEARCOAT\n\tuniform float clearcoat;\n\tuniform float clearcoatRoughness;\n#endif\n#ifdef USE_SHEEN\n\tuniform vec3 sheenColor;\n\tuniform float sheenRoughness;\n\t#ifdef USE_SHEENCOLORMAP\n\t\tuniform sampler2D sheenColorMap;\n\t#endif\n\t#ifdef USE_SHEENROUGHNESSMAP\n\t\tuniform sampler2D sheenRoughnessMap;\n\t#endif\n#endif\nvarying vec3 vViewPosition;\n#include <common>\n#include <packing>\n#include <dithering_pars_fragment>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <alphatest_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <emissivemap_pars_fragment>\n#include <bsdfs>\n#include <cube_uv_reflection_fragment>\n#include <envmap_common_pars_fragment>\n#include <envmap_physical_pars_fragment>\n#include <fog_pars_fragment>\n#include <lights_pars_begin>\n#include <normal_pars_fragment>\n#include <lights_physical_pars_fragment>\n#include <transmission_pars_fragment>\n#include <shadowmap_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <clearcoat_pars_fragment>\n#include <roughnessmap_pars_fragment>\n#include <metalnessmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\tReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n\tvec3 totalEmissiveRadiance = emissive;\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <color_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\t#include <roughnessmap_fragment>\n\t#include <metalnessmap_fragment>\n\t#include <normal_fragment_begin>\n\t#include <normal_fragment_maps>\n\t#include <clearcoat_normal_fragment_begin>\n\t#include <clearcoat_normal_fragment_maps>\n\t#include <emissivemap_fragment>\n\t#include <lights_physical_fragment>\n\t#include <lights_fragment_begin>\n\t#include <lights_fragment_maps>\n\t#include <lights_fragment_end>\n\t#include <aomap_fragment>\n\tvec3 totalDiffuse = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse;\n\tvec3 totalSpecular = reflectedLight.directSpecular + reflectedLight.indirectSpecular;\n\t#include <transmission_fragment>\n\tvec3 outgoingLight = totalDiffuse + totalSpecular + totalEmissiveRadiance;\n\t#ifdef USE_SHEEN\n\t\tfloat sheenEnergyComp = 1.0 - 0.157 * max3( material.sheenColor );\n\t\toutgoingLight = outgoingLight * sheenEnergyComp + sheenSpecular;\n\t#endif\n\t#ifdef USE_CLEARCOAT\n\t\tfloat dotNVcc = saturate( dot( geometry.clearcoatNormal, geometry.viewDir ) );\n\t\tvec3 Fcc = F_Schlick( material.clearcoatF0, material.clearcoatF90, dotNVcc );\n\t\toutgoingLight = outgoingLight * ( 1.0 - material.clearcoat * Fcc ) + clearcoatSpecular * material.clearcoat;\n\t#endif\n\t#include <output_fragment>\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n\t#include <premultiplied_alpha_fragment>\n\t#include <dithering_fragment>\n}";
+	const fragment$5 = "#define STANDARD\n#ifdef PHYSICAL\n\t#define IOR\n\t#define SPECULAR\n#endif\nuniform vec3 diffuse;\nuniform vec3 emissive;\nuniform float roughness;\nuniform float metalness;\nuniform float opacity;\n#ifdef IOR\n\tuniform float ior;\n#endif\n#ifdef SPECULAR\n\tuniform float specularIntensity;\n\tuniform vec3 specularColor;\n\t#ifdef USE_SPECULARINTENSITYMAP\n\t\tuniform sampler2D specularIntensityMap;\n\t#endif\n\t#ifdef USE_SPECULARCOLORMAP\n\t\tuniform sampler2D specularColorMap;\n\t#endif\n#endif\n#ifdef USE_CLEARCOAT\n\tuniform float clearcoat;\n\tuniform float clearcoatRoughness;\n#endif\n#ifdef USE_SHEEN\n\tuniform vec3 sheenColor;\n\tuniform float sheenRoughness;\n\t#ifdef USE_SHEENCOLORMAP\n\t\tuniform sampler2D sheenColorMap;\n\t#endif\n\t#ifdef USE_SHEENROUGHNESSMAP\n\t\tuniform sampler2D sheenRoughnessMap;\n\t#endif\n#endif\nvarying vec3 vViewPosition;\n#include <common>\n#include <packing>\n#include <dithering_pars_fragment>\n#include <color_pars_fragment>\n#include <uv_pars_fragment>\n#include <uv2_pars_fragment>\n#include <map_pars_fragment>\n#include <alphamap_pars_fragment>\n#include <alphatest_pars_fragment>\n#include <aomap_pars_fragment>\n#include <lightmap_pars_fragment>\n#include <emissivemap_pars_fragment>\n#include <bsdfs>\n#include <cube_uv_reflection_fragment>\n#include <envmap_common_pars_fragment>\n#include <envmap_physical_pars_fragment>\n#include <fog_pars_fragment>\n#include <lights_pars_begin>\n#include <normal_pars_fragment>\n#include <lights_physical_pars_fragment>\n#include <transmission_pars_fragment>\n#include <shadowmap_pars_fragment>\n#include <bumpmap_pars_fragment>\n#include <normalmap_pars_fragment>\n#include <clearcoat_pars_fragment>\n#include <roughnessmap_pars_fragment>\n#include <metalnessmap_pars_fragment>\n#include <logdepthbuf_pars_fragment>\n#include <clipping_planes_pars_fragment>\nvoid main() {\n\t#include <clipping_planes_fragment>\n\tvec4 diffuseColor = vec4( diffuse, opacity );\n\tReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );\n\tvec3 totalEmissiveRadiance = emissive;\n\t#include <logdepthbuf_fragment>\n\t#include <map_fragment>\n\t#include <color_fragment>\n\t#include <alphamap_fragment>\n\t#include <alphatest_fragment>\n\t#include <roughnessmap_fragment>\n\t#include <metalnessmap_fragment>\n\t#include <normal_fragment_begin>\n\t#include <normal_fragment_maps>\n\t#include <clearcoat_normal_fragment_begin>\n\t#include <clearcoat_normal_fragment_maps>\n\t#include <emissivemap_fragment>\n\t#include <lights_physical_fragment>\n\t#include <lights_fragment_begin>\n\t#include <lights_fragment_maps>\n\t#include <lights_fragment_end>\n\t#include <aomap_fragment>\n\tvec3 totalDiffuse = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse;\n\tvec3 totalSpecular = reflectedLight.directSpecular + reflectedLight.indirectSpecular;\n\t#include <transmission_fragment>\n\tvec3 outgoingLight = totalDiffuse + totalSpecular + totalEmissiveRadiance;\n\t#ifdef USE_CLEARCOAT\n\t\tfloat dotNVcc = saturate( dot( geometry.clearcoatNormal, geometry.viewDir ) );\n\t\tvec3 Fcc = F_Schlick( material.clearcoatF0, material.clearcoatF90, dotNVcc );\n\t\toutgoingLight = outgoingLight * ( 1.0 - material.clearcoat * Fcc ) + clearcoatSpecular * material.clearcoat;\n\t#endif\n\t#include <output_fragment>\n\t#include <tonemapping_fragment>\n\t#include <encodings_fragment>\n\t#include <fog_fragment>\n\t#include <premultiplied_alpha_fragment>\n\t#include <dithering_fragment>\n}";
 
 	const vertex$4 = "#define TOON\nvarying vec3 vViewPosition;\n#include <common>\n#include <uv_pars_vertex>\n#include <uv2_pars_vertex>\n#include <displacementmap_pars_vertex>\n#include <color_pars_vertex>\n#include <fog_pars_vertex>\n#include <normal_pars_vertex>\n#include <morphtarget_pars_vertex>\n#include <skinning_pars_vertex>\n#include <shadowmap_pars_vertex>\n#include <logdepthbuf_pars_vertex>\n#include <clipping_planes_pars_vertex>\nvoid main() {\n\t#include <uv_vertex>\n\t#include <uv2_vertex>\n\t#include <color_vertex>\n\t#include <beginnormal_vertex>\n\t#include <morphnormal_vertex>\n\t#include <skinbase_vertex>\n\t#include <skinnormal_vertex>\n\t#include <defaultnormal_vertex>\n\t#include <normal_vertex>\n\t#include <begin_vertex>\n\t#include <morphtarget_vertex>\n\t#include <skinning_vertex>\n\t#include <displacementmap_vertex>\n\t#include <project_vertex>\n\t#include <logdepthbuf_vertex>\n\t#include <clipping_planes_vertex>\n\tvViewPosition = - mvPosition.xyz;\n\t#include <worldpos_vertex>\n\t#include <shadowmap_vertex>\n\t#include <fog_vertex>\n}";
 
@@ -13836,7 +13846,7 @@
 				sheen: { value: 0 },
 				sheenColor: { value: new Color( 0x000000 ) },
 				sheenColorMap: { value: null },
-				sheenRoughness: { value: 1 },
+				sheenRoughness: { value: 0 },
 				sheenRoughnessMap: { value: null },
 				transmission: { value: 0 },
 				transmissionMap: { value: null },
@@ -13846,7 +13856,7 @@
 				thicknessMap: { value: null },
 				attenuationDistance: { value: 0 },
 				attenuationColor: { value: new Color( 0x000000 ) },
-				specularIntensity: { value: 1 },
+				specularIntensity: { value: 0 },
 				specularIntensityMap: { value: null },
 				specularColor: { value: new Color( 1, 1, 1 ) },
 				specularColorMap: { value: null },
@@ -13858,10 +13868,10 @@
 
 	};
 
-	function WebGLBackground( renderer, cubemaps, state, objects, alpha, premultipliedAlpha ) {
+	function WebGLBackground( renderer, cubemaps, state, objects, premultipliedAlpha ) {
 
 		const clearColor = new Color( 0x000000 );
-		let clearAlpha = alpha === true ? 0 : 1;
+		let clearAlpha = 0;
 
 		let planeMesh;
 		let boxMesh;
@@ -14778,8 +14788,10 @@
 
 		}
 
+		/* eslint-disable no-undef */
 		const isWebGL2 = ( typeof WebGL2RenderingContext !== 'undefined' && gl instanceof WebGL2RenderingContext ) ||
 			( typeof WebGL2ComputeRenderingContext !== 'undefined' && gl instanceof WebGL2ComputeRenderingContext );
+		/* eslint-enable no-undef */
 
 		let precision = parameters.precision !== undefined ? parameters.precision : 'highp';
 		const maxPrecision = getMaxPrecision( precision );
@@ -15044,9 +15056,13 @@
 
 						if ( image && image.height > 0 ) {
 
+							const currentRenderTarget = renderer.getRenderTarget();
+
 							const renderTarget = new WebGLCubeRenderTarget( image.height / 2 );
 							renderTarget.fromEquirectangularTexture( renderer, texture );
 							cubemaps.set( texture, renderTarget );
+
+							renderer.setRenderTarget( currentRenderTarget );
 
 							texture.addEventListener( 'dispose', onTextureDispose );
 
@@ -15263,6 +15279,16 @@
 	// samples and exit early, but not recompile the shader.
 	const MAX_SAMPLES = 20;
 
+	const ENCODINGS = {
+		[ LinearEncoding ]: 0,
+		[ sRGBEncoding ]: 1,
+		[ RGBEEncoding ]: 2,
+		[ RGBM7Encoding ]: 3,
+		[ RGBM16Encoding ]: 4,
+		[ RGBDEncoding ]: 5,
+		[ GammaEncoding ]: 6
+	};
+
 	const _flatCamera = /*@__PURE__*/ new OrthographicCamera();
 	const { _lodPlanes, _sizeLods, _sigmas } = /*@__PURE__*/ _createPlanes();
 	const _clearColor = /*@__PURE__*/ new Color();
@@ -15344,23 +15370,23 @@
 
 		/**
 		 * Generates a PMREM from an equirectangular texture, which can be either LDR
-		 * or HDR. The ideal input image size is 1k (1024 x 512),
+		 * (RGBFormat) or HDR (RGBEFormat). The ideal input image size is 1k (1024 x 512),
 		 * as this matches best with the 256 x 256 cubemap output.
 		 */
-		fromEquirectangular( equirectangular, renderTarget = null ) {
+		fromEquirectangular( equirectangular ) {
 
-			return this._fromTexture( equirectangular, renderTarget );
+			return this._fromTexture( equirectangular );
 
 		}
 
 		/**
 		 * Generates a PMREM from an cubemap texture, which can be either LDR
-		 * or HDR. The ideal input cube size is 256 x 256,
+		 * (RGBFormat) or HDR (RGBEFormat). The ideal input cube size is 256 x 256,
 		 * as this matches best with the 256 x 256 cubemap output.
 		 */
-		fromCubemap( cubemap, renderTarget = null ) {
+		fromCubemap( cubemap ) {
 
-			return this._fromTexture( cubemap, renderTarget );
+			return this._fromTexture( cubemap );
 
 		}
 
@@ -15403,8 +15429,6 @@
 
 			this._blurMaterial.dispose();
 
-			if ( this._pingPongRenderTarget !== null ) this._pingPongRenderTarget.dispose();
-
 			if ( this._cubemapShader !== null ) this._cubemapShader.dispose();
 			if ( this._equirectShader !== null ) this._equirectShader.dispose();
 
@@ -15420,16 +15444,17 @@
 
 		_cleanup( outputTarget ) {
 
+			this._pingPongRenderTarget.dispose();
 			this._renderer.setRenderTarget( _oldTarget );
 			outputTarget.scissorTest = false;
 			_setViewport( outputTarget, 0, 0, outputTarget.width, outputTarget.height );
 
 		}
 
-		_fromTexture( texture, renderTarget ) {
+		_fromTexture( texture ) {
 
 			_oldTarget = this._renderer.getRenderTarget();
-			const cubeUVRenderTarget = renderTarget || this._allocateTargets( texture );
+			const cubeUVRenderTarget = this._allocateTargets( texture );
 			this._textureToCubeUV( texture, cubeUVRenderTarget );
 			this._applyPMREM( cubeUVRenderTarget );
 			this._cleanup( cubeUVRenderTarget );
@@ -15441,24 +15466,18 @@
 		_allocateTargets( texture ) { // warning: null texture is valid
 
 			const params = {
-				magFilter: LinearFilter,
-				minFilter: LinearFilter,
+				magFilter: NearestFilter,
+				minFilter: NearestFilter,
 				generateMipmaps: false,
-				type: HalfFloatType,
-				format: RGBAFormat,
-				encoding: LinearEncoding,
+				type: UnsignedByteType,
+				format: RGBEFormat,
+				encoding: _isLDR( texture ) ? texture.encoding : RGBEEncoding,
 				depthBuffer: false
 			};
 
 			const cubeUVRenderTarget = _createRenderTarget( params );
 			cubeUVRenderTarget.depthBuffer = texture ? false : true;
-
-			if ( this._pingPongRenderTarget === null ) {
-
-				this._pingPongRenderTarget = _createRenderTarget( params );
-
-			}
-
+			this._pingPongRenderTarget = _createRenderTarget( params );
 			return cubeUVRenderTarget;
 
 		}
@@ -15480,10 +15499,12 @@
 			const renderer = this._renderer;
 
 			const originalAutoClear = renderer.autoClear;
+			const outputEncoding = renderer.outputEncoding;
 			const toneMapping = renderer.toneMapping;
 			renderer.getClearColor( _clearColor );
 
 			renderer.toneMapping = NoToneMapping;
+			renderer.outputEncoding = LinearEncoding;
 			renderer.autoClear = false;
 
 			const backgroundMaterial = new MeshBasicMaterial( {
@@ -15518,12 +15539,12 @@
 			for ( let i = 0; i < 6; i ++ ) {
 
 				const col = i % 3;
-				if ( col === 0 ) {
+				if ( col == 0 ) {
 
 					cubeCamera.up.set( 0, upSign[ i ], 0 );
 					cubeCamera.lookAt( forwardSign[ i ], 0, 0 );
 
-				} else if ( col === 1 ) {
+				} else if ( col == 1 ) {
 
 					cubeCamera.up.set( 0, 0, upSign[ i ] );
 					cubeCamera.lookAt( 0, forwardSign[ i ], 0 );
@@ -15553,8 +15574,25 @@
 			backgroundBox.material.dispose();
 
 			renderer.toneMapping = toneMapping;
+			renderer.outputEncoding = outputEncoding;
 			renderer.autoClear = originalAutoClear;
 			scene.background = background;
+
+		}
+
+		_setEncoding( uniform, texture ) {
+
+			/* if ( this._renderer.capabilities.isWebGL2 === true && texture.format === RGBAFormat && texture.type === UnsignedByteType && texture.encoding === sRGBEncoding ) {
+
+				uniform.value = ENCODINGS[ LinearEncoding ];
+
+			} else {
+
+				uniform.value = ENCODINGS[ texture.encoding ];
+
+			} */
+
+			uniform.value = ENCODINGS[ texture.encoding ];
 
 		}
 
@@ -15566,17 +15604,15 @@
 
 			if ( isCubeTexture ) {
 
-				if ( this._cubemapShader === null ) {
+				if ( this._cubemapShader == null ) {
 
 					this._cubemapShader = _getCubemapShader();
 
 				}
 
-				this._cubemapShader.uniforms.flipEnvMap.value = ( texture.isRenderTargetTexture === false ) ? - 1 : 1;
-
 			} else {
 
-				if ( this._equirectShader === null ) {
+				if ( this._equirectShader == null ) {
 
 					this._equirectShader = _getEquirectShader();
 
@@ -15596,6 +15632,9 @@
 				uniforms[ 'texelSize' ].value.set( 1.0 / texture.image.width, 1.0 / texture.image.height );
 
 			}
+
+			this._setEncoding( uniforms[ 'inputEncoding' ], texture );
+			this._setEncoding( uniforms[ 'outputEncoding' ], cubeUVRenderTarget.texture );
 
 			_setViewport( cubeUVRenderTarget, 0, 0, 3 * SIZE_MAX, 2 * SIZE_MAX );
 
@@ -15695,7 +15734,7 @@
 				const weight = Math.exp( - x * x / 2 );
 				weights.push( weight );
 
-				if ( i === 0 ) {
+				if ( i == 0 ) {
 
 					sum += weight;
 
@@ -15727,6 +15766,9 @@
 			blurUniforms[ 'dTheta' ].value = radiansPerPixel;
 			blurUniforms[ 'mipInt' ].value = LOD_MAX - lodIn;
 
+			this._setEncoding( blurUniforms[ 'inputEncoding' ], targetIn.texture );
+			this._setEncoding( blurUniforms[ 'outputEncoding' ], targetIn.texture );
+
 			const outputSize = _sizeLods[ lodOut ];
 			const x = 3 * Math.max( 0, SIZE_MAX - 2 * outputSize );
 			const y = ( lodOut === 0 ? 0 : 2 * SIZE_MAX ) + 2 * outputSize * ( lodOut > LOD_MAX - LOD_MIN ? lodOut - LOD_MAX + LOD_MIN : 0 );
@@ -15736,6 +15778,14 @@
 			renderer.render( blurMesh, _flatCamera );
 
 		}
+
+	}
+
+	function _isLDR( texture ) {
+
+		if ( texture === undefined || texture.type !== UnsignedByteType ) return false;
+
+		return texture.encoding === LinearEncoding || texture.encoding === sRGBEncoding || texture.encoding === GammaEncoding;
 
 	}
 
@@ -15757,7 +15807,7 @@
 
 				sigma = EXTRA_LOD_SIGMA[ i - LOD_MAX + LOD_MIN - 1 ];
 
-			} else if ( i === 0 ) {
+			} else if ( i == 0 ) {
 
 				sigma = 0;
 
@@ -15851,7 +15901,9 @@
 				'latitudinal': { value: false },
 				'dTheta': { value: 0 },
 				'mipInt': { value: 0 },
-				'poleAxis': { value: poleAxis }
+				'poleAxis': { value: poleAxis },
+				'inputEncoding': { value: ENCODINGS[ LinearEncoding ] },
+				'outputEncoding': { value: ENCODINGS[ LinearEncoding ] }
 			},
 
 			vertexShader: _getCommonVertexShader(),
@@ -15870,6 +15922,8 @@
 			uniform float dTheta;
 			uniform float mipInt;
 			uniform vec3 poleAxis;
+
+			${ _getEncodings() }
 
 			#define ENVMAP_TYPE_CUBE_UV
 			#include <cube_uv_reflection_fragment>
@@ -15915,6 +15969,8 @@
 
 				}
 
+				gl_FragColor = linearToOutputTexel( gl_FragColor );
+
 			}
 		`,
 
@@ -15937,7 +15993,9 @@
 
 			uniforms: {
 				'envMap': { value: null },
-				'texelSize': { value: texelSize }
+				'texelSize': { value: texelSize },
+				'inputEncoding': { value: ENCODINGS[ LinearEncoding ] },
+				'outputEncoding': { value: ENCODINGS[ LinearEncoding ] }
 			},
 
 			vertexShader: _getCommonVertexShader(),
@@ -15952,6 +16010,8 @@
 			uniform sampler2D envMap;
 			uniform vec2 texelSize;
 
+			${ _getEncodings() }
+
 			#include <common>
 
 			void main() {
@@ -15963,17 +16023,19 @@
 
 				vec2 f = fract( uv / texelSize - 0.5 );
 				uv -= f * texelSize;
-				vec3 tl = texture2D ( envMap, uv ).rgb;
+				vec3 tl = envMapTexelToLinear( texture2D ( envMap, uv ) ).rgb;
 				uv.x += texelSize.x;
-				vec3 tr = texture2D ( envMap, uv ).rgb;
+				vec3 tr = envMapTexelToLinear( texture2D ( envMap, uv ) ).rgb;
 				uv.y += texelSize.y;
-				vec3 br = texture2D ( envMap, uv ).rgb;
+				vec3 br = envMapTexelToLinear( texture2D ( envMap, uv ) ).rgb;
 				uv.x -= texelSize.x;
-				vec3 bl = texture2D ( envMap, uv ).rgb;
+				vec3 bl = envMapTexelToLinear( texture2D ( envMap, uv ) ).rgb;
 
 				vec3 tm = mix( tl, tr, f.x );
 				vec3 bm = mix( bl, br, f.x );
 				gl_FragColor.rgb = mix( tm, bm, f.y );
+
+				gl_FragColor = linearToOutputTexel( gl_FragColor );
 
 			}
 		`,
@@ -15996,7 +16058,8 @@
 
 			uniforms: {
 				'envMap': { value: null },
-				'flipEnvMap': { value: - 1 }
+				'inputEncoding': { value: ENCODINGS[ LinearEncoding ] },
+				'outputEncoding': { value: ENCODINGS[ LinearEncoding ] }
 			},
 
 			vertexShader: _getCommonVertexShader(),
@@ -16006,15 +16069,17 @@
 			precision mediump float;
 			precision mediump int;
 
-			uniform float flipEnvMap;
-
 			varying vec3 vOutputDirection;
 
 			uniform samplerCube envMap;
 
+			${ _getEncodings() }
+
 			void main() {
 
-				gl_FragColor = textureCube( envMap, vec3( flipEnvMap * vOutputDirection.x, vOutputDirection.yz ) );
+				gl_FragColor = vec4( 0.0, 0.0, 0.0, 1.0 );
+				gl_FragColor.rgb = envMapTexelToLinear( textureCube( envMap, vec3( - vOutputDirection.x, vOutputDirection.yz ) ) ).rgb;
+				gl_FragColor = linearToOutputTexel( gl_FragColor );
 
 			}
 		`,
@@ -16092,6 +16157,92 @@
 
 	}
 
+	function _getEncodings() {
+
+		return /* glsl */`
+
+		uniform int inputEncoding;
+		uniform int outputEncoding;
+
+		#include <encodings_pars_fragment>
+
+		vec4 inputTexelToLinear( vec4 value ) {
+
+			if ( inputEncoding == 0 ) {
+
+				return value;
+
+			} else if ( inputEncoding == 1 ) {
+
+				return sRGBToLinear( value );
+
+			} else if ( inputEncoding == 2 ) {
+
+				return RGBEToLinear( value );
+
+			} else if ( inputEncoding == 3 ) {
+
+				return RGBMToLinear( value, 7.0 );
+
+			} else if ( inputEncoding == 4 ) {
+
+				return RGBMToLinear( value, 16.0 );
+
+			} else if ( inputEncoding == 5 ) {
+
+				return RGBDToLinear( value, 256.0 );
+
+			} else {
+
+				return GammaToLinear( value, 2.2 );
+
+			}
+
+		}
+
+		vec4 linearToOutputTexel( vec4 value ) {
+
+			if ( outputEncoding == 0 ) {
+
+				return value;
+
+			} else if ( outputEncoding == 1 ) {
+
+				return LinearTosRGB( value );
+
+			} else if ( outputEncoding == 2 ) {
+
+				return LinearToRGBE( value );
+
+			} else if ( outputEncoding == 3 ) {
+
+				return LinearToRGBM( value, 7.0 );
+
+			} else if ( outputEncoding == 4 ) {
+
+				return LinearToRGBM( value, 16.0 );
+
+			} else if ( outputEncoding == 5 ) {
+
+				return LinearToRGBD( value, 256.0 );
+
+			} else {
+
+				return LinearToGamma( value, 2.2 );
+
+			}
+
+		}
+
+		vec4 envMapTexelToLinear( vec4 color ) {
+
+			return inputTexelToLinear( color );
+
+		}
+	`;
+
+	}
+
 	function WebGLCubeUVMaps( renderer ) {
 
 		let cubeUVmaps = new WeakMap();
@@ -16100,58 +16251,45 @@
 
 		function get( texture ) {
 
-			if ( texture && texture.isTexture ) {
+			if ( texture && texture.isTexture && texture.isRenderTargetTexture === false ) {
 
 				const mapping = texture.mapping;
 
 				const isEquirectMap = ( mapping === EquirectangularReflectionMapping || mapping === EquirectangularRefractionMapping );
 				const isCubeMap = ( mapping === CubeReflectionMapping || mapping === CubeRefractionMapping );
 
-				// equirect/cube map to cubeUV conversion
-
 				if ( isEquirectMap || isCubeMap ) {
 
-					if ( texture.isRenderTargetTexture && texture.needsPMREMUpdate === true ) {
+					// equirect/cube map to cubeUV conversion
 
-						texture.needsPMREMUpdate = false;
+					if ( cubeUVmaps.has( texture ) ) {
 
-						let renderTarget = cubeUVmaps.get( texture );
-
-						if ( pmremGenerator === null ) pmremGenerator = new PMREMGenerator( renderer );
-
-						renderTarget = isEquirectMap ? pmremGenerator.fromEquirectangular( texture, renderTarget ) : pmremGenerator.fromCubemap( texture, renderTarget );
-						cubeUVmaps.set( texture, renderTarget );
-
-						return renderTarget.texture;
+						return cubeUVmaps.get( texture ).texture;
 
 					} else {
 
-						if ( cubeUVmaps.has( texture ) ) {
+						const image = texture.image;
 
-							return cubeUVmaps.get( texture ).texture;
+						if ( ( isEquirectMap && image && image.height > 0 ) || ( isCubeMap && image && isCubeTextureComplete( image ) ) ) {
+
+							const currentRenderTarget = renderer.getRenderTarget();
+
+							if ( pmremGenerator === null ) pmremGenerator = new PMREMGenerator( renderer );
+
+							const renderTarget = isEquirectMap ? pmremGenerator.fromEquirectangular( texture ) : pmremGenerator.fromCubemap( texture );
+							cubeUVmaps.set( texture, renderTarget );
+
+							renderer.setRenderTarget( currentRenderTarget );
+
+							texture.addEventListener( 'dispose', onTextureDispose );
+
+							return renderTarget.texture;
 
 						} else {
 
-							const image = texture.image;
+							// image not yet ready. try the conversion next frame
 
-							if ( ( isEquirectMap && image && image.height > 0 ) || ( isCubeMap && image && isCubeTextureComplete( image ) ) ) {
-
-								if ( pmremGenerator === null ) pmremGenerator = new PMREMGenerator( renderer );
-
-								const renderTarget = isEquirectMap ? pmremGenerator.fromEquirectangular( texture ) : pmremGenerator.fromCubemap( texture );
-								cubeUVmaps.set( texture, renderTarget );
-
-								texture.addEventListener( 'dispose', onTextureDispose );
-
-								return renderTarget.texture;
-
-							} else {
-
-								// image not yet ready. try the conversion next frame
-
-								return null;
-
-							}
+							return null;
 
 						}
 
@@ -16444,7 +16582,7 @@
 
 			}
 
-			const attribute = new ( arrayNeedsUint32( indices ) ? Uint32BufferAttribute : Uint16BufferAttribute )( indices, 1 );
+			const attribute = new ( arrayMax( indices ) > 65535 ? Uint32BufferAttribute : Uint16BufferAttribute )( indices, 1 );
 			attribute.version = version;
 
 			// Updating index buffer in VAO now. See WebGLBindingStates
@@ -16658,6 +16796,8 @@
 			this.flipY = false;
 			this.unpackAlignment = 1;
 
+			this.needsUpdate = true;
+
 		}
 
 	}
@@ -16745,7 +16885,6 @@
 					const texture = new DataTexture2DArray( buffer, width, height, numberOfMorphTargets );
 					texture.format = RGBAFormat; // using RGBA since RGB might be emulated (and is thus slower)
 					texture.type = FloatType;
-					texture.needsUpdate = true;
 
 					// fill buffer
 
@@ -16795,18 +16934,6 @@
 					};
 
 					morphTextures.set( geometry, entry );
-
-					function disposeTexture() {
-
-						texture.dispose();
-
-						morphTextures.delete( geometry );
-
-						geometry.removeEventListener( 'dispose', disposeTexture );
-
-					}
-
-					geometry.addEventListener( 'dispose', disposeTexture );
 
 				}
 
@@ -17047,6 +17174,8 @@
 			this.generateMipmaps = false;
 			this.flipY = false;
 			this.unpackAlignment = 1;
+
+			this.needsUpdate = true;
 
 		}
 
@@ -18102,6 +18231,16 @@
 				return [ 'Linear', '( value )' ];
 			case sRGBEncoding:
 				return [ 'sRGB', '( value )' ];
+			case RGBEEncoding:
+				return [ 'RGBE', '( value )' ];
+			case RGBM7Encoding:
+				return [ 'RGBM', '( value, 7.0 )' ];
+			case RGBM16Encoding:
+				return [ 'RGBM', '( value, 16.0 )' ];
+			case RGBDEncoding:
+				return [ 'RGBD', '( value, 256.0 )' ];
+			case GammaEncoding:
+				return [ 'Gamma', '( value, float( GAMMA_FACTOR ) )' ];
 			default:
 				console.warn( 'THREE.WebGLProgram: Unsupported encoding:', encoding );
 				return [ 'Linear', '( value )' ];
@@ -18121,6 +18260,13 @@
 		// console.log( '**' + type + '**', gl.getExtension( 'WEBGL_debug_shaders' ).getTranslatedShaderSource( shader ) );
 
 		return type.toUpperCase() + '\n\n' + errors + '\n\n' + addLineNumbers( gl.getShaderSource( shader ) );
+
+	}
+
+	function getTexelDecodingFunction( functionName, encoding ) {
+
+		const components = getEncodingComponents( encoding );
+		return 'vec4 ' + functionName + '( vec4 value ) { return ' + components[ 0 ] + 'ToLinear' + components[ 1 ] + '; }';
 
 	}
 
@@ -18455,6 +18601,9 @@
 		const envMapModeDefine = generateEnvMapModeDefine( parameters );
 		const envMapBlendingDefine = generateEnvMapBlendingDefine( parameters );
 
+
+		const gammaFactorDefine = ( renderer.gammaFactor > 0 ) ? renderer.gammaFactor : 1.0;
+
 		const customExtensions = parameters.isWebGL2 ? '' : generateExtensions( parameters );
 
 		const customDefines = generateDefines( defines );
@@ -18505,6 +18654,8 @@
 				parameters.instancingColor ? '#define USE_INSTANCING_COLOR' : '',
 
 				parameters.supportsVertexTextures ? '#define VERTEX_TEXTURES' : '',
+
+				'#define GAMMA_FACTOR ' + gammaFactorDefine,
 
 				'#define MAX_BONES ' + parameters.maxBones,
 				( parameters.useFog && parameters.fog ) ? '#define USE_FOG' : '',
@@ -18654,6 +18805,8 @@
 
 				customDefines,
 
+				'#define GAMMA_FACTOR ' + gammaFactorDefine,
+
 				( parameters.useFog && parameters.fog ) ? '#define USE_FOG' : '',
 				( parameters.useFog && parameters.fogExp2 ) ? '#define FOG_EXP2' : '',
 
@@ -18693,8 +18846,6 @@
 				parameters.transmissionMap ? '#define USE_TRANSMISSIONMAP' : '',
 				parameters.thicknessMap ? '#define USE_THICKNESSMAP' : '',
 
-				parameters.decodeVideoTexture ? '#define DECODE_VIDEO_TEXTURE' : '',
-
 				parameters.vertexTangents ? '#define USE_TANGENT' : '',
 				parameters.vertexColors || parameters.instancingColor ? '#define USE_COLOR' : '',
 				parameters.vertexAlphas ? '#define USE_COLOR_ALPHA' : '',
@@ -18729,9 +18880,16 @@
 				( parameters.toneMapping !== NoToneMapping ) ? getToneMappingFunction( 'toneMapping', parameters.toneMapping ) : '',
 
 				parameters.dithering ? '#define DITHERING' : '',
-				parameters.transparent ? '' : '#define OPAQUE',
+				parameters.format === RGBFormat ? '#define OPAQUE' : '',
 
 				ShaderChunk[ 'encodings_pars_fragment' ], // this code is required here because it is used by the various encoding/decoding function defined below
+				parameters.map ? getTexelDecodingFunction( 'mapTexelToLinear', parameters.mapEncoding ) : '',
+				parameters.matcap ? getTexelDecodingFunction( 'matcapTexelToLinear', parameters.matcapEncoding ) : '',
+				parameters.envMap ? getTexelDecodingFunction( 'envMapTexelToLinear', parameters.envMapEncoding ) : '',
+				parameters.emissiveMap ? getTexelDecodingFunction( 'emissiveMapTexelToLinear', parameters.emissiveMapEncoding ) : '',
+				parameters.specularColorMap ? getTexelDecodingFunction( 'specularColorMapTexelToLinear', parameters.specularColorMapEncoding ) : '',
+				parameters.sheenColorMap ? getTexelDecodingFunction( 'sheenColorMapTexelToLinear', parameters.sheenColorMapEncoding ) : '',
+				parameters.lightMap ? getTexelDecodingFunction( 'lightMapTexelToLinear', parameters.lightMapEncoding ) : '',
 				getTexelEncodingFunction( 'linearToOutputTexel', parameters.outputEncoding ),
 
 				parameters.depthPacking ? '#define DEPTH_PACKING ' + parameters.depthPacking : '',
@@ -18768,7 +18926,7 @@
 
 			prefixFragment = [
 				'#define varying in',
-				( parameters.glslVersion === GLSL3 ) ? '' : 'layout(location = 0) out highp vec4 pc_fragColor;',
+				( parameters.glslVersion === GLSL3 ) ? '' : 'out highp vec4 pc_fragColor;',
 				( parameters.glslVersion === GLSL3 ) ? '' : '#define gl_FragColor pc_fragColor',
 				'#define gl_FragDepthEXT gl_FragDepth',
 				'#define texture2D texture',
@@ -18940,129 +19098,8 @@
 
 	}
 
-	let _id = 0;
-
-	class WebGLShaderCache {
-
-		constructor() {
-
-			this.shaderCache = new Map();
-			this.materialCache = new Map();
-
-		}
-
-		update( material ) {
-
-			const vertexShader = material.vertexShader;
-			const fragmentShader = material.fragmentShader;
-
-			const vertexShaderStage = this._getShaderStage( vertexShader );
-			const fragmentShaderStage = this._getShaderStage( fragmentShader );
-
-			const materialShaders = this._getShaderCacheForMaterial( material );
-
-			if ( materialShaders.has( vertexShaderStage ) === false ) {
-
-				materialShaders.add( vertexShaderStage );
-				vertexShaderStage.usedTimes ++;
-
-			}
-
-			if ( materialShaders.has( fragmentShaderStage ) === false ) {
-
-				materialShaders.add( fragmentShaderStage );
-				fragmentShaderStage.usedTimes ++;
-
-			}
-
-			return this;
-
-		}
-
-		remove( material ) {
-
-			const materialShaders = this.materialCache.get( material );
-
-			for ( const shaderStage of materialShaders ) {
-
-				shaderStage.usedTimes --;
-
-				if ( shaderStage.usedTimes === 0 ) this.shaderCache.delete( shaderStage );
-
-			}
-
-			this.materialCache.delete( material );
-
-			return this;
-
-		}
-
-		getVertexShaderID( material ) {
-
-			return this._getShaderStage( material.vertexShader ).id;
-
-		}
-
-		getFragmentShaderID( material ) {
-
-			return this._getShaderStage( material.fragmentShader ).id;
-
-		}
-
-		dispose() {
-
-			this.shaderCache.clear();
-			this.materialCache.clear();
-
-		}
-
-		_getShaderCacheForMaterial( material ) {
-
-			const cache = this.materialCache;
-
-			if ( cache.has( material ) === false ) {
-
-				cache.set( material, new Set() );
-
-			}
-
-			return cache.get( material );
-
-		}
-
-		_getShaderStage( code ) {
-
-			const cache = this.shaderCache;
-
-			if ( cache.has( code ) === false ) {
-
-				const stage = new WebGLShaderStage();
-				cache.set( code, stage );
-
-			}
-
-			return cache.get( code );
-
-		}
-
-	}
-
-	class WebGLShaderStage {
-
-		constructor() {
-
-			this.id = _id ++;
-
-			this.usedTimes = 0;
-
-		}
-
-	}
-
 	function WebGLPrograms( renderer, cubemaps, cubeuvmaps, extensions, capabilities, bindingStates, clipping ) {
 
-		const _programLayers = new Layers();
-		const _customShaders = new WebGLShaderCache();
 		const programs = [];
 
 		const isWebGL2 = capabilities.isWebGL2;
@@ -19070,6 +19107,7 @@
 		const floatVertexTextures = capabilities.floatVertexTextures;
 		const maxVertexUniforms = capabilities.maxVertexUniforms;
 		const vertexTextures = capabilities.vertexTextures;
+
 		let precision = capabilities.precision;
 
 		const shaderIDs = {
@@ -19089,6 +19127,25 @@
 			ShadowMaterial: 'shadow',
 			SpriteMaterial: 'sprite'
 		};
+
+		const parameterNames = [
+			'precision', 'isWebGL2', 'supportsVertexTextures', 'outputEncoding', 'instancing', 'instancingColor',
+			'map', 'mapEncoding', 'matcap', 'matcapEncoding', 'envMap', 'envMapMode', 'envMapEncoding', 'envMapCubeUV',
+			'lightMap', 'lightMapEncoding', 'aoMap', 'emissiveMap', 'emissiveMapEncoding', 'bumpMap', 'normalMap',
+			'objectSpaceNormalMap', 'tangentSpaceNormalMap',
+			'clearcoat', 'clearcoatMap', 'clearcoatRoughnessMap', 'clearcoatNormalMap',
+			'displacementMap', 'specularMap', , 'roughnessMap', 'metalnessMap', 'gradientMap',
+			'alphaMap', 'alphaTest', 'combine', 'vertexColors', 'vertexAlphas', 'vertexTangents', 'vertexUvs', 'uvsVertexOnly', 'fog', 'useFog', 'fogExp2',
+			'flatShading', 'sizeAttenuation', 'logarithmicDepthBuffer', 'skinning',
+			'maxBones', 'useVertexTexture', 'morphTargets', 'morphNormals', 'morphTargetsCount', 'premultipliedAlpha',
+			'numDirLights', 'numPointLights', 'numSpotLights', 'numHemiLights', 'numRectAreaLights',
+			'numDirLightShadows', 'numPointLightShadows', 'numSpotLightShadows',
+			'shadowMapEnabled', 'shadowMapType', 'toneMapping', 'physicallyCorrectLights',
+			'doubleSided', 'flipSided', 'numClippingPlanes', 'numClipIntersection', 'depthPacking', 'dithering', 'format',
+			'specularIntensityMap', 'specularColorMap', 'specularColorMapEncoding',
+			'transmission', 'transmissionMap', 'thicknessMap',
+			'sheen', 'sheenColorMap', 'sheenColorMapEncoding', 'sheenRoughnessMap'
+		];
 
 		function getMaxBones( object ) {
 
@@ -19126,6 +19183,35 @@
 
 		}
 
+		function getTextureEncodingFromMap( map ) {
+
+			let encoding;
+
+			if ( map && map.isTexture ) {
+
+				encoding = map.encoding;
+
+			} else if ( map && map.isWebGLRenderTarget ) {
+
+				console.warn( 'THREE.WebGLPrograms.getTextureEncodingFromMap: don\'t use render targets as textures. Use their .texture property instead.' );
+				encoding = map.texture.encoding;
+
+			} else {
+
+				encoding = LinearEncoding;
+
+			}
+
+			/* if ( isWebGL2 && map && map.isTexture && map.format === RGBAFormat && map.type === UnsignedByteType && map.encoding === sRGBEncoding ) {
+
+				encoding = LinearEncoding; // disable inline decode for sRGB textures in WebGL 2
+
+			} */
+
+			return encoding;
+
+		}
+
 		function getParameters( material, lights, shadows, scene, object ) {
 
 			const fog = scene.fog;
@@ -19153,7 +19239,6 @@
 			}
 
 			let vertexShader, fragmentShader;
-			let customVertexShaderID, customFragmentShaderID;
 
 			if ( shaderID ) {
 
@@ -19166,11 +19251,6 @@
 
 				vertexShader = material.vertexShader;
 				fragmentShader = material.fragmentShader;
-
-				_customShaders.update( material );
-
-				customVertexShaderID = _customShaders.getVertexShaderID( material );
-				customFragmentShaderID = _customShaders.getFragmentShaderID( material );
 
 			}
 
@@ -19190,9 +19270,6 @@
 				fragmentShader: fragmentShader,
 				defines: material.defines,
 
-				customVertexShaderID: customVertexShaderID,
-				customFragmentShaderID: customFragmentShaderID,
-
 				isRawShaderMaterial: material.isRawShaderMaterial === true,
 				glslVersion: material.glslVersion,
 
@@ -19202,21 +19279,24 @@
 				instancingColor: object.isInstancedMesh === true && object.instanceColor !== null,
 
 				supportsVertexTextures: vertexTextures,
-				outputEncoding: ( currentRenderTarget === null ) ? renderer.outputEncoding : ( currentRenderTarget.isXRRenderTarget === true ? currentRenderTarget.texture.encoding : LinearEncoding ),
+				outputEncoding: ( currentRenderTarget !== null ) ? getTextureEncodingFromMap( currentRenderTarget.texture ) : renderer.outputEncoding,
 				map: !! material.map,
+				mapEncoding: getTextureEncodingFromMap( material.map ),
 				matcap: !! material.matcap,
+				matcapEncoding: getTextureEncodingFromMap( material.matcap ),
 				envMap: !! envMap,
 				envMapMode: envMap && envMap.mapping,
+				envMapEncoding: getTextureEncodingFromMap( envMap ),
 				envMapCubeUV: ( !! envMap ) && ( ( envMap.mapping === CubeUVReflectionMapping ) || ( envMap.mapping === CubeUVRefractionMapping ) ),
 				lightMap: !! material.lightMap,
+				lightMapEncoding: getTextureEncodingFromMap( material.lightMap ),
 				aoMap: !! material.aoMap,
 				emissiveMap: !! material.emissiveMap,
+				emissiveMapEncoding: getTextureEncodingFromMap( material.emissiveMap ),
 				bumpMap: !! material.bumpMap,
 				normalMap: !! material.normalMap,
 				objectSpaceNormalMap: material.normalMapType === ObjectSpaceNormalMap,
 				tangentSpaceNormalMap: material.normalMapType === TangentSpaceNormalMap,
-
-				decodeVideoTexture: !! material.map && ( material.map.isVideoTexture === true ) && ( material.map.encoding === sRGBEncoding ),
 
 				clearcoat: useClearcoat,
 				clearcoatMap: useClearcoat && !! material.clearcoatMap,
@@ -19229,8 +19309,7 @@
 				specularMap: !! material.specularMap,
 				specularIntensityMap: !! material.specularIntensityMap,
 				specularColorMap: !! material.specularColorMap,
-
-				transparent: material.transparent,
+				specularColorMapEncoding: getTextureEncodingFromMap( material.specularColorMap ),
 
 				alphaMap: !! material.alphaMap,
 				alphaTest: useAlphaTest,
@@ -19239,6 +19318,7 @@
 
 				sheen: material.sheen > 0,
 				sheenColorMap: !! material.sheenColorMap,
+				sheenColorMapEncoding: getTextureEncodingFromMap( material.sheenColorMap ),
 				sheenRoughnessMap: !! material.sheenRoughnessMap,
 
 				transmission: material.transmission > 0,
@@ -19250,7 +19330,7 @@
 				vertexTangents: ( !! material.normalMap && !! object.geometry && !! object.geometry.attributes.tangent ),
 				vertexColors: material.vertexColors,
 				vertexAlphas: material.vertexColors === true && !! object.geometry && !! object.geometry.attributes.color && object.geometry.attributes.color.itemSize === 4,
-				vertexUvs: !! material.map || !! material.bumpMap || !! material.normalMap || !! material.specularMap || !! material.alphaMap || !! material.emissiveMap || !! material.roughnessMap || !! material.metalnessMap || !! material.clearcoatMap || !! material.clearcoatRoughnessMap || !! material.clearcoatNormalMap || !! material.displacementMap || !! material.transmissionMap || !! material.thicknessMap || !! material.specularIntensityMap || !! material.specularColorMap || !! material.sheenColorMap || !! material.sheenRoughnessMap,
+				vertexUvs: !! material.map || !! material.bumpMap || !! material.normalMap || !! material.specularMap || !! material.alphaMap || !! material.emissiveMap || !! material.roughnessMap || !! material.metalnessMap || !! material.clearcoatMap || !! material.clearcoatRoughnessMap || !! material.clearcoatNormalMap || !! material.displacementMap || !! material.transmissionMap || !! material.thicknessMap || !! material.specularIntensityMap || !! material.specularColorMap || !! material.sheenColorMap || material.sheenRoughnessMap,
 				uvsVertexOnly: ! ( !! material.map || !! material.bumpMap || !! material.normalMap || !! material.specularMap || !! material.alphaMap || !! material.emissiveMap || !! material.roughnessMap || !! material.metalnessMap || !! material.clearcoatNormalMap || material.transmission > 0 || !! material.transmissionMap || !! material.thicknessMap || !! material.specularIntensityMap || !! material.specularColorMap || material.sheen > 0 || !! material.sheenColorMap || !! material.sheenRoughnessMap ) && !! material.displacementMap,
 
 				fog: !! fog,
@@ -19283,6 +19363,7 @@
 				numClippingPlanes: clipping.numPlanes,
 				numClipIntersection: clipping.numIntersection,
 
+				format: material.format,
 				dithering: material.dithering,
 
 				shadowMapEnabled: renderer.shadowMap.enabled && shadows.length > 0,
@@ -19327,8 +19408,8 @@
 
 			} else {
 
-				array.push( parameters.customVertexShaderID );
-				array.push( parameters.customFragmentShaderID );
+				array.push( hashString( parameters.fragmentShader ) );
+				array.push( hashString( parameters.vertexShader ) );
 
 			}
 
@@ -19345,166 +19426,20 @@
 
 			if ( parameters.isRawShaderMaterial === false ) {
 
-				getProgramCacheKeyParameters( array, parameters );
-				getProgramCacheKeyBooleans( array, parameters );
+				for ( let i = 0; i < parameterNames.length; i ++ ) {
+
+					array.push( parameters[ parameterNames[ i ] ] );
+
+				}
+
 				array.push( renderer.outputEncoding );
+				array.push( renderer.gammaFactor );
 
 			}
 
 			array.push( parameters.customProgramCacheKey );
 
 			return array.join();
-
-		}
-
-		function getProgramCacheKeyParameters( array, parameters ) {
-
-			array.push( parameters.precision );
-			array.push( parameters.outputEncoding );
-			array.push( parameters.envMapMode );
-			array.push( parameters.combine );
-			array.push( parameters.vertexUvs );
-			array.push( parameters.fogExp2 );
-			array.push( parameters.sizeAttenuation );
-			array.push( parameters.maxBones );
-			array.push( parameters.morphTargetsCount );
-			array.push( parameters.numDirLights );
-			array.push( parameters.numPointLights );
-			array.push( parameters.numSpotLights );
-			array.push( parameters.numHemiLights );
-			array.push( parameters.numRectAreaLights );
-			array.push( parameters.numDirLightShadows );
-			array.push( parameters.numPointLightShadows );
-			array.push( parameters.numSpotLightShadows );
-			array.push( parameters.shadowMapType );
-			array.push( parameters.toneMapping );
-			array.push( parameters.numClippingPlanes );
-			array.push( parameters.numClipIntersection );
-
-		}
-
-		function getProgramCacheKeyBooleans( array, parameters ) {
-
-			_programLayers.disableAll();
-
-			if ( parameters.isWebGL2 )
-				_programLayers.enable( 0 );
-			if ( parameters.supportsVertexTextures )
-				_programLayers.enable( 1 );
-			if ( parameters.instancing )
-				_programLayers.enable( 2 );
-			if ( parameters.instancingColor )
-				_programLayers.enable( 3 );
-			if ( parameters.map )
-				_programLayers.enable( 4 );
-			if ( parameters.matcap )
-				_programLayers.enable( 5 );
-			if ( parameters.envMap )
-				_programLayers.enable( 6 );
-			if ( parameters.envMapCubeUV )
-				_programLayers.enable( 7 );
-			if ( parameters.lightMap )
-				_programLayers.enable( 8 );
-			if ( parameters.aoMap )
-				_programLayers.enable( 9 );
-			if ( parameters.emissiveMap )
-				_programLayers.enable( 10 );
-			if ( parameters.bumpMap )
-				_programLayers.enable( 11 );
-			if ( parameters.normalMap )
-				_programLayers.enable( 12 );
-			if ( parameters.objectSpaceNormalMap )
-				_programLayers.enable( 13 );
-			if ( parameters.tangentSpaceNormalMap )
-				_programLayers.enable( 14 );
-			if ( parameters.clearcoat )
-				_programLayers.enable( 15 );
-			if ( parameters.clearcoatMap )
-				_programLayers.enable( 16 );
-			if ( parameters.clearcoatRoughnessMap )
-				_programLayers.enable( 17 );
-			if ( parameters.clearcoatNormalMap )
-				_programLayers.enable( 18 );
-			if ( parameters.displacementMap )
-				_programLayers.enable( 19 );
-			if ( parameters.specularMap )
-				_programLayers.enable( 20 );
-			if ( parameters.roughnessMap )
-				_programLayers.enable( 21 );
-			if ( parameters.metalnessMap )
-				_programLayers.enable( 22 );
-			if ( parameters.gradientMap )
-				_programLayers.enable( 23 );
-			if ( parameters.alphaMap )
-				_programLayers.enable( 24 );
-			if ( parameters.alphaTest )
-				_programLayers.enable( 25 );
-			if ( parameters.vertexColors )
-				_programLayers.enable( 26 );
-			if ( parameters.vertexAlphas )
-				_programLayers.enable( 27 );
-			if ( parameters.vertexUvs )
-				_programLayers.enable( 28 );
-			if ( parameters.vertexTangents )
-				_programLayers.enable( 29 );
-			if ( parameters.uvsVertexOnly )
-				_programLayers.enable( 30 );
-			if ( parameters.fog )
-				_programLayers.enable( 31 );
-
-			array.push( _programLayers.mask );
-			_programLayers.disableAll();
-
-			if ( parameters.useFog )
-				_programLayers.enable( 0 );
-			if ( parameters.flatShading )
-				_programLayers.enable( 1 );
-			if ( parameters.logarithmicDepthBuffer )
-				_programLayers.enable( 2 );
-			if ( parameters.skinning )
-				_programLayers.enable( 3 );
-			if ( parameters.useVertexTexture )
-				_programLayers.enable( 4 );
-			if ( parameters.morphTargets )
-				_programLayers.enable( 5 );
-			if ( parameters.morphNormals )
-				_programLayers.enable( 6 );
-			if ( parameters.premultipliedAlpha )
-				_programLayers.enable( 7 );
-			if ( parameters.shadowMapEnabled )
-				_programLayers.enable( 8 );
-			if ( parameters.physicallyCorrectLights )
-				_programLayers.enable( 9 );
-			if ( parameters.doubleSided )
-				_programLayers.enable( 10 );
-			if ( parameters.flipSided )
-				_programLayers.enable( 11 );
-			if ( parameters.depthPacking )
-				_programLayers.enable( 12 );
-			if ( parameters.dithering )
-				_programLayers.enable( 13 );
-			if ( parameters.specularIntensityMap )
-				_programLayers.enable( 14 );
-			if ( parameters.specularColorMap )
-				_programLayers.enable( 15 );
-			if ( parameters.transmission )
-				_programLayers.enable( 16 );
-			if ( parameters.transmissionMap )
-				_programLayers.enable( 17 );
-			if ( parameters.thicknessMap )
-				_programLayers.enable( 18 );
-			if ( parameters.sheen )
-				_programLayers.enable( 19 );
-			if ( parameters.sheenColorMap )
-				_programLayers.enable( 20 );
-			if ( parameters.sheenRoughnessMap )
-				_programLayers.enable( 21 );
-			if ( parameters.decodeVideoTexture )
-				_programLayers.enable( 22 );
-			if ( parameters.transparent )
-				_programLayers.enable( 23 );
-
-			array.push( _programLayers.mask );
 
 		}
 
@@ -19575,28 +19510,14 @@
 
 		}
 
-		function releaseShaderCache( material ) {
-
-			_customShaders.remove( material );
-
-		}
-
-		function dispose() {
-
-			_customShaders.dispose();
-
-		}
-
 		return {
 			getParameters: getParameters,
 			getProgramCacheKey: getProgramCacheKey,
 			getUniforms: getUniforms,
 			acquireProgram: acquireProgram,
 			releaseProgram: releaseProgram,
-			releaseShaderCache: releaseShaderCache,
 			// Exposed for resource monitoring & error feedback via renderer.info:
-			programs: programs,
-			dispose: dispose
+			programs: programs
 		};
 
 	}
@@ -19657,6 +19578,10 @@
 
 			return a.renderOrder - b.renderOrder;
 
+		} else if ( a.program !== b.program ) {
+
+			return a.program.id - b.program.id;
+
 		} else if ( a.material.id !== b.material.id ) {
 
 			return a.material.id - b.material.id;
@@ -19696,7 +19621,7 @@
 	}
 
 
-	function WebGLRenderList() {
+	function WebGLRenderList( properties ) {
 
 		const renderItems = [];
 		let renderItemsIndex = 0;
@@ -19704,6 +19629,8 @@
 		const opaque = [];
 		const transmissive = [];
 		const transparent = [];
+
+		const defaultProgram = { id: - 1 };
 
 		function init() {
 
@@ -19718,6 +19645,7 @@
 		function getNextRenderItem( object, geometry, material, groupOrder, z, group ) {
 
 			let renderItem = renderItems[ renderItemsIndex ];
+			const materialProperties = properties.get( material );
 
 			if ( renderItem === undefined ) {
 
@@ -19726,6 +19654,7 @@
 					object: object,
 					geometry: geometry,
 					material: material,
+					program: materialProperties.program || defaultProgram,
 					groupOrder: groupOrder,
 					renderOrder: object.renderOrder,
 					z: z,
@@ -19740,6 +19669,7 @@
 				renderItem.object = object;
 				renderItem.geometry = geometry;
 				renderItem.material = material;
+				renderItem.program = materialProperties.program || defaultProgram;
 				renderItem.groupOrder = groupOrder;
 				renderItem.renderOrder = object.renderOrder;
 				renderItem.z = z;
@@ -19815,6 +19745,7 @@
 				renderItem.object = null;
 				renderItem.geometry = null;
 				renderItem.material = null;
+				renderItem.program = null;
 				renderItem.group = null;
 
 			}
@@ -19837,7 +19768,7 @@
 
 	}
 
-	function WebGLRenderLists() {
+	function WebGLRenderLists( properties ) {
 
 		let lists = new WeakMap();
 
@@ -19847,14 +19778,14 @@
 
 			if ( lists.has( scene ) === false ) {
 
-				list = new WebGLRenderList();
+				list = new WebGLRenderList( properties );
 				lists.set( scene, [ list ] );
 
 			} else {
 
 				if ( renderCallDepth >= lists.get( scene ).length ) {
 
-					list = new WebGLRenderList();
+					list = new WebGLRenderList( properties );
 					lists.get( scene ).push( list );
 
 				} else {
@@ -21350,8 +21281,6 @@
 		let enabledCapabilities = {};
 
 		let currentBoundFramebuffers = {};
-		let currentDrawbuffers = new WeakMap();
-		let defaultDrawbuffers = [];
 
 		let currentProgram = null;
 
@@ -21496,82 +21425,6 @@
 
 		}
 
-		function drawBuffers( renderTarget, framebuffer ) {
-
-			let drawBuffers = defaultDrawbuffers;
-
-			let needsUpdate = false;
-
-			if ( renderTarget ) {
-
-				drawBuffers = currentDrawbuffers.get( framebuffer );
-
-				if ( drawBuffers === undefined ) {
-
-					drawBuffers = [];
-					currentDrawbuffers.set( framebuffer, drawBuffers );
-
-				}
-
-				if ( renderTarget.isWebGLMultipleRenderTargets ) {
-
-					const textures = renderTarget.texture;
-
-					if ( drawBuffers.length !== textures.length || drawBuffers[ 0 ] !== 36064 ) {
-
-						for ( let i = 0, il = textures.length; i < il; i ++ ) {
-
-							drawBuffers[ i ] = 36064 + i;
-
-						}
-
-						drawBuffers.length = textures.length;
-
-						needsUpdate = true;
-
-					}
-
-				} else {
-
-					if ( drawBuffers[ 0 ] !== 36064 ) {
-
-						drawBuffers[ 0 ] = 36064;
-
-						needsUpdate = true;
-
-					}
-
-				}
-
-			} else {
-
-				if ( drawBuffers[ 0 ] !== 1029 ) {
-
-					drawBuffers[ 0 ] = 1029;
-
-					needsUpdate = true;
-
-				}
-
-			}
-
-			if ( needsUpdate ) {
-
-				if ( capabilities.isWebGL2 ) {
-
-					gl.drawBuffers( drawBuffers );
-
-				} else {
-
-					extensions.get( 'WEBGL_draw_buffers' ).drawBuffersWEBGL( drawBuffers );
-
-				}
-
-			}
-
-
-		}
-
 		function useProgram( program ) {
 
 			if ( currentProgram !== program ) {
@@ -21674,7 +21527,7 @@
 								break;
 
 							case SubtractiveBlending:
-								gl.blendFuncSeparate( 0, 769, 0, 1 );
+								gl.blendFuncSeparate( 0, 0, 769, 771 );
 								break;
 
 							case MultiplyBlending:
@@ -21700,7 +21553,7 @@
 								break;
 
 							case SubtractiveBlending:
-								gl.blendFuncSeparate( 0, 769, 0, 1 );
+								gl.blendFunc( 0, 769 );
 								break;
 
 							case MultiplyBlending:
@@ -21989,53 +21842,11 @@
 
 		}
 
-		function texSubImage3D() {
-
-			try {
-
-				gl.texSubImage3D.apply( gl, arguments );
-
-			} catch ( error ) {
-
-				console.error( 'THREE.WebGLState:', error );
-
-			}
-
-		}
-
-		function compressedTexSubImage2D() {
-
-			try {
-
-				gl.compressedTexSubImage2D.apply( gl, arguments );
-
-			} catch ( error ) {
-
-				console.error( 'THREE.WebGLState:', error );
-
-			}
-
-		}
-
 		function texStorage2D() {
 
 			try {
 
 				gl.texStorage2D.apply( gl, arguments );
-
-			} catch ( error ) {
-
-				console.error( 'THREE.WebGLState:', error );
-
-			}
-
-		}
-
-		function texStorage3D() {
-
-			try {
-
-				gl.texStorage3D.apply( gl, arguments );
 
 			} catch ( error ) {
 
@@ -22158,8 +21969,6 @@
 			currentBoundTextures = {};
 
 			currentBoundFramebuffers = {};
-			currentDrawbuffers = new WeakMap();
-			defaultDrawbuffers = [];
 
 			currentProgram = null;
 
@@ -22202,7 +22011,6 @@
 			disable: disable,
 
 			bindFramebuffer: bindFramebuffer,
-			drawBuffers: drawBuffers,
 
 			useProgram: useProgram,
 
@@ -22225,10 +22033,7 @@
 			texImage3D: texImage3D,
 
 			texStorage2D: texStorage2D,
-			texStorage3D: texStorage3D,
 			texSubImage2D: texSubImage2D,
-			texSubImage3D: texSubImage3D,
-			compressedTexSubImage2D: compressedTexSubImage2D,
 
 			scissor: scissor,
 			viewport: viewport,
@@ -22367,7 +22172,7 @@
 
 		}
 
-		function getInternalFormat( internalFormatName, glFormat, glType, encoding, isVideoTexture = false ) {
+		function getInternalFormat( internalFormatName, glFormat, glType/*, encoding*/ ) {
 
 			if ( isWebGL2 === false ) return glFormat;
 
@@ -22389,11 +22194,11 @@
 
 			}
 
-			if ( glFormat === 33319 ) {
+			if ( glFormat === 6407 ) {
 
-				if ( glType === 5126 ) internalFormat = 33328;
-				if ( glType === 5131 ) internalFormat = 33327;
-				if ( glType === 5121 ) internalFormat = 33323;
+				if ( glType === 5126 ) internalFormat = 34837;
+				if ( glType === 5131 ) internalFormat = 34843;
+				if ( glType === 5121 ) internalFormat = 32849;
 
 			}
 
@@ -22401,14 +22206,13 @@
 
 				if ( glType === 5126 ) internalFormat = 34836;
 				if ( glType === 5131 ) internalFormat = 34842;
-				if ( glType === 5121 ) internalFormat = ( encoding === sRGBEncoding && isVideoTexture === false ) ? 35907 : 32856;
-				if ( glType === 32819 ) internalFormat = 32854;
-				if ( glType === 32820 ) internalFormat = 32855;
+				//if ( glType === 5121 ) internalFormat = ( encoding === sRGBEncoding ) ? 35907 : 32856;
+				if ( glType === 5121 ) internalFormat = 32856;
+
 
 			}
 
 			if ( internalFormat === 33325 || internalFormat === 33326 ||
-				internalFormat === 33327 || internalFormat === 33328 ||
 				internalFormat === 34842 || internalFormat === 34836 ) {
 
 				extensions.get( 'EXT_color_buffer_float' );
@@ -22421,19 +22225,17 @@
 
 		function getMipLevels( texture, image, supportsMips ) {
 
-			if ( textureNeedsGenerateMipmaps( texture, supportsMips ) === true || ( texture.isFramebufferTexture && texture.minFilter !== NearestFilter && texture.minFilter !== LinearFilter ) ) {
+			if ( textureNeedsGenerateMipmaps( texture, supportsMips ) === true ) {
+
+				// generated mipmaps via gl.generateMipmap()
 
 				return Math.log2( Math.max( image.width, image.height ) ) + 1;
 
-			} else if ( texture.mipmaps !== undefined && texture.mipmaps.length > 0 ) {
+			} else if ( texture.mipmaps.length > 0 ) {
 
 				// user-defined mipmaps
 
 				return texture.mipmaps.length;
-
-			} else if ( texture.isCompressedTexture && Array.isArray( texture.image ) ) {
-
-				return image.mipmaps.length;
 
 			} else {
 
@@ -22790,23 +22592,18 @@
 			_gl.pixelStorei( 37443, 0 );
 
 			const needsPowerOfTwo = textureNeedsPowerOfTwo( texture ) && isPowerOfTwo$1( texture.image ) === false;
-			let image = resizeImage( texture.image, needsPowerOfTwo, false, maxTextureSize );
-			image = verifyColorSpace( texture, image );
+			const image = resizeImage( texture.image, needsPowerOfTwo, false, maxTextureSize );
 
 			const supportsMips = isPowerOfTwo$1( image ) || isWebGL2,
-				glFormat = utils.convert( texture.format, texture.encoding );
+				glFormat = utils.convert( texture.format );
 
 			let glType = utils.convert( texture.type ),
-				glInternalFormat = getInternalFormat( texture.internalFormat, glFormat, glType, texture.encoding, texture.isVideoTexture );
+				glInternalFormat = getInternalFormat( texture.internalFormat, glFormat, glType, texture.encoding );
 
 			setTextureParameters( textureType, texture, supportsMips );
 
 			let mipmap;
 			const mipmaps = texture.mipmaps;
-
-			const useTexStorage = ( isWebGL2 && texture.isVideoTexture !== true );
-			const allocateMemory = ( textureProperties.__version === undefined );
-			const levels = getMipLevels( texture, image, supportsMips );
 
 			if ( texture.isDepthTexture ) {
 
@@ -22884,15 +22681,7 @@
 
 				//
 
-				if ( useTexStorage && allocateMemory ) {
-
-					state.texStorage2D( 3553, 1, glInternalFormat, image.width, image.height );
-
-				} else {
-
-					state.texImage2D( 3553, 0, glInternalFormat, image.width, image.height, 0, glFormat, glType, null );
-
-				}
+				state.texImage2D( 3553, 0, glInternalFormat, image.width, image.height, 0, glFormat, glType, null );
 
 			} else if ( texture.isDataTexture ) {
 
@@ -22902,25 +22691,10 @@
 
 				if ( mipmaps.length > 0 && supportsMips ) {
 
-					if ( useTexStorage && allocateMemory ) {
-
-						state.texStorage2D( 3553, levels, glInternalFormat, mipmaps[ 0 ].width, mipmaps[ 0 ].height );
-
-					}
-
 					for ( let i = 0, il = mipmaps.length; i < il; i ++ ) {
 
 						mipmap = mipmaps[ i ];
-
-						if ( useTexStorage ) {
-
-							state.texSubImage2D( 3553, 0, 0, 0, mipmap.width, mipmap.height, glFormat, glType, mipmap.data );
-
-						} else {
-
-							state.texImage2D( 3553, i, glInternalFormat, mipmap.width, mipmap.height, 0, glFormat, glType, mipmap.data );
-
-						}
+						state.texImage2D( 3553, i, glInternalFormat, mipmap.width, mipmap.height, 0, glFormat, glType, mipmap.data );
 
 					}
 
@@ -22928,49 +22702,21 @@
 
 				} else {
 
-					if ( useTexStorage ) {
-
-						if ( allocateMemory ) {
-
-							state.texStorage2D( 3553, levels, glInternalFormat, image.width, image.height );
-
-						}
-
-						state.texSubImage2D( 3553, 0, 0, 0, image.width, image.height, glFormat, glType, image.data );
-
-					} else {
-
-						state.texImage2D( 3553, 0, glInternalFormat, image.width, image.height, 0, glFormat, glType, image.data );
-
-					}
+					state.texImage2D( 3553, 0, glInternalFormat, image.width, image.height, 0, glFormat, glType, image.data );
 
 				}
 
 			} else if ( texture.isCompressedTexture ) {
 
-				if ( useTexStorage && allocateMemory ) {
-
-					state.texStorage2D( 3553, levels, glInternalFormat, mipmaps[ 0 ].width, mipmaps[ 0 ].height );
-
-				}
-
 				for ( let i = 0, il = mipmaps.length; i < il; i ++ ) {
 
 					mipmap = mipmaps[ i ];
 
-					if ( texture.format !== RGBAFormat ) {
+					if ( texture.format !== RGBAFormat && texture.format !== RGBFormat ) {
 
 						if ( glFormat !== null ) {
 
-							if ( useTexStorage ) {
-
-								state.compressedTexSubImage2D( 3553, i, 0, 0, mipmap.width, mipmap.height, glFormat, mipmap.data );
-
-							} else {
-
-								state.compressedTexImage2D( 3553, i, glInternalFormat, mipmap.width, mipmap.height, 0, mipmap.data );
-
-							}
+							state.compressedTexImage2D( 3553, i, glInternalFormat, mipmap.width, mipmap.height, 0, mipmap.data );
 
 						} else {
 
@@ -22980,15 +22726,7 @@
 
 					} else {
 
-						if ( useTexStorage ) {
-
-							state.texSubImage2D( 3553, i, 0, 0, mipmap.width, mipmap.height, glFormat, glType, mipmap.data );
-
-						} else {
-
-							state.texImage2D( 3553, i, glInternalFormat, mipmap.width, mipmap.height, 0, glFormat, glType, mipmap.data );
-
-						}
+						state.texImage2D( 3553, i, glInternalFormat, mipmap.width, mipmap.height, 0, glFormat, glType, mipmap.data );
 
 					}
 
@@ -22996,51 +22734,11 @@
 
 			} else if ( texture.isDataTexture2DArray ) {
 
-				if ( useTexStorage ) {
-
-					if ( allocateMemory ) {
-
-						state.texStorage3D( 35866, levels, glInternalFormat, image.width, image.height, image.depth );
-
-					}
-
-					state.texSubImage3D( 35866, 0, 0, 0, 0, image.width, image.height, image.depth, glFormat, glType, image.data );
-
-				} else {
-
-					state.texImage3D( 35866, 0, glInternalFormat, image.width, image.height, image.depth, 0, glFormat, glType, image.data );
-
-				}
+				state.texImage3D( 35866, 0, glInternalFormat, image.width, image.height, image.depth, 0, glFormat, glType, image.data );
 
 			} else if ( texture.isDataTexture3D ) {
 
-				if ( useTexStorage ) {
-
-					if ( allocateMemory ) {
-
-						state.texStorage3D( 32879, levels, glInternalFormat, image.width, image.height, image.depth );
-
-					}
-
-					state.texSubImage3D( 32879, 0, 0, 0, 0, image.width, image.height, image.depth, glFormat, glType, image.data );
-
-				} else {
-
-					state.texImage3D( 32879, 0, glInternalFormat, image.width, image.height, image.depth, 0, glFormat, glType, image.data );
-
-				}
-
-			} else if ( texture.isFramebufferTexture ) {
-
-				if ( useTexStorage && allocateMemory ) {
-
-					state.texStorage2D( 3553, levels, glInternalFormat, image.width, image.height );
-
-				} else {
-
-					state.texImage2D( 3553, 0, glInternalFormat, image.width, image.height, 0, glFormat, glType, null );
-
-				}
+				state.texImage3D( 32879, 0, glInternalFormat, image.width, image.height, image.depth, 0, glFormat, glType, image.data );
 
 			} else {
 
@@ -23049,6 +22747,10 @@
 				// use manually created mipmaps if available
 				// if there are no manual mipmaps
 				// set 0 level mipmap and then use GL to generate other mipmap levels
+
+				const levels = getMipLevels( texture, image, supportsMips );
+				const useTexStorage = ( isWebGL2 && texture.isVideoTexture !== true );
+				const allocateMemory = ( textureProperties.__version === undefined );
 
 				if ( mipmaps.length > 0 && supportsMips ) {
 
@@ -23141,31 +22843,19 @@
 
 				}
 
-				cubeImage[ i ] = verifyColorSpace( texture, cubeImage[ i ] );
-
 			}
 
 			const image = cubeImage[ 0 ],
 				supportsMips = isPowerOfTwo$1( image ) || isWebGL2,
-				glFormat = utils.convert( texture.format, texture.encoding ),
+				glFormat = utils.convert( texture.format ),
 				glType = utils.convert( texture.type ),
 				glInternalFormat = getInternalFormat( texture.internalFormat, glFormat, glType, texture.encoding );
-
-			const useTexStorage = ( isWebGL2 && texture.isVideoTexture !== true );
-			const allocateMemory = ( textureProperties.__version === undefined );
-			let levels = getMipLevels( texture, image, supportsMips );
 
 			setTextureParameters( 34067, texture, supportsMips );
 
 			let mipmaps;
 
 			if ( isCompressed ) {
-
-				if ( useTexStorage && allocateMemory ) {
-
-					state.texStorage2D( 34067, levels, glInternalFormat, image.width, image.height );
-
-				}
 
 				for ( let i = 0; i < 6; i ++ ) {
 
@@ -23175,19 +22865,11 @@
 
 						const mipmap = mipmaps[ j ];
 
-						if ( texture.format !== RGBAFormat ) {
+						if ( texture.format !== RGBAFormat && texture.format !== RGBFormat ) {
 
 							if ( glFormat !== null ) {
 
-								if ( useTexStorage ) {
-
-									state.compressedTexSubImage2D( 34069 + i, j, 0, 0, mipmap.width, mipmap.height, glFormat, mipmap.data );
-
-								} else {
-
-									state.compressedTexImage2D( 34069 + i, j, glInternalFormat, mipmap.width, mipmap.height, 0, mipmap.data );
-
-								}
+								state.compressedTexImage2D( 34069 + i, j, glInternalFormat, mipmap.width, mipmap.height, 0, mipmap.data );
 
 							} else {
 
@@ -23197,15 +22879,7 @@
 
 						} else {
 
-							if ( useTexStorage ) {
-
-								state.texSubImage2D( 34069 + i, j, 0, 0, mipmap.width, mipmap.height, glFormat, glType, mipmap.data );
-
-							} else {
-
-								state.texImage2D( 34069 + i, j, glInternalFormat, mipmap.width, mipmap.height, 0, glFormat, glType, mipmap.data );
-
-							}
+							state.texImage2D( 34069 + i, j, glInternalFormat, mipmap.width, mipmap.height, 0, glFormat, glType, mipmap.data );
 
 						}
 
@@ -23217,74 +22891,30 @@
 
 				mipmaps = texture.mipmaps;
 
-				if ( useTexStorage && allocateMemory ) {
-
-					// TODO: Uniformly handle mipmap definitions
-					// Normal textures and compressed cube textures define base level + mips with their mipmap array
-					// Uncompressed cube textures use their mipmap array only for mips (no base level)
-
-					if ( mipmaps.length > 0 ) levels ++;
-
-					state.texStorage2D( 34067, levels, glInternalFormat, cubeImage[ 0 ].width, cubeImage[ 0 ].height );
-
-				}
-
 				for ( let i = 0; i < 6; i ++ ) {
 
 					if ( isDataTexture ) {
 
-						if ( useTexStorage ) {
-
-							state.texSubImage2D( 34069 + i, 0, 0, 0, cubeImage[ i ].width, cubeImage[ i ].height, glFormat, glType, cubeImage[ i ].data );
-
-						} else {
-
-							state.texImage2D( 34069 + i, 0, glInternalFormat, cubeImage[ i ].width, cubeImage[ i ].height, 0, glFormat, glType, cubeImage[ i ].data );
-
-						}
+						state.texImage2D( 34069 + i, 0, glInternalFormat, cubeImage[ i ].width, cubeImage[ i ].height, 0, glFormat, glType, cubeImage[ i ].data );
 
 						for ( let j = 0; j < mipmaps.length; j ++ ) {
 
 							const mipmap = mipmaps[ j ];
 							const mipmapImage = mipmap.image[ i ].image;
 
-							if ( useTexStorage ) {
-
-								state.texSubImage2D( 34069 + i, j + 1, 0, 0, mipmapImage.width, mipmapImage.height, glFormat, glType, mipmapImage.data );
-
-							} else {
-
-								state.texImage2D( 34069 + i, j + 1, glInternalFormat, mipmapImage.width, mipmapImage.height, 0, glFormat, glType, mipmapImage.data );
-
-							}
+							state.texImage2D( 34069 + i, j + 1, glInternalFormat, mipmapImage.width, mipmapImage.height, 0, glFormat, glType, mipmapImage.data );
 
 						}
 
 					} else {
 
-						if ( useTexStorage ) {
-
-							state.texSubImage2D( 34069 + i, 0, 0, 0, glFormat, glType, cubeImage[ i ] );
-
-						} else {
-
-							state.texImage2D( 34069 + i, 0, glInternalFormat, glFormat, glType, cubeImage[ i ] );
-
-						}
+						state.texImage2D( 34069 + i, 0, glInternalFormat, glFormat, glType, cubeImage[ i ] );
 
 						for ( let j = 0; j < mipmaps.length; j ++ ) {
 
 							const mipmap = mipmaps[ j ];
 
-							if ( useTexStorage ) {
-
-								state.texSubImage2D( 34069 + i, j + 1, 0, 0, glFormat, glType, mipmap.image[ i ] );
-
-							} else {
-
-								state.texImage2D( 34069 + i, j + 1, glInternalFormat, glFormat, glType, mipmap.image[ i ] );
-
-							}
+							state.texImage2D( 34069 + i, j + 1, glInternalFormat, glFormat, glType, mipmap.image[ i ] );
 
 						}
 
@@ -23312,7 +22942,7 @@
 		// Setup storage for target texture and bind it to correct framebuffer
 		function setupFrameBufferTexture( framebuffer, renderTarget, texture, attachment, textureTarget ) {
 
-			const glFormat = utils.convert( texture.format, texture.encoding );
+			const glFormat = utils.convert( texture.format );
 			const glType = utils.convert( texture.type );
 			const glInternalFormat = getInternalFormat( texture.internalFormat, glFormat, glType, texture.encoding );
 			const renderTargetProperties = properties.get( renderTarget );
@@ -23420,7 +23050,7 @@
 				// Use the first texture for MRT so far
 				const texture = renderTarget.isWebGLMultipleRenderTargets === true ? renderTarget.texture[ 0 ] : renderTarget.texture;
 
-				const glFormat = utils.convert( texture.format, texture.encoding );
+				const glFormat = utils.convert( texture.format );
 				const glType = utils.convert( texture.type );
 				const glInternalFormat = getInternalFormat( texture.internalFormat, glFormat, glType, texture.encoding );
 				const samples = getRenderTargetSamples( renderTarget );
@@ -23594,6 +23224,16 @@
 			const isRenderTarget3D = texture.isDataTexture3D || texture.isDataTexture2DArray;
 			const supportsMips = isPowerOfTwo$1( renderTarget ) || isWebGL2;
 
+			// Handles WebGL2 RGBFormat fallback - #18858
+
+			if ( isWebGL2 && texture.format === RGBFormat && ( texture.type === FloatType || texture.type === HalfFloatType ) ) {
+
+				texture.format = RGBAFormat;
+
+				console.warn( 'THREE.WebGLRenderer: Rendering to textures with RGB format is not supported. Using RGBA format instead.' );
+
+			}
+
 			// Setup framebuffer
 
 			if ( isCube ) {
@@ -23645,7 +23285,7 @@
 
 						_gl.bindRenderbuffer( 36161, renderTargetProperties.__webglColorRenderbuffer );
 
-						const glFormat = utils.convert( texture.format, texture.encoding );
+						const glFormat = utils.convert( texture.format );
 						const glType = utils.convert( texture.type );
 						const glInternalFormat = getInternalFormat( texture.internalFormat, glFormat, glType, texture.encoding );
 						const samples = getRenderTargetSamples( renderTarget );
@@ -23864,65 +23504,6 @@
 
 		}
 
-		function verifyColorSpace( texture, image ) {
-
-			const encoding = texture.encoding;
-			const format = texture.format;
-			const type = texture.type;
-
-			if ( texture.isCompressedTexture === true || texture.isVideoTexture === true || texture.format === _SRGBAFormat ) return image;
-
-			if ( encoding !== LinearEncoding ) {
-
-				// sRGB
-
-				if ( encoding === sRGBEncoding ) {
-
-					if ( isWebGL2 === false ) {
-
-						// in WebGL 1, try to use EXT_sRGB extension and unsized formats
-
-						if ( extensions.has( 'EXT_sRGB' ) === true && format === RGBAFormat ) {
-
-							texture.format = _SRGBAFormat;
-
-							// it's not possible to generate mips in WebGL 1 with this extension
-
-							texture.minFilter = LinearFilter;
-							texture.generateMipmaps = false;
-
-						} else {
-
-							// slow fallback (CPU decode)
-
-							image = ImageUtils.sRGBToLinear( image );
-
-						}
-
-					} else {
-
-						// in WebGL 2 uncompressed textures can only be sRGB encoded if they have the RGBA8 format
-
-						if ( format !== RGBAFormat || type !== UnsignedByteType ) {
-
-							console.warn( 'THREE.WebGLTextures: sRGB encoded textures have to use RGBAFormat and UnsignedByteType.' );
-
-						}
-
-					}
-
-				} else {
-
-					console.error( 'THREE.WebGLTextures: Unsupported texture encoding:', encoding );
-
-				}
-
-			}
-
-			return image;
-
-		}
-
 		// backwards compatibility
 
 		let warnedTexture2D = false;
@@ -23992,13 +23573,14 @@
 
 		const isWebGL2 = capabilities.isWebGL2;
 
-		function convert( p, encoding = null ) {
+		function convert( p ) {
 
 			let extension;
 
 			if ( p === UnsignedByteType ) return 5121;
 			if ( p === UnsignedShort4444Type ) return 32819;
 			if ( p === UnsignedShort5551Type ) return 32820;
+			if ( p === UnsignedShort565Type ) return 33635;
 
 			if ( p === ByteType ) return 5120;
 			if ( p === ShortType ) return 5122;
@@ -24026,6 +23608,7 @@
 			}
 
 			if ( p === AlphaFormat ) return 6406;
+			if ( p === RGBFormat ) return 6407;
 			if ( p === RGBAFormat ) return 6408;
 			if ( p === LuminanceFormat ) return 6409;
 			if ( p === LuminanceAlphaFormat ) return 6410;
@@ -24033,22 +23616,25 @@
 			if ( p === DepthStencilFormat ) return 34041;
 			if ( p === RedFormat ) return 6403;
 
-			if ( p === RGBFormat ) {
+			// WebGL2 formats.
 
-				console.warn( 'THREE.WebGLRenderer: THREE.RGBFormat has been removed. Use THREE.RGBAFormat instead. https://github.com/mrdoob/three.js/pull/23228' );
-				return 6408;
+			if ( p === RedIntegerFormat ) return 36244;
+			if ( p === RGFormat ) return 33319;
+			if ( p === RGIntegerFormat ) return 33320;
+			if ( p === RGBIntegerFormat ) return 36248;
+			if ( p === RGBAIntegerFormat ) return 36249;
 
-			}
+			if ( p === RGB_S3TC_DXT1_Format || p === RGBA_S3TC_DXT1_Format$1 ||
+				p === RGBA_S3TC_DXT3_Format || p === RGBA_S3TC_DXT5_Format$1 ) {
 
-			// WebGL 1 sRGB fallback
-
-			if ( p === _SRGBAFormat ) {
-
-				extension = extensions.get( 'EXT_sRGB' );
+				extension = extensions.get( 'WEBGL_compressed_texture_s3tc' );
 
 				if ( extension !== null ) {
 
-					return extension.SRGB_ALPHA_EXT;
+					if ( p === RGB_S3TC_DXT1_Format ) return extension.COMPRESSED_RGB_S3TC_DXT1_EXT;
+					if ( p === RGBA_S3TC_DXT1_Format$1 ) return extension.COMPRESSED_RGBA_S3TC_DXT1_EXT;
+					if ( p === RGBA_S3TC_DXT3_Format ) return extension.COMPRESSED_RGBA_S3TC_DXT3_EXT;
+					if ( p === RGBA_S3TC_DXT5_Format$1 ) return extension.COMPRESSED_RGBA_S3TC_DXT5_EXT;
 
 				} else {
 
@@ -24058,58 +23644,8 @@
 
 			}
 
-			// WebGL2 formats.
-
-			if ( p === RedIntegerFormat ) return 36244;
-			if ( p === RGFormat ) return 33319;
-			if ( p === RGIntegerFormat ) return 33320;
-			if ( p === RGBAIntegerFormat ) return 36249;
-
-			// S3TC
-
-			if ( p === RGB_S3TC_DXT1_Format || p === RGBA_S3TC_DXT1_Format$1 || p === RGBA_S3TC_DXT3_Format || p === RGBA_S3TC_DXT5_Format$1 ) {
-
-				if ( encoding === sRGBEncoding ) {
-
-					extension = extensions.get( 'WEBGL_compressed_texture_s3tc_srgb' );
-
-					if ( extension !== null ) {
-
-						if ( p === RGB_S3TC_DXT1_Format ) return extension.COMPRESSED_SRGB_S3TC_DXT1_EXT;
-						if ( p === RGBA_S3TC_DXT1_Format$1 ) return extension.COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT;
-						if ( p === RGBA_S3TC_DXT3_Format ) return extension.COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT;
-						if ( p === RGBA_S3TC_DXT5_Format$1 ) return extension.COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT;
-
-					} else {
-
-						return null;
-
-					}
-
-				} else {
-
-					extension = extensions.get( 'WEBGL_compressed_texture_s3tc' );
-
-					if ( extension !== null ) {
-
-						if ( p === RGB_S3TC_DXT1_Format ) return extension.COMPRESSED_RGB_S3TC_DXT1_EXT;
-						if ( p === RGBA_S3TC_DXT1_Format$1 ) return extension.COMPRESSED_RGBA_S3TC_DXT1_EXT;
-						if ( p === RGBA_S3TC_DXT3_Format ) return extension.COMPRESSED_RGBA_S3TC_DXT3_EXT;
-						if ( p === RGBA_S3TC_DXT5_Format$1 ) return extension.COMPRESSED_RGBA_S3TC_DXT5_EXT;
-
-					} else {
-
-						return null;
-
-					}
-
-				}
-
-			}
-
-			// PVRTC
-
-			if ( p === RGB_PVRTC_4BPPV1_Format || p === RGB_PVRTC_2BPPV1_Format || p === RGBA_PVRTC_4BPPV1_Format || p === RGBA_PVRTC_2BPPV1_Format ) {
+			if ( p === RGB_PVRTC_4BPPV1_Format || p === RGB_PVRTC_2BPPV1_Format ||
+				p === RGBA_PVRTC_4BPPV1_Format || p === RGBA_PVRTC_2BPPV1_Format ) {
 
 				extension = extensions.get( 'WEBGL_compressed_texture_pvrtc' );
 
@@ -24128,8 +23664,6 @@
 
 			}
 
-			// ETC1
-
 			if ( p === RGB_ETC1_Format ) {
 
 				extension = extensions.get( 'WEBGL_compressed_texture_etc1' );
@@ -24146,51 +23680,37 @@
 
 			}
 
-			// ETC2
-
 			if ( p === RGB_ETC2_Format || p === RGBA_ETC2_EAC_Format ) {
 
 				extension = extensions.get( 'WEBGL_compressed_texture_etc' );
 
 				if ( extension !== null ) {
 
-					if ( p === RGB_ETC2_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ETC2 : extension.COMPRESSED_RGB8_ETC2;
-					if ( p === RGBA_ETC2_EAC_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ETC2_EAC : extension.COMPRESSED_RGBA8_ETC2_EAC;
-
-				} else {
-
-					return null;
+					if ( p === RGB_ETC2_Format ) return extension.COMPRESSED_RGB8_ETC2;
+					if ( p === RGBA_ETC2_EAC_Format ) return extension.COMPRESSED_RGBA8_ETC2_EAC;
 
 				}
 
 			}
-
-			// ASTC
 
 			if ( p === RGBA_ASTC_4x4_Format || p === RGBA_ASTC_5x4_Format || p === RGBA_ASTC_5x5_Format ||
 				p === RGBA_ASTC_6x5_Format || p === RGBA_ASTC_6x6_Format || p === RGBA_ASTC_8x5_Format ||
 				p === RGBA_ASTC_8x6_Format || p === RGBA_ASTC_8x8_Format || p === RGBA_ASTC_10x5_Format ||
 				p === RGBA_ASTC_10x6_Format || p === RGBA_ASTC_10x8_Format || p === RGBA_ASTC_10x10_Format ||
-				p === RGBA_ASTC_12x10_Format || p === RGBA_ASTC_12x12_Format ) {
+				p === RGBA_ASTC_12x10_Format || p === RGBA_ASTC_12x12_Format ||
+				p === SRGB8_ALPHA8_ASTC_4x4_Format || p === SRGB8_ALPHA8_ASTC_5x4_Format || p === SRGB8_ALPHA8_ASTC_5x5_Format ||
+				p === SRGB8_ALPHA8_ASTC_6x5_Format || p === SRGB8_ALPHA8_ASTC_6x6_Format || p === SRGB8_ALPHA8_ASTC_8x5_Format ||
+				p === SRGB8_ALPHA8_ASTC_8x6_Format || p === SRGB8_ALPHA8_ASTC_8x8_Format || p === SRGB8_ALPHA8_ASTC_10x5_Format ||
+				p === SRGB8_ALPHA8_ASTC_10x6_Format || p === SRGB8_ALPHA8_ASTC_10x8_Format || p === SRGB8_ALPHA8_ASTC_10x10_Format ||
+				p === SRGB8_ALPHA8_ASTC_12x10_Format || p === SRGB8_ALPHA8_ASTC_12x12_Format ) {
 
 				extension = extensions.get( 'WEBGL_compressed_texture_astc' );
 
 				if ( extension !== null ) {
 
-					if ( p === RGBA_ASTC_4x4_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR : extension.COMPRESSED_RGBA_ASTC_4x4_KHR;
-					if ( p === RGBA_ASTC_5x4_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR : extension.COMPRESSED_RGBA_ASTC_5x4_KHR;
-					if ( p === RGBA_ASTC_5x5_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR : extension.COMPRESSED_RGBA_ASTC_5x5_KHR;
-					if ( p === RGBA_ASTC_6x5_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR : extension.COMPRESSED_RGBA_ASTC_6x5_KHR;
-					if ( p === RGBA_ASTC_6x6_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR : extension.COMPRESSED_RGBA_ASTC_6x6_KHR;
-					if ( p === RGBA_ASTC_8x5_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR : extension.COMPRESSED_RGBA_ASTC_8x5_KHR;
-					if ( p === RGBA_ASTC_8x6_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR : extension.COMPRESSED_RGBA_ASTC_8x6_KHR;
-					if ( p === RGBA_ASTC_8x8_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR : extension.COMPRESSED_RGBA_ASTC_8x8_KHR;
-					if ( p === RGBA_ASTC_10x5_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR : extension.COMPRESSED_RGBA_ASTC_10x5_KHR;
-					if ( p === RGBA_ASTC_10x6_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR : extension.COMPRESSED_RGBA_ASTC_10x6_KHR;
-					if ( p === RGBA_ASTC_10x8_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR : extension.COMPRESSED_RGBA_ASTC_10x8_KHR;
-					if ( p === RGBA_ASTC_10x10_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR : extension.COMPRESSED_RGBA_ASTC_10x10_KHR;
-					if ( p === RGBA_ASTC_12x10_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR : extension.COMPRESSED_RGBA_ASTC_12x10_KHR;
-					if ( p === RGBA_ASTC_12x12_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR : extension.COMPRESSED_RGBA_ASTC_12x12_KHR;
+					// TODO Complete?
+
+					return p;
 
 				} else {
 
@@ -24199,8 +23719,6 @@
 				}
 
 			}
-
-			// BPTC
 
 			if ( p === RGBA_BPTC_Format ) {
 
@@ -24208,7 +23726,9 @@
 
 				if ( extension !== null ) {
 
-					if ( p === RGBA_BPTC_Format ) return ( encoding === sRGBEncoding ) ? extension.COMPRESSED_SRGB_ALPHA_BPTC_UNORM_EXT : extension.COMPRESSED_RGBA_BPTC_UNORM_EXT;
+					// TODO Complete?
+
+					return p;
 
 				} else {
 
@@ -24217,8 +23737,6 @@
 				}
 
 			}
-
-			//
 
 			if ( p === UnsignedInt248Type$1 ) {
 
@@ -24837,12 +24355,7 @@
 
 						newRenderTarget = new WebGLRenderTarget(
 							glBaseLayer.framebufferWidth,
-							glBaseLayer.framebufferHeight,
-							{
-								format: RGBAFormat,
-								type: UnsignedByteType,
-								encoding: renderer.outputEncoding
-							}
+							glBaseLayer.framebufferHeight
 						);
 
 					} else {
@@ -24854,14 +24367,14 @@
 
 						if ( attributes.depth ) {
 
-							glDepthFormat = attributes.stencil ? 35056 : 33190;
+							glDepthFormat = attributes.stencil ? 35056 : 33189;
 							depthFormat = attributes.stencil ? DepthStencilFormat : DepthFormat;
 							depthType = attributes.stencil ? UnsignedInt248Type$1 : UnsignedShortType;
 
 						}
 
 						const projectionlayerInit = {
-							colorFormat: ( renderer.outputEncoding === sRGBEncoding ) ? 35907 : 32856,
+							colorFormat: ( attributes.alpha || isMultisample ) ? 32856 : 32849,
 							depthFormat: glDepthFormat,
 							scaleFactor: framebufferScaleFactor
 						};
@@ -24884,7 +24397,6 @@
 									stencilBuffer: attributes.stencil,
 									ignoreDepth: glProjLayer.ignoreDepthValues,
 									useRenderToTexture: hasMultisampledRenderToTexture,
-									encoding: renderer.outputEncoding
 								} );
 
 						} else {
@@ -24893,22 +24405,19 @@
 								glProjLayer.textureWidth,
 								glProjLayer.textureHeight,
 								{
-									format: RGBAFormat,
+									format: attributes.alpha ? RGBAFormat : RGBFormat,
 									type: UnsignedByteType,
 									depthTexture: new DepthTexture( glProjLayer.textureWidth, glProjLayer.textureHeight, depthType, undefined, undefined, undefined, undefined, undefined, undefined, depthFormat ),
 									stencilBuffer: attributes.stencil,
 									ignoreDepth: glProjLayer.ignoreDepthValues,
-									encoding: renderer.outputEncoding
 								} );
 
 						}
 
 					}
 
-					newRenderTarget.isXRRenderTarget = true; // TODO Remove this when possible, see #23278
-
 					// Set foveation to maximum.
-					this.setFoveation( 1.0 );
+					this.setFoveation( 0 );
 
 					referenceSpace = await session.requestReferenceSpace( referenceSpaceType );
 
@@ -26122,6 +25631,7 @@
 
 		// physically based shading
 
+		this.gammaFactor = 2.0;	// for backwards compatibility
 		this.outputEncoding = LinearEncoding;
 
 		// physical lights
@@ -26164,6 +25674,10 @@
 		const _viewport = new Vector4( 0, 0, _width, _height );
 		const _scissor = new Vector4( 0, 0, _width, _height );
 		let _scissorTest = false;
+
+		//
+
+		const _currentDrawBuffers = [];
 
 		// frustum
 
@@ -26213,7 +25727,7 @@
 		try {
 
 			const contextAttributes = {
-				alpha: true,
+				alpha: _alpha,
 				depth: _depth,
 				stencil: _stencil,
 				antialias: _antialias,
@@ -26297,6 +25811,8 @@
 
 			state = new WebGLState( _gl, extensions, capabilities );
 
+			_currentDrawBuffers[ 0 ] = 1029;
+
 			info = new WebGLInfo( _gl );
 			properties = new WebGLProperties();
 			textures = new WebGLTextures( _gl, extensions, state, properties, capabilities, utils, info );
@@ -26310,9 +25826,9 @@
 			clipping = new WebGLClipping( properties );
 			programCache = new WebGLPrograms( _this, cubemaps, cubeuvmaps, extensions, capabilities, bindingStates, clipping );
 			materials = new WebGLMaterials( properties );
-			renderLists = new WebGLRenderLists();
+			renderLists = new WebGLRenderLists( properties );
 			renderStates = new WebGLRenderStates( extensions, capabilities );
-			background = new WebGLBackground( _this, cubemaps, state, objects, _alpha, _premultipliedAlpha );
+			background = new WebGLBackground( _this, cubemaps, state, objects, _premultipliedAlpha );
 			shadowMap = new WebGLShadowMap( _this, objects, capabilities );
 
 			bufferRenderer = new WebGLBufferRenderer( _gl, extensions, info, capabilities );
@@ -26578,7 +26094,6 @@
 			cubeuvmaps.dispose();
 			objects.dispose();
 			bindingStates.dispose();
-			programCache.dispose();
 
 			xr.dispose();
 
@@ -26662,12 +26177,6 @@
 					programCache.releaseProgram( program );
 
 				} );
-
-				if ( material.isShaderMaterial ) {
-
-					programCache.releaseShaderCache( material );
-
-				}
 
 			}
 
@@ -27415,7 +26924,6 @@
 			materialProperties.numIntersection = parameters.numClipIntersection;
 			materialProperties.vertexAlphas = parameters.vertexAlphas;
 			materialProperties.vertexTangents = parameters.vertexTangents;
-			materialProperties.toneMapping = parameters.toneMapping;
 
 		}
 
@@ -27427,14 +26935,13 @@
 
 			const fog = scene.fog;
 			const environment = material.isMeshStandardMaterial ? scene.environment : null;
-			const encoding = ( _currentRenderTarget === null ) ? _this.outputEncoding : ( _currentRenderTarget.isXRRenderTarget === true ? _currentRenderTarget.texture.encoding : LinearEncoding );
+			const encoding = ( _currentRenderTarget === null ) ? _this.outputEncoding : _currentRenderTarget.texture.encoding;
 			const envMap = ( material.isMeshStandardMaterial ? cubeuvmaps : cubemaps ).get( material.envMap || environment );
 			const vertexAlphas = material.vertexColors === true && !! geometry.attributes.color && geometry.attributes.color.itemSize === 4;
 			const vertexTangents = !! material.normalMap && !! geometry.attributes.tangent;
 			const morphTargets = !! geometry.morphAttributes.position;
 			const morphNormals = !! geometry.morphAttributes.normal;
 			const morphTargetsCount = !! geometry.morphAttributes.position ? geometry.morphAttributes.position.length : 0;
-			const toneMapping = material.toneMapped ? _this.toneMapping : NoToneMapping;
 
 			const materialProperties = properties.get( material );
 			const lights = currentRenderState.state.lights;
@@ -27513,10 +27020,6 @@
 					needsProgramChange = true;
 
 				} else if ( materialProperties.morphNormals !== morphNormals ) {
-
-					needsProgramChange = true;
-
-				} else if ( materialProperties.toneMapping !== toneMapping ) {
 
 					needsProgramChange = true;
 
@@ -27895,7 +27398,67 @@
 
 			if ( framebufferBound && capabilities.drawBuffers && useDefaultFramebuffer ) {
 
-				state.drawBuffers( renderTarget, framebuffer );
+				let needsUpdate = false;
+
+				if ( renderTarget ) {
+
+					if ( renderTarget.isWebGLMultipleRenderTargets ) {
+
+						const textures = renderTarget.texture;
+
+						if ( _currentDrawBuffers.length !== textures.length || _currentDrawBuffers[ 0 ] !== 36064 ) {
+
+							for ( let i = 0, il = textures.length; i < il; i ++ ) {
+
+								_currentDrawBuffers[ i ] = 36064 + i;
+
+							}
+
+							_currentDrawBuffers.length = textures.length;
+
+							needsUpdate = true;
+
+						}
+
+					} else {
+
+						if ( _currentDrawBuffers.length !== 1 || _currentDrawBuffers[ 0 ] !== 36064 ) {
+
+							_currentDrawBuffers[ 0 ] = 36064;
+							_currentDrawBuffers.length = 1;
+
+							needsUpdate = true;
+
+						}
+
+					}
+
+				} else {
+
+					if ( _currentDrawBuffers.length !== 1 || _currentDrawBuffers[ 0 ] !== 1029 ) {
+
+						_currentDrawBuffers[ 0 ] = 1029;
+						_currentDrawBuffers.length = 1;
+
+						needsUpdate = true;
+
+					}
+
+				}
+
+				if ( needsUpdate ) {
+
+					if ( capabilities.isWebGL2 ) {
+
+						_gl.drawBuffers( _currentDrawBuffers );
+
+					} else {
+
+						extensions.get( 'WEBGL_draw_buffers' ).drawBuffersWEBGL( _currentDrawBuffers );
+
+					}
+
+				}
 
 			}
 
@@ -27996,20 +27559,25 @@
 
 		this.copyFramebufferToTexture = function ( position, texture, level = 0 ) {
 
-			if ( texture.isFramebufferTexture !== true ) {
-
-				console.error( 'THREE.WebGLRenderer: copyFramebufferToTexture() can only be used with FramebufferTexture.' );
-				return;
-
-			}
-
 			const levelScale = Math.pow( 2, - level );
 			const width = Math.floor( texture.image.width * levelScale );
 			const height = Math.floor( texture.image.height * levelScale );
 
+			let glFormat = utils.convert( texture.format );
+
+			if ( capabilities.isWebGL2 ) {
+
+				// Workaround for https://bugs.chromium.org/p/chromium/issues/detail?id=1120100
+				// Not needed in Chrome 93+
+
+				if ( glFormat === 6407 ) glFormat = 32849;
+				if ( glFormat === 6408 ) glFormat = 32856;
+
+			}
+
 			textures.setTexture2D( texture, 0 );
 
-			_gl.copyTexSubImage2D( 3553, level, 0, 0, position.x, position.y, width, height );
+			_gl.copyTexImage2D( 3553, level, glFormat, position.x, position.y, width, height, 0 );
 
 			state.unbindTexture();
 
@@ -28159,7 +27727,7 @@
 
 		if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {
 
-			__THREE_DEVTOOLS__.dispatchEvent( new CustomEvent( 'observe', { detail: this } ) );
+			__THREE_DEVTOOLS__.dispatchEvent( new CustomEvent( 'observe', { detail: this } ) ); // eslint-disable-line no-undef
 
 		}
 
@@ -28254,7 +27822,7 @@
 
 			if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {
 
-				__THREE_DEVTOOLS__.dispatchEvent( new CustomEvent( 'observe', { detail: this } ) );
+				__THREE_DEVTOOLS__.dispatchEvent( new CustomEvent( 'observe', { detail: this } ) ); // eslint-disable-line no-undef
 
 			}
 
@@ -29308,6 +28876,8 @@
 			this.flipY = false;
 			this.unpackAlignment = 1;
 
+			this.needsUpdate = true;
+
 		}
 
 	}
@@ -29485,7 +29055,6 @@
 			boneMatrices.set( this.boneMatrices ); // copy current values
 
 			const boneTexture = new DataTexture( boneMatrices, size, size, RGBAFormat, FloatType );
-			boneTexture.needsUpdate = true;
 
 			this.boneMatrices = boneMatrices;
 			this.boneTexture = boneTexture;
@@ -30354,6 +29923,8 @@
 
 			super( video, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy );
 
+			this.format = format !== undefined ? format : RGBFormat;
+
 			this.minFilter = minFilter !== undefined ? minFilter : LinearFilter;
 			this.magFilter = magFilter !== undefined ? magFilter : LinearFilter;
 
@@ -30398,27 +29969,6 @@
 	}
 
 	VideoTexture.prototype.isVideoTexture = true;
-
-	class FramebufferTexture extends Texture {
-
-		constructor( width, height, format ) {
-
-			super( { width, height } );
-
-			this.format = format;
-
-			this.magFilter = NearestFilter;
-			this.minFilter = NearestFilter;
-
-			this.generateMipmaps = false;
-
-			this.needsUpdate = true;
-
-		}
-
-	}
-
-	FramebufferTexture.prototype.isFramebufferTexture = true;
 
 	class CompressedTexture extends Texture {
 
@@ -32164,7 +31714,7 @@
 
 	/**
 	 * Bezier Curves formulas obtained from
-	 * https://en.wikipedia.org/wiki/B%C3%A9zier_curve
+	 * http://en.wikipedia.org/wiki/Bézier_curve
 	 */
 
 	function CatmullRom( t, p0, p1, p2, p3 ) {
@@ -35059,75 +34609,14 @@
 			const indices = [];
 			const vertices = [];
 			const uvs = [];
-			const initNormals = [];
-			const normals = [];
 
 			// helper variables
 
 			const inverseSegments = 1.0 / segments;
 			const vertex = new Vector3();
 			const uv = new Vector2();
-			const normal = new Vector3();
-			const curNormal = new Vector3();
-			const prevNormal = new Vector3();
-			let dx = 0;
-			let dy = 0;
 
-			// pre-compute normals for initial "meridian"
-
-			for ( let j = 0; j <= ( points.length - 1 ); j ++ ) {
-
-				switch ( j ) {
-
-					case 0:				// special handling for 1st vertex on path
-
-						dx = points[ j + 1 ].x - points[ j ].x;
-						dy = points[ j + 1 ].y - points[ j ].y;
-
-						normal.x = dy * 1.0;
-						normal.y = - dx;
-						normal.z = dy * 0.0;
-
-						prevNormal.copy( normal );
-
-						normal.normalize();
-
-						initNormals.push( normal.x, normal.y, normal.z );
-
-						break;
-
-					case ( points.length - 1 ):	// special handling for last Vertex on path
-
-						initNormals.push( prevNormal.x, prevNormal.y, prevNormal.z );
-
-						break;
-
-					default:			// default handling for all vertices in between
-
-						dx = points[ j + 1 ].x - points[ j ].x;
-						dy = points[ j + 1 ].y - points[ j ].y;
-
-						normal.x = dy * 1.0;
-						normal.y = - dx;
-						normal.z = dy * 0.0;
-
-						curNormal.copy( normal );
-
-						normal.x += prevNormal.x;
-						normal.y += prevNormal.y;
-						normal.z += prevNormal.z;
-
-						normal.normalize();
-
-						initNormals.push( normal.x, normal.y, normal.z );
-
-						prevNormal.copy( curNormal );
-
-				}
-
-			}
-
-			// generate vertices, uvs and normals
+			// generate vertices and uvs
 
 			for ( let i = 0; i <= segments; i ++ ) {
 
@@ -35153,13 +34642,6 @@
 
 					uvs.push( uv.x, uv.y );
 
-					// normal
-
-					const x = initNormals[ 3 * j + 0 ] * sin;
-					const y = initNormals[ 3 * j + 1 ];
-					const z = initNormals[ 3 * j + 0 ] * cos;
-
-					normals.push( x, y, z );
 
 				}
 
@@ -35181,7 +34663,7 @@
 					// faces
 
 					indices.push( a, b, d );
-					indices.push( c, d, b );
+					indices.push( b, c, d );
 
 				}
 
@@ -35192,7 +34674,52 @@
 			this.setIndex( indices );
 			this.setAttribute( 'position', new Float32BufferAttribute( vertices, 3 ) );
 			this.setAttribute( 'uv', new Float32BufferAttribute( uvs, 2 ) );
-			this.setAttribute( 'normal', new Float32BufferAttribute( normals, 3 ) );
+
+			// generate normals
+
+			this.computeVertexNormals();
+
+			// if the geometry is closed, we need to average the normals along the seam.
+			// because the corresponding vertices are identical (but still have different UVs).
+
+			if ( phiLength === Math.PI * 2 ) {
+
+				const normals = this.attributes.normal.array;
+				const n1 = new Vector3();
+				const n2 = new Vector3();
+				const n = new Vector3();
+
+				// this is the buffer offset for the last line of vertices
+
+				const base = segments * points.length * 3;
+
+				for ( let i = 0, j = 0; i < points.length; i ++, j += 3 ) {
+
+					// select the normal of the vertex in the first line
+
+					n1.x = normals[ j + 0 ];
+					n1.y = normals[ j + 1 ];
+					n1.z = normals[ j + 2 ];
+
+					// select the normal of the vertex in the last line
+
+					n2.x = normals[ base + j + 0 ];
+					n2.y = normals[ base + j + 1 ];
+					n2.z = normals[ base + j + 2 ];
+
+					// average normals
+
+					n.addVectors( n1, n2 ).normalize();
+
+					// assign the new values to both normals
+
+					normals[ j + 0 ] = normals[ base + j + 0 ] = n.x;
+					normals[ j + 1 ] = normals[ base + j + 1 ] = n.y;
+					normals[ j + 2 ] = normals[ base + j + 2 ] = n.z;
+
+				}
+
+			}
 
 		}
 
@@ -39446,10 +38973,6 @@
 				// An abort controller could be added within a future PR
 			} );
 
-			// record states ( avoid data race )
-			const mimeType = this.mimeType;
-			const responseType = this.responseType;
-
 			// start the fetch
 			fetch( req )
 				.then( response => {
@@ -39465,12 +38988,6 @@
 
 						}
 
-						if ( typeof ReadableStream === 'undefined' || response.body.getReader === undefined ) {
-
-							return response;
-
-						}
-
 						const callbacks = loading[ url ];
 						const reader = response.body.getReader();
 						const contentLength = response.headers.get( 'Content-Length' );
@@ -39479,7 +38996,7 @@
 						let loaded = 0;
 
 						// periodically read data into the new stream tracking while download progress
-						const stream = new ReadableStream( {
+						return new ReadableStream( {
 							start( controller ) {
 
 								readData();
@@ -39517,8 +39034,6 @@
 
 						} );
 
-						return new Response( stream );
-
 					} else {
 
 						throw Error( `fetch for "${response.url}" responded with ${response.status}: ${response.statusText}` );
@@ -39526,9 +39041,11 @@
 					}
 
 				} )
-				.then( response => {
+				.then( stream => {
 
-					switch ( responseType ) {
+					const response = new Response( stream );
+
+					switch ( this.responseType ) {
 
 						case 'arraybuffer':
 
@@ -39544,7 +39061,7 @@
 								.then( text => {
 
 									const parser = new DOMParser();
-									return parser.parseFromString( text, mimeType );
+									return parser.parseFromString( text, this.mimeType );
 
 								} );
 
@@ -39554,20 +39071,7 @@
 
 						default:
 
-							if ( mimeType === undefined ) {
-
-								return response.text();
-
-							} else {
-
-								// sniff encoding
-								const re = /charset="?([^;"\s]*)"?/i;
-								const exec = re.exec( mimeType );
-								const label = exec && exec[ 1 ] ? exec[ 1 ].toLowerCase() : undefined;
-								const decoder = new TextDecoder( label );
-								return response.arrayBuffer().then( ab => decoder.decode( ab ) );
-
-							}
+							return response.text();
 
 					}
 
@@ -39588,21 +39092,14 @@
 
 					}
 
+					this.manager.itemEnd( url );
+
 				} )
 				.catch( err => {
 
 					// Abort errors and other errors are handled the same
 
 					const callbacks = loading[ url ];
-
-					if ( callbacks === undefined ) {
-
-						// When onLoad was called and url was deleted in `loading`
-						this.manager.itemError( url );
-						throw err;
-
-					}
-
 					delete loading[ url ];
 
 					for ( let i = 0, il = callbacks.length; i < il; i ++ ) {
@@ -39613,10 +39110,6 @@
 					}
 
 					this.manager.itemError( url );
-
-				} )
-				.finally( () => {
-
 					this.manager.itemEnd( url );
 
 				} );
@@ -41066,6 +40559,7 @@
 			if ( json.side !== undefined ) material.side = json.side;
 			if ( json.shadowSide !== undefined ) material.shadowSide = json.shadowSide;
 			if ( json.opacity !== undefined ) material.opacity = json.opacity;
+			if ( json.format !== undefined ) material.format = json.format;
 			if ( json.transparent !== undefined ) material.transparent = json.transparent;
 			if ( json.alphaTest !== undefined ) material.alphaTest = json.alphaTest;
 			if ( json.depthTest !== undefined ) material.depthTest = json.depthTest;
@@ -45863,7 +45357,6 @@
 
 				if ( binding !== undefined ) {
 
-					++ binding.referenceCount;
 					bindings[ i ] = binding;
 
 				} else {
@@ -47820,7 +47313,7 @@
 	 *	- shows frustum, line of sight and up of the camera
 	 *	- suitable for fast updates
 	 * 	- based on frustum visualization in lightgl.js shadowmap example
-	 *		https://github.com/evanw/lightgl.js/blob/master/tests/shadowmap.html
+	 *		http://evanw.github.com/lightgl.js/tests/shadowmap.html
 	 */
 
 	class CameraHelper extends LineSegments {
@@ -50228,19 +49721,7 @@
 
 			}
 		},
-		gammaFactor: {
-			get: function () {
 
-				console.warn( 'THREE.WebGLRenderer: .gammaFactor has been removed.' );
-				return 2;
-
-			},
-			set: function () {
-
-				console.warn( 'THREE.WebGLRenderer: .gammaFactor has been removed.' );
-
-			}
-		}
 	} );
 
 	Object.defineProperties( WebGLShadowMap.prototype, {
@@ -50609,9 +50090,11 @@
 
 	if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {
 
+		/* eslint-disable no-undef */
 		__THREE_DEVTOOLS__.dispatchEvent( new CustomEvent( 'register', { detail: {
 			revision: REVISION,
 		} } ) );
+		/* eslint-enable no-undef */
 
 	}
 
@@ -51572,7179 +51055,6 @@
 
 	}
 
-	function globals(defs) {
-	  defs('EPSG:4326', "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees");
-	  defs('EPSG:4269', "+title=NAD83 (long/lat) +proj=longlat +a=6378137.0 +b=6356752.31414036 +ellps=GRS80 +datum=NAD83 +units=degrees");
-	  defs('EPSG:3857', "+title=WGS 84 / Pseudo-Mercator +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs");
-
-	  defs.WGS84 = defs['EPSG:4326'];
-	  defs['EPSG:3785'] = defs['EPSG:3857']; // maintain backward compat, official code is 3857
-	  defs.GOOGLE = defs['EPSG:3857'];
-	  defs['EPSG:900913'] = defs['EPSG:3857'];
-	  defs['EPSG:102113'] = defs['EPSG:3857'];
-	}
-
-	var PJD_3PARAM = 1;
-	var PJD_7PARAM = 2;
-	var PJD_GRIDSHIFT = 3;
-	var PJD_WGS84 = 4; // WGS84 or equivalent
-	var PJD_NODATUM = 5; // WGS84 or equivalent
-	var SRS_WGS84_SEMIMAJOR = 6378137.0;  // only used in grid shift transforms
-	var SRS_WGS84_SEMIMINOR = 6356752.314;  // only used in grid shift transforms
-	var SRS_WGS84_ESQUARED = 0.0066943799901413165; // only used in grid shift transforms
-	var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
-	var HALF_PI = Math.PI/2;
-	// ellipoid pj_set_ell.c
-	var SIXTH = 0.1666666666666666667;
-	/* 1/6 */
-	var RA4 = 0.04722222222222222222;
-	/* 17/360 */
-	var RA6 = 0.02215608465608465608;
-	var EPSLN = 1.0e-10;
-	// you'd think you could use Number.EPSILON above but that makes
-	// Mollweide get into an infinate loop.
-
-	var D2R = 0.01745329251994329577;
-	var R2D = 57.29577951308232088;
-	var FORTPI = Math.PI/4;
-	var TWO_PI = Math.PI * 2;
-	// SPI is slightly greater than Math.PI, so values that exceed the -180..180
-	// degree range by a tiny amount don't get wrapped. This prevents points that
-	// have drifted from their original location along the 180th meridian (due to
-	// floating point error) from changing their sign.
-	var SPI = 3.14159265359;
-
-	var exports$2 = {};
-
-	exports$2.greenwich = 0.0; //"0dE",
-	exports$2.lisbon = -9.131906111111; //"9d07'54.862\"W",
-	exports$2.paris = 2.337229166667; //"2d20'14.025\"E",
-	exports$2.bogota = -74.080916666667; //"74d04'51.3\"W",
-	exports$2.madrid = -3.687938888889; //"3d41'16.58\"W",
-	exports$2.rome = 12.452333333333; //"12d27'8.4\"E",
-	exports$2.bern = 7.439583333333; //"7d26'22.5\"E",
-	exports$2.jakarta = 106.807719444444; //"106d48'27.79\"E",
-	exports$2.ferro = -17.666666666667; //"17d40'W",
-	exports$2.brussels = 4.367975; //"4d22'4.71\"E",
-	exports$2.stockholm = 18.058277777778; //"18d3'29.8\"E",
-	exports$2.athens = 23.7163375; //"23d42'58.815\"E",
-	exports$2.oslo = 10.722916666667; //"10d43'22.5\"E"
-
-	var units = {
-	  ft: {to_meter: 0.3048},
-	  'us-ft': {to_meter: 1200 / 3937}
-	};
-
-	var ignoredChar = /[\s_\-\/\(\)]/g;
-	function match(obj, key) {
-	  if (obj[key]) {
-	    return obj[key];
-	  }
-	  var keys = Object.keys(obj);
-	  var lkey = key.toLowerCase().replace(ignoredChar, '');
-	  var i = -1;
-	  var testkey, processedKey;
-	  while (++i < keys.length) {
-	    testkey = keys[i];
-	    processedKey = testkey.toLowerCase().replace(ignoredChar, '');
-	    if (processedKey === lkey) {
-	      return obj[testkey];
-	    }
-	  }
-	}
-
-	function projStr(defData) {
-	  var self = {};
-	  var paramObj = defData.split('+').map(function(v) {
-	    return v.trim();
-	  }).filter(function(a) {
-	    return a;
-	  }).reduce(function(p, a) {
-	    var split = a.split('=');
-	    split.push(true);
-	    p[split[0].toLowerCase()] = split[1];
-	    return p;
-	  }, {});
-	  var paramName, paramVal, paramOutname;
-	  var params = {
-	    proj: 'projName',
-	    datum: 'datumCode',
-	    rf: function(v) {
-	      self.rf = parseFloat(v);
-	    },
-	    lat_0: function(v) {
-	      self.lat0 = v * D2R;
-	    },
-	    lat_1: function(v) {
-	      self.lat1 = v * D2R;
-	    },
-	    lat_2: function(v) {
-	      self.lat2 = v * D2R;
-	    },
-	    lat_ts: function(v) {
-	      self.lat_ts = v * D2R;
-	    },
-	    lon_0: function(v) {
-	      self.long0 = v * D2R;
-	    },
-	    lon_1: function(v) {
-	      self.long1 = v * D2R;
-	    },
-	    lon_2: function(v) {
-	      self.long2 = v * D2R;
-	    },
-	    alpha: function(v) {
-	      self.alpha = parseFloat(v) * D2R;
-	    },
-	    gamma: function(v) {
-	      self.rectified_grid_angle = parseFloat(v);
-	    },
-	    lonc: function(v) {
-	      self.longc = v * D2R;
-	    },
-	    x_0: function(v) {
-	      self.x0 = parseFloat(v);
-	    },
-	    y_0: function(v) {
-	      self.y0 = parseFloat(v);
-	    },
-	    k_0: function(v) {
-	      self.k0 = parseFloat(v);
-	    },
-	    k: function(v) {
-	      self.k0 = parseFloat(v);
-	    },
-	    a: function(v) {
-	      self.a = parseFloat(v);
-	    },
-	    b: function(v) {
-	      self.b = parseFloat(v);
-	    },
-	    r_a: function() {
-	      self.R_A = true;
-	    },
-	    zone: function(v) {
-	      self.zone = parseInt(v, 10);
-	    },
-	    south: function() {
-	      self.utmSouth = true;
-	    },
-	    towgs84: function(v) {
-	      self.datum_params = v.split(",").map(function(a) {
-	        return parseFloat(a);
-	      });
-	    },
-	    to_meter: function(v) {
-	      self.to_meter = parseFloat(v);
-	    },
-	    units: function(v) {
-	      self.units = v;
-	      var unit = match(units, v);
-	      if (unit) {
-	        self.to_meter = unit.to_meter;
-	      }
-	    },
-	    from_greenwich: function(v) {
-	      self.from_greenwich = v * D2R;
-	    },
-	    pm: function(v) {
-	      var pm = match(exports$2, v);
-	      self.from_greenwich = (pm ? pm : parseFloat(v)) * D2R;
-	    },
-	    nadgrids: function(v) {
-	      if (v === '@null') {
-	        self.datumCode = 'none';
-	      }
-	      else {
-	        self.nadgrids = v;
-	      }
-	    },
-	    axis: function(v) {
-	      var legalAxis = "ewnsud";
-	      if (v.length === 3 && legalAxis.indexOf(v.substr(0, 1)) !== -1 && legalAxis.indexOf(v.substr(1, 1)) !== -1 && legalAxis.indexOf(v.substr(2, 1)) !== -1) {
-	        self.axis = v;
-	      }
-	    },
-	    approx: function() {
-	      self.approx = true;
-	    }
-	  };
-	  for (paramName in paramObj) {
-	    paramVal = paramObj[paramName];
-	    if (paramName in params) {
-	      paramOutname = params[paramName];
-	      if (typeof paramOutname === 'function') {
-	        paramOutname(paramVal);
-	      }
-	      else {
-	        self[paramOutname] = paramVal;
-	      }
-	    }
-	    else {
-	      self[paramName] = paramVal;
-	    }
-	  }
-	  if(typeof self.datumCode === 'string' && self.datumCode !== "WGS84"){
-	    self.datumCode = self.datumCode.toLowerCase();
-	  }
-	  return self;
-	}
-
-	var NEUTRAL = 1;
-	var KEYWORD = 2;
-	var NUMBER = 3;
-	var QUOTED = 4;
-	var AFTERQUOTE = 5;
-	var ENDED = -1;
-	var whitespace = /\s/;
-	var latin = /[A-Za-z]/;
-	var keyword = /[A-Za-z84]/;
-	var endThings = /[,\]]/;
-	var digets = /[\d\.E\-\+]/;
-	// const ignoredChar = /[\s_\-\/\(\)]/g;
-	function Parser(text) {
-	  if (typeof text !== 'string') {
-	    throw new Error('not a string');
-	  }
-	  this.text = text.trim();
-	  this.level = 0;
-	  this.place = 0;
-	  this.root = null;
-	  this.stack = [];
-	  this.currentObject = null;
-	  this.state = NEUTRAL;
-	}
-	Parser.prototype.readCharicter = function() {
-	  var char = this.text[this.place++];
-	  if (this.state !== QUOTED) {
-	    while (whitespace.test(char)) {
-	      if (this.place >= this.text.length) {
-	        return;
-	      }
-	      char = this.text[this.place++];
-	    }
-	  }
-	  switch (this.state) {
-	    case NEUTRAL:
-	      return this.neutral(char);
-	    case KEYWORD:
-	      return this.keyword(char)
-	    case QUOTED:
-	      return this.quoted(char);
-	    case AFTERQUOTE:
-	      return this.afterquote(char);
-	    case NUMBER:
-	      return this.number(char);
-	    case ENDED:
-	      return;
-	  }
-	};
-	Parser.prototype.afterquote = function(char) {
-	  if (char === '"') {
-	    this.word += '"';
-	    this.state = QUOTED;
-	    return;
-	  }
-	  if (endThings.test(char)) {
-	    this.word = this.word.trim();
-	    this.afterItem(char);
-	    return;
-	  }
-	  throw new Error('havn\'t handled "' +char + '" in afterquote yet, index ' + this.place);
-	};
-	Parser.prototype.afterItem = function(char) {
-	  if (char === ',') {
-	    if (this.word !== null) {
-	      this.currentObject.push(this.word);
-	    }
-	    this.word = null;
-	    this.state = NEUTRAL;
-	    return;
-	  }
-	  if (char === ']') {
-	    this.level--;
-	    if (this.word !== null) {
-	      this.currentObject.push(this.word);
-	      this.word = null;
-	    }
-	    this.state = NEUTRAL;
-	    this.currentObject = this.stack.pop();
-	    if (!this.currentObject) {
-	      this.state = ENDED;
-	    }
-
-	    return;
-	  }
-	};
-	Parser.prototype.number = function(char) {
-	  if (digets.test(char)) {
-	    this.word += char;
-	    return;
-	  }
-	  if (endThings.test(char)) {
-	    this.word = parseFloat(this.word);
-	    this.afterItem(char);
-	    return;
-	  }
-	  throw new Error('havn\'t handled "' +char + '" in number yet, index ' + this.place);
-	};
-	Parser.prototype.quoted = function(char) {
-	  if (char === '"') {
-	    this.state = AFTERQUOTE;
-	    return;
-	  }
-	  this.word += char;
-	  return;
-	};
-	Parser.prototype.keyword = function(char) {
-	  if (keyword.test(char)) {
-	    this.word += char;
-	    return;
-	  }
-	  if (char === '[') {
-	    var newObjects = [];
-	    newObjects.push(this.word);
-	    this.level++;
-	    if (this.root === null) {
-	      this.root = newObjects;
-	    } else {
-	      this.currentObject.push(newObjects);
-	    }
-	    this.stack.push(this.currentObject);
-	    this.currentObject = newObjects;
-	    this.state = NEUTRAL;
-	    return;
-	  }
-	  if (endThings.test(char)) {
-	    this.afterItem(char);
-	    return;
-	  }
-	  throw new Error('havn\'t handled "' +char + '" in keyword yet, index ' + this.place);
-	};
-	Parser.prototype.neutral = function(char) {
-	  if (latin.test(char)) {
-	    this.word = char;
-	    this.state = KEYWORD;
-	    return;
-	  }
-	  if (char === '"') {
-	    this.word = '';
-	    this.state = QUOTED;
-	    return;
-	  }
-	  if (digets.test(char)) {
-	    this.word = char;
-	    this.state = NUMBER;
-	    return;
-	  }
-	  if (endThings.test(char)) {
-	    this.afterItem(char);
-	    return;
-	  }
-	  throw new Error('havn\'t handled "' +char + '" in neutral yet, index ' + this.place);
-	};
-	Parser.prototype.output = function() {
-	  while (this.place < this.text.length) {
-	    this.readCharicter();
-	  }
-	  if (this.state === ENDED) {
-	    return this.root;
-	  }
-	  throw new Error('unable to parse string "' +this.text + '". State is ' + this.state);
-	};
-
-	function parseString(txt) {
-	  var parser = new Parser(txt);
-	  return parser.output();
-	}
-
-	function mapit(obj, key, value) {
-	  if (Array.isArray(key)) {
-	    value.unshift(key);
-	    key = null;
-	  }
-	  var thing = key ? {} : obj;
-
-	  var out = value.reduce(function(newObj, item) {
-	    sExpr(item, newObj);
-	    return newObj
-	  }, thing);
-	  if (key) {
-	    obj[key] = out;
-	  }
-	}
-
-	function sExpr(v, obj) {
-	  if (!Array.isArray(v)) {
-	    obj[v] = true;
-	    return;
-	  }
-	  var key = v.shift();
-	  if (key === 'PARAMETER') {
-	    key = v.shift();
-	  }
-	  if (v.length === 1) {
-	    if (Array.isArray(v[0])) {
-	      obj[key] = {};
-	      sExpr(v[0], obj[key]);
-	      return;
-	    }
-	    obj[key] = v[0];
-	    return;
-	  }
-	  if (!v.length) {
-	    obj[key] = true;
-	    return;
-	  }
-	  if (key === 'TOWGS84') {
-	    obj[key] = v;
-	    return;
-	  }
-	  if (key === 'AXIS') {
-	    if (!(key in obj)) {
-	      obj[key] = [];
-	    }
-	    obj[key].push(v);
-	    return;
-	  }
-	  if (!Array.isArray(key)) {
-	    obj[key] = {};
-	  }
-
-	  var i;
-	  switch (key) {
-	    case 'UNIT':
-	    case 'PRIMEM':
-	    case 'VERT_DATUM':
-	      obj[key] = {
-	        name: v[0].toLowerCase(),
-	        convert: v[1]
-	      };
-	      if (v.length === 3) {
-	        sExpr(v[2], obj[key]);
-	      }
-	      return;
-	    case 'SPHEROID':
-	    case 'ELLIPSOID':
-	      obj[key] = {
-	        name: v[0],
-	        a: v[1],
-	        rf: v[2]
-	      };
-	      if (v.length === 4) {
-	        sExpr(v[3], obj[key]);
-	      }
-	      return;
-	    case 'PROJECTEDCRS':
-	    case 'PROJCRS':
-	    case 'GEOGCS':
-	    case 'GEOCCS':
-	    case 'PROJCS':
-	    case 'LOCAL_CS':
-	    case 'GEODCRS':
-	    case 'GEODETICCRS':
-	    case 'GEODETICDATUM':
-	    case 'EDATUM':
-	    case 'ENGINEERINGDATUM':
-	    case 'VERT_CS':
-	    case 'VERTCRS':
-	    case 'VERTICALCRS':
-	    case 'COMPD_CS':
-	    case 'COMPOUNDCRS':
-	    case 'ENGINEERINGCRS':
-	    case 'ENGCRS':
-	    case 'FITTED_CS':
-	    case 'LOCAL_DATUM':
-	    case 'DATUM':
-	      v[0] = ['name', v[0]];
-	      mapit(obj, key, v);
-	      return;
-	    default:
-	      i = -1;
-	      while (++i < v.length) {
-	        if (!Array.isArray(v[i])) {
-	          return sExpr(v, obj[key]);
-	        }
-	      }
-	      return mapit(obj, key, v);
-	  }
-	}
-
-	var D2R$1 = 0.01745329251994329577;
-
-
-
-	function rename(obj, params) {
-	  var outName = params[0];
-	  var inName = params[1];
-	  if (!(outName in obj) && (inName in obj)) {
-	    obj[outName] = obj[inName];
-	    if (params.length === 3) {
-	      obj[outName] = params[2](obj[outName]);
-	    }
-	  }
-	}
-
-	function d2r(input) {
-	  return input * D2R$1;
-	}
-
-	function cleanWKT(wkt) {
-	  if (wkt.type === 'GEOGCS') {
-	    wkt.projName = 'longlat';
-	  } else if (wkt.type === 'LOCAL_CS') {
-	    wkt.projName = 'identity';
-	    wkt.local = true;
-	  } else {
-	    if (typeof wkt.PROJECTION === 'object') {
-	      wkt.projName = Object.keys(wkt.PROJECTION)[0];
-	    } else {
-	      wkt.projName = wkt.PROJECTION;
-	    }
-	  }
-	  if (wkt.AXIS) {
-	    var axisOrder = '';
-	    for (var i = 0, ii = wkt.AXIS.length; i < ii; ++i) {
-	      var axis = [wkt.AXIS[i][0].toLowerCase(), wkt.AXIS[i][1].toLowerCase()];
-	      if (axis[0].indexOf('north') !== -1 || ((axis[0] === 'y' || axis[0] === 'lat') && axis[1] === 'north')) {
-	        axisOrder += 'n';
-	      } else if (axis[0].indexOf('south') !== -1 || ((axis[0] === 'y' || axis[0] === 'lat') && axis[1] === 'south')) {
-	        axisOrder += 's';
-	      } else if (axis[0].indexOf('east') !== -1 || ((axis[0] === 'x' || axis[0] === 'lon') && axis[1] === 'east')) {
-	        axisOrder += 'e';
-	      } else if (axis[0].indexOf('west') !== -1 || ((axis[0] === 'x' || axis[0] === 'lon') && axis[1] === 'west')) {
-	        axisOrder += 'w';
-	      }
-	    }
-	    if (axisOrder.length === 2) {
-	      axisOrder += 'u';
-	    }
-	    if (axisOrder.length === 3) {
-	      wkt.axis = axisOrder;
-	    }
-	  }
-	  if (wkt.UNIT) {
-	    wkt.units = wkt.UNIT.name.toLowerCase();
-	    if (wkt.units === 'metre') {
-	      wkt.units = 'meter';
-	    }
-	    if (wkt.UNIT.convert) {
-	      if (wkt.type === 'GEOGCS') {
-	        if (wkt.DATUM && wkt.DATUM.SPHEROID) {
-	          wkt.to_meter = wkt.UNIT.convert*wkt.DATUM.SPHEROID.a;
-	        }
-	      } else {
-	        wkt.to_meter = wkt.UNIT.convert;
-	      }
-	    }
-	  }
-	  var geogcs = wkt.GEOGCS;
-	  if (wkt.type === 'GEOGCS') {
-	    geogcs = wkt;
-	  }
-	  if (geogcs) {
-	    //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
-	    //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
-	    //}
-	    if (geogcs.DATUM) {
-	      wkt.datumCode = geogcs.DATUM.name.toLowerCase();
-	    } else {
-	      wkt.datumCode = geogcs.name.toLowerCase();
-	    }
-	    if (wkt.datumCode.slice(0, 2) === 'd_') {
-	      wkt.datumCode = wkt.datumCode.slice(2);
-	    }
-	    if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
-	      wkt.datumCode = 'nzgd49';
-	    }
-	    if (wkt.datumCode === 'wgs_1984' || wkt.datumCode === 'world_geodetic_system_1984') {
-	      if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
-	        wkt.sphere = true;
-	      }
-	      wkt.datumCode = 'wgs84';
-	    }
-	    if (wkt.datumCode.slice(-6) === '_ferro') {
-	      wkt.datumCode = wkt.datumCode.slice(0, - 6);
-	    }
-	    if (wkt.datumCode.slice(-8) === '_jakarta') {
-	      wkt.datumCode = wkt.datumCode.slice(0, - 8);
-	    }
-	    if (~wkt.datumCode.indexOf('belge')) {
-	      wkt.datumCode = 'rnb72';
-	    }
-	    if (geogcs.DATUM && geogcs.DATUM.SPHEROID) {
-	      wkt.ellps = geogcs.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
-	      if (wkt.ellps.toLowerCase().slice(0, 13) === 'international') {
-	        wkt.ellps = 'intl';
-	      }
-
-	      wkt.a = geogcs.DATUM.SPHEROID.a;
-	      wkt.rf = parseFloat(geogcs.DATUM.SPHEROID.rf, 10);
-	    }
-
-	    if (geogcs.DATUM && geogcs.DATUM.TOWGS84) {
-	      wkt.datum_params = geogcs.DATUM.TOWGS84;
-	    }
-	    if (~wkt.datumCode.indexOf('osgb_1936')) {
-	      wkt.datumCode = 'osgb36';
-	    }
-	    if (~wkt.datumCode.indexOf('osni_1952')) {
-	      wkt.datumCode = 'osni52';
-	    }
-	    if (~wkt.datumCode.indexOf('tm65')
-	      || ~wkt.datumCode.indexOf('geodetic_datum_of_1965')) {
-	      wkt.datumCode = 'ire65';
-	    }
-	    if (wkt.datumCode === 'ch1903+') {
-	      wkt.datumCode = 'ch1903';
-	    }
-	    if (~wkt.datumCode.indexOf('israel')) {
-	      wkt.datumCode = 'isr93';
-	    }
-	  }
-	  if (wkt.b && !isFinite(wkt.b)) {
-	    wkt.b = wkt.a;
-	  }
-
-	  function toMeter(input) {
-	    var ratio = wkt.to_meter || 1;
-	    return input * ratio;
-	  }
-	  var renamer = function(a) {
-	    return rename(wkt, a);
-	  };
-	  var list = [
-	    ['standard_parallel_1', 'Standard_Parallel_1'],
-	    ['standard_parallel_1', 'Latitude of 1st standard parallel'],
-	    ['standard_parallel_2', 'Standard_Parallel_2'],
-	    ['standard_parallel_2', 'Latitude of 2nd standard parallel'],
-	    ['false_easting', 'False_Easting'],
-	    ['false_easting', 'False easting'],
-	    ['false-easting', 'Easting at false origin'],
-	    ['false_northing', 'False_Northing'],
-	    ['false_northing', 'False northing'],
-	    ['false_northing', 'Northing at false origin'],
-	    ['central_meridian', 'Central_Meridian'],
-	    ['central_meridian', 'Longitude of natural origin'],
-	    ['central_meridian', 'Longitude of false origin'],
-	    ['latitude_of_origin', 'Latitude_Of_Origin'],
-	    ['latitude_of_origin', 'Central_Parallel'],
-	    ['latitude_of_origin', 'Latitude of natural origin'],
-	    ['latitude_of_origin', 'Latitude of false origin'],
-	    ['scale_factor', 'Scale_Factor'],
-	    ['k0', 'scale_factor'],
-	    ['latitude_of_center', 'Latitude_Of_Center'],
-	    ['latitude_of_center', 'Latitude_of_center'],
-	    ['lat0', 'latitude_of_center', d2r],
-	    ['longitude_of_center', 'Longitude_Of_Center'],
-	    ['longitude_of_center', 'Longitude_of_center'],
-	    ['longc', 'longitude_of_center', d2r],
-	    ['x0', 'false_easting', toMeter],
-	    ['y0', 'false_northing', toMeter],
-	    ['long0', 'central_meridian', d2r],
-	    ['lat0', 'latitude_of_origin', d2r],
-	    ['lat0', 'standard_parallel_1', d2r],
-	    ['lat1', 'standard_parallel_1', d2r],
-	    ['lat2', 'standard_parallel_2', d2r],
-	    ['azimuth', 'Azimuth'],
-	    ['alpha', 'azimuth', d2r],
-	    ['srsCode', 'name']
-	  ];
-	  list.forEach(renamer);
-	  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === 'Lambert_Azimuthal_Equal_Area')) {
-	    wkt.long0 = wkt.longc;
-	  }
-	  if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
-	    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
-	    wkt.lat_ts = wkt.lat1;
-	  }
-	}
-	function wkt(wkt) {
-	  var lisp = parseString(wkt);
-	  var type = lisp.shift();
-	  var name = lisp.shift();
-	  lisp.unshift(['name', name]);
-	  lisp.unshift(['type', type]);
-	  var obj = {};
-	  sExpr(lisp, obj);
-	  cleanWKT(obj);
-	  return obj;
-	}
-
-	function defs(name) {
-	  /*global console*/
-	  var that = this;
-	  if (arguments.length === 2) {
-	    var def = arguments[1];
-	    if (typeof def === 'string') {
-	      if (def.charAt(0) === '+') {
-	        defs[name] = projStr(arguments[1]);
-	      }
-	      else {
-	        defs[name] = wkt(arguments[1]);
-	      }
-	    } else {
-	      defs[name] = def;
-	    }
-	  }
-	  else if (arguments.length === 1) {
-	    if (Array.isArray(name)) {
-	      return name.map(function(v) {
-	        if (Array.isArray(v)) {
-	          defs.apply(that, v);
-	        }
-	        else {
-	          defs(v);
-	        }
-	      });
-	    }
-	    else if (typeof name === 'string') {
-	      if (name in defs) {
-	        return defs[name];
-	      }
-	    }
-	    else if ('EPSG' in name) {
-	      defs['EPSG:' + name.EPSG] = name;
-	    }
-	    else if ('ESRI' in name) {
-	      defs['ESRI:' + name.ESRI] = name;
-	    }
-	    else if ('IAU2000' in name) {
-	      defs['IAU2000:' + name.IAU2000] = name;
-	    }
-	    else {
-	      console.log(name);
-	    }
-	    return;
-	  }
-
-
-	}
-	globals(defs);
-
-	function testObj(code){
-	  return typeof code === 'string';
-	}
-	function testDef(code){
-	  return code in defs;
-	}
-	var codeWords = ['PROJECTEDCRS', 'PROJCRS', 'GEOGCS','GEOCCS','PROJCS','LOCAL_CS', 'GEODCRS', 'GEODETICCRS', 'GEODETICDATUM', 'ENGCRS', 'ENGINEERINGCRS'];
-	function testWKT(code){
-	  return codeWords.some(function (word) {
-	    return code.indexOf(word) > -1;
-	  });
-	}
-	var codes = ['3857', '900913', '3785', '102113'];
-	function checkMercator(item) {
-	  var auth = match(item, 'authority');
-	  if (!auth) {
-	    return;
-	  }
-	  var code = match(auth, 'epsg');
-	  return code && codes.indexOf(code) > -1;
-	}
-	function checkProjStr(item) {
-	  var ext = match(item, 'extension');
-	  if (!ext) {
-	    return;
-	  }
-	  return match(ext, 'proj4');
-	}
-	function testProj(code){
-	  return code[0] === '+';
-	}
-	function parse(code){
-	  if (testObj(code)) {
-	    //check to see if this is a WKT string
-	    if (testDef(code)) {
-	      return defs[code];
-	    }
-	    if (testWKT(code)) {
-	      var out = wkt(code);
-	      // test of spetial case, due to this being a very common and often malformed
-	      if (checkMercator(out)) {
-	        return defs['EPSG:3857'];
-	      }
-	      var maybeProjStr = checkProjStr(out);
-	      if (maybeProjStr) {
-	        return projStr(maybeProjStr);
-	      }
-	      return out;
-	    }
-	    if (testProj(code)) {
-	      return projStr(code);
-	    }
-	  }else {
-	    return code;
-	  }
-	}
-
-	function extend(destination, source) {
-	  destination = destination || {};
-	  var value, property;
-	  if (!source) {
-	    return destination;
-	  }
-	  for (property in source) {
-	    value = source[property];
-	    if (value !== undefined) {
-	      destination[property] = value;
-	    }
-	  }
-	  return destination;
-	}
-
-	function msfnz(eccent, sinphi, cosphi) {
-	  var con = eccent * sinphi;
-	  return cosphi / (Math.sqrt(1 - con * con));
-	}
-
-	function sign$1(x) {
-	  return x<0 ? -1 : 1;
-	}
-
-	function adjust_lon(x) {
-	  return (Math.abs(x) <= SPI) ? x : (x - (sign$1(x) * TWO_PI));
-	}
-
-	function tsfnz(eccent, phi, sinphi) {
-	  var con = eccent * sinphi;
-	  var com = 0.5 * eccent;
-	  con = Math.pow(((1 - con) / (1 + con)), com);
-	  return (Math.tan(0.5 * (HALF_PI - phi)) / con);
-	}
-
-	function phi2z(eccent, ts) {
-	  var eccnth = 0.5 * eccent;
-	  var con, dphi;
-	  var phi = HALF_PI - 2 * Math.atan(ts);
-	  for (var i = 0; i <= 15; i++) {
-	    con = eccent * Math.sin(phi);
-	    dphi = HALF_PI - 2 * Math.atan(ts * (Math.pow(((1 - con) / (1 + con)), eccnth))) - phi;
-	    phi += dphi;
-	    if (Math.abs(dphi) <= 0.0000000001) {
-	      return phi;
-	    }
-	  }
-	  //console.log("phi2z has NoConvergence");
-	  return -9999;
-	}
-
-	function init() {
-	  var con = this.b / this.a;
-	  this.es = 1 - con * con;
-	  if(!('x0' in this)){
-	    this.x0 = 0;
-	  }
-	  if(!('y0' in this)){
-	    this.y0 = 0;
-	  }
-	  this.e = Math.sqrt(this.es);
-	  if (this.lat_ts) {
-	    if (this.sphere) {
-	      this.k0 = Math.cos(this.lat_ts);
-	    }
-	    else {
-	      this.k0 = msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts));
-	    }
-	  }
-	  else {
-	    if (!this.k0) {
-	      if (this.k) {
-	        this.k0 = this.k;
-	      }
-	      else {
-	        this.k0 = 1;
-	      }
-	    }
-	  }
-	}
-
-	/* Mercator forward equations--mapping lat,long to x,y
-	  --------------------------------------------------*/
-
-	function forward(p) {
-	  var lon = p.x;
-	  var lat = p.y;
-	  // convert to radians
-	  if (lat * R2D > 90 && lat * R2D < -90 && lon * R2D > 180 && lon * R2D < -180) {
-	    return null;
-	  }
-
-	  var x, y;
-	  if (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN) {
-	    return null;
-	  }
-	  else {
-	    if (this.sphere) {
-	      x = this.x0 + this.a * this.k0 * adjust_lon(lon - this.long0);
-	      y = this.y0 + this.a * this.k0 * Math.log(Math.tan(FORTPI + 0.5 * lat));
-	    }
-	    else {
-	      var sinphi = Math.sin(lat);
-	      var ts = tsfnz(this.e, lat, sinphi);
-	      x = this.x0 + this.a * this.k0 * adjust_lon(lon - this.long0);
-	      y = this.y0 - this.a * this.k0 * Math.log(ts);
-	    }
-	    p.x = x;
-	    p.y = y;
-	    return p;
-	  }
-	}
-
-	/* Mercator inverse equations--mapping x,y to lat/long
-	  --------------------------------------------------*/
-	function inverse(p) {
-
-	  var x = p.x - this.x0;
-	  var y = p.y - this.y0;
-	  var lon, lat;
-
-	  if (this.sphere) {
-	    lat = HALF_PI - 2 * Math.atan(Math.exp(-y / (this.a * this.k0)));
-	  }
-	  else {
-	    var ts = Math.exp(-y / (this.a * this.k0));
-	    lat = phi2z(this.e, ts);
-	    if (lat === -9999) {
-	      return null;
-	    }
-	  }
-	  lon = adjust_lon(this.long0 + x / (this.a * this.k0));
-
-	  p.x = lon;
-	  p.y = lat;
-	  return p;
-	}
-
-	var names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP", "Mercator_Auxiliary_Sphere", "merc"];
-	var merc = {
-	  init: init,
-	  forward: forward,
-	  inverse: inverse,
-	  names: names
-	};
-
-	function init$1() {
-	  //no-op for longlat
-	}
-
-	function identity(pt) {
-	  return pt;
-	}
-	var names$1 = ["longlat", "identity"];
-	var longlat = {
-	  init: init$1,
-	  forward: identity,
-	  inverse: identity,
-	  names: names$1
-	};
-
-	var projs = [merc, longlat];
-	var names$2 = {};
-	var projStore = [];
-
-	function add$1(proj, i) {
-	  var len = projStore.length;
-	  if (!proj.names) {
-	    console.log(i);
-	    return true;
-	  }
-	  projStore[len] = proj;
-	  proj.names.forEach(function(n) {
-	    names$2[n.toLowerCase()] = len;
-	  });
-	  return this;
-	}
-
-	function get(name) {
-	  if (!name) {
-	    return false;
-	  }
-	  var n = name.toLowerCase();
-	  if (typeof names$2[n] !== 'undefined' && projStore[names$2[n]]) {
-	    return projStore[names$2[n]];
-	  }
-	}
-
-	function start() {
-	  projs.forEach(add$1);
-	}
-	var projections = {
-	  start: start,
-	  add: add$1,
-	  get: get
-	};
-
-	var exports$3 = {};
-	exports$3.MERIT = {
-	  a: 6378137.0,
-	  rf: 298.257,
-	  ellipseName: "MERIT 1983"
-	};
-
-	exports$3.SGS85 = {
-	  a: 6378136.0,
-	  rf: 298.257,
-	  ellipseName: "Soviet Geodetic System 85"
-	};
-
-	exports$3.GRS80 = {
-	  a: 6378137.0,
-	  rf: 298.257222101,
-	  ellipseName: "GRS 1980(IUGG, 1980)"
-	};
-
-	exports$3.IAU76 = {
-	  a: 6378140.0,
-	  rf: 298.257,
-	  ellipseName: "IAU 1976"
-	};
-
-	exports$3.airy = {
-	  a: 6377563.396,
-	  b: 6356256.910,
-	  ellipseName: "Airy 1830"
-	};
-
-	exports$3.APL4 = {
-	  a: 6378137,
-	  rf: 298.25,
-	  ellipseName: "Appl. Physics. 1965"
-	};
-
-	exports$3.NWL9D = {
-	  a: 6378145.0,
-	  rf: 298.25,
-	  ellipseName: "Naval Weapons Lab., 1965"
-	};
-
-	exports$3.mod_airy = {
-	  a: 6377340.189,
-	  b: 6356034.446,
-	  ellipseName: "Modified Airy"
-	};
-
-	exports$3.andrae = {
-	  a: 6377104.43,
-	  rf: 300.0,
-	  ellipseName: "Andrae 1876 (Den., Iclnd.)"
-	};
-
-	exports$3.aust_SA = {
-	  a: 6378160.0,
-	  rf: 298.25,
-	  ellipseName: "Australian Natl & S. Amer. 1969"
-	};
-
-	exports$3.GRS67 = {
-	  a: 6378160.0,
-	  rf: 298.2471674270,
-	  ellipseName: "GRS 67(IUGG 1967)"
-	};
-
-	exports$3.bessel = {
-	  a: 6377397.155,
-	  rf: 299.1528128,
-	  ellipseName: "Bessel 1841"
-	};
-
-	exports$3.bess_nam = {
-	  a: 6377483.865,
-	  rf: 299.1528128,
-	  ellipseName: "Bessel 1841 (Namibia)"
-	};
-
-	exports$3.clrk66 = {
-	  a: 6378206.4,
-	  b: 6356583.8,
-	  ellipseName: "Clarke 1866"
-	};
-
-	exports$3.clrk80 = {
-	  a: 6378249.145,
-	  rf: 293.4663,
-	  ellipseName: "Clarke 1880 mod."
-	};
-
-	exports$3.clrk58 = {
-	  a: 6378293.645208759,
-	  rf: 294.2606763692654,
-	  ellipseName: "Clarke 1858"
-	};
-
-	exports$3.CPM = {
-	  a: 6375738.7,
-	  rf: 334.29,
-	  ellipseName: "Comm. des Poids et Mesures 1799"
-	};
-
-	exports$3.delmbr = {
-	  a: 6376428.0,
-	  rf: 311.5,
-	  ellipseName: "Delambre 1810 (Belgium)"
-	};
-
-	exports$3.engelis = {
-	  a: 6378136.05,
-	  rf: 298.2566,
-	  ellipseName: "Engelis 1985"
-	};
-
-	exports$3.evrst30 = {
-	  a: 6377276.345,
-	  rf: 300.8017,
-	  ellipseName: "Everest 1830"
-	};
-
-	exports$3.evrst48 = {
-	  a: 6377304.063,
-	  rf: 300.8017,
-	  ellipseName: "Everest 1948"
-	};
-
-	exports$3.evrst56 = {
-	  a: 6377301.243,
-	  rf: 300.8017,
-	  ellipseName: "Everest 1956"
-	};
-
-	exports$3.evrst69 = {
-	  a: 6377295.664,
-	  rf: 300.8017,
-	  ellipseName: "Everest 1969"
-	};
-
-	exports$3.evrstSS = {
-	  a: 6377298.556,
-	  rf: 300.8017,
-	  ellipseName: "Everest (Sabah & Sarawak)"
-	};
-
-	exports$3.fschr60 = {
-	  a: 6378166.0,
-	  rf: 298.3,
-	  ellipseName: "Fischer (Mercury Datum) 1960"
-	};
-
-	exports$3.fschr60m = {
-	  a: 6378155.0,
-	  rf: 298.3,
-	  ellipseName: "Fischer 1960"
-	};
-
-	exports$3.fschr68 = {
-	  a: 6378150.0,
-	  rf: 298.3,
-	  ellipseName: "Fischer 1968"
-	};
-
-	exports$3.helmert = {
-	  a: 6378200.0,
-	  rf: 298.3,
-	  ellipseName: "Helmert 1906"
-	};
-
-	exports$3.hough = {
-	  a: 6378270.0,
-	  rf: 297.0,
-	  ellipseName: "Hough"
-	};
-
-	exports$3.intl = {
-	  a: 6378388.0,
-	  rf: 297.0,
-	  ellipseName: "International 1909 (Hayford)"
-	};
-
-	exports$3.kaula = {
-	  a: 6378163.0,
-	  rf: 298.24,
-	  ellipseName: "Kaula 1961"
-	};
-
-	exports$3.lerch = {
-	  a: 6378139.0,
-	  rf: 298.257,
-	  ellipseName: "Lerch 1979"
-	};
-
-	exports$3.mprts = {
-	  a: 6397300.0,
-	  rf: 191.0,
-	  ellipseName: "Maupertius 1738"
-	};
-
-	exports$3.new_intl = {
-	  a: 6378157.5,
-	  b: 6356772.2,
-	  ellipseName: "New International 1967"
-	};
-
-	exports$3.plessis = {
-	  a: 6376523.0,
-	  rf: 6355863.0,
-	  ellipseName: "Plessis 1817 (France)"
-	};
-
-	exports$3.krass = {
-	  a: 6378245.0,
-	  rf: 298.3,
-	  ellipseName: "Krassovsky, 1942"
-	};
-
-	exports$3.SEasia = {
-	  a: 6378155.0,
-	  b: 6356773.3205,
-	  ellipseName: "Southeast Asia"
-	};
-
-	exports$3.walbeck = {
-	  a: 6376896.0,
-	  b: 6355834.8467,
-	  ellipseName: "Walbeck"
-	};
-
-	exports$3.WGS60 = {
-	  a: 6378165.0,
-	  rf: 298.3,
-	  ellipseName: "WGS 60"
-	};
-
-	exports$3.WGS66 = {
-	  a: 6378145.0,
-	  rf: 298.25,
-	  ellipseName: "WGS 66"
-	};
-
-	exports$3.WGS7 = {
-	  a: 6378135.0,
-	  rf: 298.26,
-	  ellipseName: "WGS 72"
-	};
-
-	var WGS84 = exports$3.WGS84 = {
-	  a: 6378137.0,
-	  rf: 298.257223563,
-	  ellipseName: "WGS 84"
-	};
-
-	exports$3.sphere = {
-	  a: 6370997.0,
-	  b: 6370997.0,
-	  ellipseName: "Normal Sphere (r=6370997)"
-	};
-
-	function eccentricity(a, b, rf, R_A) {
-	  var a2 = a * a; // used in geocentric
-	  var b2 = b * b; // used in geocentric
-	  var es = (a2 - b2) / a2; // e ^ 2
-	  var e = 0;
-	  if (R_A) {
-	    a *= 1 - es * (SIXTH + es * (RA4 + es * RA6));
-	    a2 = a * a;
-	    es = 0;
-	  } else {
-	    e = Math.sqrt(es); // eccentricity
-	  }
-	  var ep2 = (a2 - b2) / b2; // used in geocentric
-	  return {
-	    es: es,
-	    e: e,
-	    ep2: ep2
-	  };
-	}
-	function sphere(a, b, rf, ellps, sphere) {
-	  if (!a) { // do we have an ellipsoid?
-	    var ellipse = match(exports$3, ellps);
-	    if (!ellipse) {
-	      ellipse = WGS84;
-	    }
-	    a = ellipse.a;
-	    b = ellipse.b;
-	    rf = ellipse.rf;
-	  }
-
-	  if (rf && !b) {
-	    b = (1.0 - 1.0 / rf) * a;
-	  }
-	  if (rf === 0 || Math.abs(a - b) < EPSLN) {
-	    sphere = true;
-	    b = a;
-	  }
-	  return {
-	    a: a,
-	    b: b,
-	    rf: rf,
-	    sphere: sphere
-	  };
-	}
-
-	var exports$4 = {};
-	exports$4.wgs84 = {
-	  towgs84: "0,0,0",
-	  ellipse: "WGS84",
-	  datumName: "WGS84"
-	};
-
-	exports$4.ch1903 = {
-	  towgs84: "674.374,15.056,405.346",
-	  ellipse: "bessel",
-	  datumName: "swiss"
-	};
-
-	exports$4.ggrs87 = {
-	  towgs84: "-199.87,74.79,246.62",
-	  ellipse: "GRS80",
-	  datumName: "Greek_Geodetic_Reference_System_1987"
-	};
-
-	exports$4.nad83 = {
-	  towgs84: "0,0,0",
-	  ellipse: "GRS80",
-	  datumName: "North_American_Datum_1983"
-	};
-
-	exports$4.nad27 = {
-	  nadgrids: "@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat",
-	  ellipse: "clrk66",
-	  datumName: "North_American_Datum_1927"
-	};
-
-	exports$4.potsdam = {
-	  towgs84: "598.1,73.7,418.2,0.202,0.045,-2.455,6.7",
-	  ellipse: "bessel",
-	  datumName: "Potsdam Rauenberg 1950 DHDN"
-	};
-
-	exports$4.carthage = {
-	  towgs84: "-263.0,6.0,431.0",
-	  ellipse: "clark80",
-	  datumName: "Carthage 1934 Tunisia"
-	};
-
-	exports$4.hermannskogel = {
-	  towgs84: "577.326,90.129,463.919,5.137,1.474,5.297,2.4232",
-	  ellipse: "bessel",
-	  datumName: "Hermannskogel"
-	};
-
-	exports$4.osni52 = {
-	  towgs84: "482.530,-130.596,564.557,-1.042,-0.214,-0.631,8.15",
-	  ellipse: "airy",
-	  datumName: "Irish National"
-	};
-
-	exports$4.ire65 = {
-	  towgs84: "482.530,-130.596,564.557,-1.042,-0.214,-0.631,8.15",
-	  ellipse: "mod_airy",
-	  datumName: "Ireland 1965"
-	};
-
-	exports$4.rassadiran = {
-	  towgs84: "-133.63,-157.5,-158.62",
-	  ellipse: "intl",
-	  datumName: "Rassadiran"
-	};
-
-	exports$4.nzgd49 = {
-	  towgs84: "59.47,-5.04,187.44,0.47,-0.1,1.024,-4.5993",
-	  ellipse: "intl",
-	  datumName: "New Zealand Geodetic Datum 1949"
-	};
-
-	exports$4.osgb36 = {
-	  towgs84: "446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894",
-	  ellipse: "airy",
-	  datumName: "Airy 1830"
-	};
-
-	exports$4.s_jtsk = {
-	  towgs84: "589,76,480",
-	  ellipse: 'bessel',
-	  datumName: 'S-JTSK (Ferro)'
-	};
-
-	exports$4.beduaram = {
-	  towgs84: '-106,-87,188',
-	  ellipse: 'clrk80',
-	  datumName: 'Beduaram'
-	};
-
-	exports$4.gunung_segara = {
-	  towgs84: '-403,684,41',
-	  ellipse: 'bessel',
-	  datumName: 'Gunung Segara Jakarta'
-	};
-
-	exports$4.rnb72 = {
-	  towgs84: "106.869,-52.2978,103.724,-0.33657,0.456955,-1.84218,1",
-	  ellipse: "intl",
-	  datumName: "Reseau National Belge 1972"
-	};
-
-	function datum(datumCode, datum_params, a, b, es, ep2, nadgrids) {
-	  var out = {};
-
-	  if (datumCode === undefined || datumCode === 'none') {
-	    out.datum_type = PJD_NODATUM;
-	  } else {
-	    out.datum_type = PJD_WGS84;
-	  }
-
-	  if (datum_params) {
-	    out.datum_params = datum_params.map(parseFloat);
-	    if (out.datum_params[0] !== 0 || out.datum_params[1] !== 0 || out.datum_params[2] !== 0) {
-	      out.datum_type = PJD_3PARAM;
-	    }
-	    if (out.datum_params.length > 3) {
-	      if (out.datum_params[3] !== 0 || out.datum_params[4] !== 0 || out.datum_params[5] !== 0 || out.datum_params[6] !== 0) {
-	        out.datum_type = PJD_7PARAM;
-	        out.datum_params[3] *= SEC_TO_RAD;
-	        out.datum_params[4] *= SEC_TO_RAD;
-	        out.datum_params[5] *= SEC_TO_RAD;
-	        out.datum_params[6] = (out.datum_params[6] / 1000000.0) + 1.0;
-	      }
-	    }
-	  }
-
-	  if (nadgrids) {
-	    out.datum_type = PJD_GRIDSHIFT;
-	    out.grids = nadgrids;
-	  }
-	  out.a = a; //datum object also uses these values
-	  out.b = b;
-	  out.es = es;
-	  out.ep2 = ep2;
-	  return out;
-	}
-
-	/**
-	 * Resources for details of NTv2 file formats:
-	 * - https://web.archive.org/web/20140127204822if_/http://www.mgs.gov.on.ca:80/stdprodconsume/groups/content/@mgs/@iandit/documents/resourcelist/stel02_047447.pdf
-	 * - http://mimaka.com/help/gs/html/004_NTV2%20Data%20Format.htm
-	 */
-
-	var loadedNadgrids = {};
-
-	/**
-	 * Load a binary NTv2 file (.gsb) to a key that can be used in a proj string like +nadgrids=<key>. Pass the NTv2 file
-	 * as an ArrayBuffer.
-	 */
-	function nadgrid(key, data) {
-	  var view = new DataView(data);
-	  var isLittleEndian = detectLittleEndian(view);
-	  var header = readHeader(view, isLittleEndian);
-	  if (header.nSubgrids > 1) {
-	    console.log('Only single NTv2 subgrids are currently supported, subsequent sub grids are ignored');
-	  }
-	  var subgrids = readSubgrids(view, header, isLittleEndian);
-	  var nadgrid = {header: header, subgrids: subgrids};
-	  loadedNadgrids[key] = nadgrid;
-	  return nadgrid;
-	}
-
-	/**
-	 * Given a proj4 value for nadgrids, return an array of loaded grids
-	 */
-	function getNadgrids(nadgrids) {
-	  // Format details: http://proj.maptools.org/gen_parms.html
-	  if (nadgrids === undefined) { return null; }
-	  var grids = nadgrids.split(',');
-	  return grids.map(parseNadgridString);
-	}
-
-	function parseNadgridString(value) {
-	  if (value.length === 0) {
-	    return null;
-	  }
-	  var optional = value[0] === '@';
-	  if (optional) {
-	    value = value.slice(1);
-	  }
-	  if (value === 'null') {
-	    return {name: 'null', mandatory: !optional, grid: null, isNull: true};
-	  }
-	  return {
-	    name: value,
-	    mandatory: !optional,
-	    grid: loadedNadgrids[value] || null,
-	    isNull: false
-	  };
-	}
-
-	function secondsToRadians(seconds) {
-	  return (seconds / 3600) * Math.PI / 180;
-	}
-
-	function detectLittleEndian(view) {
-	  var nFields = view.getInt32(8, false);
-	  if (nFields === 11) {
-	    return false;
-	  }
-	  nFields = view.getInt32(8, true);
-	  if (nFields !== 11) {
-	    console.warn('Failed to detect nadgrid endian-ness, defaulting to little-endian');
-	  }
-	  return true;
-	}
-
-	function readHeader(view, isLittleEndian) {
-	  return {
-	    nFields: view.getInt32(8, isLittleEndian),
-	    nSubgridFields: view.getInt32(24, isLittleEndian),
-	    nSubgrids: view.getInt32(40, isLittleEndian),
-	    shiftType: decodeString(view, 56, 56 + 8).trim(),
-	    fromSemiMajorAxis: view.getFloat64(120, isLittleEndian),
-	    fromSemiMinorAxis: view.getFloat64(136, isLittleEndian),
-	    toSemiMajorAxis: view.getFloat64(152, isLittleEndian),
-	    toSemiMinorAxis: view.getFloat64(168, isLittleEndian),
-	  };
-	}
-
-	function decodeString(view, start, end) {
-	  return String.fromCharCode.apply(null, new Uint8Array(view.buffer.slice(start, end)));
-	}
-
-	function readSubgrids(view, header, isLittleEndian) {
-	  var gridOffset = 176;
-	  var grids = [];
-	  for (var i = 0; i < header.nSubgrids; i++) {
-	    var subHeader = readGridHeader(view, gridOffset, isLittleEndian);
-	    var nodes = readGridNodes(view, gridOffset, subHeader, isLittleEndian);
-	    var lngColumnCount = Math.round(
-	      1 + (subHeader.upperLongitude - subHeader.lowerLongitude) / subHeader.longitudeInterval);
-	    var latColumnCount = Math.round(
-	      1 + (subHeader.upperLatitude - subHeader.lowerLatitude) / subHeader.latitudeInterval);
-	    // Proj4 operates on radians whereas the coordinates are in seconds in the grid
-	    grids.push({
-	      ll: [secondsToRadians(subHeader.lowerLongitude), secondsToRadians(subHeader.lowerLatitude)],
-	      del: [secondsToRadians(subHeader.longitudeInterval), secondsToRadians(subHeader.latitudeInterval)],
-	      lim: [lngColumnCount, latColumnCount],
-	      count: subHeader.gridNodeCount,
-	      cvs: mapNodes(nodes)
-	    });
-	  }
-	  return grids;
-	}
-
-	function mapNodes(nodes) {
-	  return nodes.map(function (r) {return [secondsToRadians(r.longitudeShift), secondsToRadians(r.latitudeShift)];});
-	}
-
-	function readGridHeader(view, offset, isLittleEndian) {
-	  return {
-	    name: decodeString(view, offset + 8, offset + 16).trim(),
-	    parent: decodeString(view, offset + 24, offset + 24 + 8).trim(),
-	    lowerLatitude: view.getFloat64(offset + 72, isLittleEndian),
-	    upperLatitude: view.getFloat64(offset + 88, isLittleEndian),
-	    lowerLongitude: view.getFloat64(offset + 104, isLittleEndian),
-	    upperLongitude: view.getFloat64(offset + 120, isLittleEndian),
-	    latitudeInterval: view.getFloat64(offset + 136, isLittleEndian),
-	    longitudeInterval: view.getFloat64(offset + 152, isLittleEndian),
-	    gridNodeCount: view.getInt32(offset + 168, isLittleEndian)
-	  };
-	}
-
-	function readGridNodes(view, offset, gridHeader, isLittleEndian) {
-	  var nodesOffset = offset + 176;
-	  var gridRecordLength = 16;
-	  var gridShiftRecords = [];
-	  for (var i = 0; i < gridHeader.gridNodeCount; i++) {
-	    var record = {
-	      latitudeShift: view.getFloat32(nodesOffset + i * gridRecordLength, isLittleEndian),
-	      longitudeShift: view.getFloat32(nodesOffset + i * gridRecordLength + 4, isLittleEndian),
-	      latitudeAccuracy: view.getFloat32(nodesOffset + i * gridRecordLength + 8, isLittleEndian),
-	      longitudeAccuracy: view.getFloat32(nodesOffset + i * gridRecordLength + 12, isLittleEndian),
-	    };
-	    gridShiftRecords.push(record);
-	  }
-	  return gridShiftRecords;
-	}
-
-	function Projection(srsCode,callback) {
-	  if (!(this instanceof Projection)) {
-	    return new Projection(srsCode);
-	  }
-	  callback = callback || function(error){
-	    if(error){
-	      throw error;
-	    }
-	  };
-	  var json = parse(srsCode);
-	  if(typeof json !== 'object'){
-	    callback(srsCode);
-	    return;
-	  }
-	  var ourProj = Projection.projections.get(json.projName);
-	  if(!ourProj){
-	    callback(srsCode);
-	    return;
-	  }
-	  if (json.datumCode && json.datumCode !== 'none') {
-	    var datumDef = match(exports$4, json.datumCode);
-	    if (datumDef) {
-	      json.datum_params = json.datum_params || (datumDef.towgs84 ? datumDef.towgs84.split(',') : null);
-	      json.ellps = datumDef.ellipse;
-	      json.datumName = datumDef.datumName ? datumDef.datumName : json.datumCode;
-	    }
-	  }
-	  json.k0 = json.k0 || 1.0;
-	  json.axis = json.axis || 'enu';
-	  json.ellps = json.ellps || 'wgs84';
-	  json.lat1 = json.lat1 || json.lat0; // Lambert_Conformal_Conic_1SP, for example, needs this
-
-	  var sphere_ = sphere(json.a, json.b, json.rf, json.ellps, json.sphere);
-	  var ecc = eccentricity(sphere_.a, sphere_.b, sphere_.rf, json.R_A);
-	  var nadgrids = getNadgrids(json.nadgrids);
-	  var datumObj = json.datum || datum(json.datumCode, json.datum_params, sphere_.a, sphere_.b, ecc.es, ecc.ep2,
-	    nadgrids);
-
-	  extend(this, json); // transfer everything over from the projection because we don't know what we'll need
-	  extend(this, ourProj); // transfer all the methods from the projection
-
-	  // copy the 4 things over we calulated in deriveConstants.sphere
-	  this.a = sphere_.a;
-	  this.b = sphere_.b;
-	  this.rf = sphere_.rf;
-	  this.sphere = sphere_.sphere;
-
-	  // copy the 3 things we calculated in deriveConstants.eccentricity
-	  this.es = ecc.es;
-	  this.e = ecc.e;
-	  this.ep2 = ecc.ep2;
-
-	  // add in the datum object
-	  this.datum = datumObj;
-
-	  // init the projection
-	  this.init();
-
-	  // legecy callback from back in the day when it went to spatialreference.org
-	  callback(null, this);
-
-	}
-	Projection.projections = projections;
-	Projection.projections.start();
-
-	'use strict';
-	function compareDatums(source, dest) {
-	  if (source.datum_type !== dest.datum_type) {
-	    return false; // false, datums are not equal
-	  } else if (source.a !== dest.a || Math.abs(source.es - dest.es) > 0.000000000050) {
-	    // the tolerance for es is to ensure that GRS80 and WGS84
-	    // are considered identical
-	    return false;
-	  } else if (source.datum_type === PJD_3PARAM) {
-	    return (source.datum_params[0] === dest.datum_params[0] && source.datum_params[1] === dest.datum_params[1] && source.datum_params[2] === dest.datum_params[2]);
-	  } else if (source.datum_type === PJD_7PARAM) {
-	    return (source.datum_params[0] === dest.datum_params[0] && source.datum_params[1] === dest.datum_params[1] && source.datum_params[2] === dest.datum_params[2] && source.datum_params[3] === dest.datum_params[3] && source.datum_params[4] === dest.datum_params[4] && source.datum_params[5] === dest.datum_params[5] && source.datum_params[6] === dest.datum_params[6]);
-	  } else {
-	    return true; // datums are equal
-	  }
-	} // cs_compare_datums()
-
-	/*
-	 * The function Convert_Geodetic_To_Geocentric converts geodetic coordinates
-	 * (latitude, longitude, and height) to geocentric coordinates (X, Y, Z),
-	 * according to the current ellipsoid parameters.
-	 *
-	 *    Latitude  : Geodetic latitude in radians                     (input)
-	 *    Longitude : Geodetic longitude in radians                    (input)
-	 *    Height    : Geodetic height, in meters                       (input)
-	 *    X         : Calculated Geocentric X coordinate, in meters    (output)
-	 *    Y         : Calculated Geocentric Y coordinate, in meters    (output)
-	 *    Z         : Calculated Geocentric Z coordinate, in meters    (output)
-	 *
-	 */
-	function geodeticToGeocentric(p, es, a) {
-	  var Longitude = p.x;
-	  var Latitude = p.y;
-	  var Height = p.z ? p.z : 0; //Z value not always supplied
-
-	  var Rn; /*  Earth radius at location  */
-	  var Sin_Lat; /*  Math.sin(Latitude)  */
-	  var Sin2_Lat; /*  Square of Math.sin(Latitude)  */
-	  var Cos_Lat; /*  Math.cos(Latitude)  */
-
-	  /*
-	   ** Don't blow up if Latitude is just a little out of the value
-	   ** range as it may just be a rounding issue.  Also removed longitude
-	   ** test, it should be wrapped by Math.cos() and Math.sin().  NFW for PROJ.4, Sep/2001.
-	   */
-	  if (Latitude < -HALF_PI && Latitude > -1.001 * HALF_PI) {
-	    Latitude = -HALF_PI;
-	  } else if (Latitude > HALF_PI && Latitude < 1.001 * HALF_PI) {
-	    Latitude = HALF_PI;
-	  } else if (Latitude < -HALF_PI) {
-	    /* Latitude out of range */
-	    //..reportError('geocent:lat out of range:' + Latitude);
-	    return { x: -Infinity, y: -Infinity, z: p.z };
-	  } else if (Latitude > HALF_PI) {
-	    /* Latitude out of range */
-	    return { x: Infinity, y: Infinity, z: p.z };
-	  }
-
-	  if (Longitude > Math.PI) {
-	    Longitude -= (2 * Math.PI);
-	  }
-	  Sin_Lat = Math.sin(Latitude);
-	  Cos_Lat = Math.cos(Latitude);
-	  Sin2_Lat = Sin_Lat * Sin_Lat;
-	  Rn = a / (Math.sqrt(1.0e0 - es * Sin2_Lat));
-	  return {
-	    x: (Rn + Height) * Cos_Lat * Math.cos(Longitude),
-	    y: (Rn + Height) * Cos_Lat * Math.sin(Longitude),
-	    z: ((Rn * (1 - es)) + Height) * Sin_Lat
-	  };
-	} // cs_geodetic_to_geocentric()
-
-	function geocentricToGeodetic(p, es, a, b) {
-	  /* local defintions and variables */
-	  /* end-criterium of loop, accuracy of sin(Latitude) */
-	  var genau = 1e-12;
-	  var genau2 = (genau * genau);
-	  var maxiter = 30;
-
-	  var P; /* distance between semi-minor axis and location */
-	  var RR; /* distance between center and location */
-	  var CT; /* sin of geocentric latitude */
-	  var ST; /* cos of geocentric latitude */
-	  var RX;
-	  var RK;
-	  var RN; /* Earth radius at location */
-	  var CPHI0; /* cos of start or old geodetic latitude in iterations */
-	  var SPHI0; /* sin of start or old geodetic latitude in iterations */
-	  var CPHI; /* cos of searched geodetic latitude */
-	  var SPHI; /* sin of searched geodetic latitude */
-	  var SDPHI; /* end-criterium: addition-theorem of sin(Latitude(iter)-Latitude(iter-1)) */
-	  var iter; /* # of continous iteration, max. 30 is always enough (s.a.) */
-
-	  var X = p.x;
-	  var Y = p.y;
-	  var Z = p.z ? p.z : 0.0; //Z value not always supplied
-	  var Longitude;
-	  var Latitude;
-	  var Height;
-
-	  P = Math.sqrt(X * X + Y * Y);
-	  RR = Math.sqrt(X * X + Y * Y + Z * Z);
-
-	  /*      special cases for latitude and longitude */
-	  if (P / a < genau) {
-
-	    /*  special case, if P=0. (X=0., Y=0.) */
-	    Longitude = 0.0;
-
-	    /*  if (X,Y,Z)=(0.,0.,0.) then Height becomes semi-minor axis
-	     *  of ellipsoid (=center of mass), Latitude becomes PI/2 */
-	    if (RR / a < genau) {
-	      Latitude = HALF_PI;
-	      Height = -b;
-	      return {
-	        x: p.x,
-	        y: p.y,
-	        z: p.z
-	      };
-	    }
-	  } else {
-	    /*  ellipsoidal (geodetic) longitude
-	     *  interval: -PI < Longitude <= +PI */
-	    Longitude = Math.atan2(Y, X);
-	  }
-
-	  /* --------------------------------------------------------------
-	   * Following iterative algorithm was developped by
-	   * "Institut for Erdmessung", University of Hannover, July 1988.
-	   * Internet: www.ife.uni-hannover.de
-	   * Iterative computation of CPHI,SPHI and Height.
-	   * Iteration of CPHI and SPHI to 10**-12 radian resp.
-	   * 2*10**-7 arcsec.
-	   * --------------------------------------------------------------
-	   */
-	  CT = Z / RR;
-	  ST = P / RR;
-	  RX = 1.0 / Math.sqrt(1.0 - es * (2.0 - es) * ST * ST);
-	  CPHI0 = ST * (1.0 - es) * RX;
-	  SPHI0 = CT * RX;
-	  iter = 0;
-
-	  /* loop to find sin(Latitude) resp. Latitude
-	   * until |sin(Latitude(iter)-Latitude(iter-1))| < genau */
-	  do {
-	    iter++;
-	    RN = a / Math.sqrt(1.0 - es * SPHI0 * SPHI0);
-
-	    /*  ellipsoidal (geodetic) height */
-	    Height = P * CPHI0 + Z * SPHI0 - RN * (1.0 - es * SPHI0 * SPHI0);
-
-	    RK = es * RN / (RN + Height);
-	    RX = 1.0 / Math.sqrt(1.0 - RK * (2.0 - RK) * ST * ST);
-	    CPHI = ST * (1.0 - RK) * RX;
-	    SPHI = CT * RX;
-	    SDPHI = SPHI * CPHI0 - CPHI * SPHI0;
-	    CPHI0 = CPHI;
-	    SPHI0 = SPHI;
-	  }
-	  while (SDPHI * SDPHI > genau2 && iter < maxiter);
-
-	  /*      ellipsoidal (geodetic) latitude */
-	  Latitude = Math.atan(SPHI / Math.abs(CPHI));
-	  return {
-	    x: Longitude,
-	    y: Latitude,
-	    z: Height
-	  };
-	} // cs_geocentric_to_geodetic()
-
-	/****************************************************************/
-	// pj_geocentic_to_wgs84( p )
-	//  p = point to transform in geocentric coordinates (x,y,z)
-
-
-	/** point object, nothing fancy, just allows values to be
-	    passed back and forth by reference rather than by value.
-	    Other point classes may be used as long as they have
-	    x and y properties, which will get modified in the transform method.
-	*/
-	function geocentricToWgs84(p, datum_type, datum_params) {
-
-	  if (datum_type === PJD_3PARAM) {
-	    // if( x[io] === HUGE_VAL )
-	    //    continue;
-	    return {
-	      x: p.x + datum_params[0],
-	      y: p.y + datum_params[1],
-	      z: p.z + datum_params[2],
-	    };
-	  } else if (datum_type === PJD_7PARAM) {
-	    var Dx_BF = datum_params[0];
-	    var Dy_BF = datum_params[1];
-	    var Dz_BF = datum_params[2];
-	    var Rx_BF = datum_params[3];
-	    var Ry_BF = datum_params[4];
-	    var Rz_BF = datum_params[5];
-	    var M_BF = datum_params[6];
-	    // if( x[io] === HUGE_VAL )
-	    //    continue;
-	    return {
-	      x: M_BF * (p.x - Rz_BF * p.y + Ry_BF * p.z) + Dx_BF,
-	      y: M_BF * (Rz_BF * p.x + p.y - Rx_BF * p.z) + Dy_BF,
-	      z: M_BF * (-Ry_BF * p.x + Rx_BF * p.y + p.z) + Dz_BF
-	    };
-	  }
-	} // cs_geocentric_to_wgs84
-
-	/****************************************************************/
-	// pj_geocentic_from_wgs84()
-	//  coordinate system definition,
-	//  point to transform in geocentric coordinates (x,y,z)
-	function geocentricFromWgs84(p, datum_type, datum_params) {
-
-	  if (datum_type === PJD_3PARAM) {
-	    //if( x[io] === HUGE_VAL )
-	    //    continue;
-	    return {
-	      x: p.x - datum_params[0],
-	      y: p.y - datum_params[1],
-	      z: p.z - datum_params[2],
-	    };
-
-	  } else if (datum_type === PJD_7PARAM) {
-	    var Dx_BF = datum_params[0];
-	    var Dy_BF = datum_params[1];
-	    var Dz_BF = datum_params[2];
-	    var Rx_BF = datum_params[3];
-	    var Ry_BF = datum_params[4];
-	    var Rz_BF = datum_params[5];
-	    var M_BF = datum_params[6];
-	    var x_tmp = (p.x - Dx_BF) / M_BF;
-	    var y_tmp = (p.y - Dy_BF) / M_BF;
-	    var z_tmp = (p.z - Dz_BF) / M_BF;
-	    //if( x[io] === HUGE_VAL )
-	    //    continue;
-
-	    return {
-	      x: x_tmp + Rz_BF * y_tmp - Ry_BF * z_tmp,
-	      y: -Rz_BF * x_tmp + y_tmp + Rx_BF * z_tmp,
-	      z: Ry_BF * x_tmp - Rx_BF * y_tmp + z_tmp
-	    };
-	  } //cs_geocentric_from_wgs84()
-	}
-
-	function checkParams(type) {
-	  return (type === PJD_3PARAM || type === PJD_7PARAM);
-	}
-
-	function datum_transform(source, dest, point) {
-	  // Short cut if the datums are identical.
-	  if (compareDatums(source, dest)) {
-	    return point; // in this case, zero is sucess,
-	    // whereas cs_compare_datums returns 1 to indicate TRUE
-	    // confusing, should fix this
-	  }
-
-	  // Explicitly skip datum transform by setting 'datum=none' as parameter for either source or dest
-	  if (source.datum_type === PJD_NODATUM || dest.datum_type === PJD_NODATUM) {
-	    return point;
-	  }
-
-	  // If this datum requires grid shifts, then apply it to geodetic coordinates.
-	  var source_a = source.a;
-	  var source_es = source.es;
-	  if (source.datum_type === PJD_GRIDSHIFT) {
-	    var gridShiftCode = applyGridShift(source, false, point);
-	    if (gridShiftCode !== 0) {
-	      return undefined;
-	    }
-	    source_a = SRS_WGS84_SEMIMAJOR;
-	    source_es = SRS_WGS84_ESQUARED;
-	  }
-
-	  var dest_a = dest.a;
-	  var dest_b = dest.b;
-	  var dest_es = dest.es;
-	  if (dest.datum_type === PJD_GRIDSHIFT) {
-	    dest_a = SRS_WGS84_SEMIMAJOR;
-	    dest_b = SRS_WGS84_SEMIMINOR;
-	    dest_es = SRS_WGS84_ESQUARED;
-	  }
-
-	  // Do we need to go through geocentric coordinates?
-	  if (source_es === dest_es && source_a === dest_a && !checkParams(source.datum_type) &&  !checkParams(dest.datum_type)) {
-	    return point;
-	  }
-
-	  // Convert to geocentric coordinates.
-	  point = geodeticToGeocentric(point, source_es, source_a);
-	  // Convert between datums
-	  if (checkParams(source.datum_type)) {
-	    point = geocentricToWgs84(point, source.datum_type, source.datum_params);
-	  }
-	  if (checkParams(dest.datum_type)) {
-	    point = geocentricFromWgs84(point, dest.datum_type, dest.datum_params);
-	  }
-	  point = geocentricToGeodetic(point, dest_es, dest_a, dest_b);
-
-	  if (dest.datum_type === PJD_GRIDSHIFT) {
-	    var destGridShiftResult = applyGridShift(dest, true, point);
-	    if (destGridShiftResult !== 0) {
-	      return undefined;
-	    }
-	  }
-
-	  return point;
-	}
-
-	function applyGridShift(source, inverse, point) {
-	  if (source.grids === null || source.grids.length === 0) {
-	    console.log('Grid shift grids not found');
-	    return -1;
-	  }
-	  var input = {x: -point.x, y: point.y};
-	  var output = {x: Number.NaN, y: Number.NaN};
-	  var onlyMandatoryGrids = false;
-	  var attemptedGrids = [];
-	  for (var i = 0; i < source.grids.length; i++) {
-	    var grid = source.grids[i];
-	    attemptedGrids.push(grid.name);
-	    if (grid.isNull) {
-	      output = input;
-	      break;
-	    }
-	    onlyMandatoryGrids = grid.mandatory;
-	    if (grid.grid === null) {
-	      if (grid.mandatory) {
-	        console.log("Unable to find mandatory grid '" + grid.name + "'");
-	        return -1;
-	      }
-	      continue;
-	    }
-	    var subgrid = grid.grid.subgrids[0];
-	    // skip tables that don't match our point at all
-	    var epsilon = (Math.abs(subgrid.del[1]) + Math.abs(subgrid.del[0])) / 10000.0;
-	    var minX = subgrid.ll[0] - epsilon;
-	    var minY = subgrid.ll[1] - epsilon;
-	    var maxX = subgrid.ll[0] + (subgrid.lim[0] - 1) * subgrid.del[0] + epsilon;
-	    var maxY = subgrid.ll[1] + (subgrid.lim[1] - 1) * subgrid.del[1] + epsilon;
-	    if (minY > input.y || minX > input.x || maxY < input.y || maxX < input.x ) {
-	      continue;
-	    }
-	    output = applySubgridShift(input, inverse, subgrid);
-	    if (!isNaN(output.x)) {
-	      break;
-	    }
-	  }
-	  if (isNaN(output.x)) {
-	    console.log("Failed to find a grid shift table for location '"+
-	      -input.x * R2D + " " + input.y * R2D + " tried: '" + attemptedGrids + "'");
-	    return -1;
-	  }
-	  point.x = -output.x;
-	  point.y = output.y;
-	  return 0;
-	}
-
-	function applySubgridShift(pin, inverse, ct) {
-	  var val = {x: Number.NaN, y: Number.NaN};
-	  if (isNaN(pin.x)) { return val; }
-	  var tb = {x: pin.x, y: pin.y};
-	  tb.x -= ct.ll[0];
-	  tb.y -= ct.ll[1];
-	  tb.x = adjust_lon(tb.x - Math.PI) + Math.PI;
-	  var t = nadInterpolate(tb, ct);
-	  if (inverse) {
-	    if (isNaN(t.x)) {
-	      return val;
-	    }
-	    t.x = tb.x - t.x;
-	    t.y = tb.y - t.y;
-	    var i = 9, tol = 1e-12;
-	    var dif, del;
-	    do {
-	      del = nadInterpolate(t, ct);
-	      if (isNaN(del.x)) {
-	        console.log("Inverse grid shift iteration failed, presumably at grid edge.  Using first approximation.");
-	        break;
-	      }
-	      dif = {x: tb.x - (del.x + t.x), y: tb.y - (del.y + t.y)};
-	      t.x += dif.x;
-	      t.y += dif.y;
-	    } while (i-- && Math.abs(dif.x) > tol && Math.abs(dif.y) > tol);
-	    if (i < 0) {
-	      console.log("Inverse grid shift iterator failed to converge.");
-	      return val;
-	    }
-	    val.x = adjust_lon(t.x + ct.ll[0]);
-	    val.y = t.y + ct.ll[1];
-	  } else {
-	    if (!isNaN(t.x)) {
-	      val.x = pin.x + t.x;
-	      val.y = pin.y + t.y;
-	    }
-	  }
-	  return val;
-	}
-
-	function nadInterpolate(pin, ct) {
-	  var t = {x: pin.x / ct.del[0], y: pin.y / ct.del[1]};
-	  var indx = {x: Math.floor(t.x), y: Math.floor(t.y)};
-	  var frct = {x: t.x - 1.0 * indx.x, y: t.y - 1.0 * indx.y};
-	  var val= {x: Number.NaN, y: Number.NaN};
-	  var inx;
-	  if (indx.x < 0 || indx.x >= ct.lim[0]) {
-	    return val;
-	  }
-	  if (indx.y < 0 || indx.y >= ct.lim[1]) {
-	    return val;
-	  }
-	  inx = (indx.y * ct.lim[0]) + indx.x;
-	  var f00 = {x: ct.cvs[inx][0], y: ct.cvs[inx][1]};
-	  inx++;
-	  var f10= {x: ct.cvs[inx][0], y: ct.cvs[inx][1]};
-	  inx += ct.lim[0];
-	  var f11 = {x: ct.cvs[inx][0], y: ct.cvs[inx][1]};
-	  inx--;
-	  var f01 = {x: ct.cvs[inx][0], y: ct.cvs[inx][1]};
-	  var m11 = frct.x * frct.y, m10 = frct.x * (1.0 - frct.y),
-	    m00 = (1.0 - frct.x) * (1.0 - frct.y), m01 = (1.0 - frct.x) * frct.y;
-	  val.x = (m00 * f00.x + m10 * f10.x + m01 * f01.x + m11 * f11.x);
-	  val.y = (m00 * f00.y + m10 * f10.y + m01 * f01.y + m11 * f11.y);
-	  return val;
-	}
-
-	function adjust_axis(crs, denorm, point) {
-	  var xin = point.x,
-	    yin = point.y,
-	    zin = point.z || 0.0;
-	  var v, t, i;
-	  var out = {};
-	  for (i = 0; i < 3; i++) {
-	    if (denorm && i === 2 && point.z === undefined) {
-	      continue;
-	    }
-	    if (i === 0) {
-	      v = xin;
-	      if ("ew".indexOf(crs.axis[i]) !== -1) {
-	        t = 'x';
-	      } else {
-	        t = 'y';
-	      }
-
-	    }
-	    else if (i === 1) {
-	      v = yin;
-	      if ("ns".indexOf(crs.axis[i]) !== -1) {
-	        t = 'y';
-	      } else {
-	        t = 'x';
-	      }
-	    }
-	    else {
-	      v = zin;
-	      t = 'z';
-	    }
-	    switch (crs.axis[i]) {
-	    case 'e':
-	      out[t] = v;
-	      break;
-	    case 'w':
-	      out[t] = -v;
-	      break;
-	    case 'n':
-	      out[t] = v;
-	      break;
-	    case 's':
-	      out[t] = -v;
-	      break;
-	    case 'u':
-	      if (point[t] !== undefined) {
-	        out.z = v;
-	      }
-	      break;
-	    case 'd':
-	      if (point[t] !== undefined) {
-	        out.z = -v;
-	      }
-	      break;
-	    default:
-	      //console.log("ERROR: unknow axis ("+crs.axis[i]+") - check definition of "+crs.projName);
-	      return null;
-	    }
-	  }
-	  return out;
-	}
-
-	function common$1 (array){
-	  var out = {
-	    x: array[0],
-	    y: array[1]
-	  };
-	  if (array.length>2) {
-	    out.z = array[2];
-	  }
-	  if (array.length>3) {
-	    out.m = array[3];
-	  }
-	  return out;
-	}
-
-	function checkSanity (point) {
-	  checkCoord(point.x);
-	  checkCoord(point.y);
-	}
-	function checkCoord(num) {
-	  if (typeof Number.isFinite === 'function') {
-	    if (Number.isFinite(num)) {
-	      return;
-	    }
-	    throw new TypeError('coordinates must be finite numbers');
-	  }
-	  if (typeof num !== 'number' || num !== num || !isFinite(num)) {
-	    throw new TypeError('coordinates must be finite numbers');
-	  }
-	}
-
-	function checkNotWGS(source, dest) {
-	  return ((source.datum.datum_type === PJD_3PARAM || source.datum.datum_type === PJD_7PARAM) && dest.datumCode !== 'WGS84') || ((dest.datum.datum_type === PJD_3PARAM || dest.datum.datum_type === PJD_7PARAM) && source.datumCode !== 'WGS84');
-	}
-
-	function transform(source, dest, point, enforceAxis) {
-	  var wgs84;
-	  if (Array.isArray(point)) {
-	    point = common$1(point);
-	  }
-	  checkSanity(point);
-	  // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
-	  if (source.datum && dest.datum && checkNotWGS(source, dest)) {
-	    wgs84 = new Projection('WGS84');
-	    point = transform(source, wgs84, point, enforceAxis);
-	    source = wgs84;
-	  }
-	  // DGR, 2010/11/12
-	  if (enforceAxis && source.axis !== 'enu') {
-	    point = adjust_axis(source, false, point);
-	  }
-	  // Transform source points to long/lat, if they aren't already.
-	  if (source.projName === 'longlat') {
-	    point = {
-	      x: point.x * D2R,
-	      y: point.y * D2R,
-	      z: point.z || 0
-	    };
-	  } else {
-	    if (source.to_meter) {
-	      point = {
-	        x: point.x * source.to_meter,
-	        y: point.y * source.to_meter,
-	        z: point.z || 0
-	      };
-	    }
-	    point = source.inverse(point); // Convert Cartesian to longlat
-	    if (!point) {
-	      return;
-	    }
-	  }
-	  // Adjust for the prime meridian if necessary
-	  if (source.from_greenwich) {
-	    point.x += source.from_greenwich;
-	  }
-
-	  // Convert datums if needed, and if possible.
-	  point = datum_transform(source.datum, dest.datum, point);
-	  if (!point) {
-	    return;
-	  }
-
-	  // Adjust for the prime meridian if necessary
-	  if (dest.from_greenwich) {
-	    point = {
-	      x: point.x - dest.from_greenwich,
-	      y: point.y,
-	      z: point.z || 0
-	    };
-	  }
-
-	  if (dest.projName === 'longlat') {
-	    // convert radians to decimal degrees
-	    point = {
-	      x: point.x * R2D,
-	      y: point.y * R2D,
-	      z: point.z || 0
-	    };
-	  } else { // else project
-	    point = dest.forward(point);
-	    if (dest.to_meter) {
-	      point = {
-	        x: point.x / dest.to_meter,
-	        y: point.y / dest.to_meter,
-	        z: point.z || 0
-	      };
-	    }
-	  }
-
-	  // DGR, 2010/11/12
-	  if (enforceAxis && dest.axis !== 'enu') {
-	    return adjust_axis(dest, true, point);
-	  }
-
-	  return point;
-	}
-
-	var wgs84 = Projection('WGS84');
-
-	function transformer(from, to, coords, enforceAxis) {
-	  var transformedArray, out, keys;
-	  if (Array.isArray(coords)) {
-	    transformedArray = transform(from, to, coords, enforceAxis) || {x: NaN, y: NaN};
-	    if (coords.length > 2) {
-	      if ((typeof from.name !== 'undefined' && from.name === 'geocent') || (typeof to.name !== 'undefined' && to.name === 'geocent')) {
-	        if (typeof transformedArray.z === 'number') {
-	          return [transformedArray.x, transformedArray.y, transformedArray.z].concat(coords.splice(3));
-	        } else {
-	          return [transformedArray.x, transformedArray.y, coords[2]].concat(coords.splice(3));
-	        }
-	      } else {
-	        return [transformedArray.x, transformedArray.y].concat(coords.splice(2));
-	      }
-	    } else {
-	      return [transformedArray.x, transformedArray.y];
-	    }
-	  } else {
-	    out = transform(from, to, coords, enforceAxis);
-	    keys = Object.keys(coords);
-	    if (keys.length === 2) {
-	      return out;
-	    }
-	    keys.forEach(function (key) {
-	      if ((typeof from.name !== 'undefined' && from.name === 'geocent') || (typeof to.name !== 'undefined' && to.name === 'geocent')) {
-	        if (key === 'x' || key === 'y' || key === 'z') {
-	          return;
-	        }
-	      } else {
-	        if (key === 'x' || key === 'y') {
-	          return;
-	        }
-	      }
-	      out[key] = coords[key];
-	    });
-	    return out;
-	  }
-	}
-
-	function checkProj(item) {
-	  if (item instanceof Projection) {
-	    return item;
-	  }
-	  if (item.oProj) {
-	    return item.oProj;
-	  }
-	  return Projection(item);
-	}
-
-	function proj4(fromProj, toProj, coord) {
-	  fromProj = checkProj(fromProj);
-	  var single = false;
-	  var obj;
-	  if (typeof toProj === 'undefined') {
-	    toProj = fromProj;
-	    fromProj = wgs84;
-	    single = true;
-	  } else if (typeof toProj.x !== 'undefined' || Array.isArray(toProj)) {
-	    coord = toProj;
-	    toProj = fromProj;
-	    fromProj = wgs84;
-	    single = true;
-	  }
-	  toProj = checkProj(toProj);
-	  if (coord) {
-	    return transformer(fromProj, toProj, coord);
-	  } else {
-	    obj = {
-	      forward: function (coords, enforceAxis) {
-	        return transformer(fromProj, toProj, coords, enforceAxis);
-	      },
-	      inverse: function (coords, enforceAxis) {
-	        return transformer(toProj, fromProj, coords, enforceAxis);
-	      }
-	    };
-	    if (single) {
-	      obj.oProj = toProj;
-	    }
-	    return obj;
-	  }
-	}
-
-	/**
-	 * UTM zones are grouped, and assigned to one of a group of 6
-	 * sets.
-	 *
-	 * {int} @private
-	 */
-	var NUM_100K_SETS = 6;
-
-	/**
-	 * The column letters (for easting) of the lower left value, per
-	 * set.
-	 *
-	 * {string} @private
-	 */
-	var SET_ORIGIN_COLUMN_LETTERS = 'AJSAJS';
-
-	/**
-	 * The row letters (for northing) of the lower left value, per
-	 * set.
-	 *
-	 * {string} @private
-	 */
-	var SET_ORIGIN_ROW_LETTERS = 'AFAFAF';
-
-	var A = 65; // A
-	var I = 73; // I
-	var O = 79; // O
-	var V = 86; // V
-	var Z = 90; // Z
-	var mgrs = {
-	  forward: forward$1,
-	  inverse: inverse$1,
-	  toPoint: toPoint
-	};
-	/**
-	 * Conversion of lat/lon to MGRS.
-	 *
-	 * @param {object} ll Object literal with lat and lon properties on a
-	 *     WGS84 ellipsoid.
-	 * @param {int} accuracy Accuracy in digits (5 for 1 m, 4 for 10 m, 3 for
-	 *      100 m, 2 for 1000 m or 1 for 10000 m). Optional, default is 5.
-	 * @return {string} the MGRS string for the given location and accuracy.
-	 */
-	function forward$1(ll, accuracy) {
-	  accuracy = accuracy || 5; // default accuracy 1m
-	  return encode(LLtoUTM({
-	    lat: ll[1],
-	    lon: ll[0]
-	  }), accuracy);
-	};
-
-	/**
-	 * Conversion of MGRS to lat/lon.
-	 *
-	 * @param {string} mgrs MGRS string.
-	 * @return {array} An array with left (longitude), bottom (latitude), right
-	 *     (longitude) and top (latitude) values in WGS84, representing the
-	 *     bounding box for the provided MGRS reference.
-	 */
-	function inverse$1(mgrs) {
-	  var bbox = UTMtoLL(decode(mgrs.toUpperCase()));
-	  if (bbox.lat && bbox.lon) {
-	    return [bbox.lon, bbox.lat, bbox.lon, bbox.lat];
-	  }
-	  return [bbox.left, bbox.bottom, bbox.right, bbox.top];
-	};
-
-	function toPoint(mgrs) {
-	  var bbox = UTMtoLL(decode(mgrs.toUpperCase()));
-	  if (bbox.lat && bbox.lon) {
-	    return [bbox.lon, bbox.lat];
-	  }
-	  return [(bbox.left + bbox.right) / 2, (bbox.top + bbox.bottom) / 2];
-	};
-	/**
-	 * Conversion from degrees to radians.
-	 *
-	 * @private
-	 * @param {number} deg the angle in degrees.
-	 * @return {number} the angle in radians.
-	 */
-	function degToRad$1(deg) {
-	  return (deg * (Math.PI / 180.0));
-	}
-
-	/**
-	 * Conversion from radians to degrees.
-	 *
-	 * @private
-	 * @param {number} rad the angle in radians.
-	 * @return {number} the angle in degrees.
-	 */
-	function radToDeg$1(rad) {
-	  return (180.0 * (rad / Math.PI));
-	}
-
-	/**
-	 * Converts a set of Longitude and Latitude co-ordinates to UTM
-	 * using the WGS84 ellipsoid.
-	 *
-	 * @private
-	 * @param {object} ll Object literal with lat and lon properties
-	 *     representing the WGS84 coordinate to be converted.
-	 * @return {object} Object literal containing the UTM value with easting,
-	 *     northing, zoneNumber and zoneLetter properties, and an optional
-	 *     accuracy property in digits. Returns null if the conversion failed.
-	 */
-	function LLtoUTM(ll) {
-	  var Lat = ll.lat;
-	  var Long = ll.lon;
-	  var a = 6378137.0; //ellip.radius;
-	  var eccSquared = 0.00669438; //ellip.eccsq;
-	  var k0 = 0.9996;
-	  var LongOrigin;
-	  var eccPrimeSquared;
-	  var N, T, C, A, M;
-	  var LatRad = degToRad$1(Lat);
-	  var LongRad = degToRad$1(Long);
-	  var LongOriginRad;
-	  var ZoneNumber;
-	  // (int)
-	  ZoneNumber = Math.floor((Long + 180) / 6) + 1;
-
-	  //Make sure the longitude 180.00 is in Zone 60
-	  if (Long === 180) {
-	    ZoneNumber = 60;
-	  }
-
-	  // Special zone for Norway
-	  if (Lat >= 56.0 && Lat < 64.0 && Long >= 3.0 && Long < 12.0) {
-	    ZoneNumber = 32;
-	  }
-
-	  // Special zones for Svalbard
-	  if (Lat >= 72.0 && Lat < 84.0) {
-	    if (Long >= 0.0 && Long < 9.0) {
-	      ZoneNumber = 31;
-	    }
-	    else if (Long >= 9.0 && Long < 21.0) {
-	      ZoneNumber = 33;
-	    }
-	    else if (Long >= 21.0 && Long < 33.0) {
-	      ZoneNumber = 35;
-	    }
-	    else if (Long >= 33.0 && Long < 42.0) {
-	      ZoneNumber = 37;
-	    }
-	  }
-
-	  LongOrigin = (ZoneNumber - 1) * 6 - 180 + 3; //+3 puts origin
-	  // in middle of
-	  // zone
-	  LongOriginRad = degToRad$1(LongOrigin);
-
-	  eccPrimeSquared = (eccSquared) / (1 - eccSquared);
-
-	  N = a / Math.sqrt(1 - eccSquared * Math.sin(LatRad) * Math.sin(LatRad));
-	  T = Math.tan(LatRad) * Math.tan(LatRad);
-	  C = eccPrimeSquared * Math.cos(LatRad) * Math.cos(LatRad);
-	  A = Math.cos(LatRad) * (LongRad - LongOriginRad);
-
-	  M = a * ((1 - eccSquared / 4 - 3 * eccSquared * eccSquared / 64 - 5 * eccSquared * eccSquared * eccSquared / 256) * LatRad - (3 * eccSquared / 8 + 3 * eccSquared * eccSquared / 32 + 45 * eccSquared * eccSquared * eccSquared / 1024) * Math.sin(2 * LatRad) + (15 * eccSquared * eccSquared / 256 + 45 * eccSquared * eccSquared * eccSquared / 1024) * Math.sin(4 * LatRad) - (35 * eccSquared * eccSquared * eccSquared / 3072) * Math.sin(6 * LatRad));
-
-	  var UTMEasting = (k0 * N * (A + (1 - T + C) * A * A * A / 6.0 + (5 - 18 * T + T * T + 72 * C - 58 * eccPrimeSquared) * A * A * A * A * A / 120.0) + 500000.0);
-
-	  var UTMNorthing = (k0 * (M + N * Math.tan(LatRad) * (A * A / 2 + (5 - T + 9 * C + 4 * C * C) * A * A * A * A / 24.0 + (61 - 58 * T + T * T + 600 * C - 330 * eccPrimeSquared) * A * A * A * A * A * A / 720.0)));
-	  if (Lat < 0.0) {
-	    UTMNorthing += 10000000.0; //10000000 meter offset for
-	    // southern hemisphere
-	  }
-
-	  return {
-	    northing: Math.round(UTMNorthing),
-	    easting: Math.round(UTMEasting),
-	    zoneNumber: ZoneNumber,
-	    zoneLetter: getLetterDesignator(Lat)
-	  };
-	}
-
-	/**
-	 * Converts UTM coords to lat/long, using the WGS84 ellipsoid. This is a convenience
-	 * class where the Zone can be specified as a single string eg."60N" which
-	 * is then broken down into the ZoneNumber and ZoneLetter.
-	 *
-	 * @private
-	 * @param {object} utm An object literal with northing, easting, zoneNumber
-	 *     and zoneLetter properties. If an optional accuracy property is
-	 *     provided (in meters), a bounding box will be returned instead of
-	 *     latitude and longitude.
-	 * @return {object} An object literal containing either lat and lon values
-	 *     (if no accuracy was provided), or top, right, bottom and left values
-	 *     for the bounding box calculated according to the provided accuracy.
-	 *     Returns null if the conversion failed.
-	 */
-	function UTMtoLL(utm) {
-
-	  var UTMNorthing = utm.northing;
-	  var UTMEasting = utm.easting;
-	  var zoneLetter = utm.zoneLetter;
-	  var zoneNumber = utm.zoneNumber;
-	  // check the ZoneNummber is valid
-	  if (zoneNumber < 0 || zoneNumber > 60) {
-	    return null;
-	  }
-
-	  var k0 = 0.9996;
-	  var a = 6378137.0; //ellip.radius;
-	  var eccSquared = 0.00669438; //ellip.eccsq;
-	  var eccPrimeSquared;
-	  var e1 = (1 - Math.sqrt(1 - eccSquared)) / (1 + Math.sqrt(1 - eccSquared));
-	  var N1, T1, C1, R1, D, M;
-	  var LongOrigin;
-	  var mu, phi1Rad;
-
-	  // remove 500,000 meter offset for longitude
-	  var x = UTMEasting - 500000.0;
-	  var y = UTMNorthing;
-
-	  // We must know somehow if we are in the Northern or Southern
-	  // hemisphere, this is the only time we use the letter So even
-	  // if the Zone letter isn't exactly correct it should indicate
-	  // the hemisphere correctly
-	  if (zoneLetter < 'N') {
-	    y -= 10000000.0; // remove 10,000,000 meter offset used
-	    // for southern hemisphere
-	  }
-
-	  // There are 60 zones with zone 1 being at West -180 to -174
-	  LongOrigin = (zoneNumber - 1) * 6 - 180 + 3; // +3 puts origin
-	  // in middle of
-	  // zone
-
-	  eccPrimeSquared = (eccSquared) / (1 - eccSquared);
-
-	  M = y / k0;
-	  mu = M / (a * (1 - eccSquared / 4 - 3 * eccSquared * eccSquared / 64 - 5 * eccSquared * eccSquared * eccSquared / 256));
-
-	  phi1Rad = mu + (3 * e1 / 2 - 27 * e1 * e1 * e1 / 32) * Math.sin(2 * mu) + (21 * e1 * e1 / 16 - 55 * e1 * e1 * e1 * e1 / 32) * Math.sin(4 * mu) + (151 * e1 * e1 * e1 / 96) * Math.sin(6 * mu);
-	  // double phi1 = ProjMath.radToDeg(phi1Rad);
-
-	  N1 = a / Math.sqrt(1 - eccSquared * Math.sin(phi1Rad) * Math.sin(phi1Rad));
-	  T1 = Math.tan(phi1Rad) * Math.tan(phi1Rad);
-	  C1 = eccPrimeSquared * Math.cos(phi1Rad) * Math.cos(phi1Rad);
-	  R1 = a * (1 - eccSquared) / Math.pow(1 - eccSquared * Math.sin(phi1Rad) * Math.sin(phi1Rad), 1.5);
-	  D = x / (N1 * k0);
-
-	  var lat = phi1Rad - (N1 * Math.tan(phi1Rad) / R1) * (D * D / 2 - (5 + 3 * T1 + 10 * C1 - 4 * C1 * C1 - 9 * eccPrimeSquared) * D * D * D * D / 24 + (61 + 90 * T1 + 298 * C1 + 45 * T1 * T1 - 252 * eccPrimeSquared - 3 * C1 * C1) * D * D * D * D * D * D / 720);
-	  lat = radToDeg$1(lat);
-
-	  var lon = (D - (1 + 2 * T1 + C1) * D * D * D / 6 + (5 - 2 * C1 + 28 * T1 - 3 * C1 * C1 + 8 * eccPrimeSquared + 24 * T1 * T1) * D * D * D * D * D / 120) / Math.cos(phi1Rad);
-	  lon = LongOrigin + radToDeg$1(lon);
-
-	  var result;
-	  if (utm.accuracy) {
-	    var topRight = UTMtoLL({
-	      northing: utm.northing + utm.accuracy,
-	      easting: utm.easting + utm.accuracy,
-	      zoneLetter: utm.zoneLetter,
-	      zoneNumber: utm.zoneNumber
-	    });
-	    result = {
-	      top: topRight.lat,
-	      right: topRight.lon,
-	      bottom: lat,
-	      left: lon
-	    };
-	  }
-	  else {
-	    result = {
-	      lat: lat,
-	      lon: lon
-	    };
-	  }
-	  return result;
-	}
-
-	/**
-	 * Calculates the MGRS letter designator for the given latitude.
-	 *
-	 * @private
-	 * @param {number} lat The latitude in WGS84 to get the letter designator
-	 *     for.
-	 * @return {char} The letter designator.
-	 */
-	function getLetterDesignator(lat) {
-	  //This is here as an error flag to show that the Latitude is
-	  //outside MGRS limits
-	  var LetterDesignator = 'Z';
-
-	  if ((84 >= lat) && (lat >= 72)) {
-	    LetterDesignator = 'X';
-	  }
-	  else if ((72 > lat) && (lat >= 64)) {
-	    LetterDesignator = 'W';
-	  }
-	  else if ((64 > lat) && (lat >= 56)) {
-	    LetterDesignator = 'V';
-	  }
-	  else if ((56 > lat) && (lat >= 48)) {
-	    LetterDesignator = 'U';
-	  }
-	  else if ((48 > lat) && (lat >= 40)) {
-	    LetterDesignator = 'T';
-	  }
-	  else if ((40 > lat) && (lat >= 32)) {
-	    LetterDesignator = 'S';
-	  }
-	  else if ((32 > lat) && (lat >= 24)) {
-	    LetterDesignator = 'R';
-	  }
-	  else if ((24 > lat) && (lat >= 16)) {
-	    LetterDesignator = 'Q';
-	  }
-	  else if ((16 > lat) && (lat >= 8)) {
-	    LetterDesignator = 'P';
-	  }
-	  else if ((8 > lat) && (lat >= 0)) {
-	    LetterDesignator = 'N';
-	  }
-	  else if ((0 > lat) && (lat >= -8)) {
-	    LetterDesignator = 'M';
-	  }
-	  else if ((-8 > lat) && (lat >= -16)) {
-	    LetterDesignator = 'L';
-	  }
-	  else if ((-16 > lat) && (lat >= -24)) {
-	    LetterDesignator = 'K';
-	  }
-	  else if ((-24 > lat) && (lat >= -32)) {
-	    LetterDesignator = 'J';
-	  }
-	  else if ((-32 > lat) && (lat >= -40)) {
-	    LetterDesignator = 'H';
-	  }
-	  else if ((-40 > lat) && (lat >= -48)) {
-	    LetterDesignator = 'G';
-	  }
-	  else if ((-48 > lat) && (lat >= -56)) {
-	    LetterDesignator = 'F';
-	  }
-	  else if ((-56 > lat) && (lat >= -64)) {
-	    LetterDesignator = 'E';
-	  }
-	  else if ((-64 > lat) && (lat >= -72)) {
-	    LetterDesignator = 'D';
-	  }
-	  else if ((-72 > lat) && (lat >= -80)) {
-	    LetterDesignator = 'C';
-	  }
-	  return LetterDesignator;
-	}
-
-	/**
-	 * Encodes a UTM location as MGRS string.
-	 *
-	 * @private
-	 * @param {object} utm An object literal with easting, northing,
-	 *     zoneLetter, zoneNumber
-	 * @param {number} accuracy Accuracy in digits (1-5).
-	 * @return {string} MGRS string for the given UTM location.
-	 */
-	function encode(utm, accuracy) {
-	  // prepend with leading zeroes
-	  var seasting = "00000" + utm.easting,
-	    snorthing = "00000" + utm.northing;
-
-	  return utm.zoneNumber + utm.zoneLetter + get100kID(utm.easting, utm.northing, utm.zoneNumber) + seasting.substr(seasting.length - 5, accuracy) + snorthing.substr(snorthing.length - 5, accuracy);
-	}
-
-	/**
-	 * Get the two letter 100k designator for a given UTM easting,
-	 * northing and zone number value.
-	 *
-	 * @private
-	 * @param {number} easting
-	 * @param {number} northing
-	 * @param {number} zoneNumber
-	 * @return the two letter 100k designator for the given UTM location.
-	 */
-	function get100kID(easting, northing, zoneNumber) {
-	  var setParm = get100kSetForZone(zoneNumber);
-	  var setColumn = Math.floor(easting / 100000);
-	  var setRow = Math.floor(northing / 100000) % 20;
-	  return getLetter100kID(setColumn, setRow, setParm);
-	}
-
-	/**
-	 * Given a UTM zone number, figure out the MGRS 100K set it is in.
-	 *
-	 * @private
-	 * @param {number} i An UTM zone number.
-	 * @return {number} the 100k set the UTM zone is in.
-	 */
-	function get100kSetForZone(i) {
-	  var setParm = i % NUM_100K_SETS;
-	  if (setParm === 0) {
-	    setParm = NUM_100K_SETS;
-	  }
-
-	  return setParm;
-	}
-
-	/**
-	 * Get the two-letter MGRS 100k designator given information
-	 * translated from the UTM northing, easting and zone number.
-	 *
-	 * @private
-	 * @param {number} column the column index as it relates to the MGRS
-	 *        100k set spreadsheet, created from the UTM easting.
-	 *        Values are 1-8.
-	 * @param {number} row the row index as it relates to the MGRS 100k set
-	 *        spreadsheet, created from the UTM northing value. Values
-	 *        are from 0-19.
-	 * @param {number} parm the set block, as it relates to the MGRS 100k set
-	 *        spreadsheet, created from the UTM zone. Values are from
-	 *        1-60.
-	 * @return two letter MGRS 100k code.
-	 */
-	function getLetter100kID(column, row, parm) {
-	  // colOrigin and rowOrigin are the letters at the origin of the set
-	  var index = parm - 1;
-	  var colOrigin = SET_ORIGIN_COLUMN_LETTERS.charCodeAt(index);
-	  var rowOrigin = SET_ORIGIN_ROW_LETTERS.charCodeAt(index);
-
-	  // colInt and rowInt are the letters to build to return
-	  var colInt = colOrigin + column - 1;
-	  var rowInt = rowOrigin + row;
-	  var rollover = false;
-
-	  if (colInt > Z) {
-	    colInt = colInt - Z + A - 1;
-	    rollover = true;
-	  }
-
-	  if (colInt === I || (colOrigin < I && colInt > I) || ((colInt > I || colOrigin < I) && rollover)) {
-	    colInt++;
-	  }
-
-	  if (colInt === O || (colOrigin < O && colInt > O) || ((colInt > O || colOrigin < O) && rollover)) {
-	    colInt++;
-
-	    if (colInt === I) {
-	      colInt++;
-	    }
-	  }
-
-	  if (colInt > Z) {
-	    colInt = colInt - Z + A - 1;
-	  }
-
-	  if (rowInt > V) {
-	    rowInt = rowInt - V + A - 1;
-	    rollover = true;
-	  }
-	  else {
-	    rollover = false;
-	  }
-
-	  if (((rowInt === I) || ((rowOrigin < I) && (rowInt > I))) || (((rowInt > I) || (rowOrigin < I)) && rollover)) {
-	    rowInt++;
-	  }
-
-	  if (((rowInt === O) || ((rowOrigin < O) && (rowInt > O))) || (((rowInt > O) || (rowOrigin < O)) && rollover)) {
-	    rowInt++;
-
-	    if (rowInt === I) {
-	      rowInt++;
-	    }
-	  }
-
-	  if (rowInt > V) {
-	    rowInt = rowInt - V + A - 1;
-	  }
-
-	  var twoLetter = String.fromCharCode(colInt) + String.fromCharCode(rowInt);
-	  return twoLetter;
-	}
-
-	/**
-	 * Decode the UTM parameters from a MGRS string.
-	 *
-	 * @private
-	 * @param {string} mgrsString an UPPERCASE coordinate string is expected.
-	 * @return {object} An object literal with easting, northing, zoneLetter,
-	 *     zoneNumber and accuracy (in meters) properties.
-	 */
-	function decode(mgrsString) {
-
-	  if (mgrsString && mgrsString.length === 0) {
-	    throw ("MGRSPoint coverting from nothing");
-	  }
-
-	  var length = mgrsString.length;
-
-	  var hunK = null;
-	  var sb = "";
-	  var testChar;
-	  var i = 0;
-
-	  // get Zone number
-	  while (!(/[A-Z]/).test(testChar = mgrsString.charAt(i))) {
-	    if (i >= 2) {
-	      throw ("MGRSPoint bad conversion from: " + mgrsString);
-	    }
-	    sb += testChar;
-	    i++;
-	  }
-
-	  var zoneNumber = parseInt(sb, 10);
-
-	  if (i === 0 || i + 3 > length) {
-	    // A good MGRS string has to be 4-5 digits long,
-	    // ##AAA/#AAA at least.
-	    throw ("MGRSPoint bad conversion from: " + mgrsString);
-	  }
-
-	  var zoneLetter = mgrsString.charAt(i++);
-
-	  // Should we check the zone letter here? Why not.
-	  if (zoneLetter <= 'A' || zoneLetter === 'B' || zoneLetter === 'Y' || zoneLetter >= 'Z' || zoneLetter === 'I' || zoneLetter === 'O') {
-	    throw ("MGRSPoint zone letter " + zoneLetter + " not handled: " + mgrsString);
-	  }
-
-	  hunK = mgrsString.substring(i, i += 2);
-
-	  var set = get100kSetForZone(zoneNumber);
-
-	  var east100k = getEastingFromChar(hunK.charAt(0), set);
-	  var north100k = getNorthingFromChar(hunK.charAt(1), set);
-
-	  // We have a bug where the northing may be 2000000 too low.
-	  // How
-	  // do we know when to roll over?
-
-	  while (north100k < getMinNorthing(zoneLetter)) {
-	    north100k += 2000000;
-	  }
-
-	  // calculate the char index for easting/northing separator
-	  var remainder = length - i;
-
-	  if (remainder % 2 !== 0) {
-	    throw ("MGRSPoint has to have an even number \nof digits after the zone letter and two 100km letters - front \nhalf for easting meters, second half for \nnorthing meters" + mgrsString);
-	  }
-
-	  var sep = remainder / 2;
-
-	  var sepEasting = 0.0;
-	  var sepNorthing = 0.0;
-	  var accuracyBonus, sepEastingString, sepNorthingString, easting, northing;
-	  if (sep > 0) {
-	    accuracyBonus = 100000.0 / Math.pow(10, sep);
-	    sepEastingString = mgrsString.substring(i, i + sep);
-	    sepEasting = parseFloat(sepEastingString) * accuracyBonus;
-	    sepNorthingString = mgrsString.substring(i + sep);
-	    sepNorthing = parseFloat(sepNorthingString) * accuracyBonus;
-	  }
-
-	  easting = sepEasting + east100k;
-	  northing = sepNorthing + north100k;
-
-	  return {
-	    easting: easting,
-	    northing: northing,
-	    zoneLetter: zoneLetter,
-	    zoneNumber: zoneNumber,
-	    accuracy: accuracyBonus
-	  };
-	}
-
-	/**
-	 * Given the first letter from a two-letter MGRS 100k zone, and given the
-	 * MGRS table set for the zone number, figure out the easting value that
-	 * should be added to the other, secondary easting value.
-	 *
-	 * @private
-	 * @param {char} e The first letter from a two-letter MGRS 100´k zone.
-	 * @param {number} set The MGRS table set for the zone number.
-	 * @return {number} The easting value for the given letter and set.
-	 */
-	function getEastingFromChar(e, set) {
-	  // colOrigin is the letter at the origin of the set for the
-	  // column
-	  var curCol = SET_ORIGIN_COLUMN_LETTERS.charCodeAt(set - 1);
-	  var eastingValue = 100000.0;
-	  var rewindMarker = false;
-
-	  while (curCol !== e.charCodeAt(0)) {
-	    curCol++;
-	    if (curCol === I) {
-	      curCol++;
-	    }
-	    if (curCol === O) {
-	      curCol++;
-	    }
-	    if (curCol > Z) {
-	      if (rewindMarker) {
-	        throw ("Bad character: " + e);
-	      }
-	      curCol = A;
-	      rewindMarker = true;
-	    }
-	    eastingValue += 100000.0;
-	  }
-
-	  return eastingValue;
-	}
-
-	/**
-	 * Given the second letter from a two-letter MGRS 100k zone, and given the
-	 * MGRS table set for the zone number, figure out the northing value that
-	 * should be added to the other, secondary northing value. You have to
-	 * remember that Northings are determined from the equator, and the vertical
-	 * cycle of letters mean a 2000000 additional northing meters. This happens
-	 * approx. every 18 degrees of latitude. This method does *NOT* count any
-	 * additional northings. You have to figure out how many 2000000 meters need
-	 * to be added for the zone letter of the MGRS coordinate.
-	 *
-	 * @private
-	 * @param {char} n Second letter of the MGRS 100k zone
-	 * @param {number} set The MGRS table set number, which is dependent on the
-	 *     UTM zone number.
-	 * @return {number} The northing value for the given letter and set.
-	 */
-	function getNorthingFromChar(n, set) {
-
-	  if (n > 'V') {
-	    throw ("MGRSPoint given invalid Northing " + n);
-	  }
-
-	  // rowOrigin is the letter at the origin of the set for the
-	  // column
-	  var curRow = SET_ORIGIN_ROW_LETTERS.charCodeAt(set - 1);
-	  var northingValue = 0.0;
-	  var rewindMarker = false;
-
-	  while (curRow !== n.charCodeAt(0)) {
-	    curRow++;
-	    if (curRow === I) {
-	      curRow++;
-	    }
-	    if (curRow === O) {
-	      curRow++;
-	    }
-	    // fixing a bug making whole application hang in this loop
-	    // when 'n' is a wrong character
-	    if (curRow > V) {
-	      if (rewindMarker) { // making sure that this loop ends
-	        throw ("Bad character: " + n);
-	      }
-	      curRow = A;
-	      rewindMarker = true;
-	    }
-	    northingValue += 100000.0;
-	  }
-
-	  return northingValue;
-	}
-
-	/**
-	 * The function getMinNorthing returns the minimum northing value of a MGRS
-	 * zone.
-	 *
-	 * Ported from Geotrans' c Lattitude_Band_Value structure table.
-	 *
-	 * @private
-	 * @param {char} zoneLetter The MGRS zone to get the min northing for.
-	 * @return {number}
-	 */
-	function getMinNorthing(zoneLetter) {
-	  var northing;
-	  switch (zoneLetter) {
-	  case 'C':
-	    northing = 1100000.0;
-	    break;
-	  case 'D':
-	    northing = 2000000.0;
-	    break;
-	  case 'E':
-	    northing = 2800000.0;
-	    break;
-	  case 'F':
-	    northing = 3700000.0;
-	    break;
-	  case 'G':
-	    northing = 4600000.0;
-	    break;
-	  case 'H':
-	    northing = 5500000.0;
-	    break;
-	  case 'J':
-	    northing = 6400000.0;
-	    break;
-	  case 'K':
-	    northing = 7300000.0;
-	    break;
-	  case 'L':
-	    northing = 8200000.0;
-	    break;
-	  case 'M':
-	    northing = 9100000.0;
-	    break;
-	  case 'N':
-	    northing = 0.0;
-	    break;
-	  case 'P':
-	    northing = 800000.0;
-	    break;
-	  case 'Q':
-	    northing = 1700000.0;
-	    break;
-	  case 'R':
-	    northing = 2600000.0;
-	    break;
-	  case 'S':
-	    northing = 3500000.0;
-	    break;
-	  case 'T':
-	    northing = 4400000.0;
-	    break;
-	  case 'U':
-	    northing = 5300000.0;
-	    break;
-	  case 'V':
-	    northing = 6200000.0;
-	    break;
-	  case 'W':
-	    northing = 7000000.0;
-	    break;
-	  case 'X':
-	    northing = 7900000.0;
-	    break;
-	  default:
-	    northing = -1.0;
-	  }
-	  if (northing >= 0.0) {
-	    return northing;
-	  }
-	  else {
-	    throw ("Invalid zone letter: " + zoneLetter);
-	  }
-
-	}
-
-	function Point(x, y, z) {
-	  if (!(this instanceof Point)) {
-	    return new Point(x, y, z);
-	  }
-	  if (Array.isArray(x)) {
-	    this.x = x[0];
-	    this.y = x[1];
-	    this.z = x[2] || 0.0;
-	  } else if(typeof x === 'object') {
-	    this.x = x.x;
-	    this.y = x.y;
-	    this.z = x.z || 0.0;
-	  } else if (typeof x === 'string' && typeof y === 'undefined') {
-	    var coords = x.split(',');
-	    this.x = parseFloat(coords[0], 10);
-	    this.y = parseFloat(coords[1], 10);
-	    this.z = parseFloat(coords[2], 10) || 0.0;
-	  } else {
-	    this.x = x;
-	    this.y = y;
-	    this.z = z || 0.0;
-	  }
-	  console.warn('proj4.Point will be removed in version 3, use proj4.toPoint');
-	}
-
-	Point.fromMGRS = function(mgrsStr) {
-	  return new Point(toPoint(mgrsStr));
-	};
-	Point.prototype.toMGRS = function(accuracy) {
-	  return forward$1([this.x, this.y], accuracy);
-	};
-
-	var C00 = 1;
-	var C02 = 0.25;
-	var C04 = 0.046875;
-	var C06 = 0.01953125;
-	var C08 = 0.01068115234375;
-	var C22 = 0.75;
-	var C44 = 0.46875;
-	var C46 = 0.01302083333333333333;
-	var C48 = 0.00712076822916666666;
-	var C66 = 0.36458333333333333333;
-	var C68 = 0.00569661458333333333;
-	var C88 = 0.3076171875;
-
-	function pj_enfn(es) {
-	  var en = [];
-	  en[0] = C00 - es * (C02 + es * (C04 + es * (C06 + es * C08)));
-	  en[1] = es * (C22 - es * (C04 + es * (C06 + es * C08)));
-	  var t = es * es;
-	  en[2] = t * (C44 - es * (C46 + es * C48));
-	  t *= es;
-	  en[3] = t * (C66 - es * C68);
-	  en[4] = t * es * C88;
-	  return en;
-	}
-
-	function pj_mlfn(phi, sphi, cphi, en) {
-	  cphi *= sphi;
-	  sphi *= sphi;
-	  return (en[0] * phi - cphi * (en[1] + sphi * (en[2] + sphi * (en[3] + sphi * en[4]))));
-	}
-
-	var MAX_ITER = 20;
-
-	function pj_inv_mlfn(arg, es, en) {
-	  var k = 1 / (1 - es);
-	  var phi = arg;
-	  for (var i = MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
-	    var s = Math.sin(phi);
-	    var t = 1 - es * s * s;
-	    //t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
-	    //phi -= t * (t * Math.sqrt(t)) * k;
-	    t = (pj_mlfn(phi, s, Math.cos(phi), en) - arg) * (t * Math.sqrt(t)) * k;
-	    phi -= t;
-	    if (Math.abs(t) < EPSLN) {
-	      return phi;
-	    }
-	  }
-	  //..reportError("cass:pj_inv_mlfn: Convergence error");
-	  return phi;
-	}
-
-	// Heavily based on this tmerc projection implementation
-
-	function init$2() {
-	  this.x0 = this.x0 !== undefined ? this.x0 : 0;
-	  this.y0 = this.y0 !== undefined ? this.y0 : 0;
-	  this.long0 = this.long0 !== undefined ? this.long0 : 0;
-	  this.lat0 = this.lat0 !== undefined ? this.lat0 : 0;
-
-	  if (this.es) {
-	    this.en = pj_enfn(this.es);
-	    this.ml0 = pj_mlfn(this.lat0, Math.sin(this.lat0), Math.cos(this.lat0), this.en);
-	  }
-	}
-
-	/**
-	    Transverse Mercator Forward  - long/lat to x/y
-	    long/lat in radians
-	  */
-	function forward$2(p) {
-	  var lon = p.x;
-	  var lat = p.y;
-
-	  var delta_lon = adjust_lon(lon - this.long0);
-	  var con;
-	  var x, y;
-	  var sin_phi = Math.sin(lat);
-	  var cos_phi = Math.cos(lat);
-
-	  if (!this.es) {
-	    var b = cos_phi * Math.sin(delta_lon);
-
-	    if ((Math.abs(Math.abs(b) - 1)) < EPSLN) {
-	      return (93);
-	    }
-	    else {
-	      x = 0.5 * this.a * this.k0 * Math.log((1 + b) / (1 - b)) + this.x0;
-	      y = cos_phi * Math.cos(delta_lon) / Math.sqrt(1 - Math.pow(b, 2));
-	      b = Math.abs(y);
-
-	      if (b >= 1) {
-	        if ((b - 1) > EPSLN) {
-	          return (93);
-	        }
-	        else {
-	          y = 0;
-	        }
-	      }
-	      else {
-	        y = Math.acos(y);
-	      }
-
-	      if (lat < 0) {
-	        y = -y;
-	      }
-
-	      y = this.a * this.k0 * (y - this.lat0) + this.y0;
-	    }
-	  }
-	  else {
-	    var al = cos_phi * delta_lon;
-	    var als = Math.pow(al, 2);
-	    var c = this.ep2 * Math.pow(cos_phi, 2);
-	    var cs = Math.pow(c, 2);
-	    var tq = Math.abs(cos_phi) > EPSLN ? Math.tan(lat) : 0;
-	    var t = Math.pow(tq, 2);
-	    var ts = Math.pow(t, 2);
-	    con = 1 - this.es * Math.pow(sin_phi, 2);
-	    al = al / Math.sqrt(con);
-	    var ml = pj_mlfn(lat, sin_phi, cos_phi, this.en);
-
-	    x = this.a * (this.k0 * al * (1 +
-	      als / 6 * (1 - t + c +
-	      als / 20 * (5 - 18 * t + ts + 14 * c - 58 * t * c +
-	      als / 42 * (61 + 179 * ts - ts * t - 479 * t))))) +
-	      this.x0;
-
-	    y = this.a * (this.k0 * (ml - this.ml0 +
-	      sin_phi * delta_lon * al / 2 * (1 +
-	      als / 12 * (5 - t + 9 * c + 4 * cs +
-	      als / 30 * (61 + ts - 58 * t + 270 * c - 330 * t * c +
-	      als / 56 * (1385 + 543 * ts - ts * t - 3111 * t)))))) +
-	      this.y0;
-	  }
-
-	  p.x = x;
-	  p.y = y;
-
-	  return p;
-	}
-
-	/**
-	    Transverse Mercator Inverse  -  x/y to long/lat
-	  */
-	function inverse$2(p) {
-	  var con, phi;
-	  var lat, lon;
-	  var x = (p.x - this.x0) * (1 / this.a);
-	  var y = (p.y - this.y0) * (1 / this.a);
-
-	  if (!this.es) {
-	    var f = Math.exp(x / this.k0);
-	    var g = 0.5 * (f - 1 / f);
-	    var temp = this.lat0 + y / this.k0;
-	    var h = Math.cos(temp);
-	    con = Math.sqrt((1 - Math.pow(h, 2)) / (1 + Math.pow(g, 2)));
-	    lat = Math.asin(con);
-
-	    if (y < 0) {
-	      lat = -lat;
-	    }
-
-	    if ((g === 0) && (h === 0)) {
-	      lon = 0;
-	    }
-	    else {
-	      lon = adjust_lon(Math.atan2(g, h) + this.long0);
-	    }
-	  }
-	  else { // ellipsoidal form
-	    con = this.ml0 + y / this.k0;
-	    phi = pj_inv_mlfn(con, this.es, this.en);
-
-	    if (Math.abs(phi) < HALF_PI) {
-	      var sin_phi = Math.sin(phi);
-	      var cos_phi = Math.cos(phi);
-	      var tan_phi = Math.abs(cos_phi) > EPSLN ? Math.tan(phi) : 0;
-	      var c = this.ep2 * Math.pow(cos_phi, 2);
-	      var cs = Math.pow(c, 2);
-	      var t = Math.pow(tan_phi, 2);
-	      var ts = Math.pow(t, 2);
-	      con = 1 - this.es * Math.pow(sin_phi, 2);
-	      var d = x * Math.sqrt(con) / this.k0;
-	      var ds = Math.pow(d, 2);
-	      con = con * tan_phi;
-
-	      lat = phi - (con * ds / (1 - this.es)) * 0.5 * (1 -
-	        ds / 12 * (5 + 3 * t - 9 * c * t + c - 4 * cs -
-	        ds / 30 * (61 + 90 * t - 252 * c * t + 45 * ts + 46 * c -
-	        ds / 56 * (1385 + 3633 * t + 4095 * ts + 1574 * ts * t))));
-
-	      lon = adjust_lon(this.long0 + (d * (1 -
-	        ds / 6 * (1 + 2 * t + c -
-	        ds / 20 * (5 + 28 * t + 24 * ts + 8 * c * t + 6 * c -
-	        ds / 42 * (61 + 662 * t + 1320 * ts + 720 * ts * t)))) / cos_phi));
-	    }
-	    else {
-	      lat = HALF_PI * sign$1(y);
-	      lon = 0;
-	    }
-	  }
-
-	  p.x = lon;
-	  p.y = lat;
-
-	  return p;
-	}
-
-	var names$3 = ["Fast_Transverse_Mercator", "Fast Transverse Mercator"];
-	var tmerc = {
-	  init: init$2,
-	  forward: forward$2,
-	  inverse: inverse$2,
-	  names: names$3
-	};
-
-	function sinh(x) {
-	  var r = Math.exp(x);
-	  r = (r - 1 / r) / 2;
-	  return r;
-	}
-
-	function hypot(x, y) {
-	  x = Math.abs(x);
-	  y = Math.abs(y);
-	  var a = Math.max(x, y);
-	  var b = Math.min(x, y) / (a ? a : 1);
-
-	  return a * Math.sqrt(1 + Math.pow(b, 2));
-	}
-
-	function log1py(x) {
-	  var y = 1 + x;
-	  var z = y - 1;
-
-	  return z === 0 ? x : x * Math.log(y) / z;
-	}
-
-	function asinhy(x) {
-	  var y = Math.abs(x);
-	  y = log1py(y * (1 + y / (hypot(1, y) + 1)));
-
-	  return x < 0 ? -y : y;
-	}
-
-	function gatg(pp, B) {
-	  var cos_2B = 2 * Math.cos(2 * B);
-	  var i = pp.length - 1;
-	  var h1 = pp[i];
-	  var h2 = 0;
-	  var h;
-
-	  while (--i >= 0) {
-	    h = -h2 + cos_2B * h1 + pp[i];
-	    h2 = h1;
-	    h1 = h;
-	  }
-
-	  return (B + h * Math.sin(2 * B));
-	}
-
-	function clens(pp, arg_r) {
-	  var r = 2 * Math.cos(arg_r);
-	  var i = pp.length - 1;
-	  var hr1 = pp[i];
-	  var hr2 = 0;
-	  var hr;
-
-	  while (--i >= 0) {
-	    hr = -hr2 + r * hr1 + pp[i];
-	    hr2 = hr1;
-	    hr1 = hr;
-	  }
-
-	  return Math.sin(arg_r) * hr;
-	}
-
-	function cosh(x) {
-	  var r = Math.exp(x);
-	  r = (r + 1 / r) / 2;
-	  return r;
-	}
-
-	function clens_cmplx(pp, arg_r, arg_i) {
-	  var sin_arg_r = Math.sin(arg_r);
-	  var cos_arg_r = Math.cos(arg_r);
-	  var sinh_arg_i = sinh(arg_i);
-	  var cosh_arg_i = cosh(arg_i);
-	  var r = 2 * cos_arg_r * cosh_arg_i;
-	  var i = -2 * sin_arg_r * sinh_arg_i;
-	  var j = pp.length - 1;
-	  var hr = pp[j];
-	  var hi1 = 0;
-	  var hr1 = 0;
-	  var hi = 0;
-	  var hr2;
-	  var hi2;
-
-	  while (--j >= 0) {
-	    hr2 = hr1;
-	    hi2 = hi1;
-	    hr1 = hr;
-	    hi1 = hi;
-	    hr = -hr2 + r * hr1 - i * hi1 + pp[j];
-	    hi = -hi2 + i * hr1 + r * hi1;
-	  }
-
-	  r = sin_arg_r * cosh_arg_i;
-	  i = cos_arg_r * sinh_arg_i;
-
-	  return [r * hr - i * hi, r * hi + i * hr];
-	}
-
-	// Heavily based on this etmerc projection implementation
-
-	function init$3() {
-	  if (!this.approx && (isNaN(this.es) || this.es <= 0)) {
-	    throw new Error('Incorrect elliptical usage. Try using the +approx option in the proj string, or PROJECTION["Fast_Transverse_Mercator"] in the WKT.');
-	  }
-	  if (this.approx) {
-	    // When '+approx' is set, use tmerc instead
-	    tmerc.init.apply(this);
-	    this.forward = tmerc.forward;
-	    this.inverse = tmerc.inverse;
-	  }
-
-	  this.x0 = this.x0 !== undefined ? this.x0 : 0;
-	  this.y0 = this.y0 !== undefined ? this.y0 : 0;
-	  this.long0 = this.long0 !== undefined ? this.long0 : 0;
-	  this.lat0 = this.lat0 !== undefined ? this.lat0 : 0;
-
-	  this.cgb = [];
-	  this.cbg = [];
-	  this.utg = [];
-	  this.gtu = [];
-
-	  var f = this.es / (1 + Math.sqrt(1 - this.es));
-	  var n = f / (2 - f);
-	  var np = n;
-
-	  this.cgb[0] = n * (2 + n * (-2 / 3 + n * (-2 + n * (116 / 45 + n * (26 / 45 + n * (-2854 / 675 ))))));
-	  this.cbg[0] = n * (-2 + n * ( 2 / 3 + n * ( 4 / 3 + n * (-82 / 45 + n * (32 / 45 + n * (4642 / 4725))))));
-
-	  np = np * n;
-	  this.cgb[1] = np * (7 / 3 + n * (-8 / 5 + n * (-227 / 45 + n * (2704 / 315 + n * (2323 / 945)))));
-	  this.cbg[1] = np * (5 / 3 + n * (-16 / 15 + n * ( -13 / 9 + n * (904 / 315 + n * (-1522 / 945)))));
-
-	  np = np * n;
-	  this.cgb[2] = np * (56 / 15 + n * (-136 / 35 + n * (-1262 / 105 + n * (73814 / 2835))));
-	  this.cbg[2] = np * (-26 / 15 + n * (34 / 21 + n * (8 / 5 + n * (-12686 / 2835))));
-
-	  np = np * n;
-	  this.cgb[3] = np * (4279 / 630 + n * (-332 / 35 + n * (-399572 / 14175)));
-	  this.cbg[3] = np * (1237 / 630 + n * (-12 / 5 + n * ( -24832 / 14175)));
-
-	  np = np * n;
-	  this.cgb[4] = np * (4174 / 315 + n * (-144838 / 6237));
-	  this.cbg[4] = np * (-734 / 315 + n * (109598 / 31185));
-
-	  np = np * n;
-	  this.cgb[5] = np * (601676 / 22275);
-	  this.cbg[5] = np * (444337 / 155925);
-
-	  np = Math.pow(n, 2);
-	  this.Qn = this.k0 / (1 + n) * (1 + np * (1 / 4 + np * (1 / 64 + np / 256)));
-
-	  this.utg[0] = n * (-0.5 + n * ( 2 / 3 + n * (-37 / 96 + n * ( 1 / 360 + n * (81 / 512 + n * (-96199 / 604800))))));
-	  this.gtu[0] = n * (0.5 + n * (-2 / 3 + n * (5 / 16 + n * (41 / 180 + n * (-127 / 288 + n * (7891 / 37800))))));
-
-	  this.utg[1] = np * (-1 / 48 + n * (-1 / 15 + n * (437 / 1440 + n * (-46 / 105 + n * (1118711 / 3870720)))));
-	  this.gtu[1] = np * (13 / 48 + n * (-3 / 5 + n * (557 / 1440 + n * (281 / 630 + n * (-1983433 / 1935360)))));
-
-	  np = np * n;
-	  this.utg[2] = np * (-17 / 480 + n * (37 / 840 + n * (209 / 4480 + n * (-5569 / 90720 ))));
-	  this.gtu[2] = np * (61 / 240 + n * (-103 / 140 + n * (15061 / 26880 + n * (167603 / 181440))));
-
-	  np = np * n;
-	  this.utg[3] = np * (-4397 / 161280 + n * (11 / 504 + n * (830251 / 7257600)));
-	  this.gtu[3] = np * (49561 / 161280 + n * (-179 / 168 + n * (6601661 / 7257600)));
-
-	  np = np * n;
-	  this.utg[4] = np * (-4583 / 161280 + n * (108847 / 3991680));
-	  this.gtu[4] = np * (34729 / 80640 + n * (-3418889 / 1995840));
-
-	  np = np * n;
-	  this.utg[5] = np * (-20648693 / 638668800);
-	  this.gtu[5] = np * (212378941 / 319334400);
-
-	  var Z = gatg(this.cbg, this.lat0);
-	  this.Zb = -this.Qn * (Z + clens(this.gtu, 2 * Z));
-	}
-
-	function forward$3(p) {
-	  var Ce = adjust_lon(p.x - this.long0);
-	  var Cn = p.y;
-
-	  Cn = gatg(this.cbg, Cn);
-	  var sin_Cn = Math.sin(Cn);
-	  var cos_Cn = Math.cos(Cn);
-	  var sin_Ce = Math.sin(Ce);
-	  var cos_Ce = Math.cos(Ce);
-
-	  Cn = Math.atan2(sin_Cn, cos_Ce * cos_Cn);
-	  Ce = Math.atan2(sin_Ce * cos_Cn, hypot(sin_Cn, cos_Cn * cos_Ce));
-	  Ce = asinhy(Math.tan(Ce));
-
-	  var tmp = clens_cmplx(this.gtu, 2 * Cn, 2 * Ce);
-
-	  Cn = Cn + tmp[0];
-	  Ce = Ce + tmp[1];
-
-	  var x;
-	  var y;
-
-	  if (Math.abs(Ce) <= 2.623395162778) {
-	    x = this.a * (this.Qn * Ce) + this.x0;
-	    y = this.a * (this.Qn * Cn + this.Zb) + this.y0;
-	  }
-	  else {
-	    x = Infinity;
-	    y = Infinity;
-	  }
-
-	  p.x = x;
-	  p.y = y;
-
-	  return p;
-	}
-
-	function inverse$3(p) {
-	  var Ce = (p.x - this.x0) * (1 / this.a);
-	  var Cn = (p.y - this.y0) * (1 / this.a);
-
-	  Cn = (Cn - this.Zb) / this.Qn;
-	  Ce = Ce / this.Qn;
-
-	  var lon;
-	  var lat;
-
-	  if (Math.abs(Ce) <= 2.623395162778) {
-	    var tmp = clens_cmplx(this.utg, 2 * Cn, 2 * Ce);
-
-	    Cn = Cn + tmp[0];
-	    Ce = Ce + tmp[1];
-	    Ce = Math.atan(sinh(Ce));
-
-	    var sin_Cn = Math.sin(Cn);
-	    var cos_Cn = Math.cos(Cn);
-	    var sin_Ce = Math.sin(Ce);
-	    var cos_Ce = Math.cos(Ce);
-
-	    Cn = Math.atan2(sin_Cn * cos_Ce, hypot(sin_Ce, cos_Ce * cos_Cn));
-	    Ce = Math.atan2(sin_Ce, cos_Ce * cos_Cn);
-
-	    lon = adjust_lon(Ce + this.long0);
-	    lat = gatg(this.cgb, Cn);
-	  }
-	  else {
-	    lon = Infinity;
-	    lat = Infinity;
-	  }
-
-	  p.x = lon;
-	  p.y = lat;
-
-	  return p;
-	}
-
-	var names$4 = ["Extended_Transverse_Mercator", "Extended Transverse Mercator", "etmerc", "Transverse_Mercator", "Transverse Mercator", "tmerc"];
-	var etmerc = {
-	  init: init$3,
-	  forward: forward$3,
-	  inverse: inverse$3,
-	  names: names$4
-	};
-
-	function adjust_zone(zone, lon) {
-	  if (zone === undefined) {
-	    zone = Math.floor((adjust_lon(lon) + Math.PI) * 30 / Math.PI) + 1;
-
-	    if (zone < 0) {
-	      return 0;
-	    } else if (zone > 60) {
-	      return 60;
-	    }
-	  }
-	  return zone;
-	}
-
-	var dependsOn = 'etmerc';
-
-
-	function init$4() {
-	  var zone = adjust_zone(this.zone, this.long0);
-	  if (zone === undefined) {
-	    throw new Error('unknown utm zone');
-	  }
-	  this.lat0 = 0;
-	  this.long0 =  ((6 * Math.abs(zone)) - 183) * D2R;
-	  this.x0 = 500000;
-	  this.y0 = this.utmSouth ? 10000000 : 0;
-	  this.k0 = 0.9996;
-
-	  etmerc.init.apply(this);
-	  this.forward = etmerc.forward;
-	  this.inverse = etmerc.inverse;
-	}
-
-	var names$5 = ["Universal Transverse Mercator System", "utm"];
-	var utm = {
-	  init: init$4,
-	  names: names$5,
-	  dependsOn: dependsOn
-	};
-
-	function srat(esinp, exp) {
-	  return (Math.pow((1 - esinp) / (1 + esinp), exp));
-	}
-
-	var MAX_ITER$1 = 20;
-
-	function init$5() {
-	  var sphi = Math.sin(this.lat0);
-	  var cphi = Math.cos(this.lat0);
-	  cphi *= cphi;
-	  this.rc = Math.sqrt(1 - this.es) / (1 - this.es * sphi * sphi);
-	  this.C = Math.sqrt(1 + this.es * cphi * cphi / (1 - this.es));
-	  this.phic0 = Math.asin(sphi / this.C);
-	  this.ratexp = 0.5 * this.C * this.e;
-	  this.K = Math.tan(0.5 * this.phic0 + FORTPI) / (Math.pow(Math.tan(0.5 * this.lat0 + FORTPI), this.C) * srat(this.e * sphi, this.ratexp));
-	}
-
-	function forward$4(p) {
-	  var lon = p.x;
-	  var lat = p.y;
-
-	  p.y = 2 * Math.atan(this.K * Math.pow(Math.tan(0.5 * lat + FORTPI), this.C) * srat(this.e * Math.sin(lat), this.ratexp)) - HALF_PI;
-	  p.x = this.C * lon;
-	  return p;
-	}
-
-	function inverse$4(p) {
-	  var DEL_TOL = 1e-14;
-	  var lon = p.x / this.C;
-	  var lat = p.y;
-	  var num = Math.pow(Math.tan(0.5 * lat + FORTPI) / this.K, 1 / this.C);
-	  for (var i = MAX_ITER$1; i > 0; --i) {
-	    lat = 2 * Math.atan(num * srat(this.e * Math.sin(p.y), - 0.5 * this.e)) - HALF_PI;
-	    if (Math.abs(lat - p.y) < DEL_TOL) {
-	      break;
-	    }
-	    p.y = lat;
-	  }
-	  /* convergence failed */
-	  if (!i) {
-	    return null;
-	  }
-	  p.x = lon;
-	  p.y = lat;
-	  return p;
-	}
-
-	var names$6 = ["gauss"];
-	var gauss = {
-	  init: init$5,
-	  forward: forward$4,
-	  inverse: inverse$4,
-	  names: names$6
-	};
-
-	function init$6() {
-	  gauss.init.apply(this);
-	  if (!this.rc) {
-	    return;
-	  }
-	  this.sinc0 = Math.sin(this.phic0);
-	  this.cosc0 = Math.cos(this.phic0);
-	  this.R2 = 2 * this.rc;
-	  if (!this.title) {
-	    this.title = "Oblique Stereographic Alternative";
-	  }
-	}
-
-	function forward$5(p) {
-	  var sinc, cosc, cosl, k;
-	  p.x = adjust_lon(p.x - this.long0);
-	  gauss.forward.apply(this, [p]);
-	  sinc = Math.sin(p.y);
-	  cosc = Math.cos(p.y);
-	  cosl = Math.cos(p.x);
-	  k = this.k0 * this.R2 / (1 + this.sinc0 * sinc + this.cosc0 * cosc * cosl);
-	  p.x = k * cosc * Math.sin(p.x);
-	  p.y = k * (this.cosc0 * sinc - this.sinc0 * cosc * cosl);
-	  p.x = this.a * p.x + this.x0;
-	  p.y = this.a * p.y + this.y0;
-	  return p;
-	}
-
-	function inverse$5(p) {
-	  var sinc, cosc, lon, lat, rho;
-	  p.x = (p.x - this.x0) / this.a;
-	  p.y = (p.y - this.y0) / this.a;
-
-	  p.x /= this.k0;
-	  p.y /= this.k0;
-	  if ((rho = Math.sqrt(p.x * p.x + p.y * p.y))) {
-	    var c = 2 * Math.atan2(rho, this.R2);
-	    sinc = Math.sin(c);
-	    cosc = Math.cos(c);
-	    lat = Math.asin(cosc * this.sinc0 + p.y * sinc * this.cosc0 / rho);
-	    lon = Math.atan2(p.x * sinc, rho * this.cosc0 * cosc - p.y * this.sinc0 * sinc);
-	  }
-	  else {
-	    lat = this.phic0;
-	    lon = 0;
-	  }
-
-	  p.x = lon;
-	  p.y = lat;
-	  gauss.inverse.apply(this, [p]);
-	  p.x = adjust_lon(p.x + this.long0);
-	  return p;
-	}
-
-	var names$7 = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereographic", "sterea","Oblique Stereographic Alternative","Double_Stereographic"];
-	var sterea = {
-	  init: init$6,
-	  forward: forward$5,
-	  inverse: inverse$5,
-	  names: names$7
-	};
-
-	function ssfn_(phit, sinphi, eccen) {
-	  sinphi *= eccen;
-	  return (Math.tan(0.5 * (HALF_PI + phit)) * Math.pow((1 - sinphi) / (1 + sinphi), 0.5 * eccen));
-	}
-
-	function init$7() {
-	  this.coslat0 = Math.cos(this.lat0);
-	  this.sinlat0 = Math.sin(this.lat0);
-	  if (this.sphere) {
-	    if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= EPSLN) {
-	      this.k0 = 0.5 * (1 + sign$1(this.lat0) * Math.sin(this.lat_ts));
-	    }
-	  }
-	  else {
-	    if (Math.abs(this.coslat0) <= EPSLN) {
-	      if (this.lat0 > 0) {
-	        //North pole
-	        //trace('stere:north pole');
-	        this.con = 1;
-	      }
-	      else {
-	        //South pole
-	        //trace('stere:south pole');
-	        this.con = -1;
-	      }
-	    }
-	    this.cons = Math.sqrt(Math.pow(1 + this.e, 1 + this.e) * Math.pow(1 - this.e, 1 - this.e));
-	    if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= EPSLN) {
-	      this.k0 = 0.5 * this.cons * msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts)) / tsfnz(this.e, this.con * this.lat_ts, this.con * Math.sin(this.lat_ts));
-	    }
-	    this.ms1 = msfnz(this.e, this.sinlat0, this.coslat0);
-	    this.X0 = 2 * Math.atan(this.ssfn_(this.lat0, this.sinlat0, this.e)) - HALF_PI;
-	    this.cosX0 = Math.cos(this.X0);
-	    this.sinX0 = Math.sin(this.X0);
-	  }
-	}
-
-	// Stereographic forward equations--mapping lat,long to x,y
-	function forward$6(p) {
-	  var lon = p.x;
-	  var lat = p.y;
-	  var sinlat = Math.sin(lat);
-	  var coslat = Math.cos(lat);
-	  var A, X, sinX, cosX, ts, rh;
-	  var dlon = adjust_lon(lon - this.long0);
-
-	  if (Math.abs(Math.abs(lon - this.long0) - Math.PI) <= EPSLN && Math.abs(lat + this.lat0) <= EPSLN) {
-	    //case of the origine point
-	    //trace('stere:this is the origin point');
-	    p.x = NaN;
-	    p.y = NaN;
-	    return p;
-	  }
-	  if (this.sphere) {
-	    //trace('stere:sphere case');
-	    A = 2 * this.k0 / (1 + this.sinlat0 * sinlat + this.coslat0 * coslat * Math.cos(dlon));
-	    p.x = this.a * A * coslat * Math.sin(dlon) + this.x0;
-	    p.y = this.a * A * (this.coslat0 * sinlat - this.sinlat0 * coslat * Math.cos(dlon)) + this.y0;
-	    return p;
-	  }
-	  else {
-	    X = 2 * Math.atan(this.ssfn_(lat, sinlat, this.e)) - HALF_PI;
-	    cosX = Math.cos(X);
-	    sinX = Math.sin(X);
-	    if (Math.abs(this.coslat0) <= EPSLN) {
-	      ts = tsfnz(this.e, lat * this.con, this.con * sinlat);
-	      rh = 2 * this.a * this.k0 * ts / this.cons;
-	      p.x = this.x0 + rh * Math.sin(lon - this.long0);
-	      p.y = this.y0 - this.con * rh * Math.cos(lon - this.long0);
-	      //trace(p.toString());
-	      return p;
-	    }
-	    else if (Math.abs(this.sinlat0) < EPSLN) {
-	      //Eq
-	      //trace('stere:equateur');
-	      A = 2 * this.a * this.k0 / (1 + cosX * Math.cos(dlon));
-	      p.y = A * sinX;
-	    }
-	    else {
-	      //other case
-	      //trace('stere:normal case');
-	      A = 2 * this.a * this.k0 * this.ms1 / (this.cosX0 * (1 + this.sinX0 * sinX + this.cosX0 * cosX * Math.cos(dlon)));
-	      p.y = A * (this.cosX0 * sinX - this.sinX0 * cosX * Math.cos(dlon)) + this.y0;
-	    }
-	    p.x = A * cosX * Math.sin(dlon) + this.x0;
-	  }
-	  //trace(p.toString());
-	  return p;
-	}
-
-	//* Stereographic inverse equations--mapping x,y to lat/long
-	function inverse$6(p) {
-	  p.x -= this.x0;
-	  p.y -= this.y0;
-	  var lon, lat, ts, ce, Chi;
-	  var rh = Math.sqrt(p.x * p.x + p.y * p.y);
-	  if (this.sphere) {
-	    var c = 2 * Math.atan(rh / (2 * this.a * this.k0));
-	    lon = this.long0;
-	    lat = this.lat0;
-	    if (rh <= EPSLN) {
-	      p.x = lon;
-	      p.y = lat;
-	      return p;
-	    }
-	    lat = Math.asin(Math.cos(c) * this.sinlat0 + p.y * Math.sin(c) * this.coslat0 / rh);
-	    if (Math.abs(this.coslat0) < EPSLN) {
-	      if (this.lat0 > 0) {
-	        lon = adjust_lon(this.long0 + Math.atan2(p.x, - 1 * p.y));
-	      }
-	      else {
-	        lon = adjust_lon(this.long0 + Math.atan2(p.x, p.y));
-	      }
-	    }
-	    else {
-	      lon = adjust_lon(this.long0 + Math.atan2(p.x * Math.sin(c), rh * this.coslat0 * Math.cos(c) - p.y * this.sinlat0 * Math.sin(c)));
-	    }
-	    p.x = lon;
-	    p.y = lat;
-	    return p;
-	  }
-	  else {
-	    if (Math.abs(this.coslat0) <= EPSLN) {
-	      if (rh <= EPSLN) {
-	        lat = this.lat0;
-	        lon = this.long0;
-	        p.x = lon;
-	        p.y = lat;
-	        //trace(p.toString());
-	        return p;
-	      }
-	      p.x *= this.con;
-	      p.y *= this.con;
-	      ts = rh * this.cons / (2 * this.a * this.k0);
-	      lat = this.con * phi2z(this.e, ts);
-	      lon = this.con * adjust_lon(this.con * this.long0 + Math.atan2(p.x, - 1 * p.y));
-	    }
-	    else {
-	      ce = 2 * Math.atan(rh * this.cosX0 / (2 * this.a * this.k0 * this.ms1));
-	      lon = this.long0;
-	      if (rh <= EPSLN) {
-	        Chi = this.X0;
-	      }
-	      else {
-	        Chi = Math.asin(Math.cos(ce) * this.sinX0 + p.y * Math.sin(ce) * this.cosX0 / rh);
-	        lon = adjust_lon(this.long0 + Math.atan2(p.x * Math.sin(ce), rh * this.cosX0 * Math.cos(ce) - p.y * this.sinX0 * Math.sin(ce)));
-	      }
-	      lat = -1 * phi2z(this.e, Math.tan(0.5 * (HALF_PI + Chi)));
-	    }
-	  }
-	  p.x = lon;
-	  p.y = lat;
-
-	  //trace(p.toString());
-	  return p;
-
-	}
-
-	var names$8 = ["stere", "Stereographic_South_Pole", "Polar Stereographic (variant B)"];
-	var stere = {
-	  init: init$7,
-	  forward: forward$6,
-	  inverse: inverse$6,
-	  names: names$8,
-	  ssfn_: ssfn_
-	};
-
-	/*
-	  references:
-	    Formules et constantes pour le Calcul pour la
-	    projection cylindrique conforme à axe oblique et pour la transformation entre
-	    des systèmes de référence.
-	    http://www.swisstopo.admin.ch/internet/swisstopo/fr/home/topics/survey/sys/refsys/switzerland.parsysrelated1.31216.downloadList.77004.DownloadFile.tmp/swissprojectionfr.pdf
-	  */
-
-	function init$8() {
-	  var phy0 = this.lat0;
-	  this.lambda0 = this.long0;
-	  var sinPhy0 = Math.sin(phy0);
-	  var semiMajorAxis = this.a;
-	  var invF = this.rf;
-	  var flattening = 1 / invF;
-	  var e2 = 2 * flattening - Math.pow(flattening, 2);
-	  var e = this.e = Math.sqrt(e2);
-	  this.R = this.k0 * semiMajorAxis * Math.sqrt(1 - e2) / (1 - e2 * Math.pow(sinPhy0, 2));
-	  this.alpha = Math.sqrt(1 + e2 / (1 - e2) * Math.pow(Math.cos(phy0), 4));
-	  this.b0 = Math.asin(sinPhy0 / this.alpha);
-	  var k1 = Math.log(Math.tan(Math.PI / 4 + this.b0 / 2));
-	  var k2 = Math.log(Math.tan(Math.PI / 4 + phy0 / 2));
-	  var k3 = Math.log((1 + e * sinPhy0) / (1 - e * sinPhy0));
-	  this.K = k1 - this.alpha * k2 + this.alpha * e / 2 * k3;
-	}
-
-	function forward$7(p) {
-	  var Sa1 = Math.log(Math.tan(Math.PI / 4 - p.y / 2));
-	  var Sa2 = this.e / 2 * Math.log((1 + this.e * Math.sin(p.y)) / (1 - this.e * Math.sin(p.y)));
-	  var S = -this.alpha * (Sa1 + Sa2) + this.K;
-
-	  // spheric latitude
-	  var b = 2 * (Math.atan(Math.exp(S)) - Math.PI / 4);
-
-	  // spheric longitude
-	  var I = this.alpha * (p.x - this.lambda0);
-
-	  // psoeudo equatorial rotation
-	  var rotI = Math.atan(Math.sin(I) / (Math.sin(this.b0) * Math.tan(b) + Math.cos(this.b0) * Math.cos(I)));
-
-	  var rotB = Math.asin(Math.cos(this.b0) * Math.sin(b) - Math.sin(this.b0) * Math.cos(b) * Math.cos(I));
-
-	  p.y = this.R / 2 * Math.log((1 + Math.sin(rotB)) / (1 - Math.sin(rotB))) + this.y0;
-	  p.x = this.R * rotI + this.x0;
-	  return p;
-	}
-
-	function inverse$7(p) {
-	  var Y = p.x - this.x0;
-	  var X = p.y - this.y0;
-
-	  var rotI = Y / this.R;
-	  var rotB = 2 * (Math.atan(Math.exp(X / this.R)) - Math.PI / 4);
-
-	  var b = Math.asin(Math.cos(this.b0) * Math.sin(rotB) + Math.sin(this.b0) * Math.cos(rotB) * Math.cos(rotI));
-	  var I = Math.atan(Math.sin(rotI) / (Math.cos(this.b0) * Math.cos(rotI) - Math.sin(this.b0) * Math.tan(rotB)));
-
-	  var lambda = this.lambda0 + I / this.alpha;
-
-	  var S = 0;
-	  var phy = b;
-	  var prevPhy = -1000;
-	  var iteration = 0;
-	  while (Math.abs(phy - prevPhy) > 0.0000001) {
-	    if (++iteration > 20) {
-	      //...reportError("omercFwdInfinity");
-	      return;
-	    }
-	    //S = Math.log(Math.tan(Math.PI / 4 + phy / 2));
-	    S = 1 / this.alpha * (Math.log(Math.tan(Math.PI / 4 + b / 2)) - this.K) + this.e * Math.log(Math.tan(Math.PI / 4 + Math.asin(this.e * Math.sin(phy)) / 2));
-	    prevPhy = phy;
-	    phy = 2 * Math.atan(Math.exp(S)) - Math.PI / 2;
-	  }
-
-	  p.x = lambda;
-	  p.y = phy;
-	  return p;
-	}
-
-	var names$9 = ["somerc"];
-	var somerc = {
-	  init: init$8,
-	  forward: forward$7,
-	  inverse: inverse$7,
-	  names: names$9
-	};
-
-	var TOL = 1e-7;
-
-	function isTypeA(P) {
-	  var typeAProjections = ['Hotine_Oblique_Mercator','Hotine_Oblique_Mercator_Azimuth_Natural_Origin'];
-	  var projectionName = typeof P.PROJECTION === "object" ? Object.keys(P.PROJECTION)[0] : P.PROJECTION;
-	  
-	  return 'no_uoff' in P || 'no_off' in P || typeAProjections.indexOf(projectionName) !== -1;
-	}
-
-
-	/* Initialize the Oblique Mercator  projection
-	    ------------------------------------------*/
-	function init$9() {  
-	  var con, com, cosph0, D, F, H, L, sinph0, p, J, gamma = 0,
-	    gamma0, lamc = 0, lam1 = 0, lam2 = 0, phi1 = 0, phi2 = 0, alpha_c = 0, AB;
-	  
-	  // only Type A uses the no_off or no_uoff property
-	  // https://github.com/OSGeo/proj.4/issues/104
-	  this.no_off = isTypeA(this);
-	  this.no_rot = 'no_rot' in this;
-	  
-	  var alp = false;
-	  if ("alpha" in this) {
-	    alp = true;
-	  }
-
-	  var gam = false;
-	  if ("rectified_grid_angle" in this) {
-	    gam = true;
-	  }
-
-	  if (alp) {
-	    alpha_c = this.alpha;
-	  }
-	  
-	  if (gam) {
-	    gamma = (this.rectified_grid_angle * D2R);
-	  }
-	  
-	  if (alp || gam) {
-	    lamc = this.longc;
-	  } else {
-	    lam1 = this.long1;
-	    phi1 = this.lat1;
-	    lam2 = this.long2;
-	    phi2 = this.lat2;
-	    
-	    if (Math.abs(phi1 - phi2) <= TOL || (con = Math.abs(phi1)) <= TOL ||
-	        Math.abs(con - HALF_PI) <= TOL || Math.abs(Math.abs(this.lat0) - HALF_PI) <= TOL ||
-	        Math.abs(Math.abs(phi2) - HALF_PI) <= TOL) {
-	      throw new Error();
-	    }
-	  }
-	  
-	  var one_es = 1.0 - this.es;
-	  com = Math.sqrt(one_es);
-	  
-	  if (Math.abs(this.lat0) > EPSLN) {
-	    sinph0 = Math.sin(this.lat0);
-	    cosph0 = Math.cos(this.lat0);
-	    con = 1 - this.es * sinph0 * sinph0;
-	    this.B = cosph0 * cosph0;
-	    this.B = Math.sqrt(1 + this.es * this.B * this.B / one_es);
-	    this.A = this.B * this.k0 * com / con;
-	    D = this.B * com / (cosph0 * Math.sqrt(con));
-	    F = D * D -1;
-	    
-	    if (F <= 0) {
-	      F = 0;
-	    } else {
-	      F = Math.sqrt(F);
-	      if (this.lat0 < 0) {
-	        F = -F;
-	      }
-	    }
-	    
-	    this.E = F += D;
-	    this.E *= Math.pow(tsfnz(this.e, this.lat0, sinph0), this.B);
-	  } else {
-	    this.B = 1 / com;
-	    this.A = this.k0;
-	    this.E = D = F = 1;
-	  }
-	  
-	  if (alp || gam) {
-	    if (alp) {
-	      gamma0 = Math.asin(Math.sin(alpha_c) / D);
-	      if (!gam) {
-	        gamma = alpha_c;
-	      }
-	    } else {
-	      gamma0 = gamma;
-	      alpha_c = Math.asin(D * Math.sin(gamma0));
-	    }
-	    this.lam0 = lamc - Math.asin(0.5 * (F - 1 / F) * Math.tan(gamma0)) / this.B;
-	  } else {
-	    H = Math.pow(tsfnz(this.e, phi1, Math.sin(phi1)), this.B);
-	    L = Math.pow(tsfnz(this.e, phi2, Math.sin(phi2)), this.B);
-	    F = this.E / H;
-	    p = (L - H) / (L + H);
-	    J = this.E * this.E;
-	    J = (J - L * H) / (J + L * H);
-	    con = lam1 - lam2;
-	    
-	    if (con < -Math.pi) {
-	      lam2 -=TWO_PI;
-	    } else if (con > Math.pi) {
-	      lam2 += TWO_PI;
-	    }
-	    
-	    this.lam0 = adjust_lon(0.5 * (lam1 + lam2) - Math.atan(J * Math.tan(0.5 * this.B * (lam1 - lam2)) / p) / this.B);
-	    gamma0 = Math.atan(2 * Math.sin(this.B * adjust_lon(lam1 - this.lam0)) / (F - 1 / F));
-	    gamma = alpha_c = Math.asin(D * Math.sin(gamma0));
-	  }
-	  
-	  this.singam = Math.sin(gamma0);
-	  this.cosgam = Math.cos(gamma0);
-	  this.sinrot = Math.sin(gamma);
-	  this.cosrot = Math.cos(gamma);
-	  
-	  this.rB = 1 / this.B;
-	  this.ArB = this.A * this.rB;
-	  this.BrA = 1 / this.ArB;
-	  AB = this.A * this.B;
-	  
-	  if (this.no_off) {
-	    this.u_0 = 0;
-	  } else {
-	    this.u_0 = Math.abs(this.ArB * Math.atan(Math.sqrt(D * D - 1) / Math.cos(alpha_c)));
-	    
-	    if (this.lat0 < 0) {
-	      this.u_0 = - this.u_0;
-	    }  
-	  }
-	    
-	  F = 0.5 * gamma0;
-	  this.v_pole_n = this.ArB * Math.log(Math.tan(FORTPI - F));
-	  this.v_pole_s = this.ArB * Math.log(Math.tan(FORTPI + F));
-	}
-
-
-	/* Oblique Mercator forward equations--mapping lat,long to x,y
-	    ----------------------------------------------------------*/
-	function forward$8(p) {
-	  var coords = {};
-	  var S, T, U, V, W, temp, u, v;
-	  p.x = p.x - this.lam0;
-	  
-	  if (Math.abs(Math.abs(p.y) - HALF_PI) > EPSLN) {
-	    W = this.E / Math.pow(tsfnz(this.e, p.y, Math.sin(p.y)), this.B);
-	    
-	    temp = 1 / W;
-	    S = 0.5 * (W - temp);
-	    T = 0.5 * (W + temp);
-	    V = Math.sin(this.B * p.x);
-	    U = (S * this.singam - V * this.cosgam) / T;
-	        
-	    if (Math.abs(Math.abs(U) - 1.0) < EPSLN) {
-	      throw new Error();
-	    }
-	    
-	    v = 0.5 * this.ArB * Math.log((1 - U)/(1 + U));
-	    temp = Math.cos(this.B * p.x);
-	    
-	    if (Math.abs(temp) < TOL) {
-	      u = this.A * p.x;
-	    } else {
-	      u = this.ArB * Math.atan2((S * this.cosgam + V * this.singam), temp);
-	    }    
-	  } else {
-	    v = p.y > 0 ? this.v_pole_n : this.v_pole_s;
-	    u = this.ArB * p.y;
-	  }
-	     
-	  if (this.no_rot) {
-	    coords.x = u;
-	    coords.y = v;
-	  } else {
-	    u -= this.u_0;
-	    coords.x = v * this.cosrot + u * this.sinrot;
-	    coords.y = u * this.cosrot - v * this.sinrot;
-	  }
-	  
-	  coords.x = (this.a * coords.x + this.x0);
-	  coords.y = (this.a * coords.y + this.y0);
-	  
-	  return coords;
-	}
-
-	function inverse$8(p) {
-	  var u, v, Qp, Sp, Tp, Vp, Up;
-	  var coords = {};
-	  
-	  p.x = (p.x - this.x0) * (1.0 / this.a);
-	  p.y = (p.y - this.y0) * (1.0 / this.a);
-
-	  if (this.no_rot) {
-	    v = p.y;
-	    u = p.x;
-	  } else {
-	    v = p.x * this.cosrot - p.y * this.sinrot;
-	    u = p.y * this.cosrot + p.x * this.sinrot + this.u_0;
-	  }
-	  
-	  Qp = Math.exp(-this.BrA * v);
-	  Sp = 0.5 * (Qp - 1 / Qp);
-	  Tp = 0.5 * (Qp + 1 / Qp);
-	  Vp = Math.sin(this.BrA * u);
-	  Up = (Vp * this.cosgam + Sp * this.singam) / Tp;
-	  
-	  if (Math.abs(Math.abs(Up) - 1) < EPSLN) {
-	    coords.x = 0;
-	    coords.y = Up < 0 ? -HALF_PI : HALF_PI;
-	  } else {
-	    coords.y = this.E / Math.sqrt((1 + Up) / (1 - Up));
-	    coords.y = phi2z(this.e, Math.pow(coords.y, 1 / this.B));
-	    
-	    if (coords.y === Infinity) {
-	      throw new Error();
-	    }
-	        
-	    coords.x = -this.rB * Math.atan2((Sp * this.cosgam - Vp * this.singam), Math.cos(this.BrA * u));
-	  }
-	  
-	  coords.x += this.lam0;
-	  
-	  return coords;
-	}
-
-	var names$a = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Two_Point_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "Oblique_Mercator", "omerc"];
-	var omerc = {
-	  init: init$9,
-	  forward: forward$8,
-	  inverse: inverse$8,
-	  names: names$a
-	};
-
-	function init$a() {
-	  
-	  //double lat0;                    /* the reference latitude               */
-	  //double long0;                   /* the reference longitude              */
-	  //double lat1;                    /* first standard parallel              */
-	  //double lat2;                    /* second standard parallel             */
-	  //double r_maj;                   /* major axis                           */
-	  //double r_min;                   /* minor axis                           */
-	  //double false_east;              /* x offset in meters                   */
-	  //double false_north;             /* y offset in meters                   */
-	  
-	  //the above value can be set with proj4.defs
-	  //example: proj4.defs("EPSG:2154","+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
-
-	  if (!this.lat2) {
-	    this.lat2 = this.lat1;
-	  } //if lat2 is not defined
-	  if (!this.k0) {
-	    this.k0 = 1;
-	  }
-	  this.x0 = this.x0 || 0;
-	  this.y0 = this.y0 || 0;
-	  // Standard Parallels cannot be equal and on opposite sides of the equator
-	  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
-	    return;
-	  }
-
-	  var temp = this.b / this.a;
-	  this.e = Math.sqrt(1 - temp * temp);
-
-	  var sin1 = Math.sin(this.lat1);
-	  var cos1 = Math.cos(this.lat1);
-	  var ms1 = msfnz(this.e, sin1, cos1);
-	  var ts1 = tsfnz(this.e, this.lat1, sin1);
-
-	  var sin2 = Math.sin(this.lat2);
-	  var cos2 = Math.cos(this.lat2);
-	  var ms2 = msfnz(this.e, sin2, cos2);
-	  var ts2 = tsfnz(this.e, this.lat2, sin2);
-
-	  var ts0 = tsfnz(this.e, this.lat0, Math.sin(this.lat0));
-
-	  if (Math.abs(this.lat1 - this.lat2) > EPSLN) {
-	    this.ns = Math.log(ms1 / ms2) / Math.log(ts1 / ts2);
-	  }
-	  else {
-	    this.ns = sin1;
-	  }
-	  if (isNaN(this.ns)) {
-	    this.ns = sin1;
-	  }
-	  this.f0 = ms1 / (this.ns * Math.pow(ts1, this.ns));
-	  this.rh = this.a * this.f0 * Math.pow(ts0, this.ns);
-	  if (!this.title) {
-	    this.title = "Lambert Conformal Conic";
-	  }
-	}
-
-	// Lambert Conformal conic forward equations--mapping lat,long to x,y
-	// -----------------------------------------------------------------
-	function forward$9(p) {
-
-	  var lon = p.x;
-	  var lat = p.y;
-
-	  // singular cases :
-	  if (Math.abs(2 * Math.abs(lat) - Math.PI) <= EPSLN) {
-	    lat = sign$1(lat) * (HALF_PI - 2 * EPSLN);
-	  }
-
-	  var con = Math.abs(Math.abs(lat) - HALF_PI);
-	  var ts, rh1;
-	  if (con > EPSLN) {
-	    ts = tsfnz(this.e, lat, Math.sin(lat));
-	    rh1 = this.a * this.f0 * Math.pow(ts, this.ns);
-	  }
-	  else {
-	    con = lat * this.ns;
-	    if (con <= 0) {
-	      return null;
-	    }
-	    rh1 = 0;
-	  }
-	  var theta = this.ns * adjust_lon(lon - this.long0);
-	  p.x = this.k0 * (rh1 * Math.sin(theta)) + this.x0;
-	  p.y = this.k0 * (this.rh - rh1 * Math.cos(theta)) + this.y0;
-
-	  return p;
-	}
-
-	// Lambert Conformal Conic inverse equations--mapping x,y to lat/long
-	// -----------------------------------------------------------------
-	function inverse$9(p) {
-
-	  var rh1, con, ts;
-	  var lat, lon;
-	  var x = (p.x - this.x0) / this.k0;
-	  var y = (this.rh - (p.y - this.y0) / this.k0);
-	  if (this.ns > 0) {
-	    rh1 = Math.sqrt(x * x + y * y);
-	    con = 1;
-	  }
-	  else {
-	    rh1 = -Math.sqrt(x * x + y * y);
-	    con = -1;
-	  }
-	  var theta = 0;
-	  if (rh1 !== 0) {
-	    theta = Math.atan2((con * x), (con * y));
-	  }
-	  if ((rh1 !== 0) || (this.ns > 0)) {
-	    con = 1 / this.ns;
-	    ts = Math.pow((rh1 / (this.a * this.f0)), con);
-	    lat = phi2z(this.e, ts);
-	    if (lat === -9999) {
-	      return null;
-	    }
-	  }
-	  else {
-	    lat = -HALF_PI;
-	  }
-	  lon = adjust_lon(theta / this.ns + this.long0);
-
-	  p.x = lon;
-	  p.y = lat;
-	  return p;
-	}
-
-	var names$b = [
-	  "Lambert Tangential Conformal Conic Projection",
-	  "Lambert_Conformal_Conic",
-	  "Lambert_Conformal_Conic_1SP",
-	  "Lambert_Conformal_Conic_2SP",
-	  "lcc"
-	];
-
-	var lcc = {
-	  init: init$a,
-	  forward: forward$9,
-	  inverse: inverse$9,
-	  names: names$b
-	};
-
-	function init$b() {
-	  this.a = 6377397.155;
-	  this.es = 0.006674372230614;
-	  this.e = Math.sqrt(this.es);
-	  if (!this.lat0) {
-	    this.lat0 = 0.863937979737193;
-	  }
-	  if (!this.long0) {
-	    this.long0 = 0.7417649320975901 - 0.308341501185665;
-	  }
-	  /* if scale not set default to 0.9999 */
-	  if (!this.k0) {
-	    this.k0 = 0.9999;
-	  }
-	  this.s45 = 0.785398163397448; /* 45 */
-	  this.s90 = 2 * this.s45;
-	  this.fi0 = this.lat0;
-	  this.e2 = this.es;
-	  this.e = Math.sqrt(this.e2);
-	  this.alfa = Math.sqrt(1 + (this.e2 * Math.pow(Math.cos(this.fi0), 4)) / (1 - this.e2));
-	  this.uq = 1.04216856380474;
-	  this.u0 = Math.asin(Math.sin(this.fi0) / this.alfa);
-	  this.g = Math.pow((1 + this.e * Math.sin(this.fi0)) / (1 - this.e * Math.sin(this.fi0)), this.alfa * this.e / 2);
-	  this.k = Math.tan(this.u0 / 2 + this.s45) / Math.pow(Math.tan(this.fi0 / 2 + this.s45), this.alfa) * this.g;
-	  this.k1 = this.k0;
-	  this.n0 = this.a * Math.sqrt(1 - this.e2) / (1 - this.e2 * Math.pow(Math.sin(this.fi0), 2));
-	  this.s0 = 1.37008346281555;
-	  this.n = Math.sin(this.s0);
-	  this.ro0 = this.k1 * this.n0 / Math.tan(this.s0);
-	  this.ad = this.s90 - this.uq;
-	}
-
-	/* ellipsoid */
-	/* calculate xy from lat/lon */
-	/* Constants, identical to inverse transform function */
-	function forward$a(p) {
-	  var gfi, u, deltav, s, d, eps, ro;
-	  var lon = p.x;
-	  var lat = p.y;
-	  var delta_lon = adjust_lon(lon - this.long0);
-	  /* Transformation */
-	  gfi = Math.pow(((1 + this.e * Math.sin(lat)) / (1 - this.e * Math.sin(lat))), (this.alfa * this.e / 2));
-	  u = 2 * (Math.atan(this.k * Math.pow(Math.tan(lat / 2 + this.s45), this.alfa) / gfi) - this.s45);
-	  deltav = -delta_lon * this.alfa;
-	  s = Math.asin(Math.cos(this.ad) * Math.sin(u) + Math.sin(this.ad) * Math.cos(u) * Math.cos(deltav));
-	  d = Math.asin(Math.cos(u) * Math.sin(deltav) / Math.cos(s));
-	  eps = this.n * d;
-	  ro = this.ro0 * Math.pow(Math.tan(this.s0 / 2 + this.s45), this.n) / Math.pow(Math.tan(s / 2 + this.s45), this.n);
-	  p.y = ro * Math.cos(eps) / 1;
-	  p.x = ro * Math.sin(eps) / 1;
-
-	  if (!this.czech) {
-	    p.y *= -1;
-	    p.x *= -1;
-	  }
-	  return (p);
-	}
-
-	/* calculate lat/lon from xy */
-	function inverse$a(p) {
-	  var u, deltav, s, d, eps, ro, fi1;
-	  var ok;
-
-	  /* Transformation */
-	  /* revert y, x*/
-	  var tmp = p.x;
-	  p.x = p.y;
-	  p.y = tmp;
-	  if (!this.czech) {
-	    p.y *= -1;
-	    p.x *= -1;
-	  }
-	  ro = Math.sqrt(p.x * p.x + p.y * p.y);
-	  eps = Math.atan2(p.y, p.x);
-	  d = eps / Math.sin(this.s0);
-	  s = 2 * (Math.atan(Math.pow(this.ro0 / ro, 1 / this.n) * Math.tan(this.s0 / 2 + this.s45)) - this.s45);
-	  u = Math.asin(Math.cos(this.ad) * Math.sin(s) - Math.sin(this.ad) * Math.cos(s) * Math.cos(d));
-	  deltav = Math.asin(Math.cos(s) * Math.sin(d) / Math.cos(u));
-	  p.x = this.long0 - deltav / this.alfa;
-	  fi1 = u;
-	  ok = 0;
-	  var iter = 0;
-	  do {
-	    p.y = 2 * (Math.atan(Math.pow(this.k, - 1 / this.alfa) * Math.pow(Math.tan(u / 2 + this.s45), 1 / this.alfa) * Math.pow((1 + this.e * Math.sin(fi1)) / (1 - this.e * Math.sin(fi1)), this.e / 2)) - this.s45);
-	    if (Math.abs(fi1 - p.y) < 0.0000000001) {
-	      ok = 1;
-	    }
-	    fi1 = p.y;
-	    iter += 1;
-	  } while (ok === 0 && iter < 15);
-	  if (iter >= 15) {
-	    return null;
-	  }
-
-	  return (p);
-	}
-
-	var names$c = ["Krovak", "krovak"];
-	var krovak = {
-	  init: init$b,
-	  forward: forward$a,
-	  inverse: inverse$a,
-	  names: names$c
-	};
-
-	function mlfn(e0, e1, e2, e3, phi) {
-	  return (e0 * phi - e1 * Math.sin(2 * phi) + e2 * Math.sin(4 * phi) - e3 * Math.sin(6 * phi));
-	}
-
-	function e0fn(x) {
-	  return (1 - 0.25 * x * (1 + x / 16 * (3 + 1.25 * x)));
-	}
-
-	function e1fn(x) {
-	  return (0.375 * x * (1 + 0.25 * x * (1 + 0.46875 * x)));
-	}
-
-	function e2fn(x) {
-	  return (0.05859375 * x * x * (1 + 0.75 * x));
-	}
-
-	function e3fn(x) {
-	  return (x * x * x * (35 / 3072));
-	}
-
-	function gN(a, e, sinphi) {
-	  var temp = e * sinphi;
-	  return a / Math.sqrt(1 - temp * temp);
-	}
-
-	function adjust_lat(x) {
-	  return (Math.abs(x) < HALF_PI) ? x : (x - (sign$1(x) * Math.PI));
-	}
-
-	function imlfn(ml, e0, e1, e2, e3) {
-	  var phi;
-	  var dphi;
-
-	  phi = ml / e0;
-	  for (var i = 0; i < 15; i++) {
-	    dphi = (ml - (e0 * phi - e1 * Math.sin(2 * phi) + e2 * Math.sin(4 * phi) - e3 * Math.sin(6 * phi))) / (e0 - 2 * e1 * Math.cos(2 * phi) + 4 * e2 * Math.cos(4 * phi) - 6 * e3 * Math.cos(6 * phi));
-	    phi += dphi;
-	    if (Math.abs(dphi) <= 0.0000000001) {
-	      return phi;
-	    }
-	  }
-
-	  //..reportError("IMLFN-CONV:Latitude failed to converge after 15 iterations");
-	  return NaN;
-	}
-
-	function init$c() {
-	  if (!this.sphere) {
-	    this.e0 = e0fn(this.es);
-	    this.e1 = e1fn(this.es);
-	    this.e2 = e2fn(this.es);
-	    this.e3 = e3fn(this.es);
-	    this.ml0 = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0);
-	  }
-	}
-
-	/* Cassini forward equations--mapping lat,long to x,y
-	  -----------------------------------------------------------------------*/
-	function forward$b(p) {
-
-	  /* Forward equations
-	      -----------------*/
-	  var x, y;
-	  var lam = p.x;
-	  var phi = p.y;
-	  lam = adjust_lon(lam - this.long0);
-
-	  if (this.sphere) {
-	    x = this.a * Math.asin(Math.cos(phi) * Math.sin(lam));
-	    y = this.a * (Math.atan2(Math.tan(phi), Math.cos(lam)) - this.lat0);
-	  }
-	  else {
-	    //ellipsoid
-	    var sinphi = Math.sin(phi);
-	    var cosphi = Math.cos(phi);
-	    var nl = gN(this.a, this.e, sinphi);
-	    var tl = Math.tan(phi) * Math.tan(phi);
-	    var al = lam * Math.cos(phi);
-	    var asq = al * al;
-	    var cl = this.es * cosphi * cosphi / (1 - this.es);
-	    var ml = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, phi);
-
-	    x = nl * al * (1 - asq * tl * (1 / 6 - (8 - tl + 8 * cl) * asq / 120));
-	    y = ml - this.ml0 + nl * sinphi / cosphi * asq * (0.5 + (5 - tl + 6 * cl) * asq / 24);
-
-
-	  }
-
-	  p.x = x + this.x0;
-	  p.y = y + this.y0;
-	  return p;
-	}
-
-	/* Inverse equations
-	  -----------------*/
-	function inverse$b(p) {
-	  p.x -= this.x0;
-	  p.y -= this.y0;
-	  var x = p.x / this.a;
-	  var y = p.y / this.a;
-	  var phi, lam;
-
-	  if (this.sphere) {
-	    var dd = y + this.lat0;
-	    phi = Math.asin(Math.sin(dd) * Math.cos(x));
-	    lam = Math.atan2(Math.tan(x), Math.cos(dd));
-	  }
-	  else {
-	    /* ellipsoid */
-	    var ml1 = this.ml0 / this.a + y;
-	    var phi1 = imlfn(ml1, this.e0, this.e1, this.e2, this.e3);
-	    if (Math.abs(Math.abs(phi1) - HALF_PI) <= EPSLN) {
-	      p.x = this.long0;
-	      p.y = HALF_PI;
-	      if (y < 0) {
-	        p.y *= -1;
-	      }
-	      return p;
-	    }
-	    var nl1 = gN(this.a, this.e, Math.sin(phi1));
-
-	    var rl1 = nl1 * nl1 * nl1 / this.a / this.a * (1 - this.es);
-	    var tl1 = Math.pow(Math.tan(phi1), 2);
-	    var dl = x * this.a / nl1;
-	    var dsq = dl * dl;
-	    phi = phi1 - nl1 * Math.tan(phi1) / rl1 * dl * dl * (0.5 - (1 + 3 * tl1) * dl * dl / 24);
-	    lam = dl * (1 - dsq * (tl1 / 3 + (1 + 3 * tl1) * tl1 * dsq / 15)) / Math.cos(phi1);
-
-	  }
-
-	  p.x = adjust_lon(lam + this.long0);
-	  p.y = adjust_lat(phi);
-	  return p;
-
-	}
-
-	var names$d = ["Cassini", "Cassini_Soldner", "cass"];
-	var cass = {
-	  init: init$c,
-	  forward: forward$b,
-	  inverse: inverse$b,
-	  names: names$d
-	};
-
-	function qsfnz(eccent, sinphi) {
-	  var con;
-	  if (eccent > 1.0e-7) {
-	    con = eccent * sinphi;
-	    return ((1 - eccent * eccent) * (sinphi / (1 - con * con) - (0.5 / eccent) * Math.log((1 - con) / (1 + con))));
-	  }
-	  else {
-	    return (2 * sinphi);
-	  }
-	}
-
-	/*
-	  reference
-	    "New Equal-Area Map Projections for Noncircular Regions", John P. Snyder,
-	    The American Cartographer, Vol 15, No. 4, October 1988, pp. 341-355.
-	  */
-
-	var S_POLE = 1;
-
-	var N_POLE = 2;
-	var EQUIT = 3;
-	var OBLIQ = 4;
-
-	/* Initialize the Lambert Azimuthal Equal Area projection
-	  ------------------------------------------------------*/
-	function init$d() {
-	  var t = Math.abs(this.lat0);
-	  if (Math.abs(t - HALF_PI) < EPSLN) {
-	    this.mode = this.lat0 < 0 ? this.S_POLE : this.N_POLE;
-	  }
-	  else if (Math.abs(t) < EPSLN) {
-	    this.mode = this.EQUIT;
-	  }
-	  else {
-	    this.mode = this.OBLIQ;
-	  }
-	  if (this.es > 0) {
-	    var sinphi;
-
-	    this.qp = qsfnz(this.e, 1);
-	    this.mmf = 0.5 / (1 - this.es);
-	    this.apa = authset(this.es);
-	    switch (this.mode) {
-	    case this.N_POLE:
-	      this.dd = 1;
-	      break;
-	    case this.S_POLE:
-	      this.dd = 1;
-	      break;
-	    case this.EQUIT:
-	      this.rq = Math.sqrt(0.5 * this.qp);
-	      this.dd = 1 / this.rq;
-	      this.xmf = 1;
-	      this.ymf = 0.5 * this.qp;
-	      break;
-	    case this.OBLIQ:
-	      this.rq = Math.sqrt(0.5 * this.qp);
-	      sinphi = Math.sin(this.lat0);
-	      this.sinb1 = qsfnz(this.e, sinphi) / this.qp;
-	      this.cosb1 = Math.sqrt(1 - this.sinb1 * this.sinb1);
-	      this.dd = Math.cos(this.lat0) / (Math.sqrt(1 - this.es * sinphi * sinphi) * this.rq * this.cosb1);
-	      this.ymf = (this.xmf = this.rq) / this.dd;
-	      this.xmf *= this.dd;
-	      break;
-	    }
-	  }
-	  else {
-	    if (this.mode === this.OBLIQ) {
-	      this.sinph0 = Math.sin(this.lat0);
-	      this.cosph0 = Math.cos(this.lat0);
-	    }
-	  }
-	}
-
-	/* Lambert Azimuthal Equal Area forward equations--mapping lat,long to x,y
-	  -----------------------------------------------------------------------*/
-	function forward$c(p) {
-
-	  /* Forward equations
-	      -----------------*/
-	  var x, y, coslam, sinlam, sinphi, q, sinb, cosb, b, cosphi;
-	  var lam = p.x;
-	  var phi = p.y;
-
-	  lam = adjust_lon(lam - this.long0);
-	  if (this.sphere) {
-	    sinphi = Math.sin(phi);
-	    cosphi = Math.cos(phi);
-	    coslam = Math.cos(lam);
-	    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
-	      y = (this.mode === this.EQUIT) ? 1 + cosphi * coslam : 1 + this.sinph0 * sinphi + this.cosph0 * cosphi * coslam;
-	      if (y <= EPSLN) {
-	        return null;
-	      }
-	      y = Math.sqrt(2 / y);
-	      x = y * cosphi * Math.sin(lam);
-	      y *= (this.mode === this.EQUIT) ? sinphi : this.cosph0 * sinphi - this.sinph0 * cosphi * coslam;
-	    }
-	    else if (this.mode === this.N_POLE || this.mode === this.S_POLE) {
-	      if (this.mode === this.N_POLE) {
-	        coslam = -coslam;
-	      }
-	      if (Math.abs(phi + this.lat0) < EPSLN) {
-	        return null;
-	      }
-	      y = FORTPI - phi * 0.5;
-	      y = 2 * ((this.mode === this.S_POLE) ? Math.cos(y) : Math.sin(y));
-	      x = y * Math.sin(lam);
-	      y *= coslam;
-	    }
-	  }
-	  else {
-	    sinb = 0;
-	    cosb = 0;
-	    b = 0;
-	    coslam = Math.cos(lam);
-	    sinlam = Math.sin(lam);
-	    sinphi = Math.sin(phi);
-	    q = qsfnz(this.e, sinphi);
-	    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
-	      sinb = q / this.qp;
-	      cosb = Math.sqrt(1 - sinb * sinb);
-	    }
-	    switch (this.mode) {
-	    case this.OBLIQ:
-	      b = 1 + this.sinb1 * sinb + this.cosb1 * cosb * coslam;
-	      break;
-	    case this.EQUIT:
-	      b = 1 + cosb * coslam;
-	      break;
-	    case this.N_POLE:
-	      b = HALF_PI + phi;
-	      q = this.qp - q;
-	      break;
-	    case this.S_POLE:
-	      b = phi - HALF_PI;
-	      q = this.qp + q;
-	      break;
-	    }
-	    if (Math.abs(b) < EPSLN) {
-	      return null;
-	    }
-	    switch (this.mode) {
-	    case this.OBLIQ:
-	    case this.EQUIT:
-	      b = Math.sqrt(2 / b);
-	      if (this.mode === this.OBLIQ) {
-	        y = this.ymf * b * (this.cosb1 * sinb - this.sinb1 * cosb * coslam);
-	      }
-	      else {
-	        y = (b = Math.sqrt(2 / (1 + cosb * coslam))) * sinb * this.ymf;
-	      }
-	      x = this.xmf * b * cosb * sinlam;
-	      break;
-	    case this.N_POLE:
-	    case this.S_POLE:
-	      if (q >= 0) {
-	        x = (b = Math.sqrt(q)) * sinlam;
-	        y = coslam * ((this.mode === this.S_POLE) ? b : -b);
-	      }
-	      else {
-	        x = y = 0;
-	      }
-	      break;
-	    }
-	  }
-
-	  p.x = this.a * x + this.x0;
-	  p.y = this.a * y + this.y0;
-	  return p;
-	}
-
-	/* Inverse equations
-	  -----------------*/
-	function inverse$c(p) {
-	  p.x -= this.x0;
-	  p.y -= this.y0;
-	  var x = p.x / this.a;
-	  var y = p.y / this.a;
-	  var lam, phi, cCe, sCe, q, rho, ab;
-	  if (this.sphere) {
-	    var cosz = 0,
-	      rh, sinz = 0;
-
-	    rh = Math.sqrt(x * x + y * y);
-	    phi = rh * 0.5;
-	    if (phi > 1) {
-	      return null;
-	    }
-	    phi = 2 * Math.asin(phi);
-	    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
-	      sinz = Math.sin(phi);
-	      cosz = Math.cos(phi);
-	    }
-	    switch (this.mode) {
-	    case this.EQUIT:
-	      phi = (Math.abs(rh) <= EPSLN) ? 0 : Math.asin(y * sinz / rh);
-	      x *= sinz;
-	      y = cosz * rh;
-	      break;
-	    case this.OBLIQ:
-	      phi = (Math.abs(rh) <= EPSLN) ? this.lat0 : Math.asin(cosz * this.sinph0 + y * sinz * this.cosph0 / rh);
-	      x *= sinz * this.cosph0;
-	      y = (cosz - Math.sin(phi) * this.sinph0) * rh;
-	      break;
-	    case this.N_POLE:
-	      y = -y;
-	      phi = HALF_PI - phi;
-	      break;
-	    case this.S_POLE:
-	      phi -= HALF_PI;
-	      break;
-	    }
-	    lam = (y === 0 && (this.mode === this.EQUIT || this.mode === this.OBLIQ)) ? 0 : Math.atan2(x, y);
-	  }
-	  else {
-	    ab = 0;
-	    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
-	      x /= this.dd;
-	      y *= this.dd;
-	      rho = Math.sqrt(x * x + y * y);
-	      if (rho < EPSLN) {
-	        p.x = this.long0;
-	        p.y = this.lat0;
-	        return p;
-	      }
-	      sCe = 2 * Math.asin(0.5 * rho / this.rq);
-	      cCe = Math.cos(sCe);
-	      x *= (sCe = Math.sin(sCe));
-	      if (this.mode === this.OBLIQ) {
-	        ab = cCe * this.sinb1 + y * sCe * this.cosb1 / rho;
-	        q = this.qp * ab;
-	        y = rho * this.cosb1 * cCe - y * this.sinb1 * sCe;
-	      }
-	      else {
-	        ab = y * sCe / rho;
-	        q = this.qp * ab;
-	        y = rho * cCe;
-	      }
-	    }
-	    else if (this.mode === this.N_POLE || this.mode === this.S_POLE) {
-	      if (this.mode === this.N_POLE) {
-	        y = -y;
-	      }
-	      q = (x * x + y * y);
-	      if (!q) {
-	        p.x = this.long0;
-	        p.y = this.lat0;
-	        return p;
-	      }
-	      ab = 1 - q / this.qp;
-	      if (this.mode === this.S_POLE) {
-	        ab = -ab;
-	      }
-	    }
-	    lam = Math.atan2(x, y);
-	    phi = authlat(Math.asin(ab), this.apa);
-	  }
-
-	  p.x = adjust_lon(this.long0 + lam);
-	  p.y = phi;
-	  return p;
-	}
-
-	/* determine latitude from authalic latitude */
-	var P00 = 0.33333333333333333333;
-
-	var P01 = 0.17222222222222222222;
-	var P02 = 0.10257936507936507936;
-	var P10 = 0.06388888888888888888;
-	var P11 = 0.06640211640211640211;
-	var P20 = 0.01641501294219154443;
-
-	function authset(es) {
-	  var t;
-	  var APA = [];
-	  APA[0] = es * P00;
-	  t = es * es;
-	  APA[0] += t * P01;
-	  APA[1] = t * P10;
-	  t *= es;
-	  APA[0] += t * P02;
-	  APA[1] += t * P11;
-	  APA[2] = t * P20;
-	  return APA;
-	}
-
-	function authlat(beta, APA) {
-	  var t = beta + beta;
-	  return (beta + APA[0] * Math.sin(t) + APA[1] * Math.sin(t + t) + APA[2] * Math.sin(t + t + t));
-	}
-
-	var names$e = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area", "laea"];
-	var laea = {
-	  init: init$d,
-	  forward: forward$c,
-	  inverse: inverse$c,
-	  names: names$e,
-	  S_POLE: S_POLE,
-	  N_POLE: N_POLE,
-	  EQUIT: EQUIT,
-	  OBLIQ: OBLIQ
-	};
-
-	function asinz(x) {
-	  if (Math.abs(x) > 1) {
-	    x = (x > 1) ? 1 : -1;
-	  }
-	  return Math.asin(x);
-	}
-
-	function init$e() {
-
-	  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
-	    return;
-	  }
-	  this.temp = this.b / this.a;
-	  this.es = 1 - Math.pow(this.temp, 2);
-	  this.e3 = Math.sqrt(this.es);
-
-	  this.sin_po = Math.sin(this.lat1);
-	  this.cos_po = Math.cos(this.lat1);
-	  this.t1 = this.sin_po;
-	  this.con = this.sin_po;
-	  this.ms1 = msfnz(this.e3, this.sin_po, this.cos_po);
-	  this.qs1 = qsfnz(this.e3, this.sin_po, this.cos_po);
-
-	  this.sin_po = Math.sin(this.lat2);
-	  this.cos_po = Math.cos(this.lat2);
-	  this.t2 = this.sin_po;
-	  this.ms2 = msfnz(this.e3, this.sin_po, this.cos_po);
-	  this.qs2 = qsfnz(this.e3, this.sin_po, this.cos_po);
-
-	  this.sin_po = Math.sin(this.lat0);
-	  this.cos_po = Math.cos(this.lat0);
-	  this.t3 = this.sin_po;
-	  this.qs0 = qsfnz(this.e3, this.sin_po, this.cos_po);
-
-	  if (Math.abs(this.lat1 - this.lat2) > EPSLN) {
-	    this.ns0 = (this.ms1 * this.ms1 - this.ms2 * this.ms2) / (this.qs2 - this.qs1);
-	  }
-	  else {
-	    this.ns0 = this.con;
-	  }
-	  this.c = this.ms1 * this.ms1 + this.ns0 * this.qs1;
-	  this.rh = this.a * Math.sqrt(this.c - this.ns0 * this.qs0) / this.ns0;
-	}
-
-	/* Albers Conical Equal Area forward equations--mapping lat,long to x,y
-	  -------------------------------------------------------------------*/
-	function forward$d(p) {
-
-	  var lon = p.x;
-	  var lat = p.y;
-
-	  this.sin_phi = Math.sin(lat);
-	  this.cos_phi = Math.cos(lat);
-
-	  var qs = qsfnz(this.e3, this.sin_phi, this.cos_phi);
-	  var rh1 = this.a * Math.sqrt(this.c - this.ns0 * qs) / this.ns0;
-	  var theta = this.ns0 * adjust_lon(lon - this.long0);
-	  var x = rh1 * Math.sin(theta) + this.x0;
-	  var y = this.rh - rh1 * Math.cos(theta) + this.y0;
-
-	  p.x = x;
-	  p.y = y;
-	  return p;
-	}
-
-	function inverse$d(p) {
-	  var rh1, qs, con, theta, lon, lat;
-
-	  p.x -= this.x0;
-	  p.y = this.rh - p.y + this.y0;
-	  if (this.ns0 >= 0) {
-	    rh1 = Math.sqrt(p.x * p.x + p.y * p.y);
-	    con = 1;
-	  }
-	  else {
-	    rh1 = -Math.sqrt(p.x * p.x + p.y * p.y);
-	    con = -1;
-	  }
-	  theta = 0;
-	  if (rh1 !== 0) {
-	    theta = Math.atan2(con * p.x, con * p.y);
-	  }
-	  con = rh1 * this.ns0 / this.a;
-	  if (this.sphere) {
-	    lat = Math.asin((this.c - con * con) / (2 * this.ns0));
-	  }
-	  else {
-	    qs = (this.c - con * con) / this.ns0;
-	    lat = this.phi1z(this.e3, qs);
-	  }
-
-	  lon = adjust_lon(theta / this.ns0 + this.long0);
-	  p.x = lon;
-	  p.y = lat;
-	  return p;
-	}
-
-	/* Function to compute phi1, the latitude for the inverse of the
-	   Albers Conical Equal-Area projection.
-	-------------------------------------------*/
-	function phi1z(eccent, qs) {
-	  var sinphi, cosphi, con, com, dphi;
-	  var phi = asinz(0.5 * qs);
-	  if (eccent < EPSLN) {
-	    return phi;
-	  }
-
-	  var eccnts = eccent * eccent;
-	  for (var i = 1; i <= 25; i++) {
-	    sinphi = Math.sin(phi);
-	    cosphi = Math.cos(phi);
-	    con = eccent * sinphi;
-	    com = 1 - con * con;
-	    dphi = 0.5 * com * com / cosphi * (qs / (1 - eccnts) - sinphi / com + 0.5 / eccent * Math.log((1 - con) / (1 + con)));
-	    phi = phi + dphi;
-	    if (Math.abs(dphi) <= 1e-7) {
-	      return phi;
-	    }
-	  }
-	  return null;
-	}
-
-	var names$f = ["Albers_Conic_Equal_Area", "Albers", "aea"];
-	var aea = {
-	  init: init$e,
-	  forward: forward$d,
-	  inverse: inverse$d,
-	  names: names$f,
-	  phi1z: phi1z
-	};
-
-	/*
-	  reference:
-	    Wolfram Mathworld "Gnomonic Projection"
-	    http://mathworld.wolfram.com/GnomonicProjection.html
-	    Accessed: 12th November 2009
-	  */
-	function init$f() {
-
-	  /* Place parameters in static storage for common use
-	      -------------------------------------------------*/
-	  this.sin_p14 = Math.sin(this.lat0);
-	  this.cos_p14 = Math.cos(this.lat0);
-	  // Approximation for projecting points to the horizon (infinity)
-	  this.infinity_dist = 1000 * this.a;
-	  this.rc = 1;
-	}
-
-	/* Gnomonic forward equations--mapping lat,long to x,y
-	    ---------------------------------------------------*/
-	function forward$e(p) {
-	  var sinphi, cosphi; /* sin and cos value        */
-	  var dlon; /* delta longitude value      */
-	  var coslon; /* cos of longitude        */
-	  var ksp; /* scale factor          */
-	  var g;
-	  var x, y;
-	  var lon = p.x;
-	  var lat = p.y;
-	  /* Forward equations
-	      -----------------*/
-	  dlon = adjust_lon(lon - this.long0);
-
-	  sinphi = Math.sin(lat);
-	  cosphi = Math.cos(lat);
-
-	  coslon = Math.cos(dlon);
-	  g = this.sin_p14 * sinphi + this.cos_p14 * cosphi * coslon;
-	  ksp = 1;
-	  if ((g > 0) || (Math.abs(g) <= EPSLN)) {
-	    x = this.x0 + this.a * ksp * cosphi * Math.sin(dlon) / g;
-	    y = this.y0 + this.a * ksp * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon) / g;
-	  }
-	  else {
-
-	    // Point is in the opposing hemisphere and is unprojectable
-	    // We still need to return a reasonable point, so we project
-	    // to infinity, on a bearing
-	    // equivalent to the northern hemisphere equivalent
-	    // This is a reasonable approximation for short shapes and lines that
-	    // straddle the horizon.
-
-	    x = this.x0 + this.infinity_dist * cosphi * Math.sin(dlon);
-	    y = this.y0 + this.infinity_dist * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon);
-
-	  }
-	  p.x = x;
-	  p.y = y;
-	  return p;
-	}
-
-	function inverse$e(p) {
-	  var rh; /* Rho */
-	  var sinc, cosc;
-	  var c;
-	  var lon, lat;
-
-	  /* Inverse equations
-	      -----------------*/
-	  p.x = (p.x - this.x0) / this.a;
-	  p.y = (p.y - this.y0) / this.a;
-
-	  p.x /= this.k0;
-	  p.y /= this.k0;
-
-	  if ((rh = Math.sqrt(p.x * p.x + p.y * p.y))) {
-	    c = Math.atan2(rh, this.rc);
-	    sinc = Math.sin(c);
-	    cosc = Math.cos(c);
-
-	    lat = asinz(cosc * this.sin_p14 + (p.y * sinc * this.cos_p14) / rh);
-	    lon = Math.atan2(p.x * sinc, rh * this.cos_p14 * cosc - p.y * this.sin_p14 * sinc);
-	    lon = adjust_lon(this.long0 + lon);
-	  }
-	  else {
-	    lat = this.phic0;
-	    lon = 0;
-	  }
-
-	  p.x = lon;
-	  p.y = lat;
-	  return p;
-	}
-
-	var names$g = ["gnom"];
-	var gnom = {
-	  init: init$f,
-	  forward: forward$e,
-	  inverse: inverse$e,
-	  names: names$g
-	};
-
-	function iqsfnz(eccent, q) {
-	  var temp = 1 - (1 - eccent * eccent) / (2 * eccent) * Math.log((1 - eccent) / (1 + eccent));
-	  if (Math.abs(Math.abs(q) - temp) < 1.0E-6) {
-	    if (q < 0) {
-	      return (-1 * HALF_PI);
-	    }
-	    else {
-	      return HALF_PI;
-	    }
-	  }
-	  //var phi = 0.5* q/(1-eccent*eccent);
-	  var phi = Math.asin(0.5 * q);
-	  var dphi;
-	  var sin_phi;
-	  var cos_phi;
-	  var con;
-	  for (var i = 0; i < 30; i++) {
-	    sin_phi = Math.sin(phi);
-	    cos_phi = Math.cos(phi);
-	    con = eccent * sin_phi;
-	    dphi = Math.pow(1 - con * con, 2) / (2 * cos_phi) * (q / (1 - eccent * eccent) - sin_phi / (1 - con * con) + 0.5 / eccent * Math.log((1 - con) / (1 + con)));
-	    phi += dphi;
-	    if (Math.abs(dphi) <= 0.0000000001) {
-	      return phi;
-	    }
-	  }
-
-	  //console.log("IQSFN-CONV:Latitude failed to converge after 30 iterations");
-	  return NaN;
-	}
-
-	/*
-	  reference:
-	    "Cartographic Projection Procedures for the UNIX Environment-
-	    A User's Manual" by Gerald I. Evenden,
-	    USGS Open File Report 90-284and Release 4 Interim Reports (2003)
-	*/
-	function init$g() {
-	  //no-op
-	  if (!this.sphere) {
-	    this.k0 = msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts));
-	  }
-	}
-
-	/* Cylindrical Equal Area forward equations--mapping lat,long to x,y
-	    ------------------------------------------------------------*/
-	function forward$f(p) {
-	  var lon = p.x;
-	  var lat = p.y;
-	  var x, y;
-	  /* Forward equations
-	      -----------------*/
-	  var dlon = adjust_lon(lon - this.long0);
-	  if (this.sphere) {
-	    x = this.x0 + this.a * dlon * Math.cos(this.lat_ts);
-	    y = this.y0 + this.a * Math.sin(lat) / Math.cos(this.lat_ts);
-	  }
-	  else {
-	    var qs = qsfnz(this.e, Math.sin(lat));
-	    x = this.x0 + this.a * this.k0 * dlon;
-	    y = this.y0 + this.a * qs * 0.5 / this.k0;
-	  }
-
-	  p.x = x;
-	  p.y = y;
-	  return p;
-	}
-
-	/* Cylindrical Equal Area inverse equations--mapping x,y to lat/long
-	    ------------------------------------------------------------*/
-	function inverse$f(p) {
-	  p.x -= this.x0;
-	  p.y -= this.y0;
-	  var lon, lat;
-
-	  if (this.sphere) {
-	    lon = adjust_lon(this.long0 + (p.x / this.a) / Math.cos(this.lat_ts));
-	    lat = Math.asin((p.y / this.a) * Math.cos(this.lat_ts));
-	  }
-	  else {
-	    lat = iqsfnz(this.e, 2 * p.y * this.k0 / this.a);
-	    lon = adjust_lon(this.long0 + p.x / (this.a * this.k0));
-	  }
-
-	  p.x = lon;
-	  p.y = lat;
-	  return p;
-	}
-
-	var names$h = ["cea"];
-	var cea = {
-	  init: init$g,
-	  forward: forward$f,
-	  inverse: inverse$f,
-	  names: names$h
-	};
-
-	function init$h() {
-
-	  this.x0 = this.x0 || 0;
-	  this.y0 = this.y0 || 0;
-	  this.lat0 = this.lat0 || 0;
-	  this.long0 = this.long0 || 0;
-	  this.lat_ts = this.lat_ts || 0;
-	  this.title = this.title || "Equidistant Cylindrical (Plate Carre)";
-
-	  this.rc = Math.cos(this.lat_ts);
-	}
-
-	// forward equations--mapping lat,long to x,y
-	// -----------------------------------------------------------------
-	function forward$g(p) {
-
-	  var lon = p.x;
-	  var lat = p.y;
-
-	  var dlon = adjust_lon(lon - this.long0);
-	  var dlat = adjust_lat(lat - this.lat0);
-	  p.x = this.x0 + (this.a * dlon * this.rc);
-	  p.y = this.y0 + (this.a * dlat);
-	  return p;
-	}
-
-	// inverse equations--mapping x,y to lat/long
-	// -----------------------------------------------------------------
-	function inverse$g(p) {
-
-	  var x = p.x;
-	  var y = p.y;
-
-	  p.x = adjust_lon(this.long0 + ((x - this.x0) / (this.a * this.rc)));
-	  p.y = adjust_lat(this.lat0 + ((y - this.y0) / (this.a)));
-	  return p;
-	}
-
-	var names$i = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
-	var eqc = {
-	  init: init$h,
-	  forward: forward$g,
-	  inverse: inverse$g,
-	  names: names$i
-	};
-
-	var MAX_ITER$2 = 20;
-
-	function init$i() {
-	  /* Place parameters in static storage for common use
-	      -------------------------------------------------*/
-	  this.temp = this.b / this.a;
-	  this.es = 1 - Math.pow(this.temp, 2); // devait etre dans tmerc.js mais n y est pas donc je commente sinon retour de valeurs nulles
-	  this.e = Math.sqrt(this.es);
-	  this.e0 = e0fn(this.es);
-	  this.e1 = e1fn(this.es);
-	  this.e2 = e2fn(this.es);
-	  this.e3 = e3fn(this.es);
-	  this.ml0 = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0); //si que des zeros le calcul ne se fait pas
-	}
-
-	/* Polyconic forward equations--mapping lat,long to x,y
-	    ---------------------------------------------------*/
-	function forward$h(p) {
-	  var lon = p.x;
-	  var lat = p.y;
-	  var x, y, el;
-	  var dlon = adjust_lon(lon - this.long0);
-	  el = dlon * Math.sin(lat);
-	  if (this.sphere) {
-	    if (Math.abs(lat) <= EPSLN) {
-	      x = this.a * dlon;
-	      y = -1 * this.a * this.lat0;
-	    }
-	    else {
-	      x = this.a * Math.sin(el) / Math.tan(lat);
-	      y = this.a * (adjust_lat(lat - this.lat0) + (1 - Math.cos(el)) / Math.tan(lat));
-	    }
-	  }
-	  else {
-	    if (Math.abs(lat) <= EPSLN) {
-	      x = this.a * dlon;
-	      y = -1 * this.ml0;
-	    }
-	    else {
-	      var nl = gN(this.a, this.e, Math.sin(lat)) / Math.tan(lat);
-	      x = nl * Math.sin(el);
-	      y = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, lat) - this.ml0 + nl * (1 - Math.cos(el));
-	    }
-
-	  }
-	  p.x = x + this.x0;
-	  p.y = y + this.y0;
-	  return p;
-	}
-
-	/* Inverse equations
-	  -----------------*/
-	function inverse$h(p) {
-	  var lon, lat, x, y, i;
-	  var al, bl;
-	  var phi, dphi;
-	  x = p.x - this.x0;
-	  y = p.y - this.y0;
-
-	  if (this.sphere) {
-	    if (Math.abs(y + this.a * this.lat0) <= EPSLN) {
-	      lon = adjust_lon(x / this.a + this.long0);
-	      lat = 0;
-	    }
-	    else {
-	      al = this.lat0 + y / this.a;
-	      bl = x * x / this.a / this.a + al * al;
-	      phi = al;
-	      var tanphi;
-	      for (i = MAX_ITER$2; i; --i) {
-	        tanphi = Math.tan(phi);
-	        dphi = -1 * (al * (phi * tanphi + 1) - phi - 0.5 * (phi * phi + bl) * tanphi) / ((phi - al) / tanphi - 1);
-	        phi += dphi;
-	        if (Math.abs(dphi) <= EPSLN) {
-	          lat = phi;
-	          break;
-	        }
-	      }
-	      lon = adjust_lon(this.long0 + (Math.asin(x * Math.tan(phi) / this.a)) / Math.sin(lat));
-	    }
-	  }
-	  else {
-	    if (Math.abs(y + this.ml0) <= EPSLN) {
-	      lat = 0;
-	      lon = adjust_lon(this.long0 + x / this.a);
-	    }
-	    else {
-
-	      al = (this.ml0 + y) / this.a;
-	      bl = x * x / this.a / this.a + al * al;
-	      phi = al;
-	      var cl, mln, mlnp, ma;
-	      var con;
-	      for (i = MAX_ITER$2; i; --i) {
-	        con = this.e * Math.sin(phi);
-	        cl = Math.sqrt(1 - con * con) * Math.tan(phi);
-	        mln = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, phi);
-	        mlnp = this.e0 - 2 * this.e1 * Math.cos(2 * phi) + 4 * this.e2 * Math.cos(4 * phi) - 6 * this.e3 * Math.cos(6 * phi);
-	        ma = mln / this.a;
-	        dphi = (al * (cl * ma + 1) - ma - 0.5 * cl * (ma * ma + bl)) / (this.es * Math.sin(2 * phi) * (ma * ma + bl - 2 * al * ma) / (4 * cl) + (al - ma) * (cl * mlnp - 2 / Math.sin(2 * phi)) - mlnp);
-	        phi -= dphi;
-	        if (Math.abs(dphi) <= EPSLN) {
-	          lat = phi;
-	          break;
-	        }
-	      }
-
-	      //lat=phi4z(this.e,this.e0,this.e1,this.e2,this.e3,al,bl,0,0);
-	      cl = Math.sqrt(1 - this.es * Math.pow(Math.sin(lat), 2)) * Math.tan(lat);
-	      lon = adjust_lon(this.long0 + Math.asin(x * cl / this.a) / Math.sin(lat));
-	    }
-	  }
-
-	  p.x = lon;
-	  p.y = lat;
-	  return p;
-	}
-
-	var names$j = ["Polyconic", "poly"];
-	var poly = {
-	  init: init$i,
-	  forward: forward$h,
-	  inverse: inverse$h,
-	  names: names$j
-	};
-
-	/*
-	  reference
-	    Department of Land and Survey Technical Circular 1973/32
-	      http://www.linz.govt.nz/docs/miscellaneous/nz-map-definition.pdf
-	    OSG Technical Report 4.1
-	      http://www.linz.govt.nz/docs/miscellaneous/nzmg.pdf
-	  */
-
-	/**
-	 * iterations: Number of iterations to refine inverse transform.
-	 *     0 -> km accuracy
-	 *     1 -> m accuracy -- suitable for most mapping applications
-	 *     2 -> mm accuracy
-	 */
-	var iterations = 1;
-
-	function init$j() {
-	  this.A = [];
-	  this.A[1] = 0.6399175073;
-	  this.A[2] = -0.1358797613;
-	  this.A[3] = 0.063294409;
-	  this.A[4] = -0.02526853;
-	  this.A[5] = 0.0117879;
-	  this.A[6] = -0.0055161;
-	  this.A[7] = 0.0026906;
-	  this.A[8] = -0.001333;
-	  this.A[9] = 0.00067;
-	  this.A[10] = -0.00034;
-
-	  this.B_re = [];
-	  this.B_im = [];
-	  this.B_re[1] = 0.7557853228;
-	  this.B_im[1] = 0;
-	  this.B_re[2] = 0.249204646;
-	  this.B_im[2] = 0.003371507;
-	  this.B_re[3] = -0.001541739;
-	  this.B_im[3] = 0.041058560;
-	  this.B_re[4] = -0.10162907;
-	  this.B_im[4] = 0.01727609;
-	  this.B_re[5] = -0.26623489;
-	  this.B_im[5] = -0.36249218;
-	  this.B_re[6] = -0.6870983;
-	  this.B_im[6] = -1.1651967;
-
-	  this.C_re = [];
-	  this.C_im = [];
-	  this.C_re[1] = 1.3231270439;
-	  this.C_im[1] = 0;
-	  this.C_re[2] = -0.577245789;
-	  this.C_im[2] = -0.007809598;
-	  this.C_re[3] = 0.508307513;
-	  this.C_im[3] = -0.112208952;
-	  this.C_re[4] = -0.15094762;
-	  this.C_im[4] = 0.18200602;
-	  this.C_re[5] = 1.01418179;
-	  this.C_im[5] = 1.64497696;
-	  this.C_re[6] = 1.9660549;
-	  this.C_im[6] = 2.5127645;
-
-	  this.D = [];
-	  this.D[1] = 1.5627014243;
-	  this.D[2] = 0.5185406398;
-	  this.D[3] = -0.03333098;
-	  this.D[4] = -0.1052906;
-	  this.D[5] = -0.0368594;
-	  this.D[6] = 0.007317;
-	  this.D[7] = 0.01220;
-	  this.D[8] = 0.00394;
-	  this.D[9] = -0.0013;
-	}
-
-	/**
-	    New Zealand Map Grid Forward  - long/lat to x/y
-	    long/lat in radians
-	  */
-	function forward$i(p) {
-	  var n;
-	  var lon = p.x;
-	  var lat = p.y;
-
-	  var delta_lat = lat - this.lat0;
-	  var delta_lon = lon - this.long0;
-
-	  // 1. Calculate d_phi and d_psi    ...                          // and d_lambda
-	  // For this algorithm, delta_latitude is in seconds of arc x 10-5, so we need to scale to those units. Longitude is radians.
-	  var d_phi = delta_lat / SEC_TO_RAD * 1E-5;
-	  var d_lambda = delta_lon;
-	  var d_phi_n = 1; // d_phi^0
-
-	  var d_psi = 0;
-	  for (n = 1; n <= 10; n++) {
-	    d_phi_n = d_phi_n * d_phi;
-	    d_psi = d_psi + this.A[n] * d_phi_n;
-	  }
-
-	  // 2. Calculate theta
-	  var th_re = d_psi;
-	  var th_im = d_lambda;
-
-	  // 3. Calculate z
-	  var th_n_re = 1;
-	  var th_n_im = 0; // theta^0
-	  var th_n_re1;
-	  var th_n_im1;
-
-	  var z_re = 0;
-	  var z_im = 0;
-	  for (n = 1; n <= 6; n++) {
-	    th_n_re1 = th_n_re * th_re - th_n_im * th_im;
-	    th_n_im1 = th_n_im * th_re + th_n_re * th_im;
-	    th_n_re = th_n_re1;
-	    th_n_im = th_n_im1;
-	    z_re = z_re + this.B_re[n] * th_n_re - this.B_im[n] * th_n_im;
-	    z_im = z_im + this.B_im[n] * th_n_re + this.B_re[n] * th_n_im;
-	  }
-
-	  // 4. Calculate easting and northing
-	  p.x = (z_im * this.a) + this.x0;
-	  p.y = (z_re * this.a) + this.y0;
-
-	  return p;
-	}
-
-	/**
-	    New Zealand Map Grid Inverse  -  x/y to long/lat
-	  */
-	function inverse$i(p) {
-	  var n;
-	  var x = p.x;
-	  var y = p.y;
-
-	  var delta_x = x - this.x0;
-	  var delta_y = y - this.y0;
-
-	  // 1. Calculate z
-	  var z_re = delta_y / this.a;
-	  var z_im = delta_x / this.a;
-
-	  // 2a. Calculate theta - first approximation gives km accuracy
-	  var z_n_re = 1;
-	  var z_n_im = 0; // z^0
-	  var z_n_re1;
-	  var z_n_im1;
-
-	  var th_re = 0;
-	  var th_im = 0;
-	  for (n = 1; n <= 6; n++) {
-	    z_n_re1 = z_n_re * z_re - z_n_im * z_im;
-	    z_n_im1 = z_n_im * z_re + z_n_re * z_im;
-	    z_n_re = z_n_re1;
-	    z_n_im = z_n_im1;
-	    th_re = th_re + this.C_re[n] * z_n_re - this.C_im[n] * z_n_im;
-	    th_im = th_im + this.C_im[n] * z_n_re + this.C_re[n] * z_n_im;
-	  }
-
-	  // 2b. Iterate to refine the accuracy of the calculation
-	  //        0 iterations gives km accuracy
-	  //        1 iteration gives m accuracy -- good enough for most mapping applications
-	  //        2 iterations bives mm accuracy
-	  for (var i = 0; i < this.iterations; i++) {
-	    var th_n_re = th_re;
-	    var th_n_im = th_im;
-	    var th_n_re1;
-	    var th_n_im1;
-
-	    var num_re = z_re;
-	    var num_im = z_im;
-	    for (n = 2; n <= 6; n++) {
-	      th_n_re1 = th_n_re * th_re - th_n_im * th_im;
-	      th_n_im1 = th_n_im * th_re + th_n_re * th_im;
-	      th_n_re = th_n_re1;
-	      th_n_im = th_n_im1;
-	      num_re = num_re + (n - 1) * (this.B_re[n] * th_n_re - this.B_im[n] * th_n_im);
-	      num_im = num_im + (n - 1) * (this.B_im[n] * th_n_re + this.B_re[n] * th_n_im);
-	    }
-
-	    th_n_re = 1;
-	    th_n_im = 0;
-	    var den_re = this.B_re[1];
-	    var den_im = this.B_im[1];
-	    for (n = 2; n <= 6; n++) {
-	      th_n_re1 = th_n_re * th_re - th_n_im * th_im;
-	      th_n_im1 = th_n_im * th_re + th_n_re * th_im;
-	      th_n_re = th_n_re1;
-	      th_n_im = th_n_im1;
-	      den_re = den_re + n * (this.B_re[n] * th_n_re - this.B_im[n] * th_n_im);
-	      den_im = den_im + n * (this.B_im[n] * th_n_re + this.B_re[n] * th_n_im);
-	    }
-
-	    // Complex division
-	    var den2 = den_re * den_re + den_im * den_im;
-	    th_re = (num_re * den_re + num_im * den_im) / den2;
-	    th_im = (num_im * den_re - num_re * den_im) / den2;
-	  }
-
-	  // 3. Calculate d_phi              ...                                    // and d_lambda
-	  var d_psi = th_re;
-	  var d_lambda = th_im;
-	  var d_psi_n = 1; // d_psi^0
-
-	  var d_phi = 0;
-	  for (n = 1; n <= 9; n++) {
-	    d_psi_n = d_psi_n * d_psi;
-	    d_phi = d_phi + this.D[n] * d_psi_n;
-	  }
-
-	  // 4. Calculate latitude and longitude
-	  // d_phi is calcuated in second of arc * 10^-5, so we need to scale back to radians. d_lambda is in radians.
-	  var lat = this.lat0 + (d_phi * SEC_TO_RAD * 1E5);
-	  var lon = this.long0 + d_lambda;
-
-	  p.x = lon;
-	  p.y = lat;
-
-	  return p;
-	}
-
-	var names$k = ["New_Zealand_Map_Grid", "nzmg"];
-	var nzmg = {
-	  init: init$j,
-	  forward: forward$i,
-	  inverse: inverse$i,
-	  names: names$k
-	};
-
-	/*
-	  reference
-	    "New Equal-Area Map Projections for Noncircular Regions", John P. Snyder,
-	    The American Cartographer, Vol 15, No. 4, October 1988, pp. 341-355.
-	  */
-
-
-	/* Initialize the Miller Cylindrical projection
-	  -------------------------------------------*/
-	function init$k() {
-	  //no-op
-	}
-
-	/* Miller Cylindrical forward equations--mapping lat,long to x,y
-	    ------------------------------------------------------------*/
-	function forward$j(p) {
-	  var lon = p.x;
-	  var lat = p.y;
-	  /* Forward equations
-	      -----------------*/
-	  var dlon = adjust_lon(lon - this.long0);
-	  var x = this.x0 + this.a * dlon;
-	  var y = this.y0 + this.a * Math.log(Math.tan((Math.PI / 4) + (lat / 2.5))) * 1.25;
-
-	  p.x = x;
-	  p.y = y;
-	  return p;
-	}
-
-	/* Miller Cylindrical inverse equations--mapping x,y to lat/long
-	    ------------------------------------------------------------*/
-	function inverse$j(p) {
-	  p.x -= this.x0;
-	  p.y -= this.y0;
-
-	  var lon = adjust_lon(this.long0 + p.x / this.a);
-	  var lat = 2.5 * (Math.atan(Math.exp(0.8 * p.y / this.a)) - Math.PI / 4);
-
-	  p.x = lon;
-	  p.y = lat;
-	  return p;
-	}
-
-	var names$l = ["Miller_Cylindrical", "mill"];
-	var mill = {
-	  init: init$k,
-	  forward: forward$j,
-	  inverse: inverse$j,
-	  names: names$l
-	};
-
-	var MAX_ITER$3 = 20;
-
-
-	function init$l() {
-	  /* Place parameters in static storage for common use
-	    -------------------------------------------------*/
-
-
-	  if (!this.sphere) {
-	    this.en = pj_enfn(this.es);
-	  }
-	  else {
-	    this.n = 1;
-	    this.m = 0;
-	    this.es = 0;
-	    this.C_y = Math.sqrt((this.m + 1) / this.n);
-	    this.C_x = this.C_y / (this.m + 1);
-	  }
-
-	}
-
-	/* Sinusoidal forward equations--mapping lat,long to x,y
-	  -----------------------------------------------------*/
-	function forward$k(p) {
-	  var x, y;
-	  var lon = p.x;
-	  var lat = p.y;
-	  /* Forward equations
-	    -----------------*/
-	  lon = adjust_lon(lon - this.long0);
-
-	  if (this.sphere) {
-	    if (!this.m) {
-	      lat = this.n !== 1 ? Math.asin(this.n * Math.sin(lat)) : lat;
-	    }
-	    else {
-	      var k = this.n * Math.sin(lat);
-	      for (var i = MAX_ITER$3; i; --i) {
-	        var V = (this.m * lat + Math.sin(lat) - k) / (this.m + Math.cos(lat));
-	        lat -= V;
-	        if (Math.abs(V) < EPSLN) {
-	          break;
-	        }
-	      }
-	    }
-	    x = this.a * this.C_x * lon * (this.m + Math.cos(lat));
-	    y = this.a * this.C_y * lat;
-
-	  }
-	  else {
-
-	    var s = Math.sin(lat);
-	    var c = Math.cos(lat);
-	    y = this.a * pj_mlfn(lat, s, c, this.en);
-	    x = this.a * lon * c / Math.sqrt(1 - this.es * s * s);
-	  }
-
-	  p.x = x;
-	  p.y = y;
-	  return p;
-	}
-
-	function inverse$k(p) {
-	  var lat, temp, lon, s;
-
-	  p.x -= this.x0;
-	  lon = p.x / this.a;
-	  p.y -= this.y0;
-	  lat = p.y / this.a;
-
-	  if (this.sphere) {
-	    lat /= this.C_y;
-	    lon = lon / (this.C_x * (this.m + Math.cos(lat)));
-	    if (this.m) {
-	      lat = asinz((this.m * lat + Math.sin(lat)) / this.n);
-	    }
-	    else if (this.n !== 1) {
-	      lat = asinz(Math.sin(lat) / this.n);
-	    }
-	    lon = adjust_lon(lon + this.long0);
-	    lat = adjust_lat(lat);
-	  }
-	  else {
-	    lat = pj_inv_mlfn(p.y / this.a, this.es, this.en);
-	    s = Math.abs(lat);
-	    if (s < HALF_PI) {
-	      s = Math.sin(lat);
-	      temp = this.long0 + p.x * Math.sqrt(1 - this.es * s * s) / (this.a * Math.cos(lat));
-	      //temp = this.long0 + p.x / (this.a * Math.cos(lat));
-	      lon = adjust_lon(temp);
-	    }
-	    else if ((s - EPSLN) < HALF_PI) {
-	      lon = this.long0;
-	    }
-	  }
-	  p.x = lon;
-	  p.y = lat;
-	  return p;
-	}
-
-	var names$m = ["Sinusoidal", "sinu"];
-	var sinu = {
-	  init: init$l,
-	  forward: forward$k,
-	  inverse: inverse$k,
-	  names: names$m
-	};
-
-	function init$m() {}
-	/* Mollweide forward equations--mapping lat,long to x,y
-	    ----------------------------------------------------*/
-	function forward$l(p) {
-
-	  /* Forward equations
-	      -----------------*/
-	  var lon = p.x;
-	  var lat = p.y;
-
-	  var delta_lon = adjust_lon(lon - this.long0);
-	  var theta = lat;
-	  var con = Math.PI * Math.sin(lat);
-
-	  /* Iterate using the Newton-Raphson method to find theta
-	      -----------------------------------------------------*/
-	  while (true) {
-	    var delta_theta = -(theta + Math.sin(theta) - con) / (1 + Math.cos(theta));
-	    theta += delta_theta;
-	    if (Math.abs(delta_theta) < EPSLN) {
-	      break;
-	    }
-	  }
-	  theta /= 2;
-
-	  /* If the latitude is 90 deg, force the x coordinate to be "0 + false easting"
-	       this is done here because of precision problems with "cos(theta)"
-	       --------------------------------------------------------------------------*/
-	  if (Math.PI / 2 - Math.abs(lat) < EPSLN) {
-	    delta_lon = 0;
-	  }
-	  var x = 0.900316316158 * this.a * delta_lon * Math.cos(theta) + this.x0;
-	  var y = 1.4142135623731 * this.a * Math.sin(theta) + this.y0;
-
-	  p.x = x;
-	  p.y = y;
-	  return p;
-	}
-
-	function inverse$l(p) {
-	  var theta;
-	  var arg;
-
-	  /* Inverse equations
-	      -----------------*/
-	  p.x -= this.x0;
-	  p.y -= this.y0;
-	  arg = p.y / (1.4142135623731 * this.a);
-
-	  /* Because of division by zero problems, 'arg' can not be 1.  Therefore
-	       a number very close to one is used instead.
-	       -------------------------------------------------------------------*/
-	  if (Math.abs(arg) > 0.999999999999) {
-	    arg = 0.999999999999;
-	  }
-	  theta = Math.asin(arg);
-	  var lon = adjust_lon(this.long0 + (p.x / (0.900316316158 * this.a * Math.cos(theta))));
-	  if (lon < (-Math.PI)) {
-	    lon = -Math.PI;
-	  }
-	  if (lon > Math.PI) {
-	    lon = Math.PI;
-	  }
-	  arg = (2 * theta + Math.sin(2 * theta)) / Math.PI;
-	  if (Math.abs(arg) > 1) {
-	    arg = 1;
-	  }
-	  var lat = Math.asin(arg);
-
-	  p.x = lon;
-	  p.y = lat;
-	  return p;
-	}
-
-	var names$n = ["Mollweide", "moll"];
-	var moll = {
-	  init: init$m,
-	  forward: forward$l,
-	  inverse: inverse$l,
-	  names: names$n
-	};
-
-	function init$n() {
-
-	  /* Place parameters in static storage for common use
-	      -------------------------------------------------*/
-	  // Standard Parallels cannot be equal and on opposite sides of the equator
-	  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
-	    return;
-	  }
-	  this.lat2 = this.lat2 || this.lat1;
-	  this.temp = this.b / this.a;
-	  this.es = 1 - Math.pow(this.temp, 2);
-	  this.e = Math.sqrt(this.es);
-	  this.e0 = e0fn(this.es);
-	  this.e1 = e1fn(this.es);
-	  this.e2 = e2fn(this.es);
-	  this.e3 = e3fn(this.es);
-
-	  this.sinphi = Math.sin(this.lat1);
-	  this.cosphi = Math.cos(this.lat1);
-
-	  this.ms1 = msfnz(this.e, this.sinphi, this.cosphi);
-	  this.ml1 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat1);
-
-	  if (Math.abs(this.lat1 - this.lat2) < EPSLN) {
-	    this.ns = this.sinphi;
-	  }
-	  else {
-	    this.sinphi = Math.sin(this.lat2);
-	    this.cosphi = Math.cos(this.lat2);
-	    this.ms2 = msfnz(this.e, this.sinphi, this.cosphi);
-	    this.ml2 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat2);
-	    this.ns = (this.ms1 - this.ms2) / (this.ml2 - this.ml1);
-	  }
-	  this.g = this.ml1 + this.ms1 / this.ns;
-	  this.ml0 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0);
-	  this.rh = this.a * (this.g - this.ml0);
-	}
-
-	/* Equidistant Conic forward equations--mapping lat,long to x,y
-	  -----------------------------------------------------------*/
-	function forward$m(p) {
-	  var lon = p.x;
-	  var lat = p.y;
-	  var rh1;
-
-	  /* Forward equations
-	      -----------------*/
-	  if (this.sphere) {
-	    rh1 = this.a * (this.g - lat);
-	  }
-	  else {
-	    var ml = mlfn(this.e0, this.e1, this.e2, this.e3, lat);
-	    rh1 = this.a * (this.g - ml);
-	  }
-	  var theta = this.ns * adjust_lon(lon - this.long0);
-	  var x = this.x0 + rh1 * Math.sin(theta);
-	  var y = this.y0 + this.rh - rh1 * Math.cos(theta);
-	  p.x = x;
-	  p.y = y;
-	  return p;
-	}
-
-	/* Inverse equations
-	  -----------------*/
-	function inverse$m(p) {
-	  p.x -= this.x0;
-	  p.y = this.rh - p.y + this.y0;
-	  var con, rh1, lat, lon;
-	  if (this.ns >= 0) {
-	    rh1 = Math.sqrt(p.x * p.x + p.y * p.y);
-	    con = 1;
-	  }
-	  else {
-	    rh1 = -Math.sqrt(p.x * p.x + p.y * p.y);
-	    con = -1;
-	  }
-	  var theta = 0;
-	  if (rh1 !== 0) {
-	    theta = Math.atan2(con * p.x, con * p.y);
-	  }
-
-	  if (this.sphere) {
-	    lon = adjust_lon(this.long0 + theta / this.ns);
-	    lat = adjust_lat(this.g - rh1 / this.a);
-	    p.x = lon;
-	    p.y = lat;
-	    return p;
-	  }
-	  else {
-	    var ml = this.g - rh1 / this.a;
-	    lat = imlfn(ml, this.e0, this.e1, this.e2, this.e3);
-	    lon = adjust_lon(this.long0 + theta / this.ns);
-	    p.x = lon;
-	    p.y = lat;
-	    return p;
-	  }
-
-	}
-
-	var names$o = ["Equidistant_Conic", "eqdc"];
-	var eqdc = {
-	  init: init$n,
-	  forward: forward$m,
-	  inverse: inverse$m,
-	  names: names$o
-	};
-
-	/* Initialize the Van Der Grinten projection
-	  ----------------------------------------*/
-	function init$o() {
-	  //this.R = 6370997; //Radius of earth
-	  this.R = this.a;
-	}
-
-	function forward$n(p) {
-
-	  var lon = p.x;
-	  var lat = p.y;
-
-	  /* Forward equations
-	    -----------------*/
-	  var dlon = adjust_lon(lon - this.long0);
-	  var x, y;
-
-	  if (Math.abs(lat) <= EPSLN) {
-	    x = this.x0 + this.R * dlon;
-	    y = this.y0;
-	  }
-	  var theta = asinz(2 * Math.abs(lat / Math.PI));
-	  if ((Math.abs(dlon) <= EPSLN) || (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN)) {
-	    x = this.x0;
-	    if (lat >= 0) {
-	      y = this.y0 + Math.PI * this.R * Math.tan(0.5 * theta);
-	    }
-	    else {
-	      y = this.y0 + Math.PI * this.R * -Math.tan(0.5 * theta);
-	    }
-	    //  return(OK);
-	  }
-	  var al = 0.5 * Math.abs((Math.PI / dlon) - (dlon / Math.PI));
-	  var asq = al * al;
-	  var sinth = Math.sin(theta);
-	  var costh = Math.cos(theta);
-
-	  var g = costh / (sinth + costh - 1);
-	  var gsq = g * g;
-	  var m = g * (2 / sinth - 1);
-	  var msq = m * m;
-	  var con = Math.PI * this.R * (al * (g - msq) + Math.sqrt(asq * (g - msq) * (g - msq) - (msq + asq) * (gsq - msq))) / (msq + asq);
-	  if (dlon < 0) {
-	    con = -con;
-	  }
-	  x = this.x0 + con;
-	  //con = Math.abs(con / (Math.PI * this.R));
-	  var q = asq + g;
-	  con = Math.PI * this.R * (m * q - al * Math.sqrt((msq + asq) * (asq + 1) - q * q)) / (msq + asq);
-	  if (lat >= 0) {
-	    //y = this.y0 + Math.PI * this.R * Math.sqrt(1 - con * con - 2 * al * con);
-	    y = this.y0 + con;
-	  }
-	  else {
-	    //y = this.y0 - Math.PI * this.R * Math.sqrt(1 - con * con - 2 * al * con);
-	    y = this.y0 - con;
-	  }
-	  p.x = x;
-	  p.y = y;
-	  return p;
-	}
-
-	/* Van Der Grinten inverse equations--mapping x,y to lat/long
-	  ---------------------------------------------------------*/
-	function inverse$n(p) {
-	  var lon, lat;
-	  var xx, yy, xys, c1, c2, c3;
-	  var a1;
-	  var m1;
-	  var con;
-	  var th1;
-	  var d;
-
-	  /* inverse equations
-	    -----------------*/
-	  p.x -= this.x0;
-	  p.y -= this.y0;
-	  con = Math.PI * this.R;
-	  xx = p.x / con;
-	  yy = p.y / con;
-	  xys = xx * xx + yy * yy;
-	  c1 = -Math.abs(yy) * (1 + xys);
-	  c2 = c1 - 2 * yy * yy + xx * xx;
-	  c3 = -2 * c1 + 1 + 2 * yy * yy + xys * xys;
-	  d = yy * yy / c3 + (2 * c2 * c2 * c2 / c3 / c3 / c3 - 9 * c1 * c2 / c3 / c3) / 27;
-	  a1 = (c1 - c2 * c2 / 3 / c3) / c3;
-	  m1 = 2 * Math.sqrt(-a1 / 3);
-	  con = ((3 * d) / a1) / m1;
-	  if (Math.abs(con) > 1) {
-	    if (con >= 0) {
-	      con = 1;
-	    }
-	    else {
-	      con = -1;
-	    }
-	  }
-	  th1 = Math.acos(con) / 3;
-	  if (p.y >= 0) {
-	    lat = (-m1 * Math.cos(th1 + Math.PI / 3) - c2 / 3 / c3) * Math.PI;
-	  }
-	  else {
-	    lat = -(-m1 * Math.cos(th1 + Math.PI / 3) - c2 / 3 / c3) * Math.PI;
-	  }
-
-	  if (Math.abs(xx) < EPSLN) {
-	    lon = this.long0;
-	  }
-	  else {
-	    lon = adjust_lon(this.long0 + Math.PI * (xys - 1 + Math.sqrt(1 + 2 * (xx * xx - yy * yy) + xys * xys)) / 2 / xx);
-	  }
-
-	  p.x = lon;
-	  p.y = lat;
-	  return p;
-	}
-
-	var names$p = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
-	var vandg = {
-	  init: init$o,
-	  forward: forward$n,
-	  inverse: inverse$n,
-	  names: names$p
-	};
-
-	function init$p() {
-	  this.sin_p12 = Math.sin(this.lat0);
-	  this.cos_p12 = Math.cos(this.lat0);
-	}
-
-	function forward$o(p) {
-	  var lon = p.x;
-	  var lat = p.y;
-	  var sinphi = Math.sin(p.y);
-	  var cosphi = Math.cos(p.y);
-	  var dlon = adjust_lon(lon - this.long0);
-	  var e0, e1, e2, e3, Mlp, Ml, tanphi, Nl1, Nl, psi, Az, G, H, GH, Hs, c, kp, cos_c, s, s2, s3, s4, s5;
-	  if (this.sphere) {
-	    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
-	      //North Pole case
-	      p.x = this.x0 + this.a * (HALF_PI - lat) * Math.sin(dlon);
-	      p.y = this.y0 - this.a * (HALF_PI - lat) * Math.cos(dlon);
-	      return p;
-	    }
-	    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
-	      //South Pole case
-	      p.x = this.x0 + this.a * (HALF_PI + lat) * Math.sin(dlon);
-	      p.y = this.y0 + this.a * (HALF_PI + lat) * Math.cos(dlon);
-	      return p;
-	    }
-	    else {
-	      //default case
-	      cos_c = this.sin_p12 * sinphi + this.cos_p12 * cosphi * Math.cos(dlon);
-	      c = Math.acos(cos_c);
-	      kp = c ? c / Math.sin(c) : 1;
-	      p.x = this.x0 + this.a * kp * cosphi * Math.sin(dlon);
-	      p.y = this.y0 + this.a * kp * (this.cos_p12 * sinphi - this.sin_p12 * cosphi * Math.cos(dlon));
-	      return p;
-	    }
-	  }
-	  else {
-	    e0 = e0fn(this.es);
-	    e1 = e1fn(this.es);
-	    e2 = e2fn(this.es);
-	    e3 = e3fn(this.es);
-	    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
-	      //North Pole case
-	      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
-	      Ml = this.a * mlfn(e0, e1, e2, e3, lat);
-	      p.x = this.x0 + (Mlp - Ml) * Math.sin(dlon);
-	      p.y = this.y0 - (Mlp - Ml) * Math.cos(dlon);
-	      return p;
-	    }
-	    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
-	      //South Pole case
-	      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
-	      Ml = this.a * mlfn(e0, e1, e2, e3, lat);
-	      p.x = this.x0 + (Mlp + Ml) * Math.sin(dlon);
-	      p.y = this.y0 + (Mlp + Ml) * Math.cos(dlon);
-	      return p;
-	    }
-	    else {
-	      //Default case
-	      tanphi = sinphi / cosphi;
-	      Nl1 = gN(this.a, this.e, this.sin_p12);
-	      Nl = gN(this.a, this.e, sinphi);
-	      psi = Math.atan((1 - this.es) * tanphi + this.es * Nl1 * this.sin_p12 / (Nl * cosphi));
-	      Az = Math.atan2(Math.sin(dlon), this.cos_p12 * Math.tan(psi) - this.sin_p12 * Math.cos(dlon));
-	      if (Az === 0) {
-	        s = Math.asin(this.cos_p12 * Math.sin(psi) - this.sin_p12 * Math.cos(psi));
-	      }
-	      else if (Math.abs(Math.abs(Az) - Math.PI) <= EPSLN) {
-	        s = -Math.asin(this.cos_p12 * Math.sin(psi) - this.sin_p12 * Math.cos(psi));
-	      }
-	      else {
-	        s = Math.asin(Math.sin(dlon) * Math.cos(psi) / Math.sin(Az));
-	      }
-	      G = this.e * this.sin_p12 / Math.sqrt(1 - this.es);
-	      H = this.e * this.cos_p12 * Math.cos(Az) / Math.sqrt(1 - this.es);
-	      GH = G * H;
-	      Hs = H * H;
-	      s2 = s * s;
-	      s3 = s2 * s;
-	      s4 = s3 * s;
-	      s5 = s4 * s;
-	      c = Nl1 * s * (1 - s2 * Hs * (1 - Hs) / 6 + s3 / 8 * GH * (1 - 2 * Hs) + s4 / 120 * (Hs * (4 - 7 * Hs) - 3 * G * G * (1 - 7 * Hs)) - s5 / 48 * GH);
-	      p.x = this.x0 + c * Math.sin(Az);
-	      p.y = this.y0 + c * Math.cos(Az);
-	      return p;
-	    }
-	  }
-
-
-	}
-
-	function inverse$o(p) {
-	  p.x -= this.x0;
-	  p.y -= this.y0;
-	  var rh, z, sinz, cosz, lon, lat, con, e0, e1, e2, e3, Mlp, M, N1, psi, Az, cosAz, tmp, A, B, D, Ee, F, sinpsi;
-	  if (this.sphere) {
-	    rh = Math.sqrt(p.x * p.x + p.y * p.y);
-	    if (rh > (2 * HALF_PI * this.a)) {
-	      return;
-	    }
-	    z = rh / this.a;
-
-	    sinz = Math.sin(z);
-	    cosz = Math.cos(z);
-
-	    lon = this.long0;
-	    if (Math.abs(rh) <= EPSLN) {
-	      lat = this.lat0;
-	    }
-	    else {
-	      lat = asinz(cosz * this.sin_p12 + (p.y * sinz * this.cos_p12) / rh);
-	      con = Math.abs(this.lat0) - HALF_PI;
-	      if (Math.abs(con) <= EPSLN) {
-	        if (this.lat0 >= 0) {
-	          lon = adjust_lon(this.long0 + Math.atan2(p.x, - p.y));
-	        }
-	        else {
-	          lon = adjust_lon(this.long0 - Math.atan2(-p.x, p.y));
-	        }
-	      }
-	      else {
-	        /*con = cosz - this.sin_p12 * Math.sin(lat);
-	        if ((Math.abs(con) < EPSLN) && (Math.abs(p.x) < EPSLN)) {
-	          //no-op, just keep the lon value as is
-	        } else {
-	          var temp = Math.atan2((p.x * sinz * this.cos_p12), (con * rh));
-	          lon = adjust_lon(this.long0 + Math.atan2((p.x * sinz * this.cos_p12), (con * rh)));
-	        }*/
-	        lon = adjust_lon(this.long0 + Math.atan2(p.x * sinz, rh * this.cos_p12 * cosz - p.y * this.sin_p12 * sinz));
-	      }
-	    }
-
-	    p.x = lon;
-	    p.y = lat;
-	    return p;
-	  }
-	  else {
-	    e0 = e0fn(this.es);
-	    e1 = e1fn(this.es);
-	    e2 = e2fn(this.es);
-	    e3 = e3fn(this.es);
-	    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
-	      //North pole case
-	      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
-	      rh = Math.sqrt(p.x * p.x + p.y * p.y);
-	      M = Mlp - rh;
-	      lat = imlfn(M / this.a, e0, e1, e2, e3);
-	      lon = adjust_lon(this.long0 + Math.atan2(p.x, - 1 * p.y));
-	      p.x = lon;
-	      p.y = lat;
-	      return p;
-	    }
-	    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
-	      //South pole case
-	      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
-	      rh = Math.sqrt(p.x * p.x + p.y * p.y);
-	      M = rh - Mlp;
-
-	      lat = imlfn(M / this.a, e0, e1, e2, e3);
-	      lon = adjust_lon(this.long0 + Math.atan2(p.x, p.y));
-	      p.x = lon;
-	      p.y = lat;
-	      return p;
-	    }
-	    else {
-	      //default case
-	      rh = Math.sqrt(p.x * p.x + p.y * p.y);
-	      Az = Math.atan2(p.x, p.y);
-	      N1 = gN(this.a, this.e, this.sin_p12);
-	      cosAz = Math.cos(Az);
-	      tmp = this.e * this.cos_p12 * cosAz;
-	      A = -tmp * tmp / (1 - this.es);
-	      B = 3 * this.es * (1 - A) * this.sin_p12 * this.cos_p12 * cosAz / (1 - this.es);
-	      D = rh / N1;
-	      Ee = D - A * (1 + A) * Math.pow(D, 3) / 6 - B * (1 + 3 * A) * Math.pow(D, 4) / 24;
-	      F = 1 - A * Ee * Ee / 2 - D * Ee * Ee * Ee / 6;
-	      psi = Math.asin(this.sin_p12 * Math.cos(Ee) + this.cos_p12 * Math.sin(Ee) * cosAz);
-	      lon = adjust_lon(this.long0 + Math.asin(Math.sin(Az) * Math.sin(Ee) / Math.cos(psi)));
-	      sinpsi = Math.sin(psi);
-	      lat = Math.atan2((sinpsi - this.es * F * this.sin_p12) * Math.tan(psi), sinpsi * (1 - this.es));
-	      p.x = lon;
-	      p.y = lat;
-	      return p;
-	    }
-	  }
-
-	}
-
-	var names$q = ["Azimuthal_Equidistant", "aeqd"];
-	var aeqd = {
-	  init: init$p,
-	  forward: forward$o,
-	  inverse: inverse$o,
-	  names: names$q
-	};
-
-	function init$q() {
-	  //double temp;      /* temporary variable    */
-
-	  /* Place parameters in static storage for common use
-	      -------------------------------------------------*/
-	  this.sin_p14 = Math.sin(this.lat0);
-	  this.cos_p14 = Math.cos(this.lat0);
-	}
-
-	/* Orthographic forward equations--mapping lat,long to x,y
-	    ---------------------------------------------------*/
-	function forward$p(p) {
-	  var sinphi, cosphi; /* sin and cos value        */
-	  var dlon; /* delta longitude value      */
-	  var coslon; /* cos of longitude        */
-	  var ksp; /* scale factor          */
-	  var g, x, y;
-	  var lon = p.x;
-	  var lat = p.y;
-	  /* Forward equations
-	      -----------------*/
-	  dlon = adjust_lon(lon - this.long0);
-
-	  sinphi = Math.sin(lat);
-	  cosphi = Math.cos(lat);
-
-	  coslon = Math.cos(dlon);
-	  g = this.sin_p14 * sinphi + this.cos_p14 * cosphi * coslon;
-	  ksp = 1;
-	  if ((g > 0) || (Math.abs(g) <= EPSLN)) {
-	    x = this.a * ksp * cosphi * Math.sin(dlon);
-	    y = this.y0 + this.a * ksp * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon);
-	  }
-	  p.x = x;
-	  p.y = y;
-	  return p;
-	}
-
-	function inverse$p(p) {
-	  var rh; /* height above ellipsoid      */
-	  var z; /* angle          */
-	  var sinz, cosz; /* sin of z and cos of z      */
-	  var con;
-	  var lon, lat;
-	  /* Inverse equations
-	      -----------------*/
-	  p.x -= this.x0;
-	  p.y -= this.y0;
-	  rh = Math.sqrt(p.x * p.x + p.y * p.y);
-	  z = asinz(rh / this.a);
-
-	  sinz = Math.sin(z);
-	  cosz = Math.cos(z);
-
-	  lon = this.long0;
-	  if (Math.abs(rh) <= EPSLN) {
-	    lat = this.lat0;
-	    p.x = lon;
-	    p.y = lat;
-	    return p;
-	  }
-	  lat = asinz(cosz * this.sin_p14 + (p.y * sinz * this.cos_p14) / rh);
-	  con = Math.abs(this.lat0) - HALF_PI;
-	  if (Math.abs(con) <= EPSLN) {
-	    if (this.lat0 >= 0) {
-	      lon = adjust_lon(this.long0 + Math.atan2(p.x, - p.y));
-	    }
-	    else {
-	      lon = adjust_lon(this.long0 - Math.atan2(-p.x, p.y));
-	    }
-	    p.x = lon;
-	    p.y = lat;
-	    return p;
-	  }
-	  lon = adjust_lon(this.long0 + Math.atan2((p.x * sinz), rh * this.cos_p14 * cosz - p.y * this.sin_p14 * sinz));
-	  p.x = lon;
-	  p.y = lat;
-	  return p;
-	}
-
-	var names$r = ["ortho"];
-	var ortho = {
-	  init: init$q,
-	  forward: forward$p,
-	  inverse: inverse$p,
-	  names: names$r
-	};
-
-	// QSC projection rewritten from the original PROJ4
-
-	/* constants */
-	var FACE_ENUM = {
-	    FRONT: 1,
-	    RIGHT: 2,
-	    BACK: 3,
-	    LEFT: 4,
-	    TOP: 5,
-	    BOTTOM: 6
-	};
-
-	var AREA_ENUM = {
-	    AREA_0: 1,
-	    AREA_1: 2,
-	    AREA_2: 3,
-	    AREA_3: 4
-	};
-
-	function init$r() {
-
-	  this.x0 = this.x0 || 0;
-	  this.y0 = this.y0 || 0;
-	  this.lat0 = this.lat0 || 0;
-	  this.long0 = this.long0 || 0;
-	  this.lat_ts = this.lat_ts || 0;
-	  this.title = this.title || "Quadrilateralized Spherical Cube";
-
-	  /* Determine the cube face from the center of projection. */
-	  if (this.lat0 >= HALF_PI - FORTPI / 2.0) {
-	    this.face = FACE_ENUM.TOP;
-	  } else if (this.lat0 <= -(HALF_PI - FORTPI / 2.0)) {
-	    this.face = FACE_ENUM.BOTTOM;
-	  } else if (Math.abs(this.long0) <= FORTPI) {
-	    this.face = FACE_ENUM.FRONT;
-	  } else if (Math.abs(this.long0) <= HALF_PI + FORTPI) {
-	    this.face = this.long0 > 0.0 ? FACE_ENUM.RIGHT : FACE_ENUM.LEFT;
-	  } else {
-	    this.face = FACE_ENUM.BACK;
-	  }
-
-	  /* Fill in useful values for the ellipsoid <-> sphere shift
-	   * described in [LK12]. */
-	  if (this.es !== 0) {
-	    this.one_minus_f = 1 - (this.a - this.b) / this.a;
-	    this.one_minus_f_squared = this.one_minus_f * this.one_minus_f;
-	  }
-	}
-
-	// QSC forward equations--mapping lat,long to x,y
-	// -----------------------------------------------------------------
-	function forward$q(p) {
-	  var xy = {x: 0, y: 0};
-	  var lat, lon;
-	  var theta, phi;
-	  var t, mu;
-	  /* nu; */
-	  var area = {value: 0};
-
-	  // move lon according to projection's lon
-	  p.x -= this.long0;
-
-	  /* Convert the geodetic latitude to a geocentric latitude.
-	   * This corresponds to the shift from the ellipsoid to the sphere
-	   * described in [LK12]. */
-	  if (this.es !== 0) {//if (P->es != 0) {
-	    lat = Math.atan(this.one_minus_f_squared * Math.tan(p.y));
-	  } else {
-	    lat = p.y;
-	  }
-
-	  /* Convert the input lat, lon into theta, phi as used by QSC.
-	   * This depends on the cube face and the area on it.
-	   * For the top and bottom face, we can compute theta and phi
-	   * directly from phi, lam. For the other faces, we must use
-	   * unit sphere cartesian coordinates as an intermediate step. */
-	  lon = p.x; //lon = lp.lam;
-	  if (this.face === FACE_ENUM.TOP) {
-	    phi = HALF_PI - lat;
-	    if (lon >= FORTPI && lon <= HALF_PI + FORTPI) {
-	      area.value = AREA_ENUM.AREA_0;
-	      theta = lon - HALF_PI;
-	    } else if (lon > HALF_PI + FORTPI || lon <= -(HALF_PI + FORTPI)) {
-	      area.value = AREA_ENUM.AREA_1;
-	      theta = (lon > 0.0 ? lon - SPI : lon + SPI);
-	    } else if (lon > -(HALF_PI + FORTPI) && lon <= -FORTPI) {
-	      area.value = AREA_ENUM.AREA_2;
-	      theta = lon + HALF_PI;
-	    } else {
-	      area.value = AREA_ENUM.AREA_3;
-	      theta = lon;
-	    }
-	  } else if (this.face === FACE_ENUM.BOTTOM) {
-	    phi = HALF_PI + lat;
-	    if (lon >= FORTPI && lon <= HALF_PI + FORTPI) {
-	      area.value = AREA_ENUM.AREA_0;
-	      theta = -lon + HALF_PI;
-	    } else if (lon < FORTPI && lon >= -FORTPI) {
-	      area.value = AREA_ENUM.AREA_1;
-	      theta = -lon;
-	    } else if (lon < -FORTPI && lon >= -(HALF_PI + FORTPI)) {
-	      area.value = AREA_ENUM.AREA_2;
-	      theta = -lon - HALF_PI;
-	    } else {
-	      area.value = AREA_ENUM.AREA_3;
-	      theta = (lon > 0.0 ? -lon + SPI : -lon - SPI);
-	    }
-	  } else {
-	    var q, r, s;
-	    var sinlat, coslat;
-	    var sinlon, coslon;
-
-	    if (this.face === FACE_ENUM.RIGHT) {
-	      lon = qsc_shift_lon_origin(lon, +HALF_PI);
-	    } else if (this.face === FACE_ENUM.BACK) {
-	      lon = qsc_shift_lon_origin(lon, +SPI);
-	    } else if (this.face === FACE_ENUM.LEFT) {
-	      lon = qsc_shift_lon_origin(lon, -HALF_PI);
-	    }
-	    sinlat = Math.sin(lat);
-	    coslat = Math.cos(lat);
-	    sinlon = Math.sin(lon);
-	    coslon = Math.cos(lon);
-	    q = coslat * coslon;
-	    r = coslat * sinlon;
-	    s = sinlat;
-
-	    if (this.face === FACE_ENUM.FRONT) {
-	      phi = Math.acos(q);
-	      theta = qsc_fwd_equat_face_theta(phi, s, r, area);
-	    } else if (this.face === FACE_ENUM.RIGHT) {
-	      phi = Math.acos(r);
-	      theta = qsc_fwd_equat_face_theta(phi, s, -q, area);
-	    } else if (this.face === FACE_ENUM.BACK) {
-	      phi = Math.acos(-q);
-	      theta = qsc_fwd_equat_face_theta(phi, s, -r, area);
-	    } else if (this.face === FACE_ENUM.LEFT) {
-	      phi = Math.acos(-r);
-	      theta = qsc_fwd_equat_face_theta(phi, s, q, area);
-	    } else {
-	      /* Impossible */
-	      phi = theta = 0;
-	      area.value = AREA_ENUM.AREA_0;
-	    }
-	  }
-
-	  /* Compute mu and nu for the area of definition.
-	   * For mu, see Eq. (3-21) in [OL76], but note the typos:
-	   * compare with Eq. (3-14). For nu, see Eq. (3-38). */
-	  mu = Math.atan((12 / SPI) * (theta + Math.acos(Math.sin(theta) * Math.cos(FORTPI)) - HALF_PI));
-	  t = Math.sqrt((1 - Math.cos(phi)) / (Math.cos(mu) * Math.cos(mu)) / (1 - Math.cos(Math.atan(1 / Math.cos(theta)))));
-
-	  /* Apply the result to the real area. */
-	  if (area.value === AREA_ENUM.AREA_1) {
-	    mu += HALF_PI;
-	  } else if (area.value === AREA_ENUM.AREA_2) {
-	    mu += SPI;
-	  } else if (area.value === AREA_ENUM.AREA_3) {
-	    mu += 1.5 * SPI;
-	  }
-
-	  /* Now compute x, y from mu and nu */
-	  xy.x = t * Math.cos(mu);
-	  xy.y = t * Math.sin(mu);
-	  xy.x = xy.x * this.a + this.x0;
-	  xy.y = xy.y * this.a + this.y0;
-
-	  p.x = xy.x;
-	  p.y = xy.y;
-	  return p;
-	}
-
-	// QSC inverse equations--mapping x,y to lat/long
-	// -----------------------------------------------------------------
-	function inverse$q(p) {
-	  var lp = {lam: 0, phi: 0};
-	  var mu, nu, cosmu, tannu;
-	  var tantheta, theta, cosphi, phi;
-	  var t;
-	  var area = {value: 0};
-
-	  /* de-offset */
-	  p.x = (p.x - this.x0) / this.a;
-	  p.y = (p.y - this.y0) / this.a;
-
-	  /* Convert the input x, y to the mu and nu angles as used by QSC.
-	   * This depends on the area of the cube face. */
-	  nu = Math.atan(Math.sqrt(p.x * p.x + p.y * p.y));
-	  mu = Math.atan2(p.y, p.x);
-	  if (p.x >= 0.0 && p.x >= Math.abs(p.y)) {
-	    area.value = AREA_ENUM.AREA_0;
-	  } else if (p.y >= 0.0 && p.y >= Math.abs(p.x)) {
-	    area.value = AREA_ENUM.AREA_1;
-	    mu -= HALF_PI;
-	  } else if (p.x < 0.0 && -p.x >= Math.abs(p.y)) {
-	    area.value = AREA_ENUM.AREA_2;
-	    mu = (mu < 0.0 ? mu + SPI : mu - SPI);
-	  } else {
-	    area.value = AREA_ENUM.AREA_3;
-	    mu += HALF_PI;
-	  }
-
-	  /* Compute phi and theta for the area of definition.
-	   * The inverse projection is not described in the original paper, but some
-	   * good hints can be found here (as of 2011-12-14):
-	   * http://fits.gsfc.nasa.gov/fitsbits/saf.93/saf.9302
-	   * (search for "Message-Id: <9302181759.AA25477 at fits.cv.nrao.edu>") */
-	  t = (SPI / 12) * Math.tan(mu);
-	  tantheta = Math.sin(t) / (Math.cos(t) - (1 / Math.sqrt(2)));
-	  theta = Math.atan(tantheta);
-	  cosmu = Math.cos(mu);
-	  tannu = Math.tan(nu);
-	  cosphi = 1 - cosmu * cosmu * tannu * tannu * (1 - Math.cos(Math.atan(1 / Math.cos(theta))));
-	  if (cosphi < -1) {
-	    cosphi = -1;
-	  } else if (cosphi > +1) {
-	    cosphi = +1;
-	  }
-
-	  /* Apply the result to the real area on the cube face.
-	   * For the top and bottom face, we can compute phi and lam directly.
-	   * For the other faces, we must use unit sphere cartesian coordinates
-	   * as an intermediate step. */
-	  if (this.face === FACE_ENUM.TOP) {
-	    phi = Math.acos(cosphi);
-	    lp.phi = HALF_PI - phi;
-	    if (area.value === AREA_ENUM.AREA_0) {
-	      lp.lam = theta + HALF_PI;
-	    } else if (area.value === AREA_ENUM.AREA_1) {
-	      lp.lam = (theta < 0.0 ? theta + SPI : theta - SPI);
-	    } else if (area.value === AREA_ENUM.AREA_2) {
-	      lp.lam = theta - HALF_PI;
-	    } else /* area.value == AREA_ENUM.AREA_3 */ {
-	      lp.lam = theta;
-	    }
-	  } else if (this.face === FACE_ENUM.BOTTOM) {
-	    phi = Math.acos(cosphi);
-	    lp.phi = phi - HALF_PI;
-	    if (area.value === AREA_ENUM.AREA_0) {
-	      lp.lam = -theta + HALF_PI;
-	    } else if (area.value === AREA_ENUM.AREA_1) {
-	      lp.lam = -theta;
-	    } else if (area.value === AREA_ENUM.AREA_2) {
-	      lp.lam = -theta - HALF_PI;
-	    } else /* area.value == AREA_ENUM.AREA_3 */ {
-	      lp.lam = (theta < 0.0 ? -theta - SPI : -theta + SPI);
-	    }
-	  } else {
-	    /* Compute phi and lam via cartesian unit sphere coordinates. */
-	    var q, r, s;
-	    q = cosphi;
-	    t = q * q;
-	    if (t >= 1) {
-	      s = 0;
-	    } else {
-	      s = Math.sqrt(1 - t) * Math.sin(theta);
-	    }
-	    t += s * s;
-	    if (t >= 1) {
-	      r = 0;
-	    } else {
-	      r = Math.sqrt(1 - t);
-	    }
-	    /* Rotate q,r,s into the correct area. */
-	    if (area.value === AREA_ENUM.AREA_1) {
-	      t = r;
-	      r = -s;
-	      s = t;
-	    } else if (area.value === AREA_ENUM.AREA_2) {
-	      r = -r;
-	      s = -s;
-	    } else if (area.value === AREA_ENUM.AREA_3) {
-	      t = r;
-	      r = s;
-	      s = -t;
-	    }
-	    /* Rotate q,r,s into the correct cube face. */
-	    if (this.face === FACE_ENUM.RIGHT) {
-	      t = q;
-	      q = -r;
-	      r = t;
-	    } else if (this.face === FACE_ENUM.BACK) {
-	      q = -q;
-	      r = -r;
-	    } else if (this.face === FACE_ENUM.LEFT) {
-	      t = q;
-	      q = r;
-	      r = -t;
-	    }
-	    /* Now compute phi and lam from the unit sphere coordinates. */
-	    lp.phi = Math.acos(-s) - HALF_PI;
-	    lp.lam = Math.atan2(r, q);
-	    if (this.face === FACE_ENUM.RIGHT) {
-	      lp.lam = qsc_shift_lon_origin(lp.lam, -HALF_PI);
-	    } else if (this.face === FACE_ENUM.BACK) {
-	      lp.lam = qsc_shift_lon_origin(lp.lam, -SPI);
-	    } else if (this.face === FACE_ENUM.LEFT) {
-	      lp.lam = qsc_shift_lon_origin(lp.lam, +HALF_PI);
-	    }
-	  }
-
-	  /* Apply the shift from the sphere to the ellipsoid as described
-	   * in [LK12]. */
-	  if (this.es !== 0) {
-	    var invert_sign;
-	    var tanphi, xa;
-	    invert_sign = (lp.phi < 0 ? 1 : 0);
-	    tanphi = Math.tan(lp.phi);
-	    xa = this.b / Math.sqrt(tanphi * tanphi + this.one_minus_f_squared);
-	    lp.phi = Math.atan(Math.sqrt(this.a * this.a - xa * xa) / (this.one_minus_f * xa));
-	    if (invert_sign) {
-	      lp.phi = -lp.phi;
-	    }
-	  }
-
-	  lp.lam += this.long0;
-	  p.x = lp.lam;
-	  p.y = lp.phi;
-	  return p;
-	}
-
-	/* Helper function for forward projection: compute the theta angle
-	 * and determine the area number. */
-	function qsc_fwd_equat_face_theta(phi, y, x, area) {
-	  var theta;
-	  if (phi < EPSLN) {
-	    area.value = AREA_ENUM.AREA_0;
-	    theta = 0.0;
-	  } else {
-	    theta = Math.atan2(y, x);
-	    if (Math.abs(theta) <= FORTPI) {
-	      area.value = AREA_ENUM.AREA_0;
-	    } else if (theta > FORTPI && theta <= HALF_PI + FORTPI) {
-	      area.value = AREA_ENUM.AREA_1;
-	      theta -= HALF_PI;
-	    } else if (theta > HALF_PI + FORTPI || theta <= -(HALF_PI + FORTPI)) {
-	      area.value = AREA_ENUM.AREA_2;
-	      theta = (theta >= 0.0 ? theta - SPI : theta + SPI);
-	    } else {
-	      area.value = AREA_ENUM.AREA_3;
-	      theta += HALF_PI;
-	    }
-	  }
-	  return theta;
-	}
-
-	/* Helper function: shift the longitude. */
-	function qsc_shift_lon_origin(lon, offset) {
-	  var slon = lon + offset;
-	  if (slon < -SPI) {
-	    slon += TWO_PI;
-	  } else if (slon > +SPI) {
-	    slon -= TWO_PI;
-	  }
-	  return slon;
-	}
-
-	var names$s = ["Quadrilateralized Spherical Cube", "Quadrilateralized_Spherical_Cube", "qsc"];
-	var qsc = {
-	  init: init$r,
-	  forward: forward$q,
-	  inverse: inverse$q,
-	  names: names$s
-	};
-
-	// Robinson projection
-
-	var COEFS_X = [
-	    [1.0000, 2.2199e-17, -7.15515e-05, 3.1103e-06],
-	    [0.9986, -0.000482243, -2.4897e-05, -1.3309e-06],
-	    [0.9954, -0.00083103, -4.48605e-05, -9.86701e-07],
-	    [0.9900, -0.00135364, -5.9661e-05, 3.6777e-06],
-	    [0.9822, -0.00167442, -4.49547e-06, -5.72411e-06],
-	    [0.9730, -0.00214868, -9.03571e-05, 1.8736e-08],
-	    [0.9600, -0.00305085, -9.00761e-05, 1.64917e-06],
-	    [0.9427, -0.00382792, -6.53386e-05, -2.6154e-06],
-	    [0.9216, -0.00467746, -0.00010457, 4.81243e-06],
-	    [0.8962, -0.00536223, -3.23831e-05, -5.43432e-06],
-	    [0.8679, -0.00609363, -0.000113898, 3.32484e-06],
-	    [0.8350, -0.00698325, -6.40253e-05, 9.34959e-07],
-	    [0.7986, -0.00755338, -5.00009e-05, 9.35324e-07],
-	    [0.7597, -0.00798324, -3.5971e-05, -2.27626e-06],
-	    [0.7186, -0.00851367, -7.01149e-05, -8.6303e-06],
-	    [0.6732, -0.00986209, -0.000199569, 1.91974e-05],
-	    [0.6213, -0.010418, 8.83923e-05, 6.24051e-06],
-	    [0.5722, -0.00906601, 0.000182, 6.24051e-06],
-	    [0.5322, -0.00677797, 0.000275608, 6.24051e-06]
-	];
-
-	var COEFS_Y = [
-	    [-5.20417e-18, 0.0124, 1.21431e-18, -8.45284e-11],
-	    [0.0620, 0.0124, -1.26793e-09, 4.22642e-10],
-	    [0.1240, 0.0124, 5.07171e-09, -1.60604e-09],
-	    [0.1860, 0.0123999, -1.90189e-08, 6.00152e-09],
-	    [0.2480, 0.0124002, 7.10039e-08, -2.24e-08],
-	    [0.3100, 0.0123992, -2.64997e-07, 8.35986e-08],
-	    [0.3720, 0.0124029, 9.88983e-07, -3.11994e-07],
-	    [0.4340, 0.0123893, -3.69093e-06, -4.35621e-07],
-	    [0.4958, 0.0123198, -1.02252e-05, -3.45523e-07],
-	    [0.5571, 0.0121916, -1.54081e-05, -5.82288e-07],
-	    [0.6176, 0.0119938, -2.41424e-05, -5.25327e-07],
-	    [0.6769, 0.011713, -3.20223e-05, -5.16405e-07],
-	    [0.7346, 0.0113541, -3.97684e-05, -6.09052e-07],
-	    [0.7903, 0.0109107, -4.89042e-05, -1.04739e-06],
-	    [0.8435, 0.0103431, -6.4615e-05, -1.40374e-09],
-	    [0.8936, 0.00969686, -6.4636e-05, -8.547e-06],
-	    [0.9394, 0.00840947, -0.000192841, -4.2106e-06],
-	    [0.9761, 0.00616527, -0.000256, -4.2106e-06],
-	    [1.0000, 0.00328947, -0.000319159, -4.2106e-06]
-	];
-
-	var FXC = 0.8487;
-	var FYC = 1.3523;
-	var C1 = R2D/5; // rad to 5-degree interval
-	var RC1 = 1/C1;
-	var NODES = 18;
-
-	var poly3_val = function(coefs, x) {
-	    return coefs[0] + x * (coefs[1] + x * (coefs[2] + x * coefs[3]));
-	};
-
-	var poly3_der = function(coefs, x) {
-	    return coefs[1] + x * (2 * coefs[2] + x * 3 * coefs[3]);
-	};
-
-	function newton_rapshon(f_df, start, max_err, iters) {
-	    var x = start;
-	    for (; iters; --iters) {
-	        var upd = f_df(x);
-	        x -= upd;
-	        if (Math.abs(upd) < max_err) {
-	            break;
-	        }
-	    }
-	    return x;
-	}
-
-	function init$s() {
-	    this.x0 = this.x0 || 0;
-	    this.y0 = this.y0 || 0;
-	    this.long0 = this.long0 || 0;
-	    this.es = 0;
-	    this.title = this.title || "Robinson";
-	}
-
-	function forward$r(ll) {
-	    var lon = adjust_lon(ll.x - this.long0);
-
-	    var dphi = Math.abs(ll.y);
-	    var i = Math.floor(dphi * C1);
-	    if (i < 0) {
-	        i = 0;
-	    } else if (i >= NODES) {
-	        i = NODES - 1;
-	    }
-	    dphi = R2D * (dphi - RC1 * i);
-	    var xy = {
-	        x: poly3_val(COEFS_X[i], dphi) * lon,
-	        y: poly3_val(COEFS_Y[i], dphi)
-	    };
-	    if (ll.y < 0) {
-	        xy.y = -xy.y;
-	    }
-
-	    xy.x = xy.x * this.a * FXC + this.x0;
-	    xy.y = xy.y * this.a * FYC + this.y0;
-	    return xy;
-	}
-
-	function inverse$r(xy) {
-	    var ll = {
-	        x: (xy.x - this.x0) / (this.a * FXC),
-	        y: Math.abs(xy.y - this.y0) / (this.a * FYC)
-	    };
-
-	    if (ll.y >= 1) { // pathologic case
-	        ll.x /= COEFS_X[NODES][0];
-	        ll.y = xy.y < 0 ? -HALF_PI : HALF_PI;
-	    } else {
-	        // find table interval
-	        var i = Math.floor(ll.y * NODES);
-	        if (i < 0) {
-	            i = 0;
-	        } else if (i >= NODES) {
-	            i = NODES - 1;
-	        }
-	        for (;;) {
-	            if (COEFS_Y[i][0] > ll.y) {
-	                --i;
-	            } else if (COEFS_Y[i+1][0] <= ll.y) {
-	                ++i;
-	            } else {
-	                break;
-	            }
-	        }
-	        // linear interpolation in 5 degree interval
-	        var coefs = COEFS_Y[i];
-	        var t = 5 * (ll.y - coefs[0]) / (COEFS_Y[i+1][0] - coefs[0]);
-	        // find t so that poly3_val(coefs, t) = ll.y
-	        t = newton_rapshon(function(x) {
-	            return (poly3_val(coefs, x) - ll.y) / poly3_der(coefs, x);
-	        }, t, EPSLN, 100);
-
-	        ll.x /= poly3_val(COEFS_X[i], t);
-	        ll.y = (5 * i + t) * D2R;
-	        if (xy.y < 0) {
-	            ll.y = -ll.y;
-	        }
-	    }
-
-	    ll.x = adjust_lon(ll.x + this.long0);
-	    return ll;
-	}
-
-	var names$t = ["Robinson", "robin"];
-	var robin = {
-	  init: init$s,
-	  forward: forward$r,
-	  inverse: inverse$r,
-	  names: names$t
-	};
-
-	function init$t() {
-	    this.name = 'geocent';
-
-	}
-
-	function forward$s(p) {
-	    var point = geodeticToGeocentric(p, this.es, this.a);
-	    return point;
-	}
-
-	function inverse$s(p) {
-	    var point = geocentricToGeodetic(p, this.es, this.a, this.b);
-	    return point;
-	}
-
-	var names$u = ["Geocentric", 'geocentric', "geocent", "Geocent"];
-	var geocent = {
-	    init: init$t,
-	    forward: forward$s,
-	    inverse: inverse$s,
-	    names: names$u
-	};
-
-	var mode = {
-	  N_POLE: 0,
-	  S_POLE: 1,
-	  EQUIT: 2,
-	  OBLIQ: 3
-	};
-
-	var params = {
-	  h:     { def: 100000, num: true },           // default is Karman line, no default in PROJ.7
-	  azi:   { def: 0, num: true, degrees: true }, // default is North
-	  tilt:  { def: 0, num: true, degrees: true }, // default is Nadir
-	  long0: { def: 0, num: true },                // default is Greenwich, conversion to rad is automatic
-	  lat0:  { def: 0, num: true }                 // default is Equator, conversion to rad is automatic
-	};
-
-	function init$u() {
-	  Object.keys(params).forEach(function (p) {
-	    if (typeof this[p] === "undefined") {
-	      this[p] = params[p].def;
-	    } else if (params[p].num && isNaN(this[p])) {
-	      throw new Error("Invalid parameter value, must be numeric " + p + " = " + this[p]);
-	    } else if (params[p].num) {
-	      this[p] = parseFloat(this[p]);
-	    }
-	    if (params[p].degrees) {
-	      this[p] = this[p] * D2R;
-	    }
-	  }.bind(this));
-
-	  if (Math.abs((Math.abs(this.lat0) - HALF_PI)) < EPSLN) {
-	    this.mode = this.lat0 < 0 ? mode.S_POLE : mode.N_POLE;
-	  } else if (Math.abs(this.lat0) < EPSLN) {
-	    this.mode = mode.EQUIT;
-	  } else {
-	    this.mode = mode.OBLIQ;
-	    this.sinph0 = Math.sin(this.lat0);
-	    this.cosph0 = Math.cos(this.lat0);
-	  }
-
-	  this.pn1 = this.h / this.a;  // Normalize relative to the Earth's radius
-
-	  if (this.pn1 <= 0 || this.pn1 > 1e10) {
-	    throw new Error("Invalid height");
-	  }
-	  
-	  this.p = 1 + this.pn1;
-	  this.rp = 1 / this.p;
-	  this.h1 = 1 / this.pn1;
-	  this.pfact = (this.p + 1) * this.h1;
-	  this.es = 0;
-
-	  var omega = this.tilt;
-	  var gamma = this.azi;
-	  this.cg = Math.cos(gamma);
-	  this.sg = Math.sin(gamma);
-	  this.cw = Math.cos(omega);
-	  this.sw = Math.sin(omega);
-	}
-
-	function forward$t(p) {
-	  p.x -= this.long0;
-	  var sinphi = Math.sin(p.y);
-	  var cosphi = Math.cos(p.y);
-	  var coslam = Math.cos(p.x);
-	  var x, y;
-	  switch (this.mode) {
-	    case mode.OBLIQ:
-	      y = this.sinph0 * sinphi + this.cosph0 * cosphi * coslam;
-	      break;
-	    case mode.EQUIT:
-	      y = cosphi * coslam;
-	      break;
-	    case mode.S_POLE:
-	      y = -sinphi;
-	      break;
-	    case mode.N_POLE:
-	      y = sinphi;
-	      break;
-	  }
-	  y = this.pn1 / (this.p - y);
-	  x = y * cosphi * Math.sin(p.x);
-
-	  switch (this.mode) {
-	    case mode.OBLIQ:
-	      y *= this.cosph0 * sinphi - this.sinph0 * cosphi * coslam;
-	      break;
-	    case mode.EQUIT:
-	      y *= sinphi;
-	      break;
-	    case mode.N_POLE:
-	      y *= -(cosphi * coslam);
-	      break;
-	    case mode.S_POLE:
-	      y *= cosphi * coslam;
-	      break;
-	  }
-
-	  // Tilt 
-	  var yt, ba;
-	  yt = y * this.cg + x * this.sg;
-	  ba = 1 / (yt * this.sw * this.h1 + this.cw);
-	  x = (x * this.cg - y * this.sg) * this.cw * ba;
-	  y = yt * ba;
-
-	  p.x = x * this.a;
-	  p.y = y * this.a;
-	  return p;
-	}
-
-	function inverse$t(p) {
-	  p.x /= this.a;
-	  p.y /= this.a;
-	  var r = { x: p.x, y: p.y };
-
-	  // Un-Tilt
-	  var bm, bq, yt;
-	  yt = 1 / (this.pn1 - p.y * this.sw);
-	  bm = this.pn1 * p.x * yt;
-	  bq = this.pn1 * p.y * this.cw * yt;
-	  p.x = bm * this.cg + bq * this.sg;
-	  p.y = bq * this.cg - bm * this.sg;
-
-	  var rh = hypot(p.x, p.y);
-	  if (Math.abs(rh) < EPSLN) {
-	    r.x = 0;
-	    r.y = p.y;
-	  } else {
-	    var cosz, sinz;
-	    sinz = 1 - rh * rh * this.pfact;
-	    sinz = (this.p - Math.sqrt(sinz)) / (this.pn1 / rh + rh / this.pn1);
-	    cosz = Math.sqrt(1 - sinz * sinz);
-	    switch (this.mode) {
-	      case mode.OBLIQ:
-	        r.y = Math.asin(cosz * this.sinph0 + p.y * sinz * this.cosph0 / rh);
-	        p.y = (cosz - this.sinph0 * Math.sin(r.y)) * rh;
-	        p.x *= sinz * this.cosph0;
-	        break;
-	      case mode.EQUIT:
-	        r.y = Math.asin(p.y * sinz / rh);
-	        p.y = cosz * rh;
-	        p.x *= sinz;
-	        break;
-	      case mode.N_POLE:
-	        r.y = Math.asin(cosz);
-	        p.y = -p.y;
-	        break;
-	      case mode.S_POLE:
-	        r.y = -Math.asin(cosz);
-	        break;
-	    }
-	    r.x = Math.atan2(p.x, p.y);
-	  }
-
-	  p.x = r.x + this.long0;
-	  p.y = r.y;
-	  return p;
-	}
-
-	var names$v = ["Tilted_Perspective", "tpers"];
-	var tpers = {
-	  init: init$u,
-	  forward: forward$t,
-	  inverse: inverse$t,
-	  names: names$v
-	};
-
-	function includedProjections(proj4){
-	  proj4.Proj.projections.add(tmerc);
-	  proj4.Proj.projections.add(etmerc);
-	  proj4.Proj.projections.add(utm);
-	  proj4.Proj.projections.add(sterea);
-	  proj4.Proj.projections.add(stere);
-	  proj4.Proj.projections.add(somerc);
-	  proj4.Proj.projections.add(omerc);
-	  proj4.Proj.projections.add(lcc);
-	  proj4.Proj.projections.add(krovak);
-	  proj4.Proj.projections.add(cass);
-	  proj4.Proj.projections.add(laea);
-	  proj4.Proj.projections.add(aea);
-	  proj4.Proj.projections.add(gnom);
-	  proj4.Proj.projections.add(cea);
-	  proj4.Proj.projections.add(eqc);
-	  proj4.Proj.projections.add(poly);
-	  proj4.Proj.projections.add(nzmg);
-	  proj4.Proj.projections.add(mill);
-	  proj4.Proj.projections.add(sinu);
-	  proj4.Proj.projections.add(moll);
-	  proj4.Proj.projections.add(eqdc);
-	  proj4.Proj.projections.add(vandg);
-	  proj4.Proj.projections.add(aeqd);
-	  proj4.Proj.projections.add(ortho);
-	  proj4.Proj.projections.add(qsc);
-	  proj4.Proj.projections.add(robin);
-	  proj4.Proj.projections.add(geocent);
-	  proj4.Proj.projections.add(tpers);
-	}
-
-	proj4.defaultDatum = 'WGS84'; //default datum
-	proj4.Proj = Projection;
-	proj4.WGS84 = new proj4.Proj('WGS84');
-	proj4.Point = Point;
-	proj4.toPoint = common$1;
-	proj4.defs = defs;
-	proj4.nadgrid = nadgrid;
-	proj4.transform = transform;
-	proj4.mgrs = mgrs;
-	proj4.version = '__VERSION__';
-	includedProjections(proj4);
-
 	const XHRFactory = {
 		config: {
 			withCredentials: false,
@@ -59261,7 +51571,6 @@
 			this.width = 1;
 			this.height = 20;
 			this._modifiable = true;
-			this.isGeocentric = false;
 
 			this.sphereGeometry = new SphereGeometry(0.4, 10, 10);
 			this.color = new Color(0xff0000);
@@ -59371,7 +51680,6 @@
 						e.viewer.scene.pointclouds);
 
 					if (I) {
-						this.isGeocentric = e.viewer;
 						let i = this.spheres.indexOf(e.drag.object);
 						if (i !== -1) {
 							this.setPosition(i, I.location);
@@ -59521,41 +51829,19 @@
 				}
 
 				if (leftBox) {
-					if (this.isGeocentric) {
-						const line = new Line3(leftVertex, point);
-						let length = line.distance() || 1;
+					let start = leftVertex;
+					let end = point;
+					let length = start.clone().setZ(0).distanceTo(end.clone().setZ(0));
+					leftBox.scale.set(length, 1000000, this.width);
+					leftBox.up.set(0, 0, 1);
 
-						leftBox.scale.set(length, 1000000, this.width);
-						let center = line.getCenter(new Vector3());
+					let center = new Vector3().addVectors(start, end).multiplyScalar(0.5);
+					let diff = new Vector3().subVectors(end, start);
+					let target = new Vector3(diff.y, -diff.x, 0);
 
-						leftBox.position.copy(center);
-						leftBox.quaternion.identity();
-						leftBox.lookAt(new Vector3());
-						leftBox.rotateX(-Math.PI * 0.5);
-
-						leftBox.updateMatrixWorld(true);
-						const h = line.end.clone();
-						leftBox.worldToLocal(h);
-
-						h.multiply(leftBox.scale);
-						const d = new Vector2(h.z, h.x);
-						leftBox.rotateY(d.angle() + Math.PI * 0.5);
-
-					} else {
-						let start = leftVertex;
-						let end = point;
-						let length = start.clone().setZ(0).distanceTo(end.clone().setZ(0));
-						leftBox.scale.set(length, 1000000, this.width);
-						leftBox.up.set(0, 0, 1);
-
-						let center = new Vector3().addVectors(start, end).multiplyScalar(0.5);
-						let diff = new Vector3().subVectors(end, start);
-						let target = new Vector3(diff.y, -diff.x, 0);
-
-						leftBox.position.set(0, 0, 0);
-						leftBox.lookAt(target);
-						leftBox.position.copy(center);
-					}
+					leftBox.position.set(0, 0, 0);
+					leftBox.lookAt(target);
+					leftBox.position.copy(center);
 				}
 
 				centroid.add(point);
@@ -59564,12 +51850,10 @@
 			}
 			centroid.multiplyScalar(1 / this.points.length);
 
-			if (!this.isGeocentric) {
-				for (let i = 0; i < this.boxes.length; i++) {
-					let box = this.boxes[i];
+			for (let i = 0; i < this.boxes.length; i++) {
+				let box = this.boxes[i];
 
-					box.position.z = min.z + (max.z - min.z) / 2;
-				}
+				box.position.z = min.z + (max.z - min.z) / 2;
 			}
 		}
 
@@ -61180,7 +53464,7 @@
 	}
 
 	class Measure extends Object3D {
-		constructor (viewer) {
+		constructor () {
 			super();
 
 			this.constructor.counter = (this.constructor.counter === undefined) ? 0 : this.constructor.counter + 1;
@@ -61227,8 +53511,6 @@
 			this.add(this.circleCenter);
 
 			this.add(this.azimuth.node);
-			this.isGeocentric = viewer.isGeocentric;
-			this.measureCoordinateCallback = viewer.measureCoordinateCallback;
 
 		}
 
@@ -61515,7 +53797,7 @@
 				{ // coordinate labels
 					let coordinateLabel = this.coordinateLabels[0];
 					
-					let msg = this.measureCoordinateCallback(position).toArray().map(p => Utils.addCommas(p.toFixed(2))).join(" / ");
+					let msg = position.toArray().map(p => Utils.addCommas(p.toFixed(2))).join(" / ");
 					coordinateLabel.setText(msg);
 
 					coordinateLabel.visible = this.showCoordinates;
@@ -61618,29 +53900,15 @@
 				this.heightLabel.visible = this.showHeight;
 
 				if (this.showHeight) {
-
 					let sorted = this.points.slice().sort((a, b) => a.position.z - b.position.z);
-					if (this.isGeocentric) {
-						sorted = this.points.slice().sort((a, b) => a.position.length() - b.position.length());
-					}
-
 					let lowPoint = sorted[0].position.clone();
 					let highPoint = sorted[sorted.length - 1].position.clone();
-
 					let min = lowPoint.z;
 					let max = highPoint.z;
-					if (this.isGeocentric) {
-						min = lowPoint.length();
-						max = highPoint.length();
-					}
 					let height = max - min;
 
 					let start = new Vector3(highPoint.x, highPoint.y, min);
 					let end = new Vector3(highPoint.x, highPoint.y, max);
-					if (this.isGeocentric) {
-						start = highPoint.clone().sub(highPoint.clone().normalize().multiplyScalar( height) );
-						end = highPoint.clone();
-					}
 
 					heightEdge.position.copy(lowPoint);
 
@@ -64988,7 +57256,6 @@ uniform sampler2D classificationLUT;
 uniform sampler2D matcapTextureUniform;
 #endif
 uniform bool backfaceCulling;
-uniform bool isGeocentric;
 
 #if defined(num_shadowmaps) && num_shadowmaps > 0
 uniform sampler2D uShadowMap[num_shadowmaps];
@@ -65304,34 +57571,11 @@ vec3 getGpsTime(){
 	return c;
 }
 
-const float a = 6378135.0; // x
-const float b = 6356750.52; // z
-const float e = abs((a * a - b * b) / (a * a));
-const float f = sqrt(1.0 - e);
-const float eA = e * a;
-
-float cartesianToH(vec4 position) {
-    float R = length(position);
-    float rsqXY = sqrt(position.x * position.x + position.y * position.y);
-
-    float nu = atan(position.z / rsqXY * (f + eA / R));
-
-    float sinu = sin(nu);
-    float cosu = cos(nu);
-
-    float phi = atan((position.z * f + eA * sinu * sinu * sinu) / (f * (rsqXY - eA * cosu * cosu * cosu)));
-
-    float h = (rsqXY * cos(phi)) + position.z * sin(phi) - a * sqrt(1.0 - e * sin(phi) * sin(phi));
-
-    return h;
-}
-
 vec3 getElevation(){
 	vec4 world = modelMatrix * vec4( position, 1.0 );
-	float h = isGeocentric ? cartesianToH(world) : world.z;
-	float w = (h - elevationRange.x) / (elevationRange.y - elevationRange.x);
+	float w = (world.z - elevationRange.x) / (elevationRange.y - elevationRange.x);
 	vec3 cElevation = texture2D(gradient, vec2(w,1.0-w)).rgb;
-
+	
 	return cElevation;
 }
 
@@ -66665,7 +58909,6 @@ out highp vec4 pc_fragColor;
 				uFilterPointSourceIDClipRange:		{ type: "fv", value: [0, 65535]},
 				matcapTextureUniform: 	{ type: "t", value: this.matcapTexture },
 				backfaceCulling: { type: "b", value: false },
-				isGeocentric: { type: "b", value: parameters.isGeocentric || false },
 			};
 
 			this.classification = ClassificationScheme.DEFAULT;
@@ -66888,17 +59131,6 @@ out highp vec4 pc_fragColor;
 			if(this.uniforms.backfaceCulling.value !== value){
 				this.uniforms.backfaceCulling.value = value;
 				this.dispatchEvent({type: 'backface_changed', target: this});
-			}
-		}
-
-		get isGeocentric() {
-			return this.uniforms.isGeocentric.value;
-		}
-
-		set isGeocentric(value) {
-			if(this.uniforms.isGeocentric.value !== value){
-				this.uniforms.isGeocentric.value = value;
-				this.dispatchEvent({type: 'isGeocentric', target: this});
 			}
 		}
 
@@ -68049,7 +60281,6 @@ out highp vec4 pc_fragColor;
 		}
 
 		nodeIntersectsProfile (node, profile) {
-			// return this.nodeIntersectsProfile_2 (node, profile);
 			let bbWorld = node.boundingBox.clone().applyMatrix4(this.matrixWorld);
 			let bsWorld = bbWorld.getBoundingSphere(new Sphere());
 
@@ -68069,18 +60300,6 @@ out highp vec4 pc_fragColor;
 			//console.log(`${node.name}: ${intersects}`);
 
 			return intersects;
-		}
-
-		nodeIntersectsProfile_2 (node, profile) {
-			let bbWorld = node.boundingBox.clone(); // .applyMatrix4(this.matrixWorld);
-			let bsWorld = bbWorld.getBoundingSphere(new Sphere());
-
-			const matInv = new Matrix4().copy(this.matrixWorld).invert();
-
-			const pointsProfile = profile.points.map(p => p.clone().applyMatrix4(matInv));
-			const bboxProfile = new Box3().setFromPoints(pointsProfile);
-
-			return bbWorld.intersectsBox(bboxProfile);
 		}
 
 		deepestNodeAt(position){
@@ -70034,7 +62253,7 @@ out highp vec4 pc_fragColor;
 		if (p === UnsignedByteType) return _gl.UNSIGNED_BYTE;
 		if (p === UnsignedShort4444Type) return _gl.UNSIGNED_SHORT_4_4_4_4;
 		if (p === UnsignedShort5551Type) return _gl.UNSIGNED_SHORT_5_5_5_1;
-		if (p === undefined) return _gl.UNSIGNED_SHORT_5_6_5;
+		if (p === UnsignedShort565Type) return _gl.UNSIGNED_SHORT_5_6_5;
 
 		if (p === ByteType) return _gl.BYTE;
 		if (p === ShortType) return _gl.SHORT;
@@ -71342,7 +63561,6 @@ out highp vec4 pc_fragColor;
 				shader.setUniform1f("wSourceID", material.weightSourceID);
 
 				shader.setUniform("backfaceCulling", material.uniforms.backfaceCulling.value);
-				shader.setUniform("isGeocentric", material.uniforms.isGeocentric.value);
 
 				let vnWebGLTexture = this.textures.get(material.visibleNodesTexture);
 				if(vnWebGLTexture){
@@ -71498,14 +63716,13 @@ out highp vec4 pc_fragColor;
 				let start = profile.points[i];
 				let end = profile.points[i + 1];
 
-				let startGround = new Vector3(start.x, start.y, start.z);
-				let endGround = new Vector3(end.x, end.y, end.z);
+				let startGround = new Vector3(start.x, start.y, 0);
+				let endGround = new Vector3(end.x, end.y, 0);
 
 				let center = new Vector3().addVectors(endGround, startGround).multiplyScalar(0.5);
 				let length = startGround.distanceTo(endGround);
 				let side = new Vector3().subVectors(endGround, startGround).normalize();
-				// let up = new THREE.Vector3(0, 0, 1);
-				let up = start.clone().normalize();
+				let up = new Vector3(0, 0, 1);
 				let forward = new Vector3().crossVectors(side, up).normalize();
 				let N = forward;
 				let cutPlane = new Plane().setFromNormalAndCoplanarPoint(N, startGround);
@@ -71567,20 +63784,17 @@ out highp vec4 pc_fragColor;
 				let node = stack.pop();
 				let weight = node.boundingSphere.radius;
 
-		   		if (!this.priorityQueue.content.find(e => e.node.name == node.name)) {
+				this.priorityQueue.push({node: node, weight: weight});
 
-					this.priorityQueue.push({node: node, weight: weight});
-
-					// add children that intersect the cutting plane
-					if (node.level < this.maxDepth) {
-						for (let i = 0; i < 8; i++) {
-							let child = node.children[i];
-							if (child && this.pointcloud.nodeIntersectsProfile(child, this.profile)) {
-								stack.push(child);
-							}
+				// add children that intersect the cutting plane
+				if (node.level < this.maxDepth) {
+					for (let i = 0; i < 8; i++) {
+						let child = node.children[i];
+						if (child && this.pointcloud.nodeIntersectsProfile(child, this.profile)) {
+							stack.push(child);
 						}
 					}
-	    		}
+				}
 			}
 		}
 
@@ -71670,7 +63884,7 @@ out highp vec4 pc_fragColor;
 			yield true;
 		};
 
-		* getAccepted(numPoints, node, matrix, segment, segmentDir, points, totalMileage, nodeMatrix){
+		* getAccepted(numPoints, node, matrix, segment, segmentDir, points, totalMileage){
 			let checkpoint = performance.now();
 
 			let accepted = new Uint32Array(numPoints);
@@ -71682,12 +63896,6 @@ out highp vec4 pc_fragColor;
 			let svp = new Vector3();
 
 			let view = new Float32Array(node.geometry.attributes.position.array);
-
-			const end = new itowns.Coordinates('EPSG:4978', segment.end.x, segment.end.y, segment.end.z).as('EPSG:2154').toVector3();
-			const start = new itowns.Coordinates('EPSG:4978', segment.start.x, segment.start.y, segment.start.z).as('EPSG:2154').toVector3();
-			let sv = new Vector3().subVectors(end, start).setZ(0);
-
-			let segmentDirL93 = sv.clone().normalize();
 
 			for (let i = 0; i < numPoints; i++) {
 
@@ -71701,26 +63909,18 @@ out highp vec4 pc_fragColor;
 				let centerDistance = Math.abs(segment.halfPlane.distanceToPoint(pos));
 
 				if (distance < this.profile.width / 2 && centerDistance < segment.length / 2) {
-					const coord = new itowns.Coordinates('EPSG:4978', pos.x, pos.y, pos.z).as('EPSG:2154').toVector3();
-					svp.subVectors(coord, start);
-					let localMileage = segmentDirL93.dot(svp);
+					svp.subVectors(pos, segment.start);
+					let localMileage = segmentDir.dot(svp);
 
 					accepted[numAccepted] = i;
 					mileage[numAccepted] = localMileage + totalMileage;
-					points.boundingBox.expandByPoint(coord);
+					points.boundingBox.expandByPoint(pos);
 
-					// pos.sub(this.pointcloud.position);
+					pos.sub(this.pointcloud.position);
 
-					// pos.set(
-					// 	view[i * 3 + 0],
-					// 	view[i * 3 + 1],
-					// 	view[i * 3 + 2]);
-
-					// pos.applyMatrix4(nodeMatrix);
-
-					acceptedPositions[3 * numAccepted + 0] = coord.x;
-					acceptedPositions[3 * numAccepted + 1] = coord.y;
-					acceptedPositions[3 * numAccepted + 2] = coord.z;
+					acceptedPositions[3 * numAccepted + 0] = pos.x;
+					acceptedPositions[3 * numAccepted + 1] = pos.y;
+					acceptedPositions[3 * numAccepted + 2] = pos.z;
 
 					numAccepted++;
 				}
@@ -71803,7 +64003,7 @@ out highp vec4 pc_fragColor;
 					let accepted = null;
 					let mileage = null;
 					let acceptedPositions = null;
-					for(let result of this.getAccepted(numPoints, node, matrix, segment, segmentDir, points,totalMileage, nodeMatrix)){
+					for(let result of this.getAccepted(numPoints, node, matrix, segment, segmentDir, points,totalMileage)){
 						if(!result){
 							let duration = performance.now() - checkpoint;
 							//console.log(`getPointsInsideProfile yield after ${duration}ms`);
@@ -72836,7 +65036,7 @@ out highp vec4 pc_fragColor;
 			return;
 		}
 
-		const measure = new Measure(viewer);
+		const measure = new Measure();
 
 		measure.uuid = data.uuid;
 		measure.name = data.name;
@@ -76126,7 +68326,7 @@ out highp vec4 pc_fragColor;
 		startInsertion (args = {}) {
 			let domElement = this.viewer.renderer.domElement;
 
-			let measure = new Measure(this.viewer);
+			let measure = new Measure();
 
 			this.dispatchEvent({
 				type: 'start_inserting_measurement',
@@ -76535,7 +68735,7 @@ out highp vec4 pc_fragColor;
 		startInsertion (args = {}) {
 			let domElement = this.viewer.renderer.domElement;
 
-			let profile = new Profile(this.viewer);
+			let profile = new Profile();
 			profile.name = args.name || 'Profile';
 
 			this.dispatchEvent({
@@ -77830,11 +70030,6 @@ out highp vec4 pc_fragColor;
 					// let pp = new THREE.Vector4(wp.x, wp.y, wp.z).applyMatrix4(camera.projectionMatrix);
 					let w = Math.abs((wp.z / 5));
 					volume.scale.set(w, w, w);
-
-					// Volume orientation to earth center
-					if (this.viewer.isGeocentric) {
-						volume.lookAt(new Vector3());
-					}
 				}
 			};
 
@@ -78044,9 +70239,7 @@ out highp vec4 pc_fragColor;
 			renderer.render(viewer.clippingTool.sceneMarker, viewer.scene.cameraScreenSpace); //viewer.scene.cameraScreenSpace);
 			renderer.render(viewer.clippingTool.sceneVolume, camera);
 
-			if (viewer.controls) {
-				renderer.render(viewer.controls.sceneControls, camera);
-			}
+			renderer.render(viewer.controls.sceneControls, camera);
 			
 			renderer.clearDepth();
 			
@@ -78400,9 +70593,7 @@ out highp vec4 pc_fragColor;
 
 			viewer.dispatchEvent({type: "render.pass.perspective_overlay",viewer: viewer});
 
-			if (viewer.controls) {
-				viewer.renderer.render(viewer.controls.sceneControls, camera);
-			}
+			viewer.renderer.render(viewer.controls.sceneControls, camera);
 			viewer.renderer.render(viewer.clippingTool.sceneVolume, camera);
 			viewer.renderer.render(viewer.transformationTool.scene, camera);
 			
@@ -78715,9 +70906,7 @@ out highp vec4 pc_fragColor;
 
 			viewer.dispatchEvent({type: "render.pass.perspective_overlay",viewer: viewer});
 
-			if (viewer.controls) {
-				viewer.renderer.render(viewer.controls.sceneControls, camera);
-			}
+			viewer.renderer.render(viewer.controls.sceneControls, camera);
 			viewer.renderer.render(viewer.clippingTool.sceneVolume, camera);
 			viewer.renderer.render(viewer.transformationTool.scene, camera);
 
@@ -80498,16 +72687,16 @@ out highp vec4 pc_fragColor;
 	  return value !== null && typeof value === "object" ? value.valueOf() : value;
 	}
 
-	function identity$1(x) {
+	function identity(x) {
 	  return x;
 	}
 
 	function group(values, ...keys) {
-	  return nest(values, identity$1, identity$1, keys);
+	  return nest(values, identity, identity, keys);
 	}
 
 	function groups(values, ...keys) {
-	  return nest(values, Array.from, identity$1, keys);
+	  return nest(values, Array.from, identity, keys);
 	}
 
 	function flatten$1(groups, keys) {
@@ -80526,7 +72715,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function rollup(values, reduce, ...keys) {
-	  return nest(values, identity$1, reduce, keys);
+	  return nest(values, identity, reduce, keys);
 	}
 
 	function rollups(values, reduce, ...keys) {
@@ -80534,7 +72723,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function index(values, ...keys) {
-	  return nest(values, identity$1, unique, keys);
+	  return nest(values, identity, unique, keys);
 	}
 
 	function indexes(values, ...keys) {
@@ -80687,7 +72876,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function bin() {
-	  var value = identity$1,
+	  var value = identity,
 	      domain = extent,
 	      threshold = thresholdSturges;
 
@@ -80977,7 +73166,7 @@ out highp vec4 pc_fragColor;
 	  return minIndex;
 	}
 
-	function mode$1(values, valueof) {
+	function mode(values, valueof) {
 	  const counts = new InternMap();
 	  if (valueof === undefined) {
 	    for (let value of values) {
@@ -81310,7 +73499,7 @@ out highp vec4 pc_fragColor;
 	  return set;
 	}
 
-	function identity$2(x) {
+	function identity$1(x) {
 	  return x;
 	}
 
@@ -81356,7 +73545,7 @@ out highp vec4 pc_fragColor;
 
 	  function axis(context) {
 	    var values = tickValues == null ? (scale.ticks ? scale.ticks.apply(scale, tickArguments) : scale.domain()) : tickValues,
-	        format = tickFormat == null ? (scale.tickFormat ? scale.tickFormat.apply(scale, tickArguments) : identity$2) : tickFormat,
+	        format = tickFormat == null ? (scale.tickFormat ? scale.tickFormat.apply(scale, tickArguments) : identity$1) : tickFormat,
 	        spacing = Math.max(tickSizeInner, 0) + tickPadding,
 	        range = scale.range(),
 	        range0 = +range[0] + offset,
@@ -81521,7 +73710,7 @@ out highp vec4 pc_fragColor;
 
 	    // If no callback was specified, return the callback of the given type and name.
 	    if (arguments.length < 2) {
-	      while (++i < n) if ((t = (typename = T[i]).type) && (t = get$1(_[t], typename.name))) return t;
+	      while (++i < n) if ((t = (typename = T[i]).type) && (t = get(_[t], typename.name))) return t;
 	      return;
 	    }
 
@@ -81551,7 +73740,7 @@ out highp vec4 pc_fragColor;
 	  }
 	};
 
-	function get$1(type, name) {
+	function get(type, name) {
 	  for (var i = 0, n = type.length, c; i < n; ++i) {
 	    if ((c = type[i]).name === name) {
 	      return c.value;
@@ -81834,12 +74023,12 @@ out highp vec4 pc_fragColor;
 	  }
 	}
 
-	function datum$1(node) {
+	function datum(node) {
 	  return node.__data__;
 	}
 
 	function selection_data(value, key) {
-	  if (!arguments.length) return Array.from(this, datum$1);
+	  if (!arguments.length) return Array.from(this, datum);
 
 	  var bind = key ? bindKey : bindIndex,
 	      parents = this._parents,
@@ -82830,7 +75019,7 @@ out highp vec4 pc_fragColor;
 	  prototype.constructor = constructor;
 	}
 
-	function extend$1(parent, definition) {
+	function extend(parent, definition) {
 	  var prototype = Object.create(parent.prototype);
 	  for (var key in definition) prototype[key] = definition[key];
 	  return prototype;
@@ -83075,7 +75264,7 @@ out highp vec4 pc_fragColor;
 	  this.opacity = +opacity;
 	}
 
-	define$1(Rgb, rgb, extend$1(Color$1, {
+	define$1(Rgb, rgb, extend(Color$1, {
 	  brighter: function(k) {
 	    k = k == null ? brighter : Math.pow(brighter, k);
 	    return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
@@ -83161,7 +75350,7 @@ out highp vec4 pc_fragColor;
 	  this.opacity = +opacity;
 	}
 
-	define$1(Hsl, hsl, extend$1(Color$1, {
+	define$1(Hsl, hsl, extend(Color$1, {
 	  brighter: function(k) {
 	    k = k == null ? brighter : Math.pow(brighter, k);
 	    return new Hsl(this.h, this.s, this.l * k, this.opacity);
@@ -83249,7 +75438,7 @@ out highp vec4 pc_fragColor;
 	  this.opacity = +opacity;
 	}
 
-	define$1(Lab, lab, extend$1(Color$1, {
+	define$1(Lab, lab, extend(Color$1, {
 	  brighter: function(k) {
 	    return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
 	  },
@@ -83317,7 +75506,7 @@ out highp vec4 pc_fragColor;
 	  return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
 	}
 
-	define$1(Hcl, hcl, extend$1(Color$1, {
+	define$1(Hcl, hcl, extend(Color$1, {
 	  brighter: function(k) {
 	    return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
 	  },
@@ -83329,14 +75518,14 @@ out highp vec4 pc_fragColor;
 	  }
 	}));
 
-	var A$1 = -0.14861,
+	var A = -0.14861,
 	    B = +1.78277,
 	    C = -0.29227,
 	    D = -0.90649,
 	    E = +1.97294,
 	    ED = E * D,
 	    EB = E * B,
-	    BC_DA = B * C - D * A$1;
+	    BC_DA = B * C - D * A;
 
 	function cubehelixConvert(o) {
 	  if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
@@ -83363,7 +75552,7 @@ out highp vec4 pc_fragColor;
 	  this.opacity = +opacity;
 	}
 
-	define$1(Cubehelix, cubehelix, extend$1(Color$1, {
+	define$1(Cubehelix, cubehelix, extend(Color$1, {
 	  brighter: function(k) {
 	    k = k == null ? brighter : Math.pow(brighter, k);
 	    return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
@@ -83379,7 +75568,7 @@ out highp vec4 pc_fragColor;
 	        cosh = Math.cos(h),
 	        sinh = Math.sin(h);
 	    return new Rgb(
-	      255 * (l + a * (A$1 * cosh + B * sinh)),
+	      255 * (l + a * (A * cosh + B * sinh)),
 	      255 * (l + a * (C * cosh + D * sinh)),
 	      255 * (l + a * (E * cosh)),
 	      this.opacity
@@ -83669,7 +75858,7 @@ out highp vec4 pc_fragColor;
 
 	var degrees$1 = 180 / Math.PI;
 
-	var identity$3 = {
+	var identity$2 = {
 	  translateX: 0,
 	  translateY: 0,
 	  rotate: 0,
@@ -83699,14 +75888,14 @@ out highp vec4 pc_fragColor;
 	/* eslint-disable no-undef */
 	function parseCss(value) {
 	  const m = new (typeof DOMMatrix === "function" ? DOMMatrix : WebKitCSSMatrix)(value + "");
-	  return m.isIdentity ? identity$3 : decompose(m.a, m.b, m.c, m.d, m.e, m.f);
+	  return m.isIdentity ? identity$2 : decompose(m.a, m.b, m.c, m.d, m.e, m.f);
 	}
 
 	function parseSvg(value) {
-	  if (value == null) return identity$3;
+	  if (value == null) return identity$2;
 	  if (!svgNode) svgNode = document.createElementNS("http://www.w3.org/2000/svg", "g");
 	  svgNode.setAttribute("transform", value);
-	  if (!(value = svgNode.transform.baseVal.consolidate())) return identity$3;
+	  if (!(value = svgNode.transform.baseVal.consolidate())) return identity$2;
 	  value = value.matrix;
 	  return decompose(value.a, value.b, value.c, value.d, value.e, value.f);
 	}
@@ -83774,11 +75963,11 @@ out highp vec4 pc_fragColor;
 
 	var epsilon2 = 1e-12;
 
-	function cosh$1(x) {
+	function cosh(x) {
 	  return ((x = Math.exp(x)) + 1 / x) / 2;
 	}
 
-	function sinh$1(x) {
+	function sinh(x) {
 	  return ((x = Math.exp(x)) - 1 / x) / 2;
 	}
 
@@ -83821,12 +76010,12 @@ out highp vec4 pc_fragColor;
 	      S = (r1 - r0) / rho;
 	      i = function(t) {
 	        var s = t * S,
-	            coshr0 = cosh$1(r0),
-	            u = w0 / (rho2 * d1) * (coshr0 * tanh(rho * s + r0) - sinh$1(r0));
+	            coshr0 = cosh(r0),
+	            u = w0 / (rho2 * d1) * (coshr0 * tanh(rho * s + r0) - sinh(r0));
 	        return [
 	          ux0 + u * dx,
 	          uy0 + u * dy,
-	          w0 * coshr0 / cosh$1(rho * s + r0)
+	          w0 * coshr0 / cosh(rho * s + r0)
 	        ];
 	      };
 	    }
@@ -84085,7 +76274,7 @@ out highp vec4 pc_fragColor;
 	var STARTED = 3;
 	var RUNNING = 4;
 	var ENDING = 5;
-	var ENDED$1 = 6;
+	var ENDED = 6;
 
 	function schedule(node, name, id, index, group, timing) {
 	  var schedules = node.__transition;
@@ -84106,19 +76295,19 @@ out highp vec4 pc_fragColor;
 	  });
 	}
 
-	function init$v(node, id) {
-	  var schedule = get$2(node, id);
+	function init(node, id) {
+	  var schedule = get$1(node, id);
 	  if (schedule.state > CREATED) throw new Error("too late; already scheduled");
 	  return schedule;
 	}
 
 	function set$2(node, id) {
-	  var schedule = get$2(node, id);
+	  var schedule = get$1(node, id);
 	  if (schedule.state > STARTED) throw new Error("too late; already running");
 	  return schedule;
 	}
 
-	function get$2(node, id) {
+	function get$1(node, id) {
 	  var schedule = node.__transition;
 	  if (!schedule || !(schedule = schedule[id])) throw new Error("transition not found");
 	  return schedule;
@@ -84158,7 +76347,7 @@ out highp vec4 pc_fragColor;
 
 	      // Interrupt the active transition, if any.
 	      if (o.state === RUNNING) {
-	        o.state = ENDED$1;
+	        o.state = ENDED;
 	        o.timer.stop();
 	        o.on.call("interrupt", node, node.__data__, o.index, o.group);
 	        delete schedules[i];
@@ -84166,7 +76355,7 @@ out highp vec4 pc_fragColor;
 
 	      // Cancel any pre-empted transitions.
 	      else if (+i < id) {
-	        o.state = ENDED$1;
+	        o.state = ENDED;
 	        o.timer.stop();
 	        o.on.call("cancel", node, node.__data__, o.index, o.group);
 	        delete schedules[i];
@@ -84219,7 +76408,7 @@ out highp vec4 pc_fragColor;
 	  }
 
 	  function stop() {
-	    self.state = ENDED$1;
+	    self.state = ENDED;
 	    self.timer.stop();
 	    delete schedules[id];
 	    for (var i in schedules) return; // eslint-disable-line no-unused-vars
@@ -84241,7 +76430,7 @@ out highp vec4 pc_fragColor;
 	  for (i in schedules) {
 	    if ((schedule = schedules[i]).name !== name) { empty = false; continue; }
 	    active = schedule.state > STARTING && schedule.state < ENDING;
-	    schedule.state = ENDED$1;
+	    schedule.state = ENDED;
 	    schedule.timer.stop();
 	    schedule.on.call(active ? "interrupt" : "cancel", node, node.__data__, schedule.index, schedule.group);
 	    delete schedules[i];
@@ -84311,7 +76500,7 @@ out highp vec4 pc_fragColor;
 	  name += "";
 
 	  if (arguments.length < 2) {
-	    var tween = get$2(this.node(), id).tween;
+	    var tween = get$1(this.node(), id).tween;
 	    for (var i = 0, n = tween.length, t; i < n; ++i) {
 	      if ((t = tween[i]).name === name) {
 	        return t.value;
@@ -84332,7 +76521,7 @@ out highp vec4 pc_fragColor;
 	  });
 
 	  return function(node) {
-	    return get$2(node, id).value[name];
+	    return get$1(node, id).value[name];
 	  };
 	}
 
@@ -84463,13 +76652,13 @@ out highp vec4 pc_fragColor;
 
 	function delayFunction(id, value) {
 	  return function() {
-	    init$v(this, id).delay = +value.apply(this, arguments);
+	    init(this, id).delay = +value.apply(this, arguments);
 	  };
 	}
 
 	function delayConstant(id, value) {
 	  return value = +value, function() {
-	    init$v(this, id).delay = value;
+	    init(this, id).delay = value;
 	  };
 	}
 
@@ -84480,7 +76669,7 @@ out highp vec4 pc_fragColor;
 	      ? this.each((typeof value === "function"
 	          ? delayFunction
 	          : delayConstant)(id, value))
-	      : get$2(this.node(), id).delay;
+	      : get$1(this.node(), id).delay;
 	}
 
 	function durationFunction(id, value) {
@@ -84502,7 +76691,7 @@ out highp vec4 pc_fragColor;
 	      ? this.each((typeof value === "function"
 	          ? durationFunction
 	          : durationConstant)(id, value))
-	      : get$2(this.node(), id).duration;
+	      : get$1(this.node(), id).duration;
 	}
 
 	function easeConstant(id, value) {
@@ -84517,7 +76706,7 @@ out highp vec4 pc_fragColor;
 
 	  return arguments.length
 	      ? this.each(easeConstant(id, value))
-	      : get$2(this.node(), id).ease;
+	      : get$1(this.node(), id).ease;
 	}
 
 	function easeVarying(id, value) {
@@ -84565,7 +76754,7 @@ out highp vec4 pc_fragColor;
 	  return new Transition(merges, this._parents, this._name, this._id);
 	}
 
-	function start$1(name) {
+	function start(name) {
 	  return (name + "").trim().split(/^|\s+/).every(function(t) {
 	    var i = t.indexOf(".");
 	    if (i >= 0) t = t.slice(0, i);
@@ -84574,7 +76763,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function onFunction(id, name, listener) {
-	  var on0, on1, sit = start$1(name) ? init$v : set$2;
+	  var on0, on1, sit = start(name) ? init : set$2;
 	  return function() {
 	    var schedule = sit(this, id),
 	        on = schedule.on;
@@ -84592,7 +76781,7 @@ out highp vec4 pc_fragColor;
 	  var id = this._id;
 
 	  return arguments.length < 2
-	      ? get$2(this.node(), id).on.on(name)
+	      ? get$1(this.node(), id).on.on(name)
 	      : this.each(onFunction(id, name, listener));
 	}
 
@@ -84619,7 +76808,7 @@ out highp vec4 pc_fragColor;
 	      if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
 	        if ("__data__" in node) subnode.__data__ = node.__data__;
 	        subgroup[i] = subnode;
-	        schedule(subgroup[i], name, id, i, subgroup, get$2(node, id));
+	        schedule(subgroup[i], name, id, i, subgroup, get$1(node, id));
 	      }
 	    }
 	  }
@@ -84636,7 +76825,7 @@ out highp vec4 pc_fragColor;
 	  for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
 	    for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
 	      if (node = group[i]) {
-	        for (var children = select.call(node, node.__data__, i, group), child, inherit = get$2(node, id), k = 0, l = children.length; k < l; ++k) {
+	        for (var children = select.call(node, node.__data__, i, group), child, inherit = get$1(node, id), k = 0, l = children.length; k < l; ++k) {
 	          if (child = children[k]) {
 	            schedule(child, name, id, k, children, inherit);
 	          }
@@ -84808,7 +76997,7 @@ out highp vec4 pc_fragColor;
 	  for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
 	    for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
 	      if (node = group[i]) {
-	        var inherit = get$2(node, id0);
+	        var inherit = get$1(node, id0);
 	        schedule(node, name, id1, i, group, {
 	          time: inherit.time + inherit.delay + inherit.duration,
 	          delay: 0,
@@ -86777,7 +78966,7 @@ out highp vec4 pc_fragColor;
 	const ccwerrboundC = (9 + 64 * epsilon$3) * epsilon$3 * epsilon$3;
 
 	const B$1 = vec(4);
-	const C1$1 = vec(8);
+	const C1 = vec(8);
 	const C2 = vec(12);
 	const D$1 = vec(16);
 	const u = vec(4);
@@ -86873,7 +79062,7 @@ out highp vec4 pc_fragColor;
 	    bvirt = u3 - _j;
 	    u[2] = _j - (u3 - bvirt) + (_i - bvirt);
 	    u[3] = u3;
-	    const C1len = sum$1(4, B$1, 4, u, C1$1);
+	    const C1len = sum$1(4, B$1, 4, u, C1);
 
 	    s1 = acx * bcytail;
 	    c = splitter * acx;
@@ -86904,7 +79093,7 @@ out highp vec4 pc_fragColor;
 	    bvirt = u3 - _j;
 	    u[2] = _j - (u3 - bvirt) + (_i - bvirt);
 	    u[3] = u3;
-	    const C2len = sum$1(C1len, C1$1, 4, u, C2);
+	    const C2len = sum$1(C1len, C1, 4, u, C2);
 
 	    s1 = acxtail * bcytail;
 	    c = splitter * acxtail;
@@ -90389,10 +82578,10 @@ out highp vec4 pc_fragColor;
 	function tree_add(d) {
 	  const x = +this._x.call(null, d),
 	      y = +this._y.call(null, d);
-	  return add$2(this.cover(x, y), x, y, d);
+	  return add$1(this.cover(x, y), x, y, d);
 	}
 
-	function add$2(tree, x, y, d) {
+	function add$1(tree, x, y, d) {
 	  if (isNaN(x) || isNaN(y)) return tree; // ignore invalid points
 
 	  var parent,
@@ -90465,7 +82654,7 @@ out highp vec4 pc_fragColor;
 
 	  // Add the new points.
 	  for (i = 0; i < n; ++i) {
-	    add$2(this, xz[i], yz[i], data[i]);
+	    add$1(this, xz[i], yz[i], data[i]);
 	  }
 
 	  return this;
@@ -91579,7 +83768,7 @@ out highp vec4 pc_fragColor;
 	  "x": (x) => Math.round(x).toString(16)
 	};
 
-	function identity$4(x) {
+	function identity$3(x) {
 	  return x;
 	}
 
@@ -91587,11 +83776,11 @@ out highp vec4 pc_fragColor;
 	    prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
 
 	function formatLocale(locale) {
-	  var group = locale.grouping === undefined || locale.thousands === undefined ? identity$4 : formatGroup(map$2.call(locale.grouping, Number), locale.thousands + ""),
+	  var group = locale.grouping === undefined || locale.thousands === undefined ? identity$3 : formatGroup(map$2.call(locale.grouping, Number), locale.thousands + ""),
 	      currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
 	      currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
 	      decimal = locale.decimal === undefined ? "." : locale.decimal + "",
-	      numerals = locale.numerals === undefined ? identity$4 : formatNumerals(map$2.call(locale.numerals, String)),
+	      numerals = locale.numerals === undefined ? identity$3 : formatNumerals(map$2.call(locale.numerals, String)),
 	      percent = locale.percent === undefined ? "%" : locale.percent + "",
 	      minus = locale.minus === undefined ? "−" : locale.minus + "",
 	      nan = locale.nan === undefined ? "NaN" : locale.nan + "";
@@ -91770,11 +83959,11 @@ out highp vec4 pc_fragColor;
 	var ceil = Math.ceil;
 	var exp = Math.exp;
 	var floor = Math.floor;
-	var hypot$1 = Math.hypot;
+	var hypot = Math.hypot;
 	var log = Math.log;
 	var pow$1 = Math.pow;
 	var sin$1 = Math.sin;
-	var sign$2 = Math.sign || function(x) { return x > 0 ? 1 : x < 0 ? -1 : 0; };
+	var sign$1 = Math.sign || function(x) { return x > 0 ? 1 : x < 0 ? -1 : 0; };
 	var sqrt = Math.sqrt;
 	var tan = Math.tan;
 
@@ -92239,7 +84428,7 @@ out highp vec4 pc_fragColor;
 	      cx = y0 * z - z0 * y,
 	      cy = z0 * x - x0 * z,
 	      cz = x0 * y - y0 * x,
-	      m = hypot$1(cx, cy, cz),
+	      m = hypot(cx, cy, cz),
 	      w = asin(m), // line weight = angle
 	      v = m && -w / m; // area weight multiplier
 	  X2.add(v * cx);
@@ -92264,14 +84453,14 @@ out highp vec4 pc_fragColor;
 	  var x = +X2,
 	      y = +Y2,
 	      z = +Z2,
-	      m = hypot$1(x, y, z);
+	      m = hypot(x, y, z);
 
 	  // If the area-weighted ccentroid is undefined, fall back to length-weighted ccentroid.
 	  if (m < epsilon2$1) {
 	    x = X1, y = Y1, z = Z1;
 	    // If the feature has zero length, fall back to arithmetic mean of point vectors.
 	    if (W1 < epsilon$5) x = X0, y = Y0, z = Z0;
-	    m = hypot$1(x, y, z);
+	    m = hypot(x, y, z);
 	    // If the feature still has an undefined ccentroid, then return.
 	    if (m < epsilon2$1) return [NaN, NaN];
 	  }
@@ -92569,7 +84758,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function longitude(point) {
-	  return abs$2(point[0]) <= pi$3 ? point[0] : sign$2(point[0]) * ((abs$2(point[0]) + pi$3) % tau$4 - pi$3);
+	  return abs$2(point[0]) <= pi$3 ? point[0] : sign$1(point[0]) * ((abs$2(point[0]) + pi$3) % tau$4 - pi$3);
 	}
 
 	function polygonContains(polygon, point) {
@@ -93559,7 +85748,7 @@ out highp vec4 pc_fragColor;
 	  return interpolate;
 	}
 
-	var identity$5 = x => x;
+	var identity$4 = x => x;
 
 	var areaSum$1 = new Adder(),
 	    areaRingSum$1 = new Adder(),
@@ -93905,7 +86094,7 @@ out highp vec4 pc_fragColor;
 	  };
 
 	  path.projection = function(_) {
-	    return arguments.length ? (projectionStream = _ == null ? (projection = null, identity$5) : (projection = _).stream, path) : projection;
+	    return arguments.length ? (projectionStream = _ == null ? (projection = null, identity$4) : (projection = _).stream, path) : projection;
 	  };
 
 	  path.context = function(_) {
@@ -93924,13 +86113,13 @@ out highp vec4 pc_fragColor;
 	  return path.projection(projection).context(context);
 	}
 
-	function transform$1(methods) {
+	function transform(methods) {
 	  return {
-	    stream: transformer$1(methods)
+	    stream: transformer(methods)
 	  };
 	}
 
-	function transformer$1(methods) {
+	function transformer(methods) {
 	  return function(stream) {
 	    var s = new TransformStream;
 	    for (var key in methods) s[key] = methods[key];
@@ -94004,7 +86193,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function resampleNone(project) {
-	  return transformer$1({
+	  return transformer({
 	    point: function(x, y) {
 	      x = project(x, y);
 	      this.stream.point(x[0], x[1]);
@@ -94095,14 +86284,14 @@ out highp vec4 pc_fragColor;
 	  };
 	}
 
-	var transformRadians = transformer$1({
+	var transformRadians = transformer({
 	  point: function(x, y) {
 	    this.stream.point(x * radians$1, y * radians$1);
 	  }
 	});
 
 	function transformRotate(rotate) {
-	  return transformer$1({
+	  return transformer({
 	    point: function(x, y) {
 	      var r = rotate(x, y);
 	      return this.stream.point(r[0], r[1]);
@@ -94155,7 +86344,7 @@ out highp vec4 pc_fragColor;
 	      sx = 1, // reflectX
 	      sy = 1, // reflectX
 	      theta = null, preclip = clipAntimeridian, // pre-clip angle
-	      x0 = null, y0, x1, y1, postclip = identity$5, // post-clip extent
+	      x0 = null, y0, x1, y1, postclip = identity$4, // post-clip extent
 	      delta2 = 0.5, // precision
 	      projectResample,
 	      projectTransform,
@@ -94189,7 +86378,7 @@ out highp vec4 pc_fragColor;
 	  };
 
 	  projection.clipExtent = function(_) {
-	    return arguments.length ? (postclip = _ == null ? (x0 = y0 = x1 = y1 = null, identity$5) : clipRectangle(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
+	    return arguments.length ? (postclip = _ == null ? (x0 = y0 = x1 = y1 = null, identity$4) : clipRectangle(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
 	  };
 
 	  projection.scale = function(_) {
@@ -94304,9 +86493,9 @@ out highp vec4 pc_fragColor;
 
 	  project.invert = function(x, y) {
 	    var r0y = r0 - y,
-	        l = atan2(x, abs$2(r0y)) * sign$2(r0y);
+	        l = atan2(x, abs$2(r0y)) * sign$1(r0y);
 	    if (r0y * n < 0)
-	      l -= pi$3 * sign$2(x) * sign$2(r0y);
+	      l -= pi$3 * sign$1(x) * sign$1(r0y);
 	    return [l / n, asin((c - (x * x + r0y * r0y) * n * n) / (2 * n))];
 	  };
 
@@ -94557,10 +86746,10 @@ out highp vec4 pc_fragColor;
 	  }
 
 	  project.invert = function(x, y) {
-	    var fy = f - y, r = sign$2(n) * sqrt(x * x + fy * fy),
-	      l = atan2(x, abs$2(fy)) * sign$2(fy);
+	    var fy = f - y, r = sign$1(n) * sqrt(x * x + fy * fy),
+	      l = atan2(x, abs$2(fy)) * sign$1(fy);
 	    if (fy * n < 0)
-	      l -= pi$3 * sign$2(x) * sign$2(fy);
+	      l -= pi$3 * sign$1(x) * sign$1(fy);
 	    return [l / n, 2 * atan(pow$1(f / r, 1 / n)) - halfPi$2];
 	  };
 
@@ -94598,10 +86787,10 @@ out highp vec4 pc_fragColor;
 
 	  project.invert = function(x, y) {
 	    var gy = g - y,
-	        l = atan2(x, abs$2(gy)) * sign$2(gy);
+	        l = atan2(x, abs$2(gy)) * sign$1(gy);
 	    if (gy * n < 0)
-	      l -= pi$3 * sign$2(x) * sign$2(gy);
-	    return [l / n, g - sign$2(n) * sqrt(x * x + gy * gy)];
+	      l -= pi$3 * sign$1(x) * sign$1(gy);
+	    return [l / n, g - sign$1(n) * sqrt(x * x + gy * gy)];
 	  };
 
 	  return project;
@@ -94618,7 +86807,7 @@ out highp vec4 pc_fragColor;
 	    A3 = 0.000893,
 	    A4 = 0.003796,
 	    M = sqrt(3) / 2,
-	    iterations$1 = 12;
+	    iterations = 12;
 
 	function equalEarthRaw(lambda, phi) {
 	  var l = asin(M * sin$1(phi)), l2 = l * l, l6 = l2 * l2 * l2;
@@ -94630,7 +86819,7 @@ out highp vec4 pc_fragColor;
 
 	equalEarthRaw.invert = function(x, y) {
 	  var l = y, l2 = l * l, l6 = l2 * l2 * l2;
-	  for (var i = 0, delta, fy, fpy; i < iterations$1; ++i) {
+	  for (var i = 0, delta, fy, fpy; i < iterations; ++i) {
 	    fy = l * (A1 + A2 * l2 + l6 * (A3 + A4 * l2)) - y;
 	    fpy = A1 + 3 * A2 * l2 + l6 * (7 * A3 + 9 * A4 * l2);
 	    l -= delta = fy / fpy, l2 = l * l, l6 = l2 * l2 * l2;
@@ -94660,18 +86849,18 @@ out highp vec4 pc_fragColor;
 	      .clipAngle(60);
 	}
 
-	function identity$6() {
+	function identity$5() {
 	  var k = 1, tx = 0, ty = 0, sx = 1, sy = 1, // scale, translate and reflect
 	      alpha = 0, ca, sa, // angle
 	      x0 = null, y0, x1, y1, // clip extent
 	      kx = 1, ky = 1,
-	      transform = transformer$1({
+	      transform = transformer({
 	        point: function(x, y) {
 	          var p = projection([x, y]);
 	          this.stream.point(p[0], p[1]);
 	        }
 	      }),
-	      postclip = identity$5,
+	      postclip = identity$4,
 	      cache,
 	      cacheStream;
 
@@ -94707,7 +86896,7 @@ out highp vec4 pc_fragColor;
 	    return arguments.length ? (postclip = _, x0 = y0 = x1 = y1 = null, reset()) : postclip;
 	  };
 	  projection.clipExtent = function(_) {
-	    return arguments.length ? (postclip = _ == null ? (x0 = y0 = x1 = y1 = null, identity$5) : clipRectangle(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
+	    return arguments.length ? (postclip = _ == null ? (x0 = y0 = x1 = y1 = null, identity$4) : clipRectangle(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
 	  };
 	  projection.scale = function(_) {
 	    return arguments.length ? (k = +_, reset()) : k;
@@ -96760,7 +88949,7 @@ out highp vec4 pc_fragColor;
 
 	var unit = [0, 1];
 
-	function identity$7(x) {
+	function identity$6(x) {
 	  return x;
 	}
 
@@ -96817,21 +89006,21 @@ out highp vec4 pc_fragColor;
 	      .unknown(source.unknown());
 	}
 
-	function transformer$2() {
+	function transformer$1() {
 	  var domain = unit,
 	      range = unit,
 	      interpolate$1 = interpolate,
 	      transform,
 	      untransform,
 	      unknown,
-	      clamp = identity$7,
+	      clamp = identity$6,
 	      piecewise,
 	      output,
 	      input;
 
 	  function rescale() {
 	    var n = Math.min(domain.length, range.length);
-	    if (clamp !== identity$7) clamp = clamper(domain[0], domain[n - 1]);
+	    if (clamp !== identity$6) clamp = clamper(domain[0], domain[n - 1]);
 	    piecewise = n > 2 ? polymap : bimap;
 	    output = input = null;
 	    return scale;
@@ -96858,7 +89047,7 @@ out highp vec4 pc_fragColor;
 	  };
 
 	  scale.clamp = function(_) {
-	    return arguments.length ? (clamp = _ ? true : identity$7, rescale()) : clamp !== identity$7;
+	    return arguments.length ? (clamp = _ ? true : identity$6, rescale()) : clamp !== identity$6;
 	  };
 
 	  scale.interpolate = function(_) {
@@ -96876,7 +89065,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function continuous() {
-	  return transformer$2()(identity$7, identity$7);
+	  return transformer$1()(identity$6, identity$6);
 	}
 
 	function tickFormat(start, stop, count, specifier) {
@@ -96972,7 +89161,7 @@ out highp vec4 pc_fragColor;
 	  return linearish(scale);
 	}
 
-	function identity$8(domain) {
+	function identity$7(domain) {
 	  var unknown;
 
 	  function scale(x) {
@@ -96990,7 +89179,7 @@ out highp vec4 pc_fragColor;
 	  };
 
 	  scale.copy = function() {
-	    return identity$8(domain).unknown(unknown);
+	    return identity$7(domain).unknown(unknown);
 	  };
 
 	  domain = arguments.length ? Array.from(domain, number$2) : [0, 1];
@@ -97147,7 +89336,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function log$1() {
-	  var scale = loggish(transformer$2()).domain([1, 10]);
+	  var scale = loggish(transformer$1()).domain([1, 10]);
 
 	  scale.copy = function() {
 	    return copy(scale, log$1()).base(scale.base());
@@ -97181,7 +89370,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function symlog() {
-	  var scale = symlogish(transformer$2());
+	  var scale = symlogish(transformer$1());
 
 	  scale.copy = function() {
 	    return copy(scale, symlog()).constant(scale.constant());
@@ -97205,11 +89394,11 @@ out highp vec4 pc_fragColor;
 	}
 
 	function powish(transform) {
-	  var scale = transform(identity$7, identity$7),
+	  var scale = transform(identity$6, identity$6),
 	      exponent = 1;
 
 	  function rescale() {
-	    return exponent === 1 ? transform(identity$7, identity$7)
+	    return exponent === 1 ? transform(identity$6, identity$6)
 	        : exponent === 0.5 ? transform(transformSqrt, transformSquare)
 	        : transform(transformPow(exponent), transformPow(1 / exponent));
 	  }
@@ -97222,7 +89411,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function pow$2() {
-	  var scale = powish(transformer$2());
+	  var scale = powish(transformer$1());
 
 	  scale.copy = function() {
 	    return copy(scale, pow$2()).exponent(scale.exponent());
@@ -98587,14 +90776,14 @@ out highp vec4 pc_fragColor;
 	  return initRange.apply(calendar(utcTicks, utcTickInterval, utcYear, utcMonth, utcSunday, utcDay, utcHour, utcMinute, second, utcFormat).domain([Date.UTC(2000, 0, 1), Date.UTC(2000, 0, 2)]), arguments);
 	}
 
-	function transformer$3() {
+	function transformer$2() {
 	  var x0 = 0,
 	      x1 = 1,
 	      t0,
 	      t1,
 	      k10,
 	      transform,
-	      interpolator = identity$7,
+	      interpolator = identity$6,
 	      clamp = false,
 	      unknown;
 
@@ -98644,7 +90833,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function sequential() {
-	  var scale = linearish(transformer$3()(identity$7));
+	  var scale = linearish(transformer$2()(identity$6));
 
 	  scale.copy = function() {
 	    return copy$1(scale, sequential());
@@ -98654,7 +90843,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function sequentialLog() {
-	  var scale = loggish(transformer$3()).domain([1, 10]);
+	  var scale = loggish(transformer$2()).domain([1, 10]);
 
 	  scale.copy = function() {
 	    return copy$1(scale, sequentialLog()).base(scale.base());
@@ -98664,7 +90853,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function sequentialSymlog() {
-	  var scale = symlogish(transformer$3());
+	  var scale = symlogish(transformer$2());
 
 	  scale.copy = function() {
 	    return copy$1(scale, sequentialSymlog()).constant(scale.constant());
@@ -98674,7 +90863,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function sequentialPow() {
-	  var scale = powish(transformer$3());
+	  var scale = powish(transformer$2());
 
 	  scale.copy = function() {
 	    return copy$1(scale, sequentialPow()).exponent(scale.exponent());
@@ -98689,7 +90878,7 @@ out highp vec4 pc_fragColor;
 
 	function sequentialQuantile() {
 	  var domain = [],
-	      interpolator = identity$7;
+	      interpolator = identity$6;
 
 	  function scale(x) {
 	    if (x != null && !isNaN(x = +x)) return interpolator((bisectRight(domain, x, 1) - 1) / (domain.length - 1));
@@ -98722,7 +90911,7 @@ out highp vec4 pc_fragColor;
 	  return initInterpolator.apply(scale, arguments);
 	}
 
-	function transformer$4() {
+	function transformer$3() {
 	  var x0 = 0,
 	      x1 = 0.5,
 	      x2 = 1,
@@ -98732,7 +90921,7 @@ out highp vec4 pc_fragColor;
 	      t2,
 	      k10,
 	      k21,
-	      interpolator = identity$7,
+	      interpolator = identity$6,
 	      transform,
 	      clamp = false,
 	      unknown;
@@ -98775,7 +90964,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function diverging() {
-	  var scale = linearish(transformer$4()(identity$7));
+	  var scale = linearish(transformer$3()(identity$6));
 
 	  scale.copy = function() {
 	    return copy$1(scale, diverging());
@@ -98785,7 +90974,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function divergingLog() {
-	  var scale = loggish(transformer$4()).domain([0.1, 1, 10]);
+	  var scale = loggish(transformer$3()).domain([0.1, 1, 10]);
 
 	  scale.copy = function() {
 	    return copy$1(scale, divergingLog()).base(scale.base());
@@ -98795,7 +90984,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function divergingSymlog() {
-	  var scale = symlogish(transformer$4());
+	  var scale = symlogish(transformer$3());
 
 	  scale.copy = function() {
 	    return copy$1(scale, divergingSymlog()).constant(scale.constant());
@@ -98805,7 +90994,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function divergingPow() {
-	  var scale = powish(transformer$4());
+	  var scale = powish(transformer$3());
 
 	  scale.copy = function() {
 	    return copy$1(scale, divergingPow()).exponent(scale.exponent());
@@ -99745,12 +91934,12 @@ out highp vec4 pc_fragColor;
 	  return b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN;
 	}
 
-	function identity$9(d) {
+	function identity$8(d) {
 	  return d;
 	}
 
 	function pie() {
-	  var value = identity$9,
+	  var value = identity$8,
 	      sortValues = descending$1,
 	      sort = null,
 	      startAngle = constant$a(0),
@@ -100787,7 +92976,7 @@ out highp vec4 pc_fragColor;
 	  return new LinearClosed(context);
 	}
 
-	function sign$3(x) {
+	function sign$2(x) {
 	  return x < 0 ? -1 : 1;
 	}
 
@@ -100801,7 +92990,7 @@ out highp vec4 pc_fragColor;
 	      s0 = (that._y1 - that._y0) / (h0 || h1 < 0 && -0),
 	      s1 = (y2 - that._y1) / (h1 || h0 < 0 && -0),
 	      p = (s0 * h1 + s1 * h0) / (h0 + h1);
-	  return (sign$3(s0) + sign$3(s1)) * Math.min(Math.abs(s0), Math.abs(s1), 0.5 * Math.abs(p)) || 0;
+	  return (sign$2(s0) + sign$2(s1)) * Math.min(Math.abs(s0), Math.abs(s1), 0.5 * Math.abs(p)) || 0;
 	}
 
 	// Calculate a one-sided slope.
@@ -101253,12 +93442,12 @@ out highp vec4 pc_fragColor;
 	  }
 	};
 
-	var identity$a = new Transform(1, 0, 0);
+	var identity$9 = new Transform(1, 0, 0);
 
-	transform$2.prototype = Transform.prototype;
+	transform$1.prototype = Transform.prototype;
 
-	function transform$2(node) {
-	  while (!node.__zoom) if (!(node = node.parentNode)) return identity$a;
+	function transform$1(node) {
+	  while (!node.__zoom) if (!(node = node.parentNode)) return identity$9;
 	  return node.__zoom;
 	}
 
@@ -101291,7 +93480,7 @@ out highp vec4 pc_fragColor;
 	}
 
 	function defaultTransform() {
-	  return this.__zoom || identity$a;
+	  return this.__zoom || identity$9;
 	}
 
 	function defaultWheelDelta(event) {
@@ -101394,7 +93583,7 @@ out highp vec4 pc_fragColor;
 	      var e = extent.apply(this, arguments),
 	          t = this.__zoom,
 	          p0 = p == null ? centroid(e) : typeof p === "function" ? p.apply(this, arguments) : p;
-	      return constrain(identity$a.translate(p0[0], p0[1]).scale(t.k).translate(
+	      return constrain(identity$9.translate(p0[0], p0[1]).scale(t.k).translate(
 	        typeof x === "function" ? -x.apply(this, arguments) : -x,
 	        typeof y === "function" ? -y.apply(this, arguments) : -y
 	      ), e, translateExtent);
@@ -101946,14 +94135,13 @@ out highp vec4 pc_fragColor;
 
 	class ProfileFakeOctree extends PointCloudTree{
 
-		constructor(octree, isGeocentric = false){
+		constructor(octree){
 			super();
 
 			this.trueOctree = octree;
 			this.pcoGeometry = octree.pcoGeometry;
 			this.points = [];
 			this.visibleNodes = [];
-			this.isGeocentric = true;
 			
 			//this.material = this.trueOctree.material;
 			this.material = new PointCloudMaterial$1();
@@ -102020,13 +94208,11 @@ out highp vec4 pc_fragColor;
 					};
 				}
 
-				// Copy local position
-				truePos.fromArray(data.data.position, 3 * i);
-
-				// place in world
-				if (!this.isGeocentric) {
-					truePos.add(this.trueOctree.position);
-				}
+				truePos.set(
+					data.data.position[3 * i + 0] + this.trueOctree.position.x,
+					data.data.position[3 * i + 1] + this.trueOctree.position.y,
+					data.data.position[3 * i + 2] + this.trueOctree.position.z,
+				);
 
 				let x = data.data.mileage[i];
 				let y = 0;
@@ -102236,24 +94422,18 @@ out highp vec4 pc_fragColor;
 					if (closest) {
 						let point = closest.point;
 
-						let position;
-						let altitude;
-
-						if (this.viewer.isGeocentric) {
-							position = new itowns.Coordinates(this.viewer.crs, ...point.position);
-							altitude = position.z;
-							position = position.as('EPSG:4978', position).toVector3();
-						} else {
-							position = new Vector3().fromArray(point.position).add(closest.pointcloud.position);
-							altitude = position.z;
-						}
+						let position = new Float64Array([
+							point.position[0] + closest.pointcloud.position.x,
+							point.position[1] + closest.pointcloud.position.y,
+							point.position[2] + closest.pointcloud.position.z
+						]);
 
 						this.elRoot.find('#profileSelectionProperties').fadeIn(200);
 						this.pickSphere.visible = true;
 						this.pickSphere.scale.set(0.5 * radius, 0.5 * radius, 0.5 * radius);
-						this.pickSphere.position.set(point.mileage, 0, altitude);
+						this.pickSphere.position.set(point.mileage, 0, position[2]);
 
-						this.viewerPickSphere.position.copy(position);
+						this.viewerPickSphere.position.set(...position);
 						
 						if(!this.viewer.scene.scene.children.includes(this.viewerPickSphere)){
 							this.viewer.scene.scene.add(this.viewerPickSphere);
@@ -102463,11 +94643,7 @@ out highp vec4 pc_fragColor;
 					for (let i = 0; i < points.numPoints; i++) {
 
 						let m = points.data.mileage[i] - mileage;
-						let e = points.data.position[3 * i + 2] - elevation;
-						if (!this.viewer.isGeocentric) {
-							e += pointcloud.position.z;
-						}
-
+						let e = points.data.position[3 * i + 2] - elevation + pointcloud.position.z;
 						let r = Math.sqrt(m * m + e * e);
 
 						const withinDistance = r < radius && r < closest.distance;
@@ -102616,7 +94792,7 @@ out highp vec4 pc_fragColor;
 
 			let entry = this.pointclouds.get(pointcloud);
 			if(!entry){
-				entry = new ProfileFakeOctree(pointcloud, this.viewer.isGeocentric);
+				entry = new ProfileFakeOctree(pointcloud);
 				this.pointclouds.set(pointcloud, entry);
 				this.profileScene.add(entry);
 
@@ -103534,7 +95710,7 @@ ENDSEC
 			<div class="measurement_content selectable">
 				<span class="coordinates_table_container"></span>
 				<br>
-				<span style="font-weight: bold">Area: </span>: 
+				<span style="font-weight: bold">Area: </span>
 				<span id="measurement_area"></span>
 
 				<!-- ACTIONS -->
@@ -103728,7 +95904,7 @@ ENDSEC
 			<div class="measurement_content selectable">
 				<span class="coordinates_table_container"></span>
 				<br>
-				<span id="height_label" data-i18n="measurements.height"></span>: <br>
+				<span id="height_label">Height: </span><br>
 
 				<!-- ACTIONS -->
 				<div style="display: flex; margin-top: 12px">
@@ -104881,7 +97057,7 @@ ENDSEC
 				<li><span data-i18n="appearance.point_opacity"></span>:<span id="lblOpacity"></span><div id="sldOpacity"></div></li>
 
 				<div class="divider">
-					<span data-i18n="tt.attribute"></span>
+					<span>Attribute</span>
 				</div>
 
 				<li>
@@ -104903,12 +97079,12 @@ ENDSEC
 
 				<div id="materials.rgb_container">
 					<div class="divider">
-						<span data-i18n="attribute.rgb"></span>
+						<span>RGB</span>
 					</div>
 
-					<li><span data-i18n="attribute.gamma"></span> : <span id="lblRGBGamma"></span> <div id="sldRGBGamma"></div>	</li>
-					<li><span data-i18n="attribute.brightness"></span> : <span id="lblRGBBrightness"></span> <div id="sldRGBBrightness"></div>	</li>
-					<li><span data-i18n="attribute.contrast"></span> : <span id="lblRGBContrast"></span> <div id="sldRGBContrast"></div>	</li>
+					<li>Gamma: <span id="lblRGBGamma"></span> <div id="sldRGBGamma"></div>	</li>
+					<li>Brightness: <span id="lblRGBBrightness"></span> <div id="sldRGBBrightness"></div>	</li>
+					<li>Contrast: <span id="lblRGBContrast"></span> <div id="sldRGBContrast"></div>	</li>
 				</div>
 
 				<div id="materials.extra_container">
@@ -104925,7 +97101,7 @@ ENDSEC
 				
 				<div id="materials.matcap_container">
 					<div class="divider">
-						<span data-i18n="attribute.matcap"></span>
+						<span>MATCAP</span>
 					</div>
 
 					<li>
@@ -104935,7 +97111,7 @@ ENDSEC
 
 				<div id="materials.color_container">
 					<div class="divider">
-						<span data-i18n="attribute.color"></span>
+						<span>Color</span>
 					</div>
 
 					<input id="materials.color.picker" />
@@ -104944,21 +97120,21 @@ ENDSEC
 
 				<div id="materials.elevation_container">
 					<div class="divider">
-						<span data-i18n="attribute.elevation"></span>
+						<span>Elevation</span>
 					</div>
 
 					<li><span data-i18n="appearance.elevation_range"></span>: <span id="lblHeightRange"></span> <div id="sldHeightRange"></div>	</li>
 
 					<li>
 						<selectgroup id="gradient_repeat_option">
-							<option id="gradient_repeat_clamp" value="CLAMP"><span data-i18n="attribute.clamp"></span></option>
-							<option id="gradient_repeat_repeat" value="REPEAT"><span data-i18n="attribute.repeat"></span></option>
-							<option id="gradient_repeat_mirrored_repeat" value="MIRRORED_REPEAT"><span data-i18n="attribute.mirrored_repeat"</span></option>
+							<option id="gradient_repeat_clamp" value="CLAMP">Clamp</option>
+							<option id="gradient_repeat_repeat" value="REPEAT">Repeat</option>
+							<option id="gradient_repeat_mirrored_repeat" value="MIRRORED_REPEAT">Mirrored Repeat</option>
 						</selectgroup>
 					</li>
 
 					<li>
-						<span data-i18n="attribute.gradient_scheme"> :</span>
+						<span>Gradient Scheme:</span>
 						<div id="elevation_gradient_scheme_selection" style="display: flex; padding: 1em 0em">
 						</div>
 					</li>
@@ -104974,25 +97150,25 @@ ENDSEC
 
 				<div id="materials.intensity_container">
 					<div class="divider">
-						<span data-i18n="attribute.intensity"></span>
+						<span>Intensity</span>
 					</div>
 
-					<li><span data-i18n="attribute.range"></span> : <span id="lblIntensityRange"></span> <div id="sldIntensityRange"></div>	</li>
-					<li><span data-i18n="attribute.gamma"></span> : <span id="lblIntensityGamma"></span> <div id="sldIntensityGamma"></div>	</li>
-					<li><span data-i18n="attribute.brightness"></span> : <span id="lblIntensityBrightness"></span> <div id="sldIntensityBrightness"></div>	</li>
-					<li><span data-i18n="attribute.contrast"></span> : <span id="lblIntensityContrast"></span> <div id="sldIntensityContrast"></div>	</li>
+					<li>Range: <span id="lblIntensityRange"></span> <div id="sldIntensityRange"></div>	</li>
+					<li>Gamma: <span id="lblIntensityGamma"></span> <div id="sldIntensityGamma"></div>	</li>
+					<li>Brightness: <span id="lblIntensityBrightness"></span> <div id="sldIntensityBrightness"></div>	</li>
+					<li>Contrast: <span id="lblIntensityContrast"></span> <div id="sldIntensityContrast"></div>	</li>
 				</div>
 
 				<div id="materials.gpstime_container">
 					<div class="divider">
-						<span data-i18n="attribute.gps_time"></span>
+						<span>GPS Time</span>
 					</div>
 
 				</div>
 				
 				<div id="materials.index_container">
 					<div class="divider">
-						<span data-i18n="attribute.indices"></span>
+						<span>Indices</span>
 					</div>
 				</div>
 
@@ -105495,6 +97671,7 @@ ENDSEC
 				});
 
 				let updateHeightRange = function () {
+					
 
 					let aPosition = pointcloud.getAttribute("position");
 
@@ -105513,10 +97690,8 @@ ENDSEC
 						let box = [pointcloud.pcoGeometry.tightBoundingBox, pointcloud.getBoundingBoxWorld()]
 							.find(v => v !== undefined);
 
-						if (!pointcloud.material.isGeocentric) {
-							pointcloud.updateMatrixWorld(true);
-							box = Utils.computeTransformedBoundingBox(box, pointcloud.matrixWorld);
-						}
+						pointcloud.updateMatrixWorld(true);
+						box = Utils.computeTransformedBoundingBox(box, pointcloud.matrixWorld);
 
 						let bWidth = box.max.z - box.min.z;
 						bMin = box.min.z - 0.2 * bWidth;
@@ -105769,8 +97944,7 @@ ENDSEC
 
 		addLevel(){
 			const elLevel = document.createElement("li");
-			const elRange = document.createElement("span");
-			elRange.innerHTML = `<span data-i18n="tt.range"></span> : `;
+			const elRange = document.createTextNode("Range: ");
 			const label = document.createElement("span");
 			const slider = document.createElement("div");
 
@@ -105848,7 +98022,7 @@ ENDSEC
 				let [min, max] = $(slider).slider("option", "values");
 				let strMin = format$1(min);
 				let strMax = format$1(max);
-				let strLabel = `${strMin} <span data-i18n="tt.to"></span> ${strMax}`;
+				let strLabel = `${strMin} to ${strMax}`;
 
 				label.innerHTML = strLabel;
 			}
@@ -106945,7 +99119,7 @@ ENDSEC
 	let key;
 	let root$2;
 
-	var parse$1 = function parse (text, reviver) {
+	var parse = function parse (text, reviver) {
 	    source = String(text);
 	    parseState = 'start';
 	    stack$1 = [];
@@ -106993,14 +99167,14 @@ ENDSEC
 	let lexState;
 	let buffer$1;
 	let doubleQuote;
-	let sign$4;
+	let sign$3;
 	let c$4;
 
 	function lex () {
 	    lexState = 'default';
 	    buffer$1 = '';
 	    doubleQuote = false;
-	    sign$4 = 1;
+	    sign$3 = 1;
 
 	    for (;;) {
 	        c$4 = peek();
@@ -107172,7 +99346,7 @@ ENDSEC
 	        case '-':
 	        case '+':
 	            if (read() === '-') {
-	                sign$4 = -1;
+	                sign$3 = -1;
 	            }
 
 	            lexState = 'sign';
@@ -107323,7 +99497,7 @@ ENDSEC
 	        case 'I':
 	            read();
 	            literal('nfinity');
-	            return newToken('numeric', sign$4 * Infinity)
+	            return newToken('numeric', sign$3 * Infinity)
 
 	        case 'N':
 	            read();
@@ -107354,7 +99528,7 @@ ENDSEC
 	            return
 	        }
 
-	        return newToken('numeric', sign$4 * 0)
+	        return newToken('numeric', sign$3 * 0)
 	    },
 
 	    decimalInteger () {
@@ -107376,7 +99550,7 @@ ENDSEC
 	            return
 	        }
 
-	        return newToken('numeric', sign$4 * Number(buffer$1))
+	        return newToken('numeric', sign$3 * Number(buffer$1))
 	    },
 
 	    decimalPointLeading () {
@@ -107404,7 +99578,7 @@ ENDSEC
 	            return
 	        }
 
-	        return newToken('numeric', sign$4 * Number(buffer$1))
+	        return newToken('numeric', sign$3 * Number(buffer$1))
 	    },
 
 	    decimalFraction () {
@@ -107421,7 +99595,7 @@ ENDSEC
 	            return
 	        }
 
-	        return newToken('numeric', sign$4 * Number(buffer$1))
+	        return newToken('numeric', sign$3 * Number(buffer$1))
 	    },
 
 	    decimalExponent () {
@@ -107458,7 +99632,7 @@ ENDSEC
 	            return
 	        }
 
-	        return newToken('numeric', sign$4 * Number(buffer$1))
+	        return newToken('numeric', sign$3 * Number(buffer$1))
 	    },
 
 	    hexadecimal () {
@@ -107477,7 +99651,7 @@ ENDSEC
 	            return
 	        }
 
-	        return newToken('numeric', sign$4 * Number(buffer$1))
+	        return newToken('numeric', sign$3 * Number(buffer$1))
 	    },
 
 	    string () {
@@ -108282,7 +100456,7 @@ ENDSEC
 	};
 
 	const JSON5 = {
-	    parse: parse$1,
+	    parse,
 	    stringify,
 	};
 
@@ -110907,7 +103081,7 @@ ENDSEC
 
 			{ // SHOW / HIDE Measurements
 				let elShow = $("#measurement_options_show");
-				elShow.selectgroup({dataI18n: "tt.show_hide_labels"});
+				elShow.selectgroup({title: "Show/Hide labels"});
 
 				elShow.find("input").click( (e) => {
 					const show = e.target.value === "SHOW";
@@ -111766,7 +103940,7 @@ ENDSEC
 				<li>
 					<label style="whitespace: nowrap">
 						<input id="toggleClassificationFilters" type="checkbox" checked/>
-						<span data-i18n="tt.classification_show_hide_all"></span>
+						<span>show/hide all</span>
 					</label>
 				</li>
 			`);
@@ -111783,7 +103957,7 @@ ENDSEC
 			const addInvertButton = () => { 
 				const element = $(`
 				<li>
-					<input type="button" data-i18n="[value]tt.classification_invert" value="invert" />
+					<input type="button" value="invert" />
 				</li>
 			`);
 
@@ -115423,7 +107597,7 @@ ENDSEC
 	/**
 	 * Specular-Glossiness Extension
 	 *
-	 * Specification: https://github.com/KhronosGroup/glTF/tree/main/extensions/2.0/Archived/KHR_materials_pbrSpecularGlossiness
+	 * Specification: https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_pbrSpecularGlossiness
 	 */
 
 	/**
@@ -115456,6 +107630,7 @@ ENDSEC
 				'vec3 specularFactor = specular;',
 				'#ifdef USE_SPECULARMAP',
 				'	vec4 texelSpecular = texture2D( specularMap, vUv );',
+				'	texelSpecular = sRGBToLinear( texelSpecular );',
 				'	// reads channel RGB, compatible with a glTF Specular-Glossiness (RGBA) texture',
 				'	specularFactor *= texelSpecular.rgb;',
 				'#endif'
@@ -116230,7 +108405,7 @@ ENDSEC
 
 			// Use an ImageBitmapLoader if imageBitmaps are supported. Moves much of the
 			// expensive work of uploading a texture to the GPU off the main thread.
-			if ( typeof createImageBitmap !== 'undefined' && /Firefox|^((?!chrome|android).)*safari/i.test( navigator.userAgent ) === false ) {
+			if ( typeof createImageBitmap !== 'undefined' && /Firefox/.test( navigator.userAgent ) === false ) {
 
 				this.textureLoader = new ImageBitmapLoader( this.options.manager );
 
@@ -117156,6 +109331,7 @@ ENDSEC
 
 			} else {
 
+				materialParams.format = RGBFormat;
 				materialParams.transparent = false;
 
 				if ( alphaMode === ALPHA_MODES.MASK ) {
@@ -120026,9 +112202,6 @@ ENDSEC
 			this.edlOpacity = 1.0;
 			this.useEDL = false;
 			this.description = "";
-			this.dynamicNearFar = args.dynamicNearFar == undefined ? true : args.dynamicNearFar;
-			this.isGeocentric = args.isGeocentric == undefined ? true : args.isGeocentric;
-			this.crs = args.crs;
 
 			this.classifications = ClassificationScheme.DEFAULT;
 
@@ -120213,8 +112386,6 @@ ENDSEC
 
 			this.loadGUI = this.loadGUI.bind(this);
 
-			this.measureCoordinateCallback = args.measureCoordinateCallback || (value => value);
-			
 			this.annotationTool = new AnnotationTool(this);
 			this.measuringTool = new MeasuringTool(this);
 			this.profileTool = new ProfileTool(this);
@@ -120326,10 +112497,8 @@ ENDSEC
 				}
 
 				this.controls = controls;
-				if (this.controls) {
-					this.controls.enabled = true;
-					this.inputHandler.addInputListener(this.controls);
-				}
+				this.controls.enabled = true;
+				this.inputHandler.addInputListener(this.controls);
 			}
 		}
 
@@ -121171,7 +113340,6 @@ ENDSEC
 				}, function (t) {
 					// Start translation once everything is loaded
 					$('body').i18n();
-					$('#optPointSizing').selectmenu("refresh");
 				});
 
 				$(() => {
@@ -121622,7 +113790,7 @@ ENDSEC
 				}
 				const tEnd = performance.now();
 
-				if(this.dynamicNearFar && result.lowestSpacing !== Infinity){
+				if(result.lowestSpacing !== Infinity){
 					let near = result.lowestSpacing * 10.0;
 					let far = -this.getBoundingBox().applyMatrix4(camera.matrixWorldInverse).min.z;
 
@@ -122438,9 +114606,7 @@ ENDSEC
 
 				let elFieldset = $(`
 				<fieldset style="border: none; margin: 0px; padding: 0px">
-					<legend ${args.dataI18n ? `data-i18n=${args.dataI18n}` : ""}>
-						${args.dataI18n ? "" : groupTitle}
-					</legend>
+					<legend>${groupTitle}</legend>
 					<span style="display: flex">
 
 					</span>
@@ -122549,7 +114715,6 @@ ENDSEC
 	exports.ProfileData = ProfileData;
 	exports.ProfileRequest = ProfileRequest;
 	exports.ProfileTool = ProfileTool;
-	exports.PropertiesPanel = PropertiesPanel;
 	exports.Renderer = Renderer;
 	exports.Scene = Scene$1;
 	exports.ScreenBoxSelectTool = ScreenBoxSelectTool;

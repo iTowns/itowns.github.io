@@ -122,7 +122,6 @@ uniform sampler2D classificationLUT;
 uniform sampler2D matcapTextureUniform;
 #endif
 uniform bool backfaceCulling;
-uniform bool isGeocentric;
 
 #if defined(num_shadowmaps) && num_shadowmaps > 0
 uniform sampler2D uShadowMap[num_shadowmaps];
@@ -438,34 +437,11 @@ vec3 getGpsTime(){
 	return c;
 }
 
-const float a = 6378135.0; // x
-const float b = 6356750.52; // z
-const float e = abs((a * a - b * b) / (a * a));
-const float f = sqrt(1.0 - e);
-const float eA = e * a;
-
-float cartesianToH(vec4 position) {
-    float R = length(position);
-    float rsqXY = sqrt(position.x * position.x + position.y * position.y);
-
-    float nu = atan(position.z / rsqXY * (f + eA / R));
-
-    float sinu = sin(nu);
-    float cosu = cos(nu);
-
-    float phi = atan((position.z * f + eA * sinu * sinu * sinu) / (f * (rsqXY - eA * cosu * cosu * cosu)));
-
-    float h = (rsqXY * cos(phi)) + position.z * sin(phi) - a * sqrt(1.0 - e * sin(phi) * sin(phi));
-
-    return h;
-}
-
 vec3 getElevation(){
 	vec4 world = modelMatrix * vec4( position, 1.0 );
-	float h = isGeocentric ? cartesianToH(world) : world.z;
-	float w = (h - elevationRange.x) / (elevationRange.y - elevationRange.x);
+	float w = (world.z - elevationRange.x) / (elevationRange.y - elevationRange.x);
 	vec3 cElevation = texture2D(gradient, vec2(w,1.0-w)).rgb;
-
+	
 	return cElevation;
 }
 

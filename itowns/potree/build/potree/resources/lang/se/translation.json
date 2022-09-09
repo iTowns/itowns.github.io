@@ -47,7 +47,6 @@
 	"appearance": {
 		"nb_max_pts": "Punktbudget",
 		"point_size": "Punktstorlek",
-		"min_point_size": "Minsta storlek",
 		"point_opacity": "Transparens",
 		"field_view": "Synfält",
 		"point_size_type": "Punkttyp",

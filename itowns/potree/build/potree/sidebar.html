@@ -24,14 +24,14 @@
 				<li><span data-i18n="appearance.nb_max_pts"></span>: <span id="lblPointBudget"></span> <div id="sldPointBudget"></div></li>
 				<li><span data-i18n="appearance.field_view"></span>: <span id="lblFOV"></span><div id="sldFOV"></div></li>
 
-				<div class="divider"><span data-i18n="appearance.edl_divider"></span></div>
+				<div class="divider"><span>Eye-Dome-Lighting</span></div>
 
 				<li><label><input type="checkbox" id="chkEDLEnabled"/><span data-i18n="appearance.edl_enable"></span></label></li>
 				<li><span data-i18n="appearance.edl_radius"></span>: <span id="lblEDLRadius"></span><div id="sldEDLRadius"></div></li>
 				<li><span data-i18n="appearance.edl_strength"></span>: <span id="lblEDLStrength"></span><div id="sldEDLStrength"></div></li>
 				<li><span data-i18n="appearance.edl_opacity"></span>: <span id="lblEDLOpacity"></span><div id="sldEDLOpacity"></div></li>
 				
-				<div class="divider"><span data-i18n="appearance.bg_divider"></span></div>
+				<div class="divider"><span>Background</span></div>
 
 				<li>
 					<selectgroup id="background_options">
@@ -43,7 +43,7 @@
 					</selectgroup>
 				</li>
 
-				<div class="divider"><span data-i18n="appearance.other_divider"></span></div>
+				<div class="divider"><span>Other</span></div>
 
 				<li>
 					<selectgroup id="splat_quality_options">
@@ -63,14 +63,14 @@
 		<h3 id="menu_tools"><span data-i18n="tb.tools_opt"></span></h3>
 		<div class="pv-menu-list">
 
-			<div class="divider"><span data-i18n="tt.divider_measurement"></span></div>
+			<div class="divider"><span>Measurement</span></div>
 
 			<li id="tools"></li>
 
 			<li>
 				<selectgroup id="measurement_options_show">
-					<option id="measurement_options_show_yes" value="SHOW"><span data-i18n="tt.show_labels"></span></option>
-					<option id="measurement_options_show_no" value="HIDE"><span data-i18n="tt.hide_labels"></span></option>
+					<option id="measurement_options_show_yes" value="SHOW">Show</option>
+					<option id="measurement_options_show_no" value="HIDE">Hide</option>
 				</selectgroup>
 			</li>
 
@@ -107,11 +107,11 @@
 
 			<div id="scene_export"></div>
 
-			<div class="divider"><span data-i18n="tt.scene_objects"></span></div>
+			<div class="divider"><span>Objects</span></div>
 
 			<div id="scene_objects"></div>
 
-			<div class="divider"><span data-i18n="tt.scene_properties"></span></div>
+			<div class="divider"><span>Properties</span></div>
 
 			<div id="scene_object_properties"></div>
 		</div>
@@ -120,11 +120,11 @@
 		<h3 id="menu_filters"><span data-i18n="tb.filters_opt"></span></h3>
 		<div>
 
-			<div class="divider"><span data-i18n="tt.classification"></span></div>
+			<div class="divider"><span>Classification</span></div>
 
 			<ul id="classificationList" class="pv-menu-list"></ul>
 
-			<div class="divider"><span data-i18n="tt.returns"></span></div>
+			<div class="divider"><span>Returns</span></div>
 
 			<div id="return_filter_panel">
 				<ul class="pv-menu-list">
@@ -135,7 +135,7 @@
 				</ul>
 			</div>
 
-			<div class="divider"><span data-i18n="tt.point_source_id"></span></div>
+			<div class="divider"><span>Point Source ID</span></div>
 
 			<div>
 				<ul class="pv-menu-list" id="pointsourceid_filter_panel">
@@ -143,7 +143,7 @@
 				</ul>
 			</div>
 
-			<div class="divider"><span data-i18n="tt.gps_time"></span></div>
+			<div class="divider"><span>GPS Time</span></div>
 
 			<div id="gpstime_filter_panel">
 
@@ -152,9 +152,9 @@
 
 						<li>
 							<span style="display: flex">
-								<span data-i18n="tt.time">: </span>
-								<input id="txtGpsTime" type="text" style="margin: auto 10px; max-width: 150px"/>
-								<input id="btnFindGpsTime" type="button" data-i18n="[value]tt.find" value="find" />
+								<span>Time: </span>
+								<input id="txtGpsTime" type="text" style="margin: auto 10px"/>
+								<input id="btnFindGpsTime" type="button" value="find" />
 							</span>
 						</li>
 
