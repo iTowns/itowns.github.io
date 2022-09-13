@@ -88,67 +88,11 @@ or the extent it must display at initialisation, see CameraTransformOptions in C
     
     <li>
         <code>options</code>
+        (optional)
         
+            &mdash; <span><p>An object with one or more configuration properties. Any property of GlobeControls
+can be passed in this object.</p></span>
         
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>options.zoomFactor</code>
-        (default: <code>2</code>)
-        
-        
-            &mdash; <span><p>The factor the scale is multiplied by when dollying (zooming) in or
-divided by when dollying out.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>options.rotateSpeed</code>
-        
-        
-            &mdash; <span><p>Speed camera rotation in orbit and panoramic mode</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>options.minDistance</code>
-        
-        
-            &mdash; <span><p>Minimum distance between ground and camera</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>options.maxDistance</code>
-        
-        
-            &mdash; <span><p>Maximum distance between ground and camera</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>options.handleCollision</code>
-        
-        
-            &mdash; <span><p>enable collision camera with ground</p></span>
-        
-
-        
-    </li>
-    
-</ul>
 
         
     </li>
@@ -172,47 +116,14 @@ divided by when dollying out.</p></span>
 
 <div class="property">
     <h3>
-        <span class="property-name">minDistance</span>
+        <span class="property-name">zoomFactor</span>
         : <span class="type">number</span>
     </h3>
 
     
         <div class="description">
-            <p>Minimum distance between ground and camera</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">maxDistance</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Maximum distance between ground and camera</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">zoomSpeed</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Speed zoom with mouse</p>
+            <p>The factor the scale is multiplied by when dollying (zooming) in or
+divided by when dollying out. Default is 2.</p>
         </div>
     
 </div>
@@ -229,7 +140,7 @@ divided by when dollying out.</p></span>
 
     
         <div class="description">
-            <p>Speed camera rotation in orbit and panoramic mode</p>
+            <p>Speed camera rotation in orbit and panoramic mode. Default is 0.25.</p>
         </div>
     
 </div>
@@ -240,13 +151,172 @@ divided by when dollying out.</p></span>
 
 <div class="property">
     <h3>
-        <span class="property-name">minDistanceCollision</span>
+        <span class="property-name">minDistance</span>
         : <span class="type">number</span>
     </h3>
 
     
         <div class="description">
-            <p>Minimum distance collision between ground and camera</p>
+            <p>Minimum distance between ground and camera in meters (Perspective Camera only).
+Default is 250.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">maxDistance</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Maximum distance between ground and camera in meters
+(Perspective Camera only). Default is ellipsoid radius * 8.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">minZoom</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>How far you can zoom in, in meters (Orthographic Camera only). Default is 0.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">maxZoom</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>How far you can zoom out, in meters (Orthographic Camera only). Default
+is Infinity.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">keyPanSpeed</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Number of pixels moved per push on array key. Default is 7.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">minPolarAngle</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Minimum vertical orbit angle (in degrees). Default is 0.5.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">maxPolarAngle</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Maximum vertical orbit angle (in degrees). Default is 86.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">minAzimuthAngle</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Minimum horizontal orbit angle (in degrees). If modified,
+should be in [-180,0]. Default is -Infinity.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">maxAzimuthAngle</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Maximum horizontal orbit angle (in degrees). If modified,
+should be in [0,180]. Default is Infinity.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">handleCollision</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Handle collision between camera and ground or not, i.e. whether
+you can zoom underground or not. Default is true.</p>
         </div>
     
 </div>
@@ -263,8 +333,25 @@ divided by when dollying out.</p></span>
 
     
         <div class="description">
-            <p>enable camera damping, if it's disabled the camera immediately when the mouse button is released.
-If it's enabled, the camera movement is decelerate.</p>
+            <p>Enable damping or not (simulates the lag that a real camera
+operator introduces while operating a heavy physical camera). Default is true.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">dampingMoveFactor</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>the damping move factor. Default is 0.25.</p>
         </div>
     
 </div>
