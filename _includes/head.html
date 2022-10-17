@@ -10,8 +10,11 @@
     <meta name="description" content="{{ site.description }}">
     <meta name="keywords" content="" />
     <!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
-    <!-- <script src="{{ site.baseurl }}/js/jquery.min.js"></script> -->
-    <script src="{{ site.url }}/{{ site.baseurl }}/js/jquery.min.js"></script>
+    <script>
+        const protocol = location.protocol;
+        console.log('protocol : ', protocol);
+    </script>
+    <script src="{{ site.baseurl }}/js/jquery.min.js"></script>
     <script src="{{ site.baseurl }}/js/jquery.dropotron.min.js"></script>
     <script src="{{ site.baseurl }}/js/jquery.scrolly.min.js"></script>
     <script src="{{ site.baseurl }}/js/jquery.scrollgress.min.js"></script>
@@ -19,8 +22,8 @@
     <script src="{{ site.baseurl }}/js/skel-layers.min.js"></script>
     <script>
         var baseUrl = "{{ site.baseurl }}";
-        console.log(baseUrl);
-        console.log('itowns deployment test');
+        var test = "{{ '/js/jquery.min.js' | prepend: site.baseurl | prepend: site.url | replace: 'http://', '//' }}"
+        console.log(test);
     </script>
     <script src="{{ site.baseurl }}/js/init.js"></script>
     <noscript>
