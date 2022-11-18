@@ -1,0 +1,16 @@
+name: integration
+
+on:
+  push:
+    paths:
+      - itowns/**
+    branches:
+      - master
+  workflow_dispatch: {}
+
+jobs:
+  # Copy itowns folder into itowns-dev folder. Only happens when a release is published in itowns folder.
+  copy:
+      run: |
+        rm -rf itowns-dev/
+        cp itowns/ itowns-dev/
