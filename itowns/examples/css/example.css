@@ -149,6 +149,15 @@ h3 {
     margin-bottom: 5px;
 }
 
+.title-divider {
+    margin: 26px 0;
+}
+
+#version-switch {
+    text-align: justify;
+    line-height: 1.6;
+}
+
 
 /* IFRAME/EXAMPLE CONTENT */
 #viewerDiv {

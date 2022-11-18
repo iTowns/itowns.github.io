@@ -16,12 +16,16 @@
 
 <nav class="scroll-section">
     <a href="/">
-        <img src="images/itowns_logo.png" width="245px"/>
+        <img src="images/itowns_logo.png" width="245px" id="itowns-logo">
     </a>
 </nav>
 
 <script type="text/javascript">
     var baseURI = document.baseURI;
+
+    if (baseURI.includes('/itowns-dev/')) {
+        document.getElementById('itowns-logo').setAttribute('src', 'images/itowns_logo_next.png');
+    }
 
     function bindIframe() {
         var navLinks = document.getElementsByClassName('nav-link');
@@ -56,6 +60,14 @@
         document.getElementById('view-source').onclick = () => { window.open(viewSrc); };
     }
 
+    function switchVersion () {
+        if (baseURI.includes("/itowns-dev/")) {
+            window.location.href = document.location.href.replace('/itowns-dev/', '/itowns/');
+        } else {
+            window.location.href = document.location.href.replace('/itowns/', '/itowns-dev/');
+        }
+    }
+
     function initNavigation(list) {
         var nav = '<h2>Examples</h2>';
 
@@ -74,6 +86,21 @@
         }
 
         document.getElementsByTagName('nav')[0].insertAdjacentHTML('beforeend', nav);
+
+        // Add version switch :
+        const titleDivider = document.createElement('hr');
+        titleDivider.classList.add('title-divider');
+        document.getElementsByTagName('nav')[0].appendChild(titleDivider);
+
+        const versionSwitch = document.createElement('p');
+        versionSwitch.id = "version-switch";
+
+        versionSwitch.innerHTML = `You are currently viewing iTowns examples from the ${
+            (baseURI.includes("/itowns-dev/") && "next") || "latest stable"
+        } version. <a href="#" onclick="switchVersion();return false;">Click here</a> to switch to the ${
+            (baseURI.includes("/itowns-dev/") && "latest stable") || "next"
+        } version.`;
+        document.getElementsByTagName('nav')[0].appendChild(versionSwitch);
     }
 
     function onLoad() {

@@ -243,7 +243,10 @@ itowns.enableDracoLoader('./');</code></pre>
         (default: <code>'false'</code>)
         
         
-            &mdash; <span><p>override b3dm's embedded glTF materials. If overrideMaterials is a three.js material, it will be the material used to override.</p></span>
+            &mdash; <span><p>override b3dm's embedded glTF materials. If
+true, a threejs <a href="https://threejs.org/docs/index.html?q=meshbasic#api/en/materials/MeshBasicMaterial">MeshBasicMaterial</a>
+is set up. config.overrideMaterials can also be a threejs <a href="https://threejs.org/docs/index.html?q=material#api/en/materials/Material">Material</a>
+in which case it will be the material used to override.</p></span>
         
 
         

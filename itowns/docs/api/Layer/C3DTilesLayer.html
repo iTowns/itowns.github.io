@@ -104,6 +104,64 @@ will be merged as is in the layer.</p></span>
         
     </li>
     
+    <li>
+        <code>config.sseThreshold</code>
+        (default: <code>16</code>)
+        
+        
+            &mdash; <span><p>The <a href="https://github.com/CesiumGS/3d-tiles/blob/main/specification/README.md#geometric-error">Screen Space Error</a>
+threshold at which child nodes of the current node will be loaded and added to the scene.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.cleanupDelay</code>
+        (default: <code>1000</code>)
+        
+        
+            &mdash; <span><p>The time (in ms) after which a tile content (and its children) are
+removed from the scene.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.onTileContentLoaded</code>
+        (optional)
+        
+            &mdash; <span><p>Callback executed when the content of a tile is loaded.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.overrideMaterials</code>
+        (default: <code>'false'</code>)
+        
+        
+            &mdash; <span><p>option to override the materials of all the layer's
+objects. If true, a threejs <a href="https://threejs.org/docs/index.html?q=meshbasic#api/en/materials/MeshBasicMaterial">MeshBasicMaterial</a>
+is set up. config.overrideMaterials can also be a threejs <a href="https://threejs.org/docs/index.html?q=material#api/en/materials/Material">Material</a>
+in which case it will be used as the material for all objects of the layer.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.registeredExtensions</code>
+        (optional)
+        
+            &mdash; <span><p>3D Tiles extensions managers registered for this tileset.</p></span>
+        
+
+        
+    </li>
+    
 </ul>
 
         
