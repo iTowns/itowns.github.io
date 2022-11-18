@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>C3DTBoundingVolume - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        C3DTBoundingVolume
+        
+    </h1>
+
+    
+        <div class="description"><p>3D Tiles
+<a href="https://github.com/AnalyticalGraphicsInc/3d-tiles/blob/master/specification/schema/boundingVolume.schema.json">bounding volume</a></p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">C3DTBoundingVolume</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">type</span>
+        : <span class="type">C3DTilesTypes</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Used by 3D Tiles extensions
+(e.g. <a onclick="window.parent.goTo('api/3D%20Tiles/C3DTBatchTableHierarchyExtension.html','api/3D%20Tiles/C3DTBatchTableHierarchyExtension')" title="C3DTBatchTableHierarchyExtension">C3DTBatchTableHierarchyExtension</a>) to know in which context
+(i.e. for which 3D Tiles class) the parsing of the extension should be done.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">box</span>
+        : <span class="type">THREE.Box3</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Bounding box, defined only if the Bounding Volume
+is a box.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">region</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Geographic/OBB.html','api/Geographic/OBB')" title="OBB">OBB</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Bounding region, defined only if the Bounding
+Volume is a region.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">sphere</span>
+        : <span class="type">THREE.Sphere</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Bounding sphere, defined only if the
+Bounding Volume is a sphere.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">extensions</span>
+        : <span class="type">object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>3D Tiles extensions of the bounding volume
+stored in the following format:
+{extensioName1: extensionObject1, extensioName2: extensionObject2, ...}</p>
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/3DTiles/C3DTBoundingVolume.js">
+            src/Core/3DTiles/C3DTBoundingVolume.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

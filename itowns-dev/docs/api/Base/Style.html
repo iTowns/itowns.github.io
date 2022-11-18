@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Style - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        Style
+        
+    </h1>
+
+    
+        <div class="description"><p>A Style is an object that defines the visual appearance of <a onclick="window.parent.goTo('api/Base/FeatureCollection.html','api/Base/FeatureCollection')" title="FeatureCollection">FeatureCollection</a> and <a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a>. It is taken into account when drawing
+them in textures that will be placed onto tiles.</p>
+<p>As there are four basic elements present in <code>Features</code>, there are also four
+main components in a <code>Style</code> object:</p>
+<ul>
+<li><code>fill</code> is for all fillings and polygons</li>
+<li><code>stroke</code> is for all lines and polygons edges</li>
+<li><code>point</code> is for all points</li>
+<li><code>text</code> contains all <a onclick="window.parent.goTo('api/Base/Label.html','api/Base/Label')" title="Label">Label</a> related things</li>
+</ul>
+<p>Many style property can be set to functions. When that is the case, the function's
+return type must necessarily be the same as the types (other than function) of the property.
+For instance, if the <code>fill.pattern</code> property is set to a function, this function must return
+an <code>Image</code>, a <code>Canvas</code>, or <code>String</code>.
+The first parameter of functions used to set <code>Style</code> properties is always an object containing
+the properties of the features displayed with the current <code>Style</code> instance.</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">Style</span>
+        (
+
+
+    
+    
+        params:
+            <span class="type">Object</span>, 
+    
+        parent:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>params</code>
+        (default: <code>{}</code>)
+        
+        
+            &mdash; <span><p>An object that can contain all properties of
+a Style.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>parent</code>
+        (optional)
+        
+            &mdash; <span><p>The parent style, that is looked onto if a value
+is missing.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Example</h2>
+        
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>const style = new itowns.Style({
+     stroke: { color: 'red' },
+     point: { color: 'white', line: 'red' },
+});
+
+const source = new itowns.FileSource(...);
+
+const layer = new itowns.ColorLayer('foo', {
+     source: source,
+     style: style,
+});
+
+view.addLayer(layer);</code></pre>
+
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">order</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Order of the features that will be associated to
+the style. It can helps sorting and prioritizing features if needed.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Polygons and fillings style.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill.color</span>
+        : <span class="type">string|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Defines the main color of the filling. Can be
+any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid color
+string</a>.
+Default is no value, indicating that no filling needs to be done.
+If the <code>Layer</code> is a <code>GeometryLayer</code> you could use <code>THREE.Color</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill.pattern</span>
+        : <span class="type">Image|Canvas|string|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Defines a pattern to fill the
+surface with. It can be an <code>Image</code> to use directly, or an url to fetch the
+pattern from. See <a href="http://www.itowns-project.org/itowns/examples/#source_file_geojson_raster">this
+example</a>
+for how to use.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill.opacity</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The opacity of the color or the
+pattern. Can be between <code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.
+For a <code>GeometryLayer</code>, this opacity property isn't used.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill.base_altitude</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p><code>GeometryLayer</code> Style, defines altitude
+for each Coordinates.
+If <code>base_altitude</code> is <code>undefined</code>, the original altitude is kept, and if it doesn't exist
+then the altitude value is set to 0.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill.extrusion_height</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p><code>GeometryLayer</code> Style, if defined,
+polygons will be extruded by the specified amount</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">stroke</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Lines and polygon edges.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">stroke.color</span>
+        : <span class="type">string|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The color of the line. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
+color string</a>.
+Default is no value, indicating that no stroke needs to be done.
+If the <code>Layer</code> is a <code>GeometryLayer</code> you could use <code>THREE.Color</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">stroke.opacity</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The opacity of the line. Can be between
+<code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.
+For a <code>GeometryLayer</code>, this opacity property isn't used.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">stroke.width</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The width of the line. Default is <code>1.0</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">stroke.base_altitude</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p><code>GeometryLayer</code> Style, defines altitude
+for each Coordinates.
+If <code>base_altitude</code> is <code>undefined</code>, the original altitude is kept, and if it doesn't exist
+then the altitude value is set to 0.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Point style.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point.color</span>
+        : <span class="type">string|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The color of the point. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
+color string</a>.
+Default is no value, indicating that no point will be shown.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point.radius</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The radius of the point, in pixel. Default
+is <code>2.0</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point.line</span>
+        : <span class="type">string|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The color of the border of the point. Can be
+any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid color
+string</a>.
+It's not supported with a <code>GeometryLayer</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point.width</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The width of the border, in pixel. Default
+is <code>0.0</code> (no border).</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point.opacity</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The opacity of the point. Can be between
+<code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.
+It's not supported with a <code>GeometryLayer</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point.base_altitude</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p><code>GeometryLayer</code> Style, defines altitude
+for each Coordinates.
+If <code>base_altitude</code> is <code>undefined</code>, the original altitude is kept, and if it doesn't exist
+then the altitude value is set to 0.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>All things <a onclick="window.parent.goTo('api/Base/Label.html','api/Base/Label')" title="Label">Label</a> related.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.field</span>
+        : <span class="type">string|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>A string to help read the text field from
+properties of a <code>FeatureGeometry</code>, with the key of the property enclosed by
+brackets. For example, if each geometry contains a <code>name</code> property,
+<code>text.field</code> can be set as <code>{name}</code>. Default is no value, indicating that no
+text will be shown.</p>
+<p>The brackets allows the use of complex fields. For
+example, if a static string <code>foo</code> is attached to the changing property <code>bar</code>,
+you can specify <code>foo {bar}</code>, and <code>foo</code> will stay everytime, while <code>{bar}</code>
+will change into the value of the property of the geometry. You can also have
+multiple properties in one field, like if you want the latin name and the
+local name of a location. Specifying <code>{name_latin} - {name_local}</code> can result
+in <code>Marrakesh - مراكش</code> for example.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.color</span>
+        : <span class="type">string|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The color of the text. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
+color string</a>.
+Default is <code>#000000</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.anchor</span>
+        : <span class="type">string|Array.&lt;number>|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The anchor of the text compared to its
+position (see <a onclick="window.parent.goTo('api/Base/Label.html','api/Base/Label')" title="Label">Label</a> for the position). Can be a few value: <code>top</code>,
+<code>left</code>, <code>bottom</code>, <code>right</code>, <code>center</code>, <code>top-left</code>, <code>top-right</code>, <code>bottom-left</code>
+or <code>bottom-right</code>. Default is <code>center</code>.</p>
+<p>It can also be defined as an Array of two numbers. Each number defines an offset (in
+fraction of the label width and height) between the label position and the top-left
+corner of the text. The first value is the horizontal offset, and the second is the
+vertical offset. For example, <code>[-0.5, -0.5]</code> will be equivalent to <code>center</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.offset</span>
+        : <span class="type">Array|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The offset of the text, depending on its
+anchor, in pixels. First value is from <code>left</code>, second is from <code>top</code>. Default
+is <code>[0, 0]</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.padding</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The padding outside the text, in pixels.
+Default is <code>2</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.size</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The size of the font, in pixels. Default is
+<code>16</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.wrap</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The maximum width, in pixels, before the text
+is wrapped, because the string is too long. Default is <code>10</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.spacing</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The spacing between the letters, in <code>em</code>.
+Default is <code>0</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.transform</span>
+        : <span class="type">string|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>A value corresponding to the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-transform">CSS
+property
+<code>text-transform</code></a>.
+Default is <code>none</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.justify</span>
+        : <span class="type">string|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>A value corresponding to the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-align">CSS property
+<code>text-align</code></a>.
+Default is <code>center</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.opacity</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The opacity of the text. Can be between
+<code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.font</span>
+        : <span class="type">Array|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>A list (as an array of string) of font family
+names, prioritized in the order it is set. Default is <code>Open Sans Regular, Arial Unicode MS Regular, sans-serif</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.haloColor</span>
+        : <span class="type">string|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The color of the halo. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
+color string</a>.
+Default is <code>#000000</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.haloWidth</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The width of the halo, in pixels.
+Default is <code>0</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">text.haloBlur</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The blur value of the halo, in pixels.
+Default is <code>0</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">icon</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Defines the appearance of icons attached to label.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">icon.source</span>
+        : <span class="type">String</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The url of the icons' image file.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">icon.key</span>
+        : <span class="type">String</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The key of the icons' image in a vector tile data set.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">icon.anchor</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The anchor of the icon compared to the label position.
+Can be <code>left</code>, <code>bottom</code>, <code>right</code>, <code>center</code>, <code>top-left</code>, <code>top-right</code>, <code>bottom-left</code>
+or <code>bottom-right</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">icon.size</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>If the icon's image is passed with <code>icon.source</code> or
+<code>icon.key</code>, it size when displayed on screen is multiplied by <code>icon.size</code>. Default is <code>1</code>.</p>
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">applyToHTML</span>
+        (
+
+
+    
+    
+        domElement:
+            <span class="type">Element</span>, 
+    
+        sprites:
+            <span class="type">Object</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Applies this style to a DOM element. Limited to the <code>text</code> and <code>icon</code>
+properties of this style.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>domElement</code>
+        
+        
+            &mdash; <span><p>The element to set the style to.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>sprites</code>
+        
+        
+            &mdash; <span><p>the sprites.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">clone</span>
+        (
+
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Clones this style.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The new style, cloned from this one.</p>
+                
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">copy</span>
+        (
+
+
+    
+    
+        style:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Copies the content of the target style into this style.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>This style.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>style</code>
+        
+        
+            &mdash; <span><p>The style to copy.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">drawingStylefromContext</span>
+        (
+
+
+    
+    
+        context:
+            <span class="type">Object</span>
+    
+
+)
+        :
+            
+                <span class="type">Object</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Map drawing properties style (fill, stroke and point) from context to object.
+Only the necessary properties are mapped to object.
+if a property is expression, the mapped value will be the expression result depending on context.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>mapped style depending on context.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>context</code>
+        
+        
+            &mdash; <span><p>The context</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getTextAnchorPosition</span>
+        (
+
+
+)
+        :
+            
+                <span class="type">Array.&lt;number></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Gets the values corresponding to the anchor of the text. It is
+proportions, to use with a <code>translate()</code> and a <code>transform</code> property.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>Two percentage values, for x and y respectively.</p>
+                
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getTextFromProperties</span>
+        (
+
+
+    
+    
+        ctx:
+            <span class="type">Object</span>
+    
+
+)
+        :
+            
+                <span class="type">string|undefined</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Returns a string, associating <code>style.text.field</code> and properties to use to
+replace the keys in <code>style.text.field</code>.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The formatted string if <code>style.text.field</code> is defined, nothing otherwise.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>ctx</code>
+        
+        
+            &mdash; <span><p>An object containing the feature context.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setFromGeojsonProperties</span>
+        (
+
+
+    
+    
+        properties:
+            <span class="type">object</span>, 
+    
+        type:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>set Style from geojson properties.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>properties</code>
+        
+        
+            &mdash; <span><p>geojson properties.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>type</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setFromVectorTileLayer</span>
+        (
+
+
+    
+    
+        layer:
+            <span class="type">object</span>, 
+    
+        sprites:
+            <span class="type">Object</span>, 
+    
+        order:
+            <span class="type">number</span>, 
+    
+        symbolToCircle:
+            <span class="type">boolean</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>set Style from vector tile layer properties.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>layer</code>
+        
+        
+            &mdash; <span><p>vector tile layer.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>sprites</code>
+        
+        
+            &mdash; <span><p>vector tile layer.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>order</code>
+        (optional)
+        
+
+        
+    </li>
+    
+    <li>
+        <code>symbolToCircle</code>
+        (optional)
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">symbolStylefromContext</span>
+        (
+
+
+    
+    
+        context:
+            <span class="type">Object</span>
+    
+
+)
+        :
+            
+                <span class="type">Object</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Map symbol properties style (symbol and icon) from context to object.
+Only the necessary properties are mapped to object.
+if a property is expression, the mapped value will be the expression result depending on context.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>mapped style depending on context.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>context</code>
+        
+        
+            &mdash; <span><p>The context</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/Style.js">
+            src/Core/Style.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PointsMaterial - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        PointsMaterial
+        
+    </h1>
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">PointsMaterial</span>
+        (
+
+
+    
+    
+        options:
+            <span class="type">object</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>options</code>
+        (default: <code>{}</code>)
+        
+        
+            &mdash; <span><p>The options</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.size</code>
+        (optional)
+        
+            &mdash; <span><p>size point</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.mode</code>
+        (default: <code>MODE.COLOR</code>)
+        
+        
+            &mdash; <span><p>display mode.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.overlayColor</code>
+        (default: <code>new THREE.Vector4(0, 0, 0, 0)</code>)
+        
+        
+            &mdash; <span><p>overlay color.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.intensityRange</code>
+        (default: <code>new THREE.Vector2(0, 1)</code>)
+        
+        
+            &mdash; <span><p>intensity range.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.applyOpacityClassication</code>
+        (optional)
+        
+            &mdash; <span><p>apply opacity classification on all display mode.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.classification</code>
+        (optional)
+        
+            &mdash; <span><p>define points classification.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Example</h2>
+        
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// change color category classification
+const pointMaterial = new PointsMaterial();
+pointMaterial.classification[3].color.setStyle('red');
+pointMaterial.recomputeClassification();</code></pre>
+
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">classification</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Points/Classification.html','api/Points/Classification')" title="Classification">Classification</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>points classification.</p>
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Renderer/PointsMaterial.js">
+            src/Renderer/PointsMaterial.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

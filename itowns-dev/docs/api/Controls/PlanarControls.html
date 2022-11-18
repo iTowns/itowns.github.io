@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PlanarControls - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        PlanarControls
+        
+    </h1>
+
+    
+        <div class="description"><p>Planar controls is a camera controller adapted for a planar view, with animated movements.
+Usage is as follow :</p>
+<ul>
+    <li><b>Left mouse button:</b> drag the camera (translation on the (xy) world plane).</li>
+    <li><b>Right mouse button:</b> pan the camera (translation on the vertical (z) axis of the world plane).</li>
+    <li><b>CTRL + Left mouse button:</b> rotate the camera around the focus point.</li>
+    <li><b>Wheel scrolling:</b> zoom toward the cursor position.</li>
+    <li><b>Wheel clicking:</b> smart zoom toward the cursor position (animated).</li>
+    <li><b>Y key:</b> go to the starting view (animated).</li>
+    <li><b>T key:</b> go to the top view (animated).</li>
+</ul></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">PlanarControls</span>
+        (
+
+
+    
+    
+        view:
+            <span class="type"><a onclick="window.parent.goTo('api/View/PlanarView.html','api/View/PlanarView')" title="PlanarView">PlanarView</a></span>, 
+    
+        options:
+            <span class="type">object</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>view</code>
+        
+        
+            &mdash; <span><p>the view where the controls will be used</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options</code>
+        
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.enableRotation</code>
+        (default: <code>true</code>)
+        
+        
+            &mdash; <span><p>Enable the rotation with the <code>CTRL + Left mouse button</code>
+and in animations, like the smart zoom.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.enableSmartTravel</code>
+        (default: <code>true</code>)
+        
+        
+            &mdash; <span><p>Enable smart travel with the <code>wheel-click / space-bar</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.enablePan</code>
+        (default: <code>true</code>)
+        
+        
+            &mdash; <span><p>Enable pan movements with the <code>right-click</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.rotateSpeed</code>
+        (default: <code>2.0</code>)
+        
+        
+            &mdash; <span><p>Rotate speed.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.maxPanSpeed</code>
+        (default: <code>15</code>)
+        
+        
+            &mdash; <span><p>Pan speed when close to maxAltitude.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.minPanSpeed</code>
+        (default: <code>0.05</code>)
+        
+        
+            &mdash; <span><p>Pan speed when close to the ground.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.zoomTravelTime</code>
+        (default: <code>0.2</code>)
+        
+        
+            &mdash; <span><p>Animation time when zooming.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.zoomFactor</code>
+        (default: <code>2</code>)
+        
+        
+            &mdash; <span><p>The factor the scale is multiplied by when zooming
+in and divided by when zooming out. This factor can't be null.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.maxResolution</code>
+        (optional)
+        
+            &mdash; <span><p>The smallest size in meters a pixel at the center of the
+view can represent.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.minResolution</code>
+        (default: <code>Infinity</code>)
+        
+        
+            &mdash; <span><p>The biggest size in meters a pixel at the center of the
+view can represent.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.maxAltitude</code>
+        (default: <code>12000</code>)
+        
+        
+            &mdash; <span><p>Maximum altitude reachable when panning or zooming out.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.groundLevel</code>
+        (default: <code>200</code>)
+        
+        
+            &mdash; <span><p>Minimum altitude reachable when panning.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.autoTravelTimeMin</code>
+        (default: <code>1.5</code>)
+        
+        
+            &mdash; <span><p>Minimum duration for animated travels with the <code>auto</code>
+parameter.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.autoTravelTimeMax</code>
+        (default: <code>4</code>)
+        
+        
+            &mdash; <span><p>Maximum duration for animated travels with the <code>auto</code>
+parameter.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.autoTravelTimeDist</code>
+        (default: <code>20000</code>)
+        
+        
+            &mdash; <span><p>Maximum travel distance for animated travel with the
+<code>auto</code> parameter.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.smartTravelHeightMin</code>
+        (default: <code>75</code>)
+        
+        
+            &mdash; <span><p>Minimum height above ground reachable after a smart
+travel.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.smartTravelHeightMax</code>
+        (default: <code>500</code>)
+        
+        
+            &mdash; <span><p>Maximum height above ground reachable after a smart
+travel.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.instantTravel</code>
+        (optional)
+        
+            &mdash; <span><p>If set to true, animated travels will have no duration.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.minZenithAngle</code>
+        (optional)
+        
+            &mdash; <span><p>The minimum reachable zenith angle for a camera
+rotation, in degrees.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.maxZenithAngle</code>
+        (default: <code>82.5</code>)
+        
+        
+            &mdash; <span><p>The maximum reachable zenith angle for a camera
+rotation, in degrees.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.handleCollision</code>
+        (default: <code>true</code>)
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Controls/PlanarControls.js">
+            src/Controls/PlanarControls.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

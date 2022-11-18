@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ColorLayer - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        ColorLayer
+        
+            <span class="extends">extends <a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+        
+    </h1>
+
+    
+        <div class="description"><p>A simple layer, usually managing a texture to display on a view. For example,
+it can be an aerial view of the ground or a simple transparent layer with the
+roads displayed.</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">ColorLayer</span>
+        (
+
+
+    
+    
+        id:
+            <span class="type">string</span>, 
+    
+        config:
+            <span class="type">Object</span>, 
+    
+        effect_type:
+            <span class="type">number</span>, 
+    
+        effect_parameter:
+            <span class="type">number</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>id</code>
+        
+        
+            &mdash; <span><p>The id of the layer, that should be unique. It is
+not mandatory, but an error will be emitted if this layer is added a
+<a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> that already has a layer going by that id.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config</code>
+        (optional)
+        
+            &mdash; <span><p>Optional configuration, all elements in it
+will be merged as is in the layer. For example, if the configuration
+contains three elements <code>name, protocol, extent</code>, these elements will be
+available using <code>layer.name</code> or something else depending on the property
+name.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>config.source</code>
+        (optional)
+        
+            &mdash; <span><p>Description and options of the source.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.magFilter</code>
+        (optional)
+        
+            &mdash; <span><p>How the texture is sampled when a texel covers more than one pixel. <a href="https://threejs.org/docs/?q=texture#api/en/textures/Texture.magFilter">see</a></p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.minFilter</code>
+        (optional)
+        
+            &mdash; <span><p>How the texture is sampled when a texel covers less than one pixel. <a href="https://threejs.org/docs/?q=texture#api/en/textures/Texture.minFilter">see</a></p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>effect_type</code>
+        (optional)
+        
+            &mdash; <span><p>type effect to apply on raster color.
+if <code>effect_type</code> equals:</p>
+<ul>
+<li><code>0</code>: no special effect.</li>
+<li><code>1</code>: light color to invisible effect.</li>
+<li><code>2</code>: white color to invisible effect.</li>
+<li><code>3</code>: custom shader effect (defined <code>ShaderChunk.customBodyColorLayer</code> and <code>ShaderChunk.customHeaderColorLayer</code>).</li>
+</ul></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>effect_parameter</code>
+        (default: <code>1.0</code>)
+        
+        
+            &mdash; <span><p>amount value used with effect applied on raster color.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Example</h2>
+        
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// Create a ColorLayer
+const color = new ColorLayer('roads', {
+    source: new  SourceWMTS({
+         protocol: 'wmts',
+         url: 'http://server.geo/wmts/....',
+         format: 'image/png',
+         name: 'nameService',
+         tileMatrixSet: 'PM',
+    }),
+    transparent: true,
+    opacity: 0.5,
+});
+
+// Add the layer
+view.addLayer(color);</code></pre>
+
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">isColorLayer</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Used to checkout whether this layer is a
+ColorLayer. Default is true. You should not change this, as it is used
+internally for optimisation.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">style</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>default style apply layer features.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">visible</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>property to display or to hide layer.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">opacity</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>property to adjust transparency, opacity is between 0. and 1.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">transparent</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>specify if the layer could be transparent.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">noTextureParentOutsideLimit</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>don't parent texture if it's outside limit.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">effect_type</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>type effect to apply on raster color.
+if <code>effect_type</code> equals:</p>
+<ul>
+<li><code>0</code>: no special effect.</li>
+<li><code>1</code>: light color to invisible effect.</li>
+<li><code>2</code>: white color to invisible effect.</li>
+<li><code>3</code>: custom shader effect (defined <code>ShaderChunk.customBodyColorLayer</code> and <code>ShaderChunk.customHeaderColorLayer</code>).</li>
+</ul>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">effect_parameter</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>amount value used with effect applied on raster color.</p>
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">defineLayerProperty</span>
+        (
+
+
+    
+    
+        propertyName:
+            <span class="type">string</span>, 
+    
+        defaultValue:
+            <span class="type">*</span>, 
+    
+        onChange:
+            <span class="type">function</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Defines a property for this layer, with a default value and a callback
+executed when the property changes.
+<br><br>
+When changing the property, it also emits an event, named following this
+convention: <code>${propertyName}-property-changed</code>, with <code>${propertyName}</code>
+being replaced by the name of the property.  For example, if the added
+property name is <code>frozen</code>, it will emit a <code>frozen-property-changed</code>.
+<br><br></p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>propertyName</code>
+        
+        
+            &mdash; <span><p>The name of the property, also used in
+the emitted event name.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>defaultValue</code>
+        
+        
+            &mdash; <span><p>The default set value.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>onChange</code>
+        (optional)
+        
+            &mdash; <span><p>The function executed when the property is
+changed. Parameters are the layer the property is defined on, and the
+name of the property.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+        <caption>The emitted event has some properties assigned to it</caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>event = {
+    new: {
+        ${propertyName}: * // the new value of the property
+    },
+    previous: {
+        ${propertyName}: * // the previous value of the property
+    },
+    target: Layer // the layer it has been dispatched from
+    type: string // the name of the emitted event
+}</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">delete</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Remove and dispose all objects from layer.</p>
+            </div>
+        
+    
+
+    
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">isValidData</span>
+        (
+
+
+    
+    
+        feature:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Determines whether the specified feature is valid data.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the feature is returned if it's valided</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>feature</code>
+        
+        
+            &mdash; <span><p>The feature</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setupRasterNode</span>
+        (
+
+
+    
+    
+        node:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/TileMesh.html','api/Base/TileMesh')" title="TileMesh">TileMesh</a></span>
+    
+
+)
+        :
+            
+                <span class="type">RasterColorTile</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Setup RasterColorTile added to TileMesh. This RasterColorTile handles
+the ColorLayer textures mapped on this TileMesh.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The raster color node added.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>node</code>
+        
+        
+            &mdash; <span><p>The node to apply new RasterColorTile;</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Events</h2>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">opacity-property-changed</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Fires when the opacity of the layer has changed.</p>
+        </div>
+    
+
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">sequence-property-changed</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Fires when the sequence of the layer has changed, meaning that the order of
+the layer changed in the view it is attached to.</p>
+        </div>
+    
+
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">visible-property-changed</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Fires when the visiblity of the layer has changed.</p>
+        </div>
+    
+
+    
+</div>
+
+            
+        
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Layer/ColorLayer.js">
+            src/Layer/ColorLayer.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>
