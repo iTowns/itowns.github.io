@@ -11,6 +11,9 @@ on:
 jobs:
   # Copy itowns folder into itowns-dev folder. Only happens when a release is published in itowns folder.
   copy:
-      run: |
-        rm -rf itowns-dev/
-        cp itowns/ itowns-dev/
+    name: copy itowns/ in to itowns-dev/
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          rm -rf itowns-dev/
+          cp itowns/ itowns-dev/
