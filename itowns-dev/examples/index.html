@@ -56,6 +56,14 @@
         document.getElementById('view-source').onclick = () => { window.open(viewSrc); };
     }
 
+    function switchVersion () {
+        if (baseURI.includes("/itowns-dev/")) {
+            window.location.href = document.location.href.replace('/itowns-dev/', '/itowns/');
+        } else {
+            window.location.href = document.location.href.replace('/itowns/', '/itowns-dev/');
+        }
+    }
+
     function initNavigation(list) {
         var nav = '<h2>Examples</h2>';
 
@@ -74,6 +82,17 @@
         }
 
         document.getElementsByTagName('nav')[0].insertAdjacentHTML('beforeend', nav);
+
+        // Add version switch :
+        const versionSwitch = document.createElement('p');
+        versionSwitch.id = "version-switch";
+
+        versionSwitch.innerHTML = `You are currently viewing iTowns examples from the ${
+            (baseURI.includes("/itowns-dev/") && "next") || "latest stable"
+        } version. <a href="#" onclick="switchVersion();return false;">Click here</a> to switch to the ${
+            (baseURI.includes("/itowns-dev/") && "latest stable") || "next"
+        } version.`;
+        document.getElementsByTagName('nav')[0].appendChild(versionSwitch);
     }
 
     function onLoad() {

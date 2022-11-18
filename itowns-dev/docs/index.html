@@ -616,6 +616,8 @@
 
 
 
+    <hr class="title-divider">
+    <p id="version-switch"></p>
 </nav>
 
 <script> prettyPrint(); </script>
@@ -715,9 +717,29 @@
         }
     }
 
+    // Add version switch
+    function switchVersion() {
+        if (baseURI.includes("/itowns-dev/")) {
+            window.location.href = document.location.href.replace('/itowns-dev/', '/itowns/');
+        } else {
+            window.location.href = document.location.href.replace('/itowns/', '/itowns-dev/');
+        }
+    }
+    function initVersionSwitch() {
+        const versionSwitch = document.getElementById('version-switch');
+
+        versionSwitch.innerHTML = `You are currently viewing iTowns documentation for the ${
+            (baseURI.includes("/itowns-dev/") && "next") || "latest stable"
+        } version. <a href="#" onclick="switchVersion();return false;">Click here</a> to switch to the ${
+            (baseURI.includes("/itowns-dev/") && "latest stable") || "next"
+        } version.`;
+    }
+
+
     function onLoad() {
         bindIframe();
         initNavigation();
+        initVersionSwitch();
     }
 </script>
 </body>
