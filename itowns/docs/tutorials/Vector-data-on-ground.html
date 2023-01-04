@@ -45,7 +45,7 @@ We need to change the starting position to something more appropriate.</p>
     &lt;/head>
     &lt;body>
         &lt;div id=&quot;viewerDiv&quot;>&lt;/div>
-        &lt;script src=&quot;js/itowns.js&quot;>&lt;/script>
+        &lt;script src=&quot;../dist/itowns.js&quot;>&lt;/script>
         &lt;script type=&quot;text/javascript&quot;>
             
             // Retrieve the view container
@@ -104,19 +104,17 @@ Our data is contained within a GeoJSON file, so we can use iTowns <code><a oncli
 <p>We give three arguments to our <code>FileSource</code>, which are pretty self-explanatory.
 The <code>url</code> and <code>crs</code> define the URL at which our file can be found, and the Coordinates Reference System (CRS) of the data contained within the file.
 The <code>format</code> parameter defines the format of our file.
-ITowns needs this format to determine which method it shall use to download data and transform them into iTowns understandable objects.</p>
+Itowns needs this format to determine which method it shall use to download data and transform them into iTowns internal objects.</p>
 <p>Now that the source of our vector data is set, we need to create a <code>Layer</code> which will contain the data.
-We want our vector data to be displayed as flattened on the ground entities.
-To obtain this result, the data must be contained in a <code><a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a></code>.
-We can therefore create our data <code>ColorLayer</code> and add it to our <code>GlobeView</code> as such :</p>
+We want our vector data to be projected on the ground. Therefore, we use a <code><a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a></code> and add it to our <code>GlobeView</code> :</p>
 <pre class="prettyprint source lang-js"><code>var floodLayer = new itowns.ColorLayer('flood', {
     source: floodSource,
 });
 view.addLayer(floodLayer);
 </code></pre>
-<p>Doing this will result visually in nothing.
-That is because we did not yet define a <code>Style</code> for our vector data.
-To be more precise, our data consist in polygons, and we did not tell iTowns which appearance it should use to display these polygons, so iTowns did not display them.
+<p>If you run the example now, you will notice that nothing is displayed yet.
+That is because we did not yet define a <code><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></code> for our vector data.
+To be more precise, our data consists in polygons, and we did not tell iTowns how these polygons should be displayed, so iTowns doesn't display them.
 We can correct this by creating a <code><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></code> and applying it to our <code>ColorLayer</code> :</p>
 <pre class="prettyprint source lang-js"><code>var floodStyle = new itowns.Style({
     fill: {
@@ -174,7 +172,7 @@ We must first define the source of our data (a GeoJSON file in our case) :</p>
 They shall be written in a <code>'monospace'</code> font and in a given size, with white halo around each letter.
 The labels shall be placed so that the position of the point matches with the bottom left corner of the label.</li>
 </ul>
-<p>Finally, we can create a <code>ColorLayer</code> to support our data, and add it to the view :</p>
+<p>Finally, we can create a <code>ColorLayer</code> that will contain the data source we created, and add it to the view :</p>
 <pre class="prettyprint source lang-js"><code>var cityLayer = new itowns.ColorLayer('cities', {
     source: citySource,
     style: cityStyle,
@@ -182,7 +180,7 @@ The labels shall be placed so that the position of the point matches with the bo
 });
 view.addLayer(cityLayer);
 </code></pre>
-<p>As you may notice, we added a parameter to the <code>ColorLayer</code>, which is <code>addLabelLayer</code>.
+<p>As you may have noticed, we added a parameter to the <code>ColorLayer</code>, which is <code>addLabelLayer</code>.
 This parameter needs to be set to true if we want to display labels on the <code>ColorLayer</code>.
 Had we left it to false, only the points and polygons would have been displayed on our <code>ColorLayer</code>.</p>
 <p>The result is the following :</p>
@@ -203,7 +201,7 @@ Had we left it to false, only the points and polygons would have been displayed 
     &lt;/head>
     &lt;body>
         &lt;div id=&quot;viewerDiv&quot;>&lt;/div>
-        &lt;script src=&quot;js/itowns.js&quot;>&lt;/script>
+        &lt;script src=&quot;../dist/itowns.js&quot;>&lt;/script>
         &lt;script type=&quot;text/javascript&quot;>
 
             // Retrieve the view container

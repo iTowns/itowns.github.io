@@ -21,7 +21,7 @@
 
 <article>
     <p>The goal of this tutorial is to give an example on how to use iTowns to visualize data in a global geocentric Coordinate Reference System (CRS).
-We shall learn how to display ortho-images as well as a Digital Elevation Model (DEM).</p>
+It shows how to display ortho-images as well as a Digital Elevation Model (DEM).</p>
 <h2>Preparing the webpage</h2>
 <p>The webpage we want to display data on should be structured as follows :</p>
 <pre class="prettyprint source lang-html"><code>&lt;!DOCTYPE html>
@@ -38,18 +38,27 @@ We shall learn how to display ortho-images as well as a Digital Elevation Model 
      &lt;/head>
      &lt;body>
         &lt;div id=&quot;viewerDiv&quot;>&lt;/div>
-        &lt;script src=&quot;js/itowns.js&quot;>&lt;/script>
+        &lt;script src=&quot;../dist/itowns.js&quot;>&lt;/script>
         &lt;script type=&quot;text/javascript&quot;>
-            // Our code goes here
+            // Tutorial code should go here
         &lt;/script>
      &lt;/body>
 &lt;/html>
 </code></pre>
+<p>What we are doing here is fairly simple :</p>
+<ul>
+<li>we create a container <code>&lt;div id=&quot;viewerDiv&quot;&gt;&lt;/div&gt;</code> that will contain the 3D view ;</li>
+<li>we define the layout of this container within our webpage ;</li>
+<li>we import iTowns framework (which in our case is imported from the <code>dist/</code> repository).</li>
+</ul>
+<p>We will then add javascript to use iTowns to display data within a <code>&lt;script&gt;</code> markup following iTowns import.</p>
+<p>To work as is, this web page should be placed in the <code>examples/</code> folder of <a href="https://github.com/iTowns/itowns">itowns</a> but you can put it anywhere else as
+long as you have a local web server and that you adapt the link to itowns (<code>&lt;script src=&quot;../dist/itowns.js&quot;&gt;&lt;/script&gt;</code>).</p>
 <h2>Creating a view</h2>
-<p>In order to be able to display anything with iTowns, we need one thing : a <code>View</code>,
-so we have a support to put our data on. The data we want to display here are in a global CRS,
-so we can use a <code>GlobeView</code>. The view needs to be attached to an
-element of the page in order to be displayed.</p>
+<p>In order to be able to display anything with iTowns, we always need to create a <code><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></code>, that will contain the data
+layers. In this tutorial, we will use a <code><a onclick="window.parent.goTo('api/View/GlobeView.html','api/View/GlobeView')" title="GlobeView">GlobeView</a></code> and add data layers in <code>EPSG:4326</code> and in <code>EPSG:3857</code> which
+are the two CRS supported for data displayed in a <code><a onclick="window.parent.goTo('api/View/GlobeView.html','api/View/GlobeView')" title="GlobeView">GlobeView</a></code>. We can add a <code><a onclick="window.parent.goTo('api/View/GlobeView.html','api/View/GlobeView')" title="GlobeView">GlobeView</a></code> with the following
+code:</p>
 <pre class="prettyprint source lang-js"><code>var viewerDiv = document.getElementById('viewerDiv');
 var placement = {
     coord: new itowns.Coordinates('EPSG:4326', 2.35, 48.8),
@@ -57,22 +66,18 @@ var placement = {
 };
 var view = new itowns.GlobeView(viewerDiv, placement);
 </code></pre>
-<p>Three things are done here. First we get the element of the page on which the
-view will be displayed. However, getting this is not sufficient in our case to
-display a <code>GlobeView</code>. <a onclick="window.parent.goTo('api/View/GlobeView.html','api/View/GlobeView')" title="The documentation">The documentation</a> specifies that a
-second parameter needs to be present: an object that will help to place the camera
-on the globe.</p>
-<p>This object needs to contain two properties : a position which the camera is
-facing (<code>coord</code>), and a camera distance to target coordinates (<code>range</code>) in meters.
-For the position argument, we can create a <code><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></code> object in the WGS84 system -
-whose EPSG code is 4326.</p>
-<p>Then, having those two objects, the <code><a onclick="window.parent.goTo('api/View/GlobeView.html','api/View/GlobeView')" title="GlobeView">GlobeView</a></code> can be created. It should
-result in a simple blue globe like below.</p>
+<p>First we get the element of the page on which the view will be displayed. Then, we create an object that contains camera
+initial placement information. This object has two properties : a position which the camera is
+facing (the lookAt coordinate of the camera, <code>coord</code>), and the distance between the camera and this coordinate (<code>range</code>)
+in meters.
+For the <code>coord</code> argument, we can create a <code><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></code> object in the WGS84 system - whose EPSG code is 4326.
+Then, having those two objects, we create the <code><a onclick="window.parent.goTo('api/View/GlobeView.html','api/View/GlobeView')" title="GlobeView">GlobeView</a></code>.</p>
+<p>The result should be a simple blue globe like below.</p>
 <p><img src="images/Raster-data-WGS84-1.png" alt="Simple GlobeView"></p>
 <h2>Adding a color layer</h2>
-<p>Now that we have a globe, let's display data on it. For this, let's use a basic
-layer composed of aerial photos. To define this, we first need to describe our
-source.</p>
+<p>Now that we have a globe, let's display data on it. For this, let's add a basic layer composed of aerial photos.
+Adding a layer to itowns is done in three steps: creating a data <code><a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a></code>, adding this source to a
+<code><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></code> and adding this layer to the <code><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></code>.</p>
 <pre class="prettyprint source lang-js"><code>var orthoSource = new itowns.WMTSSource({
     url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
     crs: 'EPSG:3857',
@@ -87,31 +92,25 @@ var orthoLayer = new itowns.ColorLayer('Ortho', {
 
 view.addLayer(orthoLayer);
 </code></pre>
-<p>We want to create and add a layer containing images. The best candidate here is
-the <code>ColorLayer</code>.
-Looking at <a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="the documentation">the documentation</a>, we need at least one
-parameter: the <code>id</code> of the layer. However, that won't be enough to display data if we
-don't tell the layer where to look to get the data. To achieve this, we can
-declare a source in the options.</p>
-<p>Images that we choose to display are coming from a WMTS server. So the source
-used will be a <code><a onclick="window.parent.goTo('api/Source/WMTSSource.html','api/Source/WMTSSource')" title="WMTSSource">WMTSSource</a></code>.
-To declare this source, three elements are
-needed :</p>
+<p>Images that we chose to display are coming from a WMTS server, so we use a <code><a onclick="window.parent.goTo('api/Source/WMTSSource.html','api/Source/WMTSSource')" title="WMTSSource">WMTSSource</a></code>.
+To declare this source, three elements are needed :</p>
 <ul>
 <li>a <code>url</code>, describing the path to the WMTS service</li>
 <li>a <code>crs</code> projection in which to fetch the data</li>
 <li>a <code>name</code>, used to build the URL for each image</li>
 <li>a <code>tileMatrixSet</code>, for the same purpose</li>
 </ul>
-<p>A <code>format</code> will also be specified in our case, as we are looking for jpeg
-images.</p>
-<p>Then, having all the necessary things, the layer can simply be created and added
-to the view using <code>addLayer</code>. The result is as below.</p>
+<p>A <code>format</code> is alse specified in our case, as we are looking for jpeg images.</p>
+<p>Once the source is defined, we need to add it to a layer. We want to create and add a layer containing images,
+<code><a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a></code> is the right layer type to display raster images. <code><a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a></code>, only needs an <code>id</code> of the
+layer and the data <code>source</code>.</p>
+<p>Finally, we simply add the layer to the view with <code>addLayer</code>.</p>
+<p>The result should be a globe with orthoimages on it:</p>
 <p><img src="images/Raster-data-WGS84-2.png" alt="Simple GlobeView with ColorLayer"></p>
 <h2>Adding an elevation layer</h2>
 <p>We can add more depth to the current globe by providing an <code><a onclick="window.parent.goTo('api/Layer/ElevationLayer.html','api/Layer/ElevationLayer')" title="ElevationLayer">ElevationLayer</a></code>. The
-process is quite similar to adding a <code>ColorLayer</code>. We are also still using a
-<code>WMTSSource</code>, but it needs to be created again as the elevation data source is different from the
+process is quite similar to adding a <code><a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a></code>. In this case, we are also using a
+<code>WMTSSource</code>, but we need to create a new one as the elevation data source is different from the
 previous one.</p>
 <pre class="prettyprint source lang-js"><code>var elevationSource = new itowns.WMTSSource({
     url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
@@ -130,16 +129,15 @@ view.addLayer(elevationLayer);
 </code></pre>
 <p>Two things have changed:</p>
 <ul>
+<li>the configuration of the <code><a onclick="window.parent.goTo('api/Source/WMTSSource.html','api/Source/WMTSSource')" title="WMTSSource">WMTSSource</a></code>, adapted to fit the data source and a <code>zoom</code> property was added. It
+contains the minimum and maximum zoom levels, between which data shall be fetched in the data source.</li>
 <li>the layer created, which is an <code><a onclick="window.parent.goTo('api/Layer/ElevationLayer.html','api/Layer/ElevationLayer')" title="ElevationLayer">ElevationLayer</a></code></li>
-<li>the configuration, adapted to fit the source.</li>
 </ul>
-<p>We also added a property <code>zoom</code> in the source configuration.
-It contains the minimum and maximum values of the zoom level, between which data shall be fetched in the source.</p>
-<p>Now we can zoom in and see some mountains !</p>
+<p>Now we can zoom in and see some elevations and beautiful mountains !</p>
 <p><img src="images/Raster-data-WGS84-3.png" alt="Simple Globe with mountains"></p>
 <h2>Result</h2>
-<p>Congratulations ! By reaching here, we are now able to display a simple <code>GlobeView</code>
-with an <code>ElevationLayer</code> and a <code>ColorLayer</code>. Here is the final code:</p>
+<p>Congratulations ! You are now able to display a <code>GlobeView</code> with an <code>ElevationLayer</code> and a <code>ColorLayer</code>.
+Here is the final code:</p>
 <pre class="prettyprint source lang-html"><code>&lt;!DOCTYPE html>
 &lt;html>
     &lt;head>
@@ -154,7 +152,7 @@ with an <code>ElevationLayer</code> and a <code>ColorLayer</code>. Here is the f
      &lt;/head>
      &lt;body>
         &lt;div id=&quot;viewerDiv&quot;>&lt;/div>
-        &lt;script src=&quot;js/itowns.js&quot;>&lt;/script>
+        &lt;script src=&quot;../dist/itowns.js&quot;>&lt;/script>
         &lt;script type=&quot;text/javascript&quot;>
             var viewerDiv = document.getElementById('viewerDiv');
             var placement = {

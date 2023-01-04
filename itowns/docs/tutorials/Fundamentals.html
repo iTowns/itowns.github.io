@@ -36,12 +36,12 @@ Each of these allows visualizing data from different types (raster or vector) an
 On this matter, iTowns distinguishes two cases :</p>
 <ul>
 <li>The first one regards data that are to be displayed as raster.
-These data can either be original raster data or vector data whose representation is projected on the ground.
+These data can either be original raster data or vector data which are rasterized by iTowns and projected on the ground.
 Data from this type are displayed in a <code>GlobeView</code> if their source CRS is <a href="https://epsg.io/4326">WGS 84</a> or <a href="https://epsg.io/3857">Pseudo-Mercator</a>.
 However, if their source CRS defines a local projection (such as <a href="https://epsg.io/2154">RGF93 / Lambert 93</a> for instance), they are displayed in a <code>PlanarView</code>.</li>
-<li>On another hand, vector data that are to be displayed as 3D objects can be displayed in any type of <code>View</code>, regardless of their source CRS.</li>
+<li>On another hand, vector data that are to be displayed as 3D objects can be displayed in any type of <code>View</code>, regardless of their source CRS since they can be converted by iTowns.</li>
 </ul>
-<p>It is important to aknowledge the following facts regarding original raster data and <code>Views</code> :</p>
+<p>It is important to acknowledge the following facts regarding original raster data and <code>Views</code> :</p>
 <ul>
 <li>a <code>GlobeView</code> allows displaying multiple raster data from two different source CRS : <a href="https://epsg.io/4326">WGS 84</a> and <a href="https://epsg.io/3857">Pseudo-Mercator</a>,</li>
 <li>a <code>PlanarView</code> allows displaying multiple raster data, but all those data sources must have the same CRS.</li>
@@ -50,21 +50,32 @@ However, if their source CRS defines a local projection (such as <a href="https:
 <p>→<a href="Raster-data-Lambert93.html"><strong><code>Visit PlanarView tutorial</code></strong></a></p>
 <hr>
 <h2>Protocols and data formats</h2>
-<p>ITowns comes with a wide range of compatible data sources.
-It can be used to display data from web servers that use protocols such as Web Map (Tile) Service (<a href="https://www.ogc.org/standards/wms">WMS</a> and <a href="https://www.ogc.org/standards/wmts">WMTS</a>), Web Feature Service (<a href="https://www.ogc.org/standards/wfs">WFS</a>) and Tile Map Service (<a href="https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification">TMS</a>).
-Data from user given files can also be displayed.</p>
-<p>Regarding data formats, iTowns offers several possibilities : <a href="https://docs.mapbox.com/help/glossary/vector-tiles/">vector tile</a> resources from <a href="https://www.mapbox.com/">MapBox</a>, <a href="https://github.com/potree/potree">Potree</a> 3D point clouds, oriented images, <a href="https://geojson.org/">GeoJSON</a>, <a href="https://www.ogc.org/standards/kml">KML</a> or <a href="https://www.topografix.com/gpx.asp">GPX</a>.</p>
+<p>ITowns comes with a wide range of compatible data sources. All available sources can be seen in the <code>Source</code> section of the
+API documentation.
+iTowns supports all the main geographic protocols: <a href="https://www.ogc.org/standards/wms">Web Map Service</a> with <code><a onclick="window.parent.goTo('api/Source/WMSSource.html','api/Source/WMSSource')" title="WMSSource">WMSSource</a></code>,
+<a href="https://www.ogc.org/standards/wmts">Web Map Tiled Service</a> with <code><a onclick="window.parent.goTo('api/Source/WMTSSource.html','api/Source/WMTSSource')" title="WMTSSource">WMTSSource</a></code>, <a href="https://www.ogc.org/standards/wfs">Web Feature Service</a>
+with <code><a onclick="window.parent.goTo('api/Source/WFSSource.html','api/Source/WFSSource')" title="WFSSource">WFSSource</a></code> and <a href="https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification">Tile Map Service</a> and XYZ with <code><a onclick="window.parent.goTo('api/Source/TMSSource.html','api/Source/TMSSource')" title="TMSSource">TMSSource</a></code>.</p>
+<p>iTowns also has sources for many data formats: <a href="https://docs.mapbox.com/help/glossary/vector-tiles/">vector tile</a> resources from <a href="https://www.mapbox.com/">MapBox</a> with <code><a onclick="window.parent.goTo('api/Source/VectorTilesSource.html','api/Source/VectorTilesSource')" title="VectorTilesSource">VectorTilesSource</a></code>, <a href="https://github.com/potree/potree">Potree</a> (<code><a onclick="window.parent.goTo('api/Source/PotreeSource.html','api/Source/PotreeSource')" title="PotreeSource">PotreeSource</a></code>) and
+<a href="https://entwine.io/">Entwine</a> (<code><a onclick="window.parent.goTo('api/Source/EntwinePointTileSource.html','api/Source/EntwinePointTileSource')" title="EntwinePointTileSource">EntwinePointTileSource</a></code>) 3D point clouds, <a href="https://www.ogc.org/standards/3DTiles">3DTiles</a>
+mesh (b3dm) and point clouds (pnts) from web servers (<code>C3DTilesSource</code>) and from Cesium ion <code>C3DTilesIonSource</code>,
+<a href="https://geojson.org/">GeoJSON</a> with <code><a onclick="window.parent.goTo('api/Source/FileSource.html','api/Source/FileSource')" title="FileSource">FileSource</a></code> and <code>GeoJsonParser</code>,
+<a href="https://www.ogc.org/standards/kml">KML</a> with <code><a onclick="window.parent.goTo('api/Source/FileSource.html','api/Source/FileSource')" title="FileSource">FileSource</a></code> and <code>KMLParser</code>, <a href="https://www.topografix.com/gpx.asp">GPX</a>
+with <code><a onclick="window.parent.goTo('api/Source/FileSource.html','api/Source/FileSource')" title="FileSource">FileSource</a></code> and <code>GpxParser</code> and oriented images with <code><a onclick="window.parent.goTo('api/Source/OrientedImageSource.html','api/Source/OrientedImageSource')" title="OrientedImageSource">OrientedImageSource</a></code>.</p>
+<p>It is also possible to create your own source and/or your own parser to read and add data from any format or protocol that is not supported by itowns.</p>
 <hr>
 <h2>Layers</h2>
 <p>It was earlier mentioned that data are displayed as <a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="<code>Layers</code>"><code>Layers</code></a> within iTowns.
 Several specific types of <code>Layers</code> exist, the use of which depends on the data to display :</p>
 <ul>
-<li><code><a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a></code> can be used to display raster graphics or vector data projected on the ground (left picture in the table bellow),</li>
+<li><code><a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a></code> can be used to display raster graphics or vector data that needs to be rasterized to be projected on the ground (left picture in the table bellow),</li>
 <li><code><a onclick="window.parent.goTo('api/Layer/ElevationLayer.html','api/Layer/ElevationLayer')" title="ElevationLayer">ElevationLayer</a></code> can be used to display 3D elevation models (center picture in the table bellow),</li>
-<li><code><a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></code> can be used to display 3D objects, such as geometric shapes or buildings modelling (right picture in the table bellow).</li>
-<li><code><a onclick="window.parent.goTo('api/Layer/FeatureGeometryLayer.html','api/Layer/FeatureGeometryLayer')" title="FeatureGeometryLayer">FeatureGeometryLayer</a></code> is a pre-configured <code><a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></code> which simplifies its implementation in given cases.</li>
-<li><code><a onclick="window.parent.goTo('api/Layer/PointCloudLayer.html','api/Layer/PointCloudLayer')" title="PointCloudLayer">PointCloudLayer</a></code> can be used to display 3D point clouds.</li>
-<li><code><a onclick="window.parent.goTo('api/Layer/OrientedImageLayer.html','api/Layer/OrientedImageLayer')" title="OrientedImageLayer">OrientedImageLayer</a></code> can be used to display some oriented images.</li>
+<li><code><a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></code> can be used to display 2D vector data or 3D objects, such as geometric shapes or buildings modelling (right picture in the table bellow).</li>
+<li><code><a onclick="window.parent.goTo('api/Layer/FeatureGeometryLayer.html','api/Layer/FeatureGeometryLayer')" title="FeatureGeometryLayer">FeatureGeometryLayer</a></code> is a pre-configured <code><a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></code> which simplifies its implementation in given cases (e.g. to extrude 3D buildings).</li>
+<li><code><a onclick="window.parent.goTo('api/Layer/PointCloudLayer.html','api/Layer/PointCloudLayer')" title="PointCloudLayer">PointCloudLayer</a></code> can be used to display 3D point clouds. Any point cloud formats are supported as long as the corresponding <code>Source</code> is provided.
+Some point clouds formats such as Potree, Las and Entwine already have parsers defined in itowns that you can use. For 3D Tiles point clouds (pnts), use
+<code>C3DTilesLayer</code>.</li>
+<li><code><a onclick="window.parent.goTo('api/Layer/C3DTilesLayer.html','api/Layer/C3DTilesLayer')" title="C3DTilesLayer">C3DTilesLayer</a></code> can be used to display 3D Tiles layer (only b3dm and pnts).</li>
+<li><code><a onclick="window.parent.goTo('api/Layer/OrientedImageLayer.html','api/Layer/OrientedImageLayer')" title="OrientedImageLayer">OrientedImageLayer</a></code> can be used to display oriented images.</li>
 </ul>
 <table>
 <thead>

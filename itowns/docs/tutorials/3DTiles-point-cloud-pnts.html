@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Tutorial : 3D Tiles visualization - 3D point clouds</title>
+
+    <script src="../scripts/prettify/prettify.js"> </script>
+    <script src="../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../styles/itowns.css">
+</head>
+
+<body>
+
+<section>
+
+<header>
+    <h1>Tutorial : 3D Tiles visualization - 3D point clouds</h1>
+</header>
+
+<article>
+    <p>The goal of this tutorial is to learn how to visualize a 3D tiles point cloud (in the pnts format).
+We will also learn how to modify the style of a 3D tiles dataset in itowns.
+We will use a <a href="https://github.com/iTowns/iTowns2-sample-data/tree/master/3DTiles/dataset-dl.liris.cnrs.fr/three-d-tiles-lyon-metropolis/Lyon_2015_TileSet">data set</a> representing a subset of the Tarn Gorges, initially provided by the <a href="https://geoservices.ign.fr/lidarhd">French Mapping Agency (IGN)</a> and transformed in 3D tiles with <a href="https://gitlab.com/Oslandia/py3dtiles">py3DTiles</a>.</p>
+<h2>Preparing the webpage</h2>
+<p>The webpage we want to display data on should be structured as follows :</p>
+<pre class="prettyprint source lang-html"><code>&lt;!DOCTYPE html>
+&lt;html>
+    &lt;head>
+        &lt;meta charset=&quot;UTF-8&quot;>
+        &lt;title>Display 3D Tiles b3dm dataset with iTowns&lt;/title>
+        &lt;style>
+            html { height: 100%; }
+            body { margin: 0; overflow: hidden; height: 100%; }
+            #viewerDiv { margin: auto; height: 100%; width: 100%; padding: 0; }
+            canvas { display: block }
+        &lt;/style>
+    &lt;/head>
+    &lt;body>
+        &lt;div id=&quot;viewerDiv&quot;>&lt;/div>
+        &lt;script src=&quot;../dist/itowns.js&quot;>&lt;/script>
+        &lt;script type=&quot;text/javascript&quot;>
+            // Tutorial code should go here
+        &lt;/script>
+    &lt;/body>
+&lt;/html>
+</code></pre>
+<p>To work as is, this web page should be placed in the <code>examples/</code> folder of <a href="https://github.com/iTowns/itowns">itowns</a> but you can put it anywhere else as
+long as you have a local web server and that you adapt the link to itowns (<code>&lt;script src=&quot;../dist/itowns.js&quot;&gt;&lt;/script&gt;</code>).</p>
+<h2>Preparing the field</h2>
+<p>We will first create a view, add a layer with ortho images and a digital elevation model (DEM).
+The 3D Tiles dataset we are using is in the <code>EPSG:4978</code> CRS, so we will use a <code><a onclick="window.parent.goTo('api/View/GlobeView.html','api/View/GlobeView')" title="GlobeView">GlobeView</a></code> to display it.</p>
+<p>We won't go into the details of creating the view, adding the ortho images and the DEM. For more information on this part, see the <a href="Raster-data-WGS84.html">WGS84 tutorial</a> in which we explain how to add similar layers. The only differences are the data sources used. Here, we use ortho images from a XYZ stream of Open Street Map tiles which will allow to better distinguish the point cloud. We also use a more precise DEM (but that only covers France).</p>
+<pre class="prettyprint source lang-js"><code>    var viewerDiv = document.getElementById('viewerDiv');
+    var placement = {
+        coord: new itowns.Coordinates('EPSG:4326', 3.3792, 44.3335, 844),
+        tilt: 22,
+        heading: -180,
+        range: 2840
+    };
+
+    var view = new itowns.GlobeView(viewerDiv, placement);
+
+    var orthoSource = new itowns.TMSSource({
+        crs: &quot;EPSG:3857&quot;,
+        isInverted: true,
+        format: &quot;image/png&quot;,
+        url: &quot;http://osm.oslandia.io/styles/klokantech-basic/${z}/${x}/${y}.png&quot;,
+        attribution: {
+            name:&quot;OpenStreetMap&quot;,
+            url: &quot;http://www.openstreetmap.org/&quot;
+        },
+        tileMatrixSet: &quot;PM&quot;
+    });
+
+    var orthoLayer = new itowns.ColorLayer('Ortho', {
+        source: orthoSource,
+    });
+
+    view.addLayer(orthoLayer);
+
+    var elevationSource = new itowns.WMTSSource({
+        url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+        crs: 'EPSG:4326',
+        name: 'ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES',
+        tileMatrixSet: 'WGS84G',
+        format: 'image/x-bil;bits=32',
+        tileMatrixSetLimits: {
+            11: {
+                minTileRow: 442,
+                maxTileRow: 1267,
+                minTileCol: 1344,
+                maxTileCol: 2683
+            },
+            12: {
+                minTileRow: 885,
+                maxTileRow: 2343,
+                minTileCol: 3978,
+                maxTileCol: 5126
+            },
+            13: {
+                minTileRow: 1770,
+                maxTileRow: 4687,
+                minTileCol: 7957,
+                maxTileCol: 10253
+            },
+            14: {
+                minTileRow: 3540,
+                maxTileRow: 9375,
+                minTileCol: 15914,
+                maxTileCol: 20507
+            }
+        }
+    });
+
+    var elevationLayer = new itowns.ElevationLayer('MNT_WORLD', {
+        source: elevationSource,
+    });
+
+    view.addLayer(elevationLayer);
+</code></pre>
+<p>At this point you should be zoomed on the Tarn gorges (where our 3D dataset will be displayed) and see
+a basemap and a 3D terrain:</p>
+<p><img src="images/3DTiles-point-cloud-pnts-1.png" alt="Globe, terrain and OSM basemap"></p>
+<h2>Adding the 3D Tiles Layer</h2>
+<p>As usual, we first configure a source. Here, we will use a <code>C3DTilesSource</code> for which it is as simple as giving the url of the dataset to display.</p>
+<pre class="prettyprint source lang-js"><code>    const pointCloudSource = new itowns.C3DTilesSource({
+        url: 'https://raw.githubusercontent.com/iTowns/iTowns2-sample-data/' +
+        'master/3DTiles/lidar-hd-gorges-saint-chely-tarn/tileset.json',
+    });
+</code></pre>
+<p>Then, we create the <code><a onclick="window.parent.goTo('api/Layer/C3DTilesLayer.html','api/Layer/C3DTilesLayer')" title="C3DTilesLayer">C3DTilesLayer</a></code> by giving it and <code>id</code>, the <code>source</code> and the <code>view</code>.
+And finally we add it to the <code><a onclick="window.parent.goTo('api/View/GlobeView.html','api/View/GlobeView')" title="GlobeView">GlobeView</a></code> by using the generic method of <code><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></code> to not
+use the <code>GlobeView</code> subdivision (see [the 3D Tiles textured buildings tutorial](@tutorial 3DTiles-mesh-b3dm) for more information).</p>
+<pre class="prettyprint source lang-js"><code>    const pointCloudLayer = new itowns.C3DTilesLayer('gorges', {
+        source: pointCloudSource,
+    }, view);
+    itowns.View.prototype.addLayer.call(view, pointCloudLayer);
+</code></pre>
+<p>At this point, you should see the point cloud displayed:</p>
+<p><img src="images/3DTiles-point-cloud-pnts-2.png" alt="3D tiles point cloud"></p>
+<p>However, if you zoom in, you will notice that the points a bit small:</p>
+<p><img src="images/3DTiles-point-cloud-pnts-3.png" alt="3D tiles small points"></p>
+<p>In the next part, we will see how we can improve that.</p>
+<h2>Updating 3D Tiles style</h2>
+<p>3D Tiles style can be changed on the fly when loading the 3D Tiles data in itowns. It can be done with
+the <code>onTileContentLoaded</code> callback of <code><a onclick="window.parent.goTo('api/Layer/C3DTilesLayer.html','api/Layer/C3DTilesLayer')" title="C3DTilesLayer">C3DTilesLayer</a></code> that is called for each tile when the content of a tile has been loaded. The tile content is a Threejs <code>Object3D</code> or <code>Group</code>, so we can access its material and make any style changes that we want. In our case, we will modify the size of the points.
+First, we create a function to update the size of the point:</p>
+<pre class="prettyprint source lang-js"><code>    function updatePointCloudSize(tileContent) {
+        tileContent.traverse(function (obj) {
+            if (obj.isPoints) {
+                obj.material.size = 3.0;
+            }
+        });
+    }
+</code></pre>
+<p>In this function, we traverse the <code>tileContent</code> hierarchy until we find the threejs <code>Points</code> object with <code>obj.isPoints</code>. Then, we change the size of the threejs <code>PointMaterial</code> material. You can refer
+to threejs documentation for more information on <code>Object3D</code>, <code>Group</code>, <code>Points</code> and <code>PointsMaterial</code> objects.</p>
+<p>Then, we just need to pass this callback to the <code><a onclick="window.parent.goTo('api/Layer/C3DTilesLayer.html','api/Layer/C3DTilesLayer')" title="C3DTilesLayer">C3DTilesLayer</a></code> constructor:</p>
+<pre class="prettyprint source lang-js"><code>    onTileContentLoaded: updatePointCloudSize
+</code></pre>
+<p>The constructor of the <code><a onclick="window.parent.goTo('api/Layer/C3DTilesLayer.html','api/Layer/C3DTilesLayer')" title="C3DTilesLayer">C3DTilesLayer</a></code> therefore becomes:</p>
+<pre class="prettyprint source lang-js"><code>    const pointCloudLayer = new itowns.C3DTilesLayer('gorges', {
+        source: pointCloudSource,
+        onTileContentLoaded: updatePointCloudSize
+    }, view);
+</code></pre>
+<p>If you zoom in to the points, you can now see that they are bigger:</p>
+<p><img src="images/3DTiles-point-cloud-pnts-4.png" alt="3D tiles small points"></p>
+<p>Not that you can use this callback to change the style of any 3D Tiles dataset (even meshes) and to change any style property of the dataset.</p>
+<h2>Result</h2>
+<p>The full code to achieve this result is:</p>
+<pre class="prettyprint source lang-html"><code>&lt;!DOCTYPE html>
+&lt;html>
+    &lt;head>
+        &lt;meta charset=&quot;UTF-8&quot;>
+        &lt;title>Display 3D Tiles b3dm dataset with iTowns&lt;/title>
+        &lt;style>
+            html { height: 100%; }
+            body { margin: 0; overflow: hidden; height: 100%; }
+            #viewerDiv { margin: auto; height: 100%; width: 100%; padding: 0; }
+            canvas { display: block }
+        &lt;/style>
+    &lt;/head>
+    &lt;body>
+        &lt;div id=&quot;viewerDiv&quot;>&lt;/div>
+        &lt;script src=&quot;../dist/itowns.js&quot;>&lt;/script>
+        &lt;script type=&quot;text/javascript&quot;>
+            var viewerDiv = document.getElementById('viewerDiv');
+            var placement = {
+                coord: new itowns.Coordinates('EPSG:4326', 3.3792, 44.3335, 844),
+                tilt: 22,
+                heading: -180,
+                range: 2840
+            };
+
+            var view = new itowns.GlobeView(viewerDiv, placement);
+
+            var orthoSource = new itowns.TMSSource({
+                crs: &quot;EPSG:3857&quot;,
+                isInverted: true,
+                format: &quot;image/png&quot;,
+                url: &quot;http://osm.oslandia.io/styles/klokantech-basic/${z}/${x}/${y}.png&quot;,
+                attribution: {
+                    name:&quot;OpenStreetMap&quot;,
+                    url: &quot;http://www.openstreetmap.org/&quot;
+                },
+                tileMatrixSet: &quot;PM&quot;
+            });
+
+            var orthoLayer = new itowns.ColorLayer('Ortho', {
+                source: orthoSource,
+            });
+
+            view.addLayer(orthoLayer);
+
+            var elevationSource = new itowns.WMTSSource({
+                url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+                crs: 'EPSG:4326',
+                name: 'ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES',
+                tileMatrixSet: 'WGS84G',
+                format: 'image/x-bil;bits=32',
+                tileMatrixSetLimits: {
+                    11: {
+                        minTileRow: 442,
+                        maxTileRow: 1267,
+                        minTileCol: 1344,
+                        maxTileCol: 2683
+                    },
+                    12: {
+                        minTileRow: 885,
+                        maxTileRow: 2343,
+                        minTileCol: 3978,
+                        maxTileCol: 5126
+                    },
+                    13: {
+                        minTileRow: 1770,
+                        maxTileRow: 4687,
+                        minTileCol: 7957,
+                        maxTileCol: 10253
+                    },
+                    14: {
+                        minTileRow: 3540,
+                        maxTileRow: 9375,
+                        minTileCol: 15914,
+                        maxTileCol: 20507
+                    }
+                }
+            });
+
+            var elevationLayer = new itowns.ElevationLayer('MNT_WORLD', {
+                source: elevationSource,
+            });
+
+            view.addLayer(elevationLayer);
+
+            const pointCloudSource = new itowns.C3DTilesSource({
+                url: 'https://raw.githubusercontent.com/iTowns/iTowns2-sample-data/' +
+                'master/3DTiles/lidar-hd-gorges-saint-chely-tarn/tileset.json',
+            });
+
+            function updatePointCloudSize(tileContent) {
+                tileContent.traverse(function (obj) {
+                    if (obj.isPoints) {
+                        obj.material.size = 3.0;
+                    }
+                });
+            }
+
+            const pointCloudLayer = new itowns.C3DTilesLayer('gorges', {
+                source: pointCloudSource,
+                onTileContentLoaded: updatePointCloudSize
+            }, view);
+            itowns.View.prototype.addLayer.call(view, pointCloudLayer);
+        &lt;/script>
+    &lt;/body>
+&lt;/html>
+</code></pre>
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../scripts/linenumber.js"> </script>
+</body>
+</html>
