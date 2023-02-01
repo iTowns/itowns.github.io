@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>FeatureCollection - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        FeatureCollection
+        
+            <span class="extends">extends THREE.Object3D</span>
+        
+    </h1>
+
+    
+        <div class="description"><p>An object regrouping a list of <a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="features">features</a> and the extent of this collection.
+<strong>Warning</strong>, the data (<code>extent</code> or <code>Coordinates</code>) can be stored in a local system.
+The local system center is the <code>center</code> property.
+To use <code>Feature</code> vertices or <code>FeatureCollection/Feature</code> extent in FeatureCollection.crs projection,
+it's necessary to transform <code>Coordinates</code> or <code>Extent</code> by <code>FeatureCollection.matrixWorld</code>.</p>
+<pre class="prettyprint source lang-js"><code>// To have featureCollection extent in featureCollection.crs projection:
+featureCollection.extent.applyMatrix4(featureCollection.matrixWorld);
+
+// To have feature vertex in featureCollection.crs projection:
+const vertices = featureCollection.features[0].vertices;
+coord.crs = featureCollection.crs;
+coord.setFromArray(vertices)
+coord.applyMatrix4(featureCollection.matrixWorld);
+</code></pre></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">FeatureCollection</span>
+        (
+
+
+    
+    
+        options:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/FeatureBuildingOptions.html','api/Base/FeatureBuildingOptions')" title="FeatureBuildingOptions">FeatureBuildingOptions</a>|<a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>options</code>
+        
+        
+            &mdash; <span><p>The building options .</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">features</span>
+        : <span class="type">Array.&lt;Feature></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The array of features composing the
+collection.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">extent</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The 2D extent containing all the features
+composing the collection. The extent projection is the same local projection <code>FeatureCollection</code>.
+To transform <code>FeatureCollection.extent</code> to <code>FeatureCollection.crs</code> projection, the transformation matrix must be applied.</p>
+<p><strong>WARNING</strong> if crs is <code>EPSG:4978</code> because the 3d geocentric system doesn't work with 2D <code>Extent</code>,
+The FeatureCollection.extent projection is the original projection.
+In this case, there isn't need to transform the extent.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">crs</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Geographic or Geocentric coordinates system.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">isFeatureCollection</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Used to check whether this is FeatureCollection.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">size</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The size structure, it's 3 for 3d and 2 for 2d.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">style</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The collection style used to display the feature collection.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">isInverted</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>This option is to be set to the
+correct value, true or false (default being false), if the computation of
+the coordinates needs to be inverted to same scheme as OSM, Google Maps
+or other system. See <a href="https://alastaira.wordpress.com/2011/07/06/converting-tms-tile-coordinates-to-googlebingosm-tile-coordinates">this link</a>
+for more informations.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">matrixWorldInverse</span>
+        : <span class="type">THREE.Matrix4</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The matrix world inverse.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">center</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The local center coordinates in <code>EPSG:4326</code>.
+The local system is centred in this center.</p>
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">newFeatureByReference</span>
+        (
+
+
+    
+    
+        feature:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Add a new feature with references to all properties.
+It allows to have features with different styles
+without having to duplicate the geometry.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The new referenced feature</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>feature</code>
+        
+        
+            &mdash; <span><p>The feature to reference.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">pushFeature</span>
+        (
+
+
+    
+    
+        feature:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Push the <code>feature</code> in FeatureCollection.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>feature</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">removeEmptyFeature</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Remove features that don't have <a onclick="window.parent.goTo('api/Base/FeatureGeometry.html','api/Base/FeatureGeometry')" title="FeatureGeometry">FeatureGeometry</a>.</p>
+            </div>
+        
+    
+
+    
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">requestFeatureById</span>
+        (
+
+
+    
+    
+        id:
+            <span class="type">string</span>, 
+    
+        type:
+            <span class="type">string</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Returns the Feature by type if <code>mergeFeatures</code> is <code>true</code> or returns the
+new instance of typed Feature.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>id</code>
+        
+        
+            &mdash; <span><p>the id requested</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>type</code>
+        
+        
+            &mdash; <span><p>the type requested</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">requestFeatureByType</span>
+        (
+
+
+    
+    
+        type:
+            <span class="type">string</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Returns the Feature by type if <code>mergeFeatures</code> is <code>true</code> or returns the
+new instance of typed Feature.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>type</code>
+        
+        
+            &mdash; <span><p>the type requested</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">transformToLocalSystem</span>
+        (
+
+
+    
+    
+        coordinates:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Apply the matrix World inverse on the coordinates.
+This method is used when the coordinates is pushed
+to transform it in local system.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The coordinates in local system</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>coordinates</code>
+        
+        
+            &mdash; <span><p>The coordinates</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">updateExtent</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Update FeatureCollection extent with <code>extent</code> or all features extent if
+<code>extent</code> is <code>undefined</code>.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">updateMatrixWorld</span>
+        (
+
+
+    
+    
+        force:
+            <span class="type">booolean</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Updates the global transform of the object and its descendants.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>force</code>
+        
+        
+            &mdash; <span><p>The force</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/Feature.js">
+            src/Core/Feature.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>3dTilesProcessing - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        3dTilesProcessing
+        
+    </h1>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Static Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">$3dTilesCulling</span>
+        (
+
+
+    
+    
+        layer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/C3DTilesLayer.html','api/Layer/C3DTilesLayer')" title="C3DTilesLayer">C3DTilesLayer</a></span>, 
+    
+        camera:
+            <span class="type"><a onclick="window.parent.goTo('api/Renderer/Camera.html','api/Renderer/Camera')" title="Camera">Camera</a></span>, 
+    
+        node:
+            <span class="type">THREE.Object3D</span>, 
+    
+        tileMatrixWorld:
+            <span class="type">THREE.Matrix4</span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Check if the node is visible in the camera.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>return true if the node is visible</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>layer</code>
+        
+        
+            &mdash; <span><p>node 3D tiles layer</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>camera</code>
+        
+        
+            &mdash; <span><p>camera</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>node</code>
+        
+        
+            &mdash; <span><p>The 3d tile node to check.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>tileMatrixWorld</code>
+        
+        
+            &mdash; <span><p>The node matrix world</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">$3dTilesSubdivisionControl</span>
+        (
+
+
+    
+    
+        context:
+            <span class="type">object</span>, 
+    
+        layer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/C3DTilesLayer.html','api/Layer/C3DTilesLayer')" title="C3DTilesLayer">C3DTilesLayer</a></span>, 
+    
+        node:
+            <span class="type">THREE.Object3D</span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>the method returns true if the <code>node</code> should be subivised.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>context</code>
+        
+        
+            &mdash; <span><p>The current context</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>context.camera</code>
+        
+        
+            &mdash; <span><p>The current camera</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>layer</code>
+        
+        
+            &mdash; <span><p>The 3d tile layer</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>node</code>
+        
+        
+            &mdash; <span><p>The 3d tile node</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">process3dTilesNode</span>
+        (
+
+
+    
+    
+        cullingTest:
+            <span class="type">function</span>, 
+    
+        subdivisionTest:
+            <span class="type">function</span>
+    
+
+)
+        :
+            
+                <span class="type">function</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>This funcion builds the method to update 3d tiles node.</p>
+<p>The returned method checks the 3d tile visibility with <code>cullingTest</code> function.
+It subdivises visible node if <code>subdivisionTest</code> return <code>true</code>.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>{ description_of_the_return_value }</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>cullingTest</code>
+        (default: <code>$3dTilesCulling</code>)
+        
+        
+            &mdash; <span><p>The culling test method.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>subdivisionTest</code>
+        (default: <code>$3dTilesSubdivisionControl</code>)
+        
+        
+            &mdash; <span><p>The subdivision test method.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Process/3dTilesProcessing.js">
+            src/Process/3dTilesProcessing.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>StateControl - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        StateControl
+        
+    </h1>
+
+    
+        <div class="description"><p>It represents the control's states.
+Each State is a control mode of the camera and how to interact with
+the interface to activate this mode.</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">StateControl</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">NONE</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State when camera is idle.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">ORBIT</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera orbiting movement : the camera moves around its
+target at a constant distance from it.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">DOLLY</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera dolly movement : the camera moves forward or
+backward from its target.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">PAN</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera pan movement : the camera moves parallel to the
+current view plane.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">MOVE_GLOBE</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera drag movement : the camera is moved around the view
+to give the feeling that the view is dragged under a static camera.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">PANORAMIC</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera panoramic movement : the camera is rotated around
+its own position.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">TRAVEL_IN</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera travel in movement : the camera is zoomed in toward
+a given position. The target position depends on the key/mouse binding of this
+state. If bound to a mouse button, the target position is the mouse position.
+Otherwise, it is the center of the screen.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">TRAVEL_OUT</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera travel out movement : the camera is zoomed out from
+a given position. The target position depends on the key/mouse binding of this
+state. If bound to a mouse button, the target position is the mouse position.
+Otherwise, it is the center of the screen. It is disabled by default.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">ZOOM</span>
+        : <span class="type">State</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>State describing camera zoom in and out movement.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">enable</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Defines whether all input will be communicated to the associated <code>Controls</code> or not.
+Default is true.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">enableKeys</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Defines whether keyboard input will be communicated to the associated <code>Controls</code> or
+not. Default is true.</p>
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">dispose</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Remove all event listeners created within this instance of <code>StateControl</code></p>
+            </div>
+        
+    
+
+    
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">inputToState</span>
+        (
+
+
+    
+    
+        mouseButton:
+            <span class="type">Number</span>, 
+    
+        keyboard:
+            <span class="type">Number</span>, 
+    
+        double:
+            <span class="type">Boolean</span>
+    
+
+)
+        :
+            
+                <span class="type">State</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>get the state corresponding to the mouse button and the keyboard key. If the input relates to a trigger - a
+single event which triggers movement, without the move of the mouse for instance -, dispatch a relevant event.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the state corresponding</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>mouseButton</code>
+        
+        
+            &mdash; <span><p>The mouse button</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>keyboard</code>
+        
+        
+            &mdash; <span><p>The keyboard</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>double</code>
+        (optional)
+        
+            &mdash; <span><p>Value of the searched state <code>double</code> property</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setFromOptions</span>
+        (
+
+
+    
+    
+        options:
+            <span class="type">Object</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Set the current StateControl State properties to given values.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>options</code>
+        
+        
+            &mdash; <span><p>Object containing the <code>State</code> values to set current <code>StateControl</code> properties to.
+The <code>enable</code> property do not necessarily need to be specified. In that case, the
+previous value of this property will be kept for the new State.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// Switch bindings for PAN and MOVE_GLOBE actions, and disabling PANORAMIC movement :
+view.controls.states.setFromOptions({
+    PAN: {
+        mouseButton: itowns.THREE.MOUSE.LEFT,
+    },
+    MOVE_GLOBE: {
+        mouseButton: itowns.THREE.MOUSE.RIGHT,
+    },
+    PANORAMIC: {
+        enable: false,
+    },
+};</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">touchToState</span>
+        (
+
+
+    
+    
+        finger:
+            <span class="type">Number</span>
+    
+
+)
+        :
+            
+                <span class="type">state</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>get the state corresponding to the number of finger on the pad</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the state corresponding</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>finger</code>
+        
+        
+            &mdash; <span><p>The number of finger</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Types</h2>
+        
+            
+
+<div class="typedef">
+    <h3>
+        <span class="typedef-name">State</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+    
+
+<ul class="params">
+    
+    <li>
+        <code>enable: <span class="type">boolean</span></code>
+        (default: <code>true</code>)
+        
+        
+            &mdash; <span><p>Indicate whether the state is enabled or not.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>mouseButton: <span class="type">Number</span></code>
+        (optional)
+        
+            &mdash; <span><p>The mouse button bound to this state.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>keyboard: <span class="type">Number</span></code>
+        (optional)
+        
+            &mdash; <span><p>The keyCode of the keyboard input bound to this state.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>finger: <span class="type">Number</span></code>
+        (optional)
+        
+            &mdash; <span><p>The number of fingers on the pad bound to this state.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>double: <span class="type">boolean</span></code>
+        (optional)
+        
+            &mdash; <span><p>True if the mouse button bound to this state must be pressed twice. For
+example, if <code>double</code> is set to true with a <code>mouseButton</code> set to left click,
+the State will be bound to a double click mouse button.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+
+    
+</div>
+
+            
+        
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Controls/StateControl.js">
+            src/Controls/StateControl.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Label - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        Label
+        
+    </h1>
+
+    
+        <div class="description"><p>An object that handles the display of a text and/or an icon, linked to a 3D
+position. The content of the <code>Label</code> is managed through a DOM object, in a
+<code>&lt;div&gt;</code> handled by the <code>Label2DRenderer</code>.</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">Label</span>
+        (
+
+
+    
+    
+        content:
+            <span class="type">Element|string</span>, 
+    
+        coordinates:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>, 
+    
+        style:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>, 
+    
+        sprites:
+            <span class="type">Object</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>content</code>
+        
+        
+            &mdash; <span><p>The content; can be a
+string, with or without HTML tags in it, or it can be an Element.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>coordinates</code>
+        
+        
+            &mdash; <span><p>The world coordinates, where to place
+the Label.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>style</code>
+        
+        
+            &mdash; <span><p>The style to apply to the content. Once the style
+is applied, it cannot be changed directly. However, if it really needed,
+it can be accessed through <code>label.content.style</code>, but it is highly
+discouraged to do so.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>sprites</code>
+        (optional)
+        
+            &mdash; <span><p>the sprites.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">isLabel</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Used to checkout whether this object is a
+Label. Default is true. You should not change this, as it is used internally
+for optimisation.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">content</span>
+        : <span class="type">Element</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The DOM object that contains the content of the
+label. The style and the position are applied on this object. All labels
+contain the <code>itowns-label</code> class, as well as a specific class related to the
+layer linked to it: <code>itowns-label-[layer-id]</code> (replace <code>[layer-id]</code> by the
+correct string).</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">position</span>
+        : <span class="type">THREE.Vector3</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The position in the 3D world of the
+label.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">padding</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>sets the padding area on all four sides of an element at once.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">coordinates</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The coordinates of the label.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">order</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Order of the label that will be read from the
+style. It helps sorting and prioritizing a Label during render.</p>
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">initDimensions</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Updates the screen dimensions of the label, using
+<code>getBoundingClientRect</code>.  It updates <code>width</code> and <code>height</code> property of the
+label, and the boundaries.</p>
+            </div>
+        
+    
+
+    
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">updateProjectedPosition</span>
+        (
+
+
+    
+    
+        x:
+            <span class="type">number</span>, 
+    
+        y:
+            <span class="type">number</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Moves a label on the screen, using screen coordinates. It updates the
+boundaries as it moves it.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>x</code>
+        
+        
+            &mdash; <span><p>X coordinates in pixels, from left.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>y</code>
+        
+        
+            &mdash; <span><p>Y coordinates in pixels, from top.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/Label.js">
+            src/Core/Label.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

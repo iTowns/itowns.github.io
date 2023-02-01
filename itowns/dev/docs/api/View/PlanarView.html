@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PlanarView - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        PlanarView
+        
+            <span class="extends">extends <a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>
+        
+    </h1>
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">PlanarView</span>
+        (
+
+
+    
+    
+        viewerDiv:
+            <span class="type">HTMLDivElement</span>, 
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        options:
+            <span class="type">object</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>viewerDiv</code>
+        
+        
+            &mdash; <span><p>Where to attach the view and display it
+in the DOM.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span><p>The ground extent.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options</code>
+        (optional)
+        
+            &mdash; <span><p>See options of <a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a>.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.noControls</code>
+        (optional)
+        
+            &mdash; <span><p>If true, no controls are associated to the view.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.controls</code>
+        (optional)
+        
+            &mdash; <span><p>options for the <a onclick="window.parent.goTo('api/Controls/PlanarControls.html','api/Controls/PlanarControls')" title="PlanarControls">PlanarControls</a> associated to the view, if
+<code>options.noControls</code> is false.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.placement</code>
+        (optional)
+        
+            &mdash; <span><p>The
+CameraUtils~CameraTransformOptions to apply to view's camera or the extent it must display at
+initialization. By default, camera will display the view's extent (given in <code>extent</code> parameter).</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Example</h2>
+        
+
+
+    
+        <caption><b>Enable WebGl 1.0 instead of WebGl 2.0.</b></caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>var viewerDiv = document.getElementById('viewerDiv');
+const extent = new Extent('EPSG:3946', 1837816.94334, 1847692.32501, 5170036.4587, 5178412.82698);
+var view = new itowns.PlanarView(viewerDiv, extent, {  renderer: { isWebGL2: false } });</code></pre>
+
+    
+        <caption><b>Instance with placement on the ground.</b></caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>var viewerDiv = document.getElementById('viewerDiv');
+const extent = new Extent('EPSG:3946', 1837816.94334, 1847692.32501, 5170036.4587, 5178412.82698);
+var view = new itowns.PlanarView(viewerDiv, extent, { placement: { heading: -49.6, range: 6200, tilt: 17 } });</code></pre>
+
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">addFrameRequester</span>
+        (
+
+
+    
+    
+        when:
+            <span class="type">String</span>, 
+    
+        frameRequester:
+            <span class="type">FrameRequester</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Add a frame requester to this view.</p>
+<p>FrameRequesters can activate the MainLoop update by calling view.notifyChange.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>when</code>
+        
+        
+            &mdash; <span><p>decide when the frameRequester should be called during
+the update cycle. Can be any of MAIN_LOOP_EVENTS.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>frameRequester</code>
+        
+        
+            &mdash; <span><p>this function will be called at each
+MainLoop update with the time delta between last update, or 0 if the MainLoop
+has just been relaunched.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">addLayer</span>
+        (
+
+
+    
+    
+        layer:
+            <span class="type">LayerOptions|<a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a>|<a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></span>, 
+    
+        parentLayer:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Add layer in viewer.
+The layer id must be unique.</p>
+<p>The <code>layer.whenReady</code> is a promise that resolves when
+the layer is done. This promise is also returned by
+<code>addLayer</code> allowing to chain call.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>a promise resolved with the new layer object when it is fully initialized or rejected if any error occurred.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>layer</code>
+        
+        
+            &mdash; <span><p>The layer to add in view.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>parentLayer</code>
+        (optional)
+        
+            &mdash; <span><p>it's the layer to which the layer will be attached.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">dispose</span>
+        (
+
+
+    
+    
+        clearCache:
+            <span class="type">boolean</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Dispose viewer before delete it.</p>
+<p>Method dispose all viewer objects</p>
+<ul>
+<li>remove control</li>
+<li>remove all layers</li>
+<li>remove all frame requester</li>
+<li>remove all events</li>
+</ul>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>clearCache</code>
+        (optional)
+        
+            &mdash; <span><p>Whether to clear all the caches or not (layers cache, style cache, tilesCache)</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">eventToNormalizedCoords</span>
+        (
+
+
+    
+    
+        event:
+            <span class="type">event</span>, 
+    
+        touchIdx:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Extract normalized coordinates (NDC) from a mouse-event / touch-event</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <ul>
+<li>NDC coordinates (x and y are [-1, 1])</li>
+</ul>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>event</code>
+        
+        
+            &mdash; <span><p>event can be a MouseEvent or a TouchEvent</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>touchIdx</code>
+        
+        
+            &mdash; <span><p>finger index when using a TouchEvent (default: 0)</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">eventToViewCoords</span>
+        (
+
+
+    
+    
+        event:
+            <span class="type">event</span>, 
+    
+        target:
+            <span class="type">THREE.Vector2</span>, 
+    
+        touchIdx:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2|undefined</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Extract view coordinates from a mouse-event / touch-event</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <ul>
+<li>view coordinates (in pixels, 0-0 = top-left of the View).
+If the event is neither a <code>MouseEvent</code> nor a <code>TouchEvent</code>, the return is <code>undefined</code>.</li>
+</ul>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>event</code>
+        
+        
+            &mdash; <span><p>event can be a MouseEvent or a TouchEvent</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target</code>
+        
+        
+            &mdash; <span><p>the target to set the view coords in</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>touchIdx</code>
+        (optional)
+        
+            &mdash; <span><p>finger index when using a TouchEvent</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">execFrameRequesters</span>
+        (
+
+
+    
+    
+        when:
+            <span class="type">String</span>, 
+    
+        dt:
+            <span class="type">Number</span>, 
+    
+        updateLoopRestarted:
+            <span class="type">boolean</span>, 
+    
+        args:
+            <span class="type">*</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Execute a frameRequester.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>when</code>
+        
+        
+            &mdash; <span><p>attach point of this (these) requester(s). Can be any
+of MAIN_LOOP_EVENTS.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>dt</code>
+        
+        
+            &mdash; <span><p>delta between this update and the previous one</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>updateLoopRestarted</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>args</code>
+        
+        
+            &mdash; <span><p>optional arguments</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getDistanceFromCamera</span>
+        (
+
+
+    
+    
+        screenCoord:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Given a screen coordinates, get the distance between the projected
+coordinates and the camera associated to this view.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The distance in meters.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>screenCoord</code>
+        (optional)
+        
+            &mdash; <span><p>The screen coordinate to get the
+distance at. By default this is the middle of the screen.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getLayerById</span>
+        (
+
+
+    
+    
+        layerId:
+            <span class="type">String</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Gets the layer by identifier.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The layer by identifier.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>layerId</code>
+        
+        
+            &mdash; <span><p>The layer identifier</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getLayers</span>
+        (
+
+
+    
+    
+        filter:
+            <span class="type">function</span>
+    
+
+)
+        :
+            
+                <span class="type">Array.&lt;Layer></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Get all layers, with an optionnal filter applied.
+The filter method will be called with 2 args:</p>
+<ul>
+<li>1st: current layer</li>
+<li>2nd: (optional) the geometry layer to which the current layer is attached</li>
+</ul>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>filter</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// get all layers
+view.getLayers();
+// get all color layers
+view.getLayers(layer => layer.isColorLayer);
+// get all elevation layers
+view.getLayers(layer => layer.isElevationLayer);
+// get all geometry layers
+view.getLayers(layer => layer.isGeometryLayer);
+// get one layer with id
+view.getLayers(layer => layer.id === 'itt');</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getMetersToPixels</span>
+        (
+
+
+    
+    
+        meters:
+            <span class="type">number</span>, 
+    
+        screenCoord:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Get, for a specific screen coordinate, the size in pixels of a projected
+distance on the surface of the main layer of the view.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The projected distance in pixels.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>meters</code>
+        (default: <code>1</code>)
+        
+        
+            &mdash; <span><p>The size, in meters, to get in pixels.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>screenCoord</code>
+        (optional)
+        
+            &mdash; <span><p>The screen coordinate to get the
+projected distance at. By default, this is the middle of the screen.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getPickingPositionFromDepth</span>
+        (
+
+
+    
+    
+        mouse:
+            <span class="type">THREE.Vector2</span>, 
+    
+        target:
+            <span class="type">THREE.Vector3</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector3</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Returns the world position (view's crs: referenceCrs) under view coordinates.
+This position is computed with depth buffer.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the world position in view's crs: referenceCrs.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>mouse</code>
+        
+        
+            &mdash; <span><p>position in view coordinates (in pixel), if it's null so it's view's center.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target</code>
+        (default: <code>THREE.Vector3()</code>)
+        
+        
+            &mdash; <span><p>target. the result will be copied into this Vector3. If not present a new one will be created.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getPixelsToMeters</span>
+        (
+
+
+    
+    
+        pixels:
+            <span class="type">number</span>, 
+    
+        screenCoord:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Get, for a specific screen coordinate, the projected distance on the
+surface of the main layer of the view.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The projected distance in meters.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>pixels</code>
+        (default: <code>1</code>)
+        
+        
+            &mdash; <span><p>The size, in pixels, to get in meters.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>screenCoord</code>
+        (optional)
+        
+            &mdash; <span><p>The screen coordinate to get the
+projected distance at. By default, this is the middle of the screen.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getScale</span>
+        (
+
+
+    
+    
+        pitch:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Return the current zoom scale at the central point of the view. This
+function compute the scale of a map.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The zoom scale.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>pitch</code>
+        (default: <code>0.28</code>)
+        
+        
+            &mdash; <span><p>Screen pitch, in millimeters ; 0.28 by default</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">normalizedToViewCoords</span>
+        (
+
+
+    
+    
+        ndcCoords:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Convert NDC coordinates to view coordinates</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <ul>
+<li>view coordinates (in pixels, 0-0 = top-left of the View)</li>
+</ul>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>ndcCoords</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">notifyChange</span>
+        (
+
+
+    
+    
+        changeSource:
+            <span class="type">*</span>, 
+    
+        needsRedraw:
+            <span class="type">boolean</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Notifies the scene it needs to be updated due to changes exterior to the
+scene itself (e.g. camera movement).
+non-interactive events (e.g: texture loaded)</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>changeSource</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>needsRedraw</code>
+        (default: <code>true</code>)
+        
+        
+            &mdash; <span><p>indicates if notified change requires a full scene redraw.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">pickCoordinates</span>
+        (
+
+
+    
+    
+        mouse:
+            <span class="type">THREE.Vector2|event</span>, 
+    
+        target:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Returns the world <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> at given view coordinates.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The world <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> at the given view coordinates.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>mouse</code>
+        (optional)
+        
+            &mdash; <span><p>The view coordinates at which the world coordinates must be
+returned. This parameter can also be set to a mouse event from
+which the view coordinates will be deducted. If not specified, it
+will be defaulted to the view's center coordinates.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target</code>
+        (optional)
+        
+            &mdash; <span><p>The result will be copied into this <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a>. If not
+specified, a new <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> instance will be created.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">pickFeaturesAt</span>
+        (
+
+
+    
+    
+        mouseOrEvt:
+            <span class="type">Object</span>, 
+    
+        radius:
+            <span class="type">number</span>, 
+    
+        where:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a>|<a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>|string</span>
+    
+
+)
+        :
+            
+                <span class="type">Object</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Searches for <a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a> in <a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a>, under the mouse of at
+a specified coordinates, in this view.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <ul>
+<li>An object, with a property per layer. For example,
+looking for features on layers <code>wfsBuilding</code> and <code>wfsRoads</code> will give an
+object like <code>{ wfsBuilding: [...], wfsRoads: [] }</code>. Each property is made
+of an array, that can be empty or filled with found features.</li>
+</ul>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>mouseOrEvt</code>
+        
+        
+            &mdash; <span><p>Mouse position in window coordinates (from
+the top left corner of the window) or <code>MouseEvent</code> or <code>TouchEvent</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>radius</code>
+        (default: <code>3</code>)
+        
+        
+            &mdash; <span><p>The picking will happen in a circle centered
+on mouseOrEvt. This is the radius of this circle, in pixels.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>where</code>
+        (optional)
+        
+            &mdash; <span><p>The layers to look
+into. If not specified, all <a onclick="window.parent.goTo('api/Layer/ColorLayer.html','api/Layer/ColorLayer')" title="ColorLayer">ColorLayer</a> and <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>
+layers of this view will be looked in.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>view.pickFeaturesAt({ x, y });
+view.pickFeaturesAt({ x, y }, 1, 'wfsBuilding');
+view.pickFeaturesAt({ x, y }, 3, 'wfsBuilding', myLayer);</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">pickObjectsAt</span>
+        (
+
+
+    
+    
+        mouseOrEvt:
+            <span class="type">Object</span>, 
+    
+        radius:
+            <span class="type">number</span>, 
+    
+        where:
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>|string|Object3D</span>
+    
+
+)
+        :
+            
+                <span class="type">Array.&lt;Object></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Searches for objects in <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a> and specified
+<code>THREE.Object3D</code>, under the mouse or at a specified coordinates, in this
+view.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <ul>
+<li>An array of objects. Each element contains at least
+an object property which is the <code>THREE.Object3D</code> under the cursor. Then
+depending on the queried layer/source, there may be additionnal
+properties (coming from <code>THREE.Raycaster</code> for instance).</li>
+</ul>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>mouseOrEvt</code>
+        
+        
+            &mdash; <span><p>Mouse position in window coordinates (from
+the top left corner of the window) or <code>MouseEvent</code> or <code>TouchEvent</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>radius</code>
+        (optional)
+        
+            &mdash; <span><p>The picking will happen in a circle centered
+on mouseOrEvt. This is the radius of this circle, in pixels.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>where</code>
+        (optional)
+        
+            &mdash; <span><p>Where to look for
+objects. It can be anything of <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, IDs of layers, or
+<code>THREE.Object3D</code>. If no location is specified, it will query on all
+<a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a> present in this <code>View</code>.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>view.pickObjectsAt({ x, y })
+view.pickObjectsAt({ x, y }, 1, 'wfsBuilding')
+view.pickObjectsAt({ x, y }, 3, 'wfsBuilding', myLayer)</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">removeAllEvents</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Removes all viewer events.</p>
+            </div>
+        
+    
+
+    
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">removeAllFrameRequesters</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Removes all frame requesters.</p>
+            </div>
+        
+    
+
+    
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">removeFrameRequester</span>
+        (
+
+
+    
+    
+        when:
+            <span class="type">String</span>, 
+    
+        frameRequester:
+            <span class="type">FrameRequester</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Remove a frameRequester.
+The effective removal will happen either later; at worst it'll be at
+the beginning of the next frame.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>when</code>
+        
+        
+            &mdash; <span><p>attach point of this requester. Can be any of
+MAIN_LOOP_EVENTS.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>frameRequester</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">removeLayer</span>
+        (
+
+
+    
+    
+        layerId:
+            <span class="type">string</span>, 
+    
+        clearCache:
+            <span class="type">boolean</span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Removes a specific imagery layer from the current layer list. This removes layers inserted with attach().</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>layerId</code>
+        
+        
+            &mdash; <span><p>The identifier</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>clearCache</code>
+        (optional)
+        
+            &mdash; <span><p>Whether to clear all the layer cache or not</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>view.removeLayer('layerId');</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">resize</span>
+        (
+
+
+    
+    
+        width:
+            <span class="type">number</span>, 
+    
+        height:
+            <span class="type">number</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Resize the viewer.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>width</code>
+        (default: <code>viewerDiv.clientWidth</code>)
+        
+        
+            &mdash; <span><p>The width to resize the
+viewer with. By default it is the <code>clientWidth</code> of the <code>viewerDiv</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>height</code>
+        (default: <code>viewerDiv.clientHeight</code>)
+        
+        
+            &mdash; <span><p>The height to resize
+the viewer with. By default it is the <code>clientHeight</code> of the <code>viewerDiv</code>.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">viewToNormalizedCoords</span>
+        (
+
+
+    
+    
+        viewCoords:
+            <span class="type">THREE.Vector2</span>, 
+    
+        target:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Convert view coordinates to normalized coordinates (NDC)</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <ul>
+<li>NDC coordinates (x and y are [-1, 1])</li>
+</ul>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>viewCoords</code>
+        
+        
+            &mdash; <span><p>(in pixels, 0-0 = top-left of the View)</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Events</h2>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">dblclick-right</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Fired on current view's domElement when double right-clicking it. Copies all properties of the second right-click
+MouseEvent (such as cursor position).</p>
+        </div>
+    
+
+    
+        <h4>Properties</h4>
+        
+        
+
+<ul class="params">
+    
+    <li>
+        <code>type: <span class="type">string</span></code>
+        
+        
+            &mdash; <span><p>dblclick-right</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">layers-initialized</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Fires when all the layers of the view are considered initialized.
+Initialized in this context means: all layers are ready to be
+displayed (no pending network access, no visual improvement to be
+expected, ...).
+If you add new layers, the event will be fired again when all
+layers are ready.</p>
+        </div>
+    
+
+    
+        <h4>Properties</h4>
+        
+        
+
+<ul class="params">
+    
+    <li>
+        <code>type: <span class="type">string</span></code>
+        
+        
+            &mdash; <span><p>layers-initialized</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+</div>
+
+            
+        
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/Prefab/PlanarView.js">
+            src/Core/Prefab/PlanarView.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

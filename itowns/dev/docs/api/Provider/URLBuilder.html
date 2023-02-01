@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>URLBuilder - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        URLBuilder
+        
+    </h1>
+
+    
+        <div class="description"><p>This module performs basic operations around urls, to replace some elements
+in it by coordinates or other things.</p>
+<p>In an url, it is also possible to specify subdomains alternatives using the
+<code>${u:a|b|c}</code> pattern, by separating differents options using <code>|</code>. It will go
+through the following alternative each time (no random). For example
+<code>https://${u:xyz.org|yzx.org|zxy.org}/${z}/${x}/${y}.png</code> or
+<code>https://${u:a|b|c}.tile.openstreetmap.org/${z}/${x}/${y}.png</code>.</p></div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Static Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">bbox</span>
+        (
+
+
+    
+    
+        bbox:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        source:
+            <span class="type"><a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a></span>
+    
+
+)
+        :
+            
+                <span class="type">string</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Builds an URL knowing the bounding box and the source to query.
+<br><br>
+The source object needs to have an url property, which should have the
+string <code>%bbox</code> in it. This string will be replaced by the four cardinal
+points composing the bounding box.
+<br><br>
+Order of the points can be specified in the <code>axisOrder</code> property in
+source, using the letters <code>w, s, e, n</code> respectively for <code>WEST, SOUTH, EAST, NORTH</code>. The default order is <code>wsen</code>.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the formed url</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>bbox</code>
+        
+        
+            &mdash; <span><p>the bounding box</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>source</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>extent = new Extent('EPSG:4326', 12, 14, 35, 46);
+source.crs = 'EPSG:4326';
+source.url = 'http://server.geo/wms/BBOX=%bbox&FORMAT=jpg&SERVICE=WMS';
+url = URLBuilder.bbox(extent, source);
+
+// The resulting url is:
+// http://server.geo/wms/BBOX=12,35,14,46&FORMAT=jpg&SERVICE=WMS</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">xyz</span>
+        (
+
+
+    
+    
+        coords:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        source:
+            <span class="type"><a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a></span>
+    
+
+)
+        :
+            
+                <span class="type">string</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Builds an URL knowing the coordinates and the source to query.
+<br><br>
+The source object needs to have an url property, which should have some
+specific strings that will be replaced by coordinates.</p>
+<ul>
+<li>`${x}` or `%COL` will be replaced by `coords.col`</li>
+<li>`${y}` or `%ROW` will be replaced by `coords.row`</li>
+<li>`${z}` or `%TILEMATRIX` will be replaced by `coords.zoom`</li>
+</ul>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the formed url</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>coords</code>
+        
+        
+            &mdash; <span><p>the coordinates</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>source</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>coords = new Extent(CRS.formatToTms('EPSG:4326'), 12, 1410, 2072);
+source.url = 'http://server.geo/wmts/SERVICE=WMTS&TILEMATRIX=%TILEMATRIX&TILEROW=%ROW&TILECOL=%COL';
+url = URLBuilder.xyz(coords, source);
+
+// The resulting url is:
+// http://server.geo/wmts/SERVICE=WMTS&TILEMATRIX=12&TILEROW=1410&TILECOL=2072;</code></pre>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>coords = new Extent('TMS', 15, 2142, 3412);
+source.url = 'http://server.geo/tms/${z}/${y}/${x}.jpg';
+url = URLBuilder.xyz(coords, source);
+
+// The resulting url is:
+// http://server.geo/tms/15/2142/3412.jpg;</code></pre>
+
+
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Provider/URLBuilder.js">
+            src/Provider/URLBuilder.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

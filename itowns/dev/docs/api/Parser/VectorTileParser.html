@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>VectorTileParser - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        VectorTileParser
+        
+    </h1>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Static Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">parse</span>
+        (
+
+
+    
+    
+        file:
+            <span class="type">ArrayBuffer</span>, 
+    
+        options:
+            <span class="type"><a onclick="window.parent.goTo('api/Source/ParsingOptions.html','api/Source/ParsingOptions')" title="ParsingOptions">ParsingOptions</a></span>
+    
+
+)
+        :
+            
+                <span class="type">Promise</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Parse a vector tile file and return a Feature
+or an array of Features. While multiple formats of vector tile are
+available, the only one supported for the moment is the
+<a href="https://www.mapbox.com/vector-tiles/specification/">Mapbox Vector Tile</a>.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>A Promise resolving with a Feature or an array a
+Features.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>file</code>
+        
+        
+            &mdash; <span><p>The vector tile file to parse.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options</code>
+        
+        
+            &mdash; <span><p>Options controlling the parsing <a onclick="window.parent.goTo('api/Source/ParsingOptions.html','api/Source/ParsingOptions')" title="ParsingOptions">ParsingOptions</a>.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.in</code>
+        
+        
+            &mdash; <span><p>Object containing all styles,
+layers and informations data, see <a onclick="window.parent.goTo('api/Source/InformationsData.html','api/Source/InformationsData')" title="InformationsData">InformationsData</a>.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.in.Styles</code>
+        
+        
+            &mdash; <span><p>Object containing subobject with
+informations on a specific style layer. Styles available is by <code>layer.id</code> and by zoom.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.in.layers</code>
+        
+        
+            &mdash; <span><p>Object containing subobject with</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>options.out</code>
+        
+        
+            &mdash; <span><p>options indicates how the features should be built,
+see <a onclick="window.parent.goTo('api/Base/FeatureBuildingOptions.html','api/Base/FeatureBuildingOptions')" title="FeatureBuildingOptions">FeatureBuildingOptions</a>.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Parser/VectorTileParser.js">
+            src/Parser/VectorTileParser.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

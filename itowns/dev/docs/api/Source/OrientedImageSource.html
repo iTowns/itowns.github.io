@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>OrientedImageSource - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        OrientedImageSource
+        
+            <span class="extends">extends <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a></span>
+        
+    </h1>
+
+    
+        <div class="description"><p>OrientedImageSource is a specific source used to load oriented images.</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">OrientedImageSource</span>
+        (
+
+
+    
+    
+        source:
+            <span class="type">Object</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>source</code>
+        
+        
+            &mdash; <span><p>Configuration object</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>source.url</code>
+        
+        
+            &mdash; <span><p>Url for all the textures.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>source.orientationsUrl</code>
+        
+        
+            &mdash; <span><p>Json Url, using GeoJSon format to represent points,
+it's a set of panoramic position and orientation.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>source.calibrationUrl</code>
+        
+        
+            &mdash; <span><p>Json url, representing a set of camera. see <a onclick="window.parent.goTo('api/Parser/CameraCalibrationParser.html','api/Parser/CameraCalibrationParser')" title="CameraCalibrationParser">CameraCalibrationParser</a>
+This Url must contains {sensorId} and {cameraId}, and these pattern will be replaced to build the Url,
+to find the good texture for each camera for each panoramic.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">extentInsideLimit</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Tests if an extent is inside the source limits.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>True if the extent is inside the limit, false otherwise.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span><p>Extent to test.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">imageUrl</span>
+        (
+
+
+    
+    
+        cameraId:
+            <span class="type">string</span>, 
+    
+        panoId:
+            <span class="type">string</span>
+    
+
+)
+        :
+            
+                <span class="type">string</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Build the url of the image, for a given panoramic id, and a given camera id.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>Url of the image</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>cameraId</code>
+        
+        
+            &mdash; <span><p>Id of the camera</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>panoId</code>
+        
+        
+            &mdash; <span><p>Id of the panoramic</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">loadData</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        out:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/FeatureBuildingOptions.html','api/Base/FeatureBuildingOptions')" title="FeatureBuildingOptions">FeatureBuildingOptions</a>|<a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Base/FeatureCollection.html','api/Base/FeatureCollection')" title="FeatureCollection">FeatureCollection</a>|Texture</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Load  data from cache or Fetch/Parse data.
+The loaded data is a Feature or Texture.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The parsed data.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span><p>extent requested parsed data.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>out</code>
+        
+        
+            &mdash; <span><p>The feature returned options</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">onLayerAdded</span>
+        (
+
+
+    
+    
+        options:
+            <span class="type">object</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Called when layer added.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>options</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">onLayerRemoved</span>
+        (
+
+
+    
+    
+        options:
+            <span class="type">options</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Called when layer removed.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>options</code>
+        (default: <code>{}</code>)
+        
+        
+            &mdash; <span><p>options</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">urlFromExtent</span>
+        (
+
+
+    
+    
+        imageInfo:
+            <span class="type">Object</span>
+    
+
+)
+        :
+            
+                <span class="type">string</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Build the url of the texture, but not from extent.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>Url of the image</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>imageInfo</code>
+        
+        
+            &mdash; <span><p>Information about the texture</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>imageInfo.camera</code>
+        
+        
+            &mdash; <span><p>Id of the camera</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>imageInfo.pano</code>
+        
+        
+            &mdash; <span><p>Id of the panoramic</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Source/OrientedImageSource.js">
+            src/Source/OrientedImageSource.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

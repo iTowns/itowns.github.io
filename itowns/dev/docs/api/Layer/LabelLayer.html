@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>LabelLayer - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        LabelLayer
+        
+            <span class="extends">extends <a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+        
+    </h1>
+
+    
+        <div class="description"><p>A layer to handle a bunch of <code>Label</code>. This layer can be created on its own,
+but it is better to use the option <code>addLabelLayer</code> on another <code>Layer</code> to let
+it work with it (see the <code>vector_tile_raster_2d</code> example).</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">LabelLayer</span>
+        (
+
+
+    
+    
+        id:
+            <span class="type">string</span>, 
+    
+        config:
+            <span class="type">Object</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>id</code>
+        
+        
+            &mdash; <span><p>The id of the layer, that should be unique. It is
+not mandatory, but an error will be emitted if this layer is added a
+<a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> that already has a layer going by that id.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config</code>
+        (optional)
+        
+            &mdash; <span><p>Optional configuration, all elements in it
+will be merged as is in the layer. For example, if the configuration
+contains three elements <code>name, protocol, extent</code>, these elements will be
+available using <code>layer.name</code> or something else depending on the property
+name.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>config.domElement</code>
+        
+        
+            &mdash; <span><p>An HTML domElement.
+If set, all <code>Label</code> displayed within the current instance <code>LabelLayer</code>
+will be this domElement.</p>
+<p>It can be set to a method. The single parameter of this method gives the
+properties of each feature on which a <code>Label</code> is created.</p>
+<p>If set, all the parameters set in the <code>LabelLayer</code> <code>Style.text</code> will be overridden,
+except for the <code>Style.text.anchor</code> parameter which can help place the label.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">isLabelLayer</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Used to checkout whether this layer is a
+LabelLayer.  Default is true. You should not change this, as it is used
+internally for optimisation.</p>
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">convert</span>
+        (
+
+
+    
+    
+        data:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/FeatureCollection.html','api/Base/FeatureCollection')" title="FeatureCollection">FeatureCollection</a></span>, 
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type">Array.&lt;Label></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Reads each <a onclick="window.parent.goTo('api/Base/FeatureGeometry.html','api/Base/FeatureGeometry')" title="FeatureGeometry">FeatureGeometry</a> that contains label configuration, and
+creates the corresponding <a onclick="window.parent.goTo('api/Base/Label.html','api/Base/Label')" title="Label">Label</a>. To create a <code>Label</code>, a geometry
+needs to have a <code>label</code> object with at least a few properties:</p>
+<ul>
+<li><code>content</code>, which refers to <code>Label#content</code></li>
+<li><code>position</code>, which refers to <code>Label#position</code></li>
+<li>(optional) <code>config</code>, containing miscellaneous configuration for the
+label</li>
+</ul>
+<p>The geometry (or its parent Feature) needs to have a Style set.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>An array containing all the created labels.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>data</code>
+        
+        
+            &mdash; <span><p>The FeatureCollection to read the
+labels from.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>extent</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">defineLayerProperty</span>
+        (
+
+
+    
+    
+        propertyName:
+            <span class="type">string</span>, 
+    
+        defaultValue:
+            <span class="type">*</span>, 
+    
+        onChange:
+            <span class="type">function</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Defines a property for this layer, with a default value and a callback
+executed when the property changes.
+<br><br>
+When changing the property, it also emits an event, named following this
+convention: <code>${propertyName}-property-changed</code>, with <code>${propertyName}</code>
+being replaced by the name of the property.  For example, if the added
+property name is <code>frozen</code>, it will emit a <code>frozen-property-changed</code>.
+<br><br></p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>propertyName</code>
+        
+        
+            &mdash; <span><p>The name of the property, also used in
+the emitted event name.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>defaultValue</code>
+        
+        
+            &mdash; <span><p>The default set value.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>onChange</code>
+        (optional)
+        
+            &mdash; <span><p>The function executed when the property is
+changed. Parameters are the layer the property is defined on, and the
+name of the property.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+        <caption>The emitted event has some properties assigned to it</caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>event = {
+    new: {
+        ${propertyName}: * // the new value of the property
+    },
+    previous: {
+        ${propertyName}: * // the previous value of the property
+    },
+    target: Layer // the layer it has been dispatched from
+    type: string // the name of the emitted event
+}</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">delete</span>
+        (
+
+
+    
+    
+        clearCache:
+            <span class="type">boolean</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>All layer's objects and domElements are removed.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>clearCache</code>
+        (optional)
+        
+            &mdash; <span><p>Whether to clear the layer cache or not</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">isValidData</span>
+        (
+
+
+    
+    
+        feature:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Determines whether the specified feature is valid data.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the feature is returned if it's valided</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>feature</code>
+        
+        
+            &mdash; <span><p>The feature</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Layer/LabelLayer.js">
+            src/Layer/LabelLayer.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

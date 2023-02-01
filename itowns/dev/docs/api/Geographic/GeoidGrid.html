@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>GeoidGrid - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        GeoidGrid
+        
+    </h1>
+
+    
+        <div class="description"><p>An instance of <code>GeoidGrid</code> allows accessing some geoid height grid data from geographic instances (like some
+<code><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></code>). The geoid height grid data must contain geoid height values for a set of geographic points
+regularly dispatched on a planar surface.</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">GeoidGrid</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        step:
+            <span class="type">THREE.Vector2</span>, 
+    
+        getData:
+            <span class="type">function</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span><p>The geographic extent of the geoid height grid data.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>step</code>
+        
+        
+            &mdash; <span><p>The distance between two consecutive points of the geoid height grid. The
+<code>x</code> value stands for the distance along the West-East direction, and the
+<code>y</code> value stands for the distance along the South-North direction.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>getData</code>
+        
+        
+            &mdash; <span><p>A method that allows reading a value in the geoid height grid from its
+vertical and horizontal indexes. The lower an index, the lower the
+coordinate on the corresponding axis - 0 being the index of the minimal
+coordinate of the gridded data on a given axis. In other words :</p>
+<ul>
+<li><code>getData(0, 0)</code> must return the geoid height value at the SOUTH-WEST
+corner of your data extent.</li>
+<li><code>getData(0, j)</code> must return a geoid height on the southern limit of your
+data extent.</li>
+<li><code>getData(i, 0)</code> must return a geoid height on the western limit of your
+data extent.</li>
+<li>if your gridded data has dimensions (rowNumber, colNumber),
+<code>getData(rowNumber - 1, colNumber - 1)</code> must return the geoid height at
+the NORTH-EAST corner of your data extent.</li>
+</ul></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Example</h2>
+        
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// Create a set of gridded data.
+const data = [
+    [1, 2, 3],
+    [2, 3, 4],
+    [3, 4, 5],
+];
+// This set of data presents the following spatial distribution of geoid heights values :
+//
+//    Latitudes  ^
+//               |
+//         41.0  |   3  4  5
+//         40.5  |   2  3  4
+//         40.0  |   1  2  3
+//               |------------->
+//                   1  2  3     Longitudes
+
+// Create a GeoidGrid allowing to access the gridded data.
+const geoidGrid = new GeoidGrid(
+    new Extent('EPSG:4326', 1, 3, 40, 41),
+    new THREE.Vector2(1, 0.5),
+    (verticalIndex, horizontalIndex) => data[verticalIndex][horizontalIndex],
+);
+
+// Access a value of geoid height at some geographic coordinates.
+// The value is interpolated from the gridded data.
+const value = geoidGrid.getHeightAtCoordinates(
+    new Coordinates('EPSG:4326', 1.5, 40.25)
+);
+// This should return 2.0, which is the result from the bi-linear
+// interpolation at the center of the `[[1, 2], [2, 3]]` subsection
+// of the grid data.</code></pre>
+
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">extent</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The geographic extent of the geoid height grid data.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">step</span>
+        : <span class="type">THREE.Vector2</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The distance between two consecutive points of the geoid height grid. The
+<code>x</code> value stands for the distance along the West-East direction, and the
+<code>y</code> value stands for the distance along the South-North direction.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">dimensions</span>
+        : <span class="type">THREE.Vector2</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The planar dimensions of the geoid height grid data extent.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">dataSize</span>
+        : <span class="type">THREE.Vector2</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The number of values in the gridded data along the West-East direction (<code>x</code>
+axis) and the South-North direction (<code>y</code> axis).</p>
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getHeightAtCoordinates</span>
+        (
+
+
+    
+    
+        coordinates:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+    
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Get the value of the geoid height at given geographic <code><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></code>. The geoid height value is
+bi-linearly interpolated from the gridded data accessed by the <code>GeoidGrid</code> instance.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The geoid height value at the given <code><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></code>, bi-interpolated from the gridded
+data accessed by the <code>GeoidGrid</code> instance.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>coordinates</code>
+        
+        
+            &mdash; <span><p>Geographic coordinates to get the geoid height value at.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/Geographic/GeoidGrid.js">
+            src/Core/Geographic/GeoidGrid.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,1942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Extent - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        Extent
+        
+    </h1>
+
+    
+        <div class="description"><p>Extent is geographical bounding rectangle defined by 4 limits: west, east, south and north.
+If crs is tiled projection (WMTS or TMS), the extent is defined by zoom, row and column.</p>
+<p>Warning, using geocentric projection isn't consistent with geographical extent.</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">Extent</span>
+        (
+
+
+    
+    
+        crs:
+            <span class="type">String</span>, 
+    
+        v0:
+            <span class="type">number|Array.&lt;number>|<a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a>|Object</span>, 
+    
+        v1:
+            <span class="type">number|<a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>, 
+    
+        v2:
+            <span class="type">number</span>, 
+    
+        v3:
+            <span class="type">number</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>crs</code>
+        
+        
+            &mdash; <span><p>projection of limit values.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>v0</code>
+        
+        
+            &mdash; <span><p>west value, zoom
+value, Array of values [west, east, south and north], Coordinates of
+west-south corner or object {west, east, south and north}</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>v1</code>
+        (optional)
+        
+            &mdash; <span><p>east value, row value or Coordinates of
+east-north corner</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>v2</code>
+        (optional)
+        
+            &mdash; <span><p>south value or column value</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>v3</code>
+        (optional)
+        
+            &mdash; <span><p>north value</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">applyMatrix4</span>
+        (
+
+
+    
+    
+        matrix:
+            <span class="type">THREE.Matrix4</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Multiplies all extent <code>coordinates</code> (with an implicit 1 in the 4th dimension) and <code>matrix</code>.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>return this extent instance.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>matrix</code>
+        
+        
+            &mdash; <span><p>The matrix</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">as</span>
+        (
+
+
+    
+    
+        crs:
+            <span class="type">string</span>, 
+    
+        target:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Convert Extent to the specified projection.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>crs</code>
+        
+        
+            &mdash; <span><p>the projection of destination.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target</code>
+        
+        
+            &mdash; <span><p>copy the destination to target.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">center</span>
+        (
+
+
+    
+    
+        target:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Return the center of Extent</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>target</code>
+        
+        
+            &mdash; <span><p>copy the center to the target.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">clampByExtent</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>clamp this extent by passed extent</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>this extent.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span><p>The maximum extent.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">clampSouthNorth</span>
+        (
+
+
+    
+    
+        south:
+            <span class="type">number</span>, 
+    
+        north:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>clamp south and north values</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>this extent</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>south</code>
+        (default: <code>this.south</code>)
+        
+        
+            &mdash; <span><p>The min south</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>north</code>
+        (default: <code>this.north</code>)
+        
+        
+            &mdash; <span><p>The max north</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">clampWestEast</span>
+        (
+
+
+    
+    
+        west:
+            <span class="type">number</span>, 
+    
+        east:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>clamp west and east values</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>this extent</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>west</code>
+        (default: <code>this.west</code>)
+        
+        
+            &mdash; <span><p>The min west</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>east</code>
+        (default: <code>this.east</code>)
+        
+        
+            &mdash; <span><p>The max east</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">clone</span>
+        (
+
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Clone this extent</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>cloned extent</p>
+                
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">copy</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Copy to this extent to input extent.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>copied extent</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">dimensions</span>
+        (
+
+
+    
+    
+        target:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Returns the dimension of the extent, in a <code>THREE.Vector2</code>.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>target</code>
+        (optional)
+        
+            &mdash; <span><p>The target to assign the result in.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">expandByCoordinates</span>
+        (
+
+
+    
+    
+        coordinates:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>expandByCoordinates perfoms the minimal extension
+for the coordinates to belong to this Extent object</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>coordinates</code>
+        
+        
+            &mdash; <span><p>The coordinates to belong</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">expandByValuesCoordinates</span>
+        (
+
+
+    
+    
+        we:
+            <span class="type">number</span>, 
+    
+        sn:
+            <span class="type">number</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>expandByValuesCoordinates perfoms the minimal extension
+for the coordinates values to belong to this Extent object</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>we</code>
+        
+        
+            &mdash; <span><p>The coordinate on west-east</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>sn</code>
+        
+        
+            &mdash; <span><p>The coordinate on south-north</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">geodeticDimensions</span>
+        (
+
+
+    
+    
+        target:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Geodetic dimensions are two planar distances west/east and south/north.
+Geodetic distance is calculated in an ellispoid space as the distance
+across the curved surface of the world.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>geodetic dimensions</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>target</code>
+        (default: <code>new THREE.Vector2()</code>)
+        
+        
+            &mdash; <span><p>The target</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">intersect</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type">Boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Return the intersection of this extent with another one</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">intersectsExtent</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        :
+            
+                <span class="type">Boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Return true if this bounding box intersect with the bouding box parameter</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">isInside</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        epsilon:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Return true if <code>extent</code> is inside this extent.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span><p>the extent to check</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>epsilon</code>
+        
+        
+            &mdash; <span><p>to take into account when comparing to the
+point.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">isPointInside</span>
+        (
+
+
+    
+    
+        coord:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>, 
+    
+        epsilon:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Return true if <code>coord</code> is inside the bounding box.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>coord</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>epsilon</code>
+        (optional)
+        
+            &mdash; <span><p>to take into account when comparing to the
+point.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">offsetToParent</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        target:
+            <span class="type">THREE.Vector4</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector4</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Return the translation and scale to transform this extent to input extent.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>{x: translation on west-east, y: translation on south-north, z: scale on west-east, w: scale on south-north}</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span><p>input extent</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target</code>
+        
+        
+            &mdash; <span><p>copy the result to target.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">planarDimensions</span>
+        (
+
+
+    
+    
+        target:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Planar dimensions are two planar distances west/east and south/north.
+Planar distance straight-line Euclidean distance calculated in a 2D Cartesian coordinate system.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>Planar dimensions</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>target</code>
+        (default: <code>new THREE.Vector2()</code>)
+        
+        
+            &mdash; <span><p>The target</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">set</span>
+        (
+
+
+    
+    
+        v0:
+            <span class="type">number|Array.&lt;number>|<a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a>|Object|<a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        v1:
+            <span class="type">number|<a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>, 
+    
+        v2:
+            <span class="type">number</span>, 
+    
+        v3:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Set west, east, south and north values.
+Or if tiled extent, set zoom, row and column values</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>v0</code>
+        
+        
+            &mdash; <span><p>west value,
+zoom value, Array of values [west, east, south and north], Extent of same
+type (tiled or not), Coordinates of west-south corner or object {west,
+east, south and north}</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>v1</code>
+        (optional)
+        
+            &mdash; <span><p>east value, row value or Coordinates of
+east-north corner</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>v2</code>
+        (optional)
+        
+            &mdash; <span><p>south value or column value</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>v3</code>
+        (optional)
+        
+            &mdash; <span><p>north value</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">spatialEuclideanDimensions</span>
+        (
+
+
+    
+    
+        target:
+            <span class="type">THREE.Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Vector2</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Spatial euclidean dimensions are two spatial euclidean distances between west/east corner and south/north corner.
+Spatial euclidean distance chord is calculated in a ellispoid space.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>spatial euclidean dimensions</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>target</code>
+        (default: <code>new THREE.Vector2()</code>)
+        
+        
+            &mdash; <span><p>The target</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">subdivision</span>
+        (
+
+
+)
+        :
+            
+                <span class="type">Array.&lt;Extent></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Subdivide equally an extent from its center to return four extents:
+north-west, north-east, south-west and south-east.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>An array containing the four sections of the extent. The
+order of the sections is [NW, NE, SW, SE].</p>
+                
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">subdivisionByScheme</span>
+        (
+
+
+    
+    
+        scheme:
+            <span class="type">Vector2</span>
+    
+
+)
+        :
+            
+                <span class="type">Array.&lt;Extent></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>subdivise extent by scheme.x on west-east and scheme.y on south-north.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>subdivised extents.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>scheme</code>
+        (default: <code>Vector2(2,2)</code>)
+        
+        
+            &mdash; <span><p>The scheme to subdivise.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">tiledCovering</span>
+        (
+
+
+    
+    
+        crs:
+            <span class="type">string</span>
+    
+
+)
+        :
+            
+                <span class="type">Array.&lt;Extent></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>get tiled extents convering this extent</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>array of extents covering</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>crs</code>
+        
+        
+            &mdash; <span><p>WMTS, TMS crs</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">tiledExtentParent</span>
+        (
+
+
+    
+    
+        levelParent:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Return parent tiled extent with input level</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>levelParent</code>
+        
+        
+            &mdash; <span><p>level of parent.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">toString</span>
+        (
+
+
+    
+    
+        separator:
+            <span class="type">string</span>
+    
+
+)
+        :
+            
+                <span class="type">string</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Return values of extent in string, separated by the separator input.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>separator</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">union</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Union this extent with the input extent.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span><p>the extent to union.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Static Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">fromBox3</span>
+        (
+
+
+    
+    
+        crs:
+            <span class="type">string</span>, 
+    
+        box:
+            <span class="type">THREE.Box3</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Instance Extent with THREE.Box3.</p>
+<p>If crs is a geocentric projection, the <code>box3.min</code> and <code>box3.max</code>
+should be the geocentric coordinates of <code>min</code> and <code>max</code> of a <code>box3</code>
+in local tangent plane.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>crs</code>
+        
+        
+            &mdash; <span><p>Projection of extent to instancied.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>box</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/Geographic/Extent.js">
+            src/Core/Geographic/Extent.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>
