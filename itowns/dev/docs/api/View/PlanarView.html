@@ -979,7 +979,7 @@ projected distance at. By default, this is the middle of the screen.</p></span>
     
         
             <div class="description">
-                <p>Returns the world position (view's crs: referenceCrs) under view coordinates.
+                <p>Returns the world position on the terrain (view's crs: referenceCrs) under view coordinates.
 This position is computed with depth buffer.</p>
             </div>
         
@@ -988,7 +988,7 @@ This position is computed with depth buffer.</p>
     
                 <h4>Returns</h4>
                 
-                    <p>the world position in view's crs: referenceCrs.</p>
+                    <p>the world position on the terrain in view's crs: referenceCrs.</p>
                 
 
     
@@ -1337,7 +1337,7 @@ non-interactive events (e.g: texture loaded)</p>
     
         
             <div class="description">
-                <p>Returns the world <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> at given view coordinates.</p>
+                <p>Returns the world <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> of the terrain at given view coordinates.</p>
             </div>
         
     
@@ -1345,7 +1345,7 @@ non-interactive events (e.g: texture loaded)</p>
     
                 <h4>Returns</h4>
                 
-                    <p>The world <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> at the given view coordinates.</p>
+                    <p>The world <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> of the terrain at the given view coordinates.</p>
                 
 
     
@@ -1610,6 +1610,88 @@ view.pickObjectsAt({ x, y }, 1, 'wfsBuilding')
 view.pickObjectsAt({ x, y }, 3, 'wfsBuilding', myLayer)</code></pre>
 
 
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">pickTerrainCoordinates</span>
+        (
+
+
+    
+    
+        mouse:
+            <span class="type">THREE.Vector2|event</span>, 
+    
+        target:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Returns the world <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> of the terrain at given view coordinates.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The world <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> of the terrain at the given view coordinates in the
+coordinate reference system of the target or in the view referenceCrs if no target is specified.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>mouse</code>
+        (optional)
+        
+            &mdash; <span><p>The view coordinates at which the world coordinates must be returned. This
+parameter can also be set to a mouse event from which the view coordinates will be deducted. If not specified,
+it will be defaulted to the view's center coordinates.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target</code>
+        (optional)
+        
+            &mdash; <span><p>The result will be copied into this <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> in the coordinate reference
+system of the given coordinate. If not specified, a new <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> instance will be created (in the
+view referenceCrs).</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
         
     
 </div>
