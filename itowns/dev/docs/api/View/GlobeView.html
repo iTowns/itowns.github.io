@@ -1493,7 +1493,7 @@ view.pickFeaturesAt({ x, y }, 3, 'wfsBuilding', myLayer);</code></pre>
             <span class="type">number</span>, 
     
         where:
-            <span class="type"><a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>|string|Object3D</span>
+            <span class="type"><a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>|string|Object3D|Array.&lt;(<a href="api/Layer/GeometryLayer.html">GeometryLayer</a>|string|Object3D)></span>
     
 
 )
@@ -1559,9 +1559,8 @@ on mouseOrEvt. This is the radius of this circle, in pixels.</p></span>
         (optional)
         
             &mdash; <span><p>Where to look for
-objects. It can be anything of <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, IDs of layers, or
-<code>THREE.Object3D</code>. If no location is specified, it will query on all
-<a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a> present in this <code>View</code>.</p></span>
+objects. It can be a single <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, <code>THREE.Object3D</code>, ID of a layer or an array of one of these or
+of a mix of these. If no location is specified, it will query on all <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a> present in this <code>View</code>.</p></span>
         
 
         
