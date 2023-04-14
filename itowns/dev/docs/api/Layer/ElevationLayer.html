@@ -89,6 +89,61 @@ name.</p></span>
         
 
         
+            
+
+<ul class="params">
+    
+    <li>
+        <code>config.noDataValue</code>
+        (optional)
+        
+            &mdash; <span><p>The value coding the noData in the data set</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.clampValues</code>
+        (optional)
+        
+            &mdash; <span><p>Optional information for clamping
+the elevation between a minimum and a maximum value</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>config.clampValues.min</code>
+        (optional)
+        
+            &mdash; <span><p>The minimum value to clamp the elevation</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.clampValues.max</code>
+        (optional)
+        
+            &mdash; <span><p>The maximum value to clamp the elevation</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+        
     </li>
     
 </ul>
@@ -158,6 +213,40 @@ internally for optimisation.</p>
     
         <div class="description">
             <p>Used to specify a <strong>null</strong> or <strong>no data value</strong> in the elevation terrain.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">zmin</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Used to specify a minimum value for the elevation terrain (if the data goes lower, it will be clamped).</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">zmax</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Used to specify a maximum value for the elevation terrain (if the data goes higher, it will be clamped)</p>
         </div>
     
 </div>
