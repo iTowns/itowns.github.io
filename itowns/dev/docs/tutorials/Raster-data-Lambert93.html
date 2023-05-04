@@ -116,8 +116,8 @@ The camera should also be at a distance of 16000 meters from its target (i.e. fr
 To do so, we must define the source at which ortho-images data can be fetched thanks to the <code>Source</code> class.
 We can start displaying ortho-images provided by the <a href="https://www.geoportail.gouv.fr">Geoportail</a> as such :</p>
 <pre class="prettyprint source lang-js"><code>const sourceOrtho = new itowns.WMSSource({
-    url: &quot;https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/r/wms&quot;,
-    name: &quot;HR.ORTHOIMAGERY.ORTHOPHOTOS&quot;,
+    url: &quot;https://wxs.ign.fr/inspire/inspire/r/wms&quot;,
+    name: &quot;OI.OrthoimageCoverage.HR&quot;,
     format: 'image/png',
     crs: 'EPSG:2154',
     extent: viewExtent,
@@ -141,7 +141,7 @@ view.addLayer(layerOrtho);
 At first, we need to define the source of the elevation raster data.
 Then we can simply create the <code>ElevationLayer</code>, giving it a unique <code>id</code> and the source configuration, and finally adding it to the view.</p>
 <pre class="prettyprint source lang-js"><code>const sourceDEM = new itowns.WMSSource({
-    url: &quot;https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/r/wms&quot;,
+    url: &quot;https://wxs.ign.fr/altimetrie/geoportail/r/wms&quot;,
     name: &quot;ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES&quot;,
     format: &quot;image/x-bil;bits=32&quot;,
     crs: 'EPSG:2154',
@@ -202,8 +202,8 @@ The code that is shown bellow sums up all the steps it took to do so.</p>
             
             // Define the source of the ortho-images
             const sourceOrtho = new itowns.WMSSource({
-                url: &quot;https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/r/wms&quot;,
-                name: &quot;HR.ORTHOIMAGERY.ORTHOPHOTOS&quot;,
+                url: &quot;https://wxs.ign.fr/inspire/inspire/r/wms&quot;,
+                name: &quot;OI.OrthoimageCoverage.HR&quot;,
                 format: &quot;image/png&quot;,
                 crs: 'EPSG:2154',
                 extent: viewExtent,
@@ -214,7 +214,7 @@ The code that is shown bellow sums up all the steps it took to do so.</p>
             
             // Define the source of the dem data
             const sourceDEM = new itowns.WMSSource({
-                url: &quot;https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/r/wms&quot;,
+                url: &quot;https://wxs.ign.fr/altimetrie/geoportail/r/wms&quot;,
                 name: &quot;ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES&quot;,
                 format: &quot;image/x-bil;bits=32&quot;,
                 crs: 'EPSG:2154',

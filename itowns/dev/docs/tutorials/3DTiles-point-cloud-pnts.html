@@ -81,7 +81,7 @@ The 3D Tiles dataset we are using is in the <code>EPSG:4978</code> CRS, so we wi
     view.addLayer(orthoLayer);
 
     var elevationSource = new itowns.WMTSSource({
-        url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+        url: 'http://wxs.ign.fr/altimetrie/geoportail/wmts',
         crs: 'EPSG:4326',
         name: 'ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES',
         tileMatrixSet: 'WGS84G',
@@ -216,7 +216,7 @@ to threejs documentation for more information on <code>Object3D</code>, <code>Gr
             view.addLayer(orthoLayer);
 
             var elevationSource = new itowns.WMTSSource({
-                url: 'http://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+                url: 'http://wxs.ign.fr/altimetrie/geoportail/wmts',
                 crs: 'EPSG:4326',
                 name: 'ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES',
                 tileMatrixSet: 'WGS84G',

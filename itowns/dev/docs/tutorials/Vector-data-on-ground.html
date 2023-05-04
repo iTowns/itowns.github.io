@@ -62,7 +62,7 @@ We need to change the starting position to something more appropriate.</p>
             
             // Define the source of the ortho-images
             var orthoSource = new itowns.WMTSSource({
-                url: 'https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+                url: 'https://wxs.ign.fr/decouverte/geoportail/wmts',
                 crs: &quot;EPSG:3857&quot;,
                 name: 'ORTHOIMAGERY.ORTHOPHOTOS',
                 tileMatrixSet: 'PM',
@@ -76,7 +76,7 @@ We need to change the starting position to something more appropriate.</p>
             
             // Define the source of the dem data
             var elevationSource = new itowns.WMTSSource({
-                url: 'https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+                url: 'https://wxs.ign.fr/altimetrie/geoportail/wmts',
                 crs: 'EPSG:4326',
                 name: 'ELEVATION.ELEVATIONGRIDCOVERAGE.SRTM3',
                 tileMatrixSet: 'WGS84G',
@@ -218,7 +218,7 @@ Had we left it to false, only the points and polygons would have been displayed 
 
             // Define the source of the ortho-images
             var orthoSource = new itowns.WMTSSource({
-                url: 'https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+                url: 'https://wxs.ign.fr/decouverte/geoportail/wmts',
                 crs: &quot;EPSG:3857&quot;,
                 name: 'ORTHOIMAGERY.ORTHOPHOTOS',
                 tileMatrixSet: 'PM',
@@ -232,7 +232,7 @@ Had we left it to false, only the points and polygons would have been displayed 
 
             // Define the source of the dem data
             var elevationSource = new itowns.WMTSSource({
-                url: 'https://wxs.ign.fr/3ht7xcw6f7nciopo16etuqp2/geoportail/wmts',
+                url: 'https://wxs.ign.fr/altimetrie/geoportail/wmts',
                 crs: 'EPSG:4326',
                 name: 'ELEVATION.ELEVATIONGRIDCOVERAGE.SRTM3',
                 tileMatrixSet: 'WGS84G',
