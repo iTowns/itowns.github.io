@@ -116,6 +116,47 @@ This value is used for <a onclick="window.parent.goTo('api/Base/Cache.html','api
         
     </li>
     
+    <li>
+        <code>config.addLabelLayer</code>
+        (optional)
+        
+            &mdash; <span><p>Used to tell if this layer has
+labels to display from its data. For example, it needs to be set to <code>true</code>
+for a layer with vector tiles. If it's <code>true</code> a new <code>LabelLayer</code> is added and attached to this <code>Layer</code>.
+You can also configure it with <a onclick="window.parent.goTo('api/Layer/LabelLayer.html','api/Layer/LabelLayer')" title="LabelLayer">LabelLayer</a> options described below such as: <code>addLabelLayer: { performance: true }</code>.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>config.addLabelLayer.performance</code>
+        (optional)
+        
+            &mdash; <span><p>In case label layer adding, so remove labels that have no chance of being visible.
+Indeed, even in the best case, labels will never be displayed. By example, if there's many labels.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.addLabelLayer.forceClampToTerrain</code>
+        (optional)
+        
+            &mdash; <span><p>use elevation layer to clamp label on terrain.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
 </ul>
 
         
@@ -237,25 +278,6 @@ By example:</p>
             <p>this promise is resolved when the layer is added and all initializations are done.
 This promise is resolved with this layer.
 This promise is returned by <a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View#addLayer">View#addLayer</a>.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">addLabelLayer</span>
-        : <span class="type">boolean</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Used to tell if this layer has
-labels to display from its data. For example, it needs to be set to <code>true</code>
-for a layer with vector tiles. If it's <code>true</code> a new <code>LabelLayer</code> is added and attached to this <code>Layer</code>.</p>
         </div>
     
 </div>
