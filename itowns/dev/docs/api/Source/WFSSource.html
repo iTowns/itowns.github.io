@@ -143,7 +143,7 @@ const wfsSource = new itowns.WFSSource({
 
 // Create the layer
 const geometryLayer = new itowns.FeatureGeometryLayer('mesh_build', {
-    style: new itowns.Style({
+    style: {
         fill: {
             color: new itowns.THREE.Color(0xffcc00),
             base_altitude: (p) => p.altitude,
@@ -152,7 +152,7 @@ const geometryLayer = new itowns.FeatureGeometryLayer('mesh_build', {
     },
     source: wfsSource,
     zoom: { min: 14 },
-});
+};
 
 // Add the layer
 view.addLayer(geometryLayer);</code></pre>

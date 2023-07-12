@@ -116,7 +116,7 @@ view.addLayer(floodLayer);
 That is because we did not yet define a <code><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></code> for our vector data.
 To be more precise, our data consists in polygons, and we did not tell iTowns how these polygons should be displayed, so iTowns doesn't display them.
 We can correct this by creating a <code><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></code> and applying it to our <code>ColorLayer</code> :</p>
-<pre class="prettyprint source lang-js"><code>var floodStyle = new itowns.Style({
+<pre class="prettyprint source lang-js"><code>var floodStyle = {
     fill: {
         color: 'cyan',
         opacity: 0.5,
@@ -124,7 +124,7 @@ We can correct this by creating a <code><a onclick="window.parent.goTo('api/Base
     stroke: {
         color: 'blue',
     },
-});
+};
 
 var floodLayer = new itowns.ColorLayer('flood', {
     source: floodSource,
@@ -145,7 +145,7 @@ We must first define the source of our data (a GeoJSON file in our case) :</p>
 });
 </code></pre>
 <p>Then we can define the <code>Style</code> with which our data shall be displayed :</p>
-<pre class="prettyprint source lang-js"><code>var cityStyle = new itowns.Style({
+<pre class="prettyprint source lang-js"><code>var cityStyle = {
     stroke: {
         color: 'red',
     },
@@ -162,7 +162,7 @@ We must first define the source of our data (a GeoJSON file in our case) :</p>
         haloWidth: 1,
         font: ['monospace'],
     },
-});
+};
 </code></pre>
 <p>Here, we decided of the following style concerning the content of our data :</p>
 <ul>
@@ -253,7 +253,7 @@ Had we left it to false, only the points and polygons would have been displayed 
             });
             
             // Define a style for the flood area data
-            var floodStyle = new itowns.Style({
+            var floodStyle = {
                 fill: {
                     color: 'cyan',
                     opacity: 0.3,
@@ -261,7 +261,7 @@ Had we left it to false, only the points and polygons would have been displayed 
                 stroke: {
                     color: 'blue',
                 },
-            });
+            };
             
             // Create the flood area ColorLayer and add it to the view
             var floodLayer = new itowns.ColorLayer('flood', {
@@ -278,7 +278,7 @@ Had we left it to false, only the points and polygons would have been displayed 
             });
             
             // Define a style for the city data
-            var cityStyle = new itowns.Style({
+            var cityStyle = {
                 stroke: {
                     color: 'red',
                 },
@@ -295,7 +295,7 @@ Had we left it to false, only the points and polygons would have been displayed 
                     haloWidth: 1,
                     font: ['monospace'],
                 },
-            });
+            };
             
             // Create the city data ColorLayer and add it to the view
             var cityLayer = new itowns.ColorLayer('cities', {

@@ -161,11 +161,11 @@ var geometrySource = new itowns.WFSSource({
 var geometryLayer = new itowns.FeatureGeometryLayer('Buildings', {
     source: geometrySource,
     zoom: { min: 14 },
-    style: new itowns.Style({
+    style: {
         fill: {
             base_altitude: setAltitude,
         }
-    }),
+    },
 });
 
 view.addLayer(geometryLayer);
@@ -214,12 +214,12 @@ var geometrySource = new itowns.WFSSource({
 var geometryLayer = new itowns.FeatureGeometryLayer('Buildings', {
     source: geometrySource,
     zoom: { min: 14 },
-    style: new itowns.Style({
+    style: {
         fill: {
             base_altitude: setAltitude,
             extrusion_height: setExtrusion,
         }
-    }),
+    },
 });
 
 view.addLayer(geometryLayer);
@@ -249,13 +249,13 @@ var geometrySource = new itowns.WFSSource({
 var geometryLayer = new itowns.FeatureGeometryLayer('Buildings', {
     source: geometrySource,
     zoom: { min: 14 },
-    style: new itowns.Style({
+    style: {
         fill: {
             color: setColor,
             base_altitude: setAltitude,
             extrusion_height: setExtrusion,
         },
-    }),
+    },
 });
 
 view.addLayer(geometryLayer);
@@ -369,13 +369,13 @@ on a <code>GlobeView</code>, and change the appearance and positioning of this l
             var geometryLayer = new itowns.FeatureGeometryLayer('Buildings', {
                 source: geometrySource,
                 zoom: { min: 14 },
-                style: new itowns.Style({
+                style: {
                     fill: {
                         color: setColor,
                         base_altitude: setAltitude,
                         extrusion_height: setExtrusion,
                     },
-                }),
+                },
             });
 
             view.addLayer(geometryLayer);

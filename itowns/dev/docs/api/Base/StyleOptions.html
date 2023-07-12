@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>StyleOptions - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        StyleOptions
+        
+    </h1>
+
+    
+        <div class="description"><p>An object that can contain any properties
+(order, zoom, fill, stroke, point, text or/and icon)
+and sub properties of a Style.<br/>
+Used for the instanciation of a <a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a>.</p></div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Types</h2>
+        
+            
+
+<div class="typedef">
+    <h3>
+        <span class="typedef-name">StyleOptions</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+    
+
+<ul class="params">
+    
+    <li>
+        <code>order: <span class="type">number</span></code>
+        (optional)
+        
+            &mdash; <span><p>Order of the features that will be associated to
+the style. It can helps sorting and prioritizing features if needed.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>zoom: <span class="type">Object</span></code>
+        (optional)
+        
+            &mdash; <span><p>Level on which to display the feature</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>zoom.max: <span class="type">number</span></code>
+        (optional)
+        
+            &mdash; <span><p>max level</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>zoom.min: <span class="type">number</span></code>
+        (optional)
+        
+            &mdash; <span><p>min level</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>fill: <span class="type">Object</span></code>
+        (optional)
+        
+            &mdash; <span><p>Fill style for polygons.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>fill.color: <span class="type">string|function|THREE.Color</span></code>
+        (optional)
+        
+            &mdash; <span><p>Defines the main fill color. Can be
+any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid color string</a>.
+Default is no value, which means no fill.
+If the <code>Layer</code> is a <code>GeometryLayer</code> you can use <code>THREE.Color</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>fill.pattern: <span class="type">Image|Canvas|string|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>Defines a pattern to fill the
+surface with. It can be an <code>Image</code> to use directly, or an url to fetch the pattern
+from. See [this example] (http://www.itowns-project.org/itowns/examples/#source_file_geojson_raster)
+for how to use.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>fill.opacity: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The opacity of the color or of the
+pattern. Can be between <code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.
+For a <code>GeometryLayer</code>, this opacity property isn't used.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>fill.base_altitude: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p><code>GeometryLayer</code> style option, defines altitude
+for each coordinate.
+If <code>base_altitude</code> is <code>undefined</code>, the original altitude is kept, and if it doesn't exist
+then the altitude value is set to 0.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>fill.extrusion_height: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p><code>GeometryLayer</code> style option, if defined,
+polygons will be extruded by the specified amount</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>stroke: <span class="type">Object</span></code>
+        (optional)
+        
+            &mdash; <span><p>Lines and polygons edges.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>stroke.color: <span class="type">string|function|THREE.Color</span></code>
+        (optional)
+        
+            &mdash; <span><p>The color of the line. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
+color string</a>.
+Default is no value, which means no stroke.
+If the <code>Layer</code> is a <code>GeometryLayer</code> you can use <code>THREE.Color</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>stroke.opacity: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The opacity of the line. Can be between
+<code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.
+For a <code>GeometryLayer</code>, this opacity property isn't used.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>stroke.width: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The width of the line. Default is <code>1.0</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>stroke.base_altitude: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p><code>GeometryLayer</code> style option, defines altitude
+for each coordinate.
+If <code>base_altitude</code> is <code>undefined</code>, the original altitude is kept, and if it doesn't exist
+then the altitude value is set to 0.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>point: <span class="type">Object</span></code>
+        (optional)
+        
+            &mdash; <span><p>Point style.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>point.color: <span class="type">string|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The color of the point. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
+color string</a>.
+Default is no value, which means points won't be displayed.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>point.radius: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The radius of the point, in pixel. Default
+is <code>2.0</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>point.line: <span class="type">string|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The color of the border of the point. Can be
+any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid color
+string</a>.
+Not supported for a <code>GeometryLayer</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>point.width: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The width of the border, in pixel. Default
+is <code>0.0</code> (no border).</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>point.opacity: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The opacity of the point. Can be between
+<code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.
+Not supported for <code>GeometryLayer</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>point.base_altitude: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p><code>GeometryLayer</code> style option, defines altitude
+for each coordinate.
+If <code>base_altitude</code> is <code>undefined</code>, the original altitude is kept, and if it doesn't exist
+then the altitude value is set to 0.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>point.model: <span class="type">Object</span></code>
+        (optional)
+        
+            &mdash; <span><p>3D model to instantiate at each point position.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>text: <span class="type">Object</span></code>
+        (optional)
+        
+            &mdash; <span><p>All things <a onclick="window.parent.goTo('api/Base/Label.html','api/Base/Label')" title="Label">Label</a> related.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>text.field: <span class="type">string|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>A string representing a property key of
+a <code>FeatureGeometry</code> enclosed in brackets, that will be replaced by the value of the
+property for each geometry. For example, if each geometry contains a <code>name</code> property,
+<code>text.field</code> can be set to <code>{name}</code>. Default is no value, indicating that no
+text will be displayed.</p>
+<p>It's also possible to create more complex expressions. For example, you can combine
+text that will always be displayed (e.g. <code>foo</code>) and variable properties (e.g. <code>{bar}</code>)
+like the following: <code>foo {bar}</code>. You can also use multiple variables in one field.
+Let's say for instance that you have two properties latin name and local name of a
+place, you can write something like <code>{name_latin} - {name_local}</code> which can result
+in <code>Marrakesh - مراكش</code> for example.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>text.color: <span class="type">string|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The color of the text. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
+color string</a>.
+Default is <code>#000000</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>text.anchor: <span class="type">string|Array.&lt;number>|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The anchor of the text compared to its
+position (see <a onclick="window.parent.goTo('api/Base/Label.html','api/Base/Label')" title="Label">Label</a> for the position). Can be one of the following values: <code>top</code>,
+<code>left</code>, <code>bottom</code>, <code>right</code>, <code>center</code>, <code>top-left</code>, <code>top-right</code>, <code>bottom-left</code>
+or <code>bottom-right</code>. Default is <code>center</code>.</p>
+<p>It can also be defined as an Array of two numbers. Each number defines an offset (in
+fraction of the label width and height) between the label position and the top-left
+corner of the text. The first value is the horizontal offset, and the second is the
+vertical offset. For example, <code>[-0.5, -0.5]</code> will be equivalent to <code>center</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>text.offset: <span class="type">Array|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The offset of the text, depending on its
+anchor, in pixels. First value is from <code>left</code>, second is from <code>top</code>. Default
+is <code>[0, 0]</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>text.padding: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The padding outside the text, in pixels.
+Default is <code>2</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>text.size: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The size of the font, in pixels. Default is
+<code>16</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>text.wrap: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The maximum width, in pixels, before the text
+is wrapped, because the string is too long. Default is <code>10</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>text.spacing: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The spacing between the letters, in <code>em</code>.
+Default is <code>0</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>text.transform: <span class="type">string|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>A value corresponding to the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-transform">CSS
+property
+<code>text-transform</code></a>.
+Default is <code>none</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>text.justify: <span class="type">string|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>A value corresponding to the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-align">CSS property
+<code>text-align</code></a>.
+Default is <code>center</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>text.opacity: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The opacity of the text. Can be between
+<code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>text.font: <span class="type">Array|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>A list (as an array of string) of font family
+names, prioritized in the order it is set. Default is <code>Open Sans Regular, Arial Unicode MS Regular, sans-serif</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>text.haloColor: <span class="type">string|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The color of the halo. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
+color string</a>.
+Default is <code>#000000</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>text.haloWidth: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The width of the halo, in pixels.
+Default is <code>0</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>text.haloBlur: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The blur value of the halo, in pixels.
+Default is <code>0</code>.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>icon: <span class="type">Object</span></code>
+        (optional)
+        
+            &mdash; <span><p>Defines the appearance of icons attached to label.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>icon.source: <span class="type">string</span></code>
+        (optional)
+        
+            &mdash; <span><p>The url of the icons' image file.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>icon.key: <span class="type">string</span></code>
+        (optional)
+        
+            &mdash; <span><p>The key of the icons' image in a vector tile data set.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>icon.anchor: <span class="type">string</span></code>
+        (optional)
+        
+            &mdash; <span><p>The anchor of the icon compared to the label position.
+Can be <code>left</code>, <code>bottom</code>, <code>right</code>, <code>center</code>, <code>top-left</code>, <code>top-right</code>, <code>bottom-left</code>
+or <code>bottom-right</code>. Default is <code>center</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>icon.size: <span class="type">number</span></code>
+        (optional)
+        
+            &mdash; <span><p>If the icon's image is passed with <code>icon.source</code> or
+<code>icon.key</code>, its size when displayed on screen is multiplied by <code>icon.size</code>. Default is <code>1</code>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>icon.color: <span class="type">string|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The color of the icon. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
+color string</a>.
+It will change the color of the white pixels of the icon source image.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>icon.opacity: <span class="type">number|function</span></code>
+        (optional)
+        
+            &mdash; <span><p>The opacity of the icon. Can be between
+<code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+
+    
+</div>
+
+            
+        
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/Style.js">
+            src/Core/Style.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>
