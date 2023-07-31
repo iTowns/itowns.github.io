@@ -54,8 +54,8 @@
                 var layer = new itowns.ElevationLayer(config.id, config);
                 view.addLayer(layer).then(menuGlobe.addLayerGUI.bind(menuGlobe));
             }
-            itowns.Fetcher.json('./layers/JSONLayers/WORLD_DTM.json').then(addElevationLayerFromConfig);
             itowns.Fetcher.json('./layers/JSONLayers/IGN_MNT_HIGHRES.json').then(addElevationLayerFromConfig);
+            itowns.Fetcher.json('./layers/JSONLayers/WORLD_DTM.json').then(addElevationLayerFromConfig);
 
 
             const gpxSource = new itowns.FileSource({
@@ -64,7 +64,7 @@
                 format: 'application/gpx',
             });
 
-            const gpxStyle = new itowns.Style({
+            const gpxStyle = {
                 zoom: { min: 9 },
                 stroke: { color: 'red' },
                 point: {
@@ -78,7 +78,7 @@
                     haloColor: 'white',
                     haloWidth: 1,
                 },
-            });
+            };
 
             const gpxLayer = new itowns.ColorLayer('Gpx', {
                 source: gpxSource,

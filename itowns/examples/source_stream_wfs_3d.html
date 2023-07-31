@@ -59,8 +59,8 @@
                 var layer = new itowns.ElevationLayer(config.id, config);
                 view.addLayer(layer).then(menuGlobe.addLayerGUI.bind(menuGlobe));
             }
-            itowns.Fetcher.json('./layers/JSONLayers/WORLD_DTM.json').then(addElevationLayerFromConfig);
             itowns.Fetcher.json('./layers/JSONLayers/IGN_MNT_HIGHRES.json').then(addElevationLayerFromConfig);
+            itowns.Fetcher.json('./layers/JSONLayers/WORLD_DTM.json').then(addElevationLayerFromConfig);
 
             var color = new itowns.THREE.Color();
             var tile;
@@ -116,13 +116,13 @@
                 source: lyonTclBusSource,
                 zoom: { min: 9 },
 
-                style: new itowns.Style({
+                style: {
                     stroke: {
                         color: colorLine,
                         base_altitude: altitudeLine,
                         width: 5,
                     }
-                })
+                }
             });
             view.addLayer(lyonTclBusLayer);
 
@@ -200,13 +200,13 @@
                 source: wfsBuildingSource,
                 zoom: { min: 14 },
 
-                style: new itowns.Style({
+                style: {
                     fill: {
                         color: colorBuildings,
                         base_altitude: altitudeBuildings,
                         extrusion_height: extrudeBuildings,
                     }
-                })
+                }
             });
             view.addLayer(wfsBuildingLayer);
 

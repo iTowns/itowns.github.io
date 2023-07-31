@@ -129,34 +129,31 @@ removed from the scene.</p></span>
     </li>
     
     <li>
-        <code>config.onTileContentLoaded</code>
-        (optional)
-        
-            &mdash; <span><p>Callback executed when the content of a tile is loaded.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>config.overrideMaterials</code>
-        (default: <code>'false'</code>)
-        
-        
-            &mdash; <span><p>option to override the materials of all the layer's
-objects. If true, a threejs <a href="https://threejs.org/docs/index.html?q=meshbasic#api/en/materials/MeshBasicMaterial">MeshBasicMaterial</a>
-is set up. config.overrideMaterials can also be a threejs <a href="https://threejs.org/docs/index.html?q=material#api/en/materials/Material">Material</a>
-in which case it will be used as the material for all objects of the layer.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
         <code>config.registeredExtensions</code>
         (optional)
         
             &mdash; <span><p>3D Tiles extensions managers registered for this tileset.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.pntsMode</code>
+        (default: <code>PNTS_MODE.COLOR</code>)
+        
+        
+            &mdash; <span><p>PointsMaterials Point cloud coloring mode. Only 'COLOR' or 'CLASSIFICATION' are possible. COLOR uses RGB colors of the points, CLASSIFICATION uses a classification property of the batch table to color points.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.style</code>
+        (optional)
+        
+            &mdash; <span><p>style used for this layer</p></span>
         
 
         
@@ -263,6 +260,79 @@ be available in <code>geometryLayer.attachedLayers</code>.</p>
         
             &mdash; <span><p>The layer to attach, that must have an <code>update</code>
 method.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">computeWorldBox3</span>
+        (
+
+
+    
+    
+        c3DTFeature:
+            <span class="type"><a onclick="window.parent.goTo('api/3D%20Tiles/C3DTFeature.html','api/3D%20Tiles/C3DTFeature')" title="C3DTFeature">C3DTFeature</a></span>, 
+    
+        target:
+            <span class="type">THREE.Box3</span>
+    
+
+)
+        :
+            
+                <span class="type">THREE.Box3</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Compute world box 3 of a c3DTFeature</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>c3DTFeature</code>
+        
+        
+            &mdash; <span><p>feature to compute world box3</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target</code>
+        (optional)
+        
+            &mdash; <span><p>result instance</p></span>
         
 
         
@@ -587,7 +657,7 @@ https://github.com/MEPP-team/RICT/blob/master/Doc/iTowns/Doc.md#itowns-internal-
 
 <div class="method">
     <h3>
-        <span class="method-name">getInfoFromIntersectObject</span>
+        <span class="method-name">getC3DTileFeatureFromIntersectsArray</span>
         (
 
 
@@ -600,7 +670,7 @@ https://github.com/MEPP-team/RICT/blob/master/Doc/iTowns/Doc.md#itowns-internal-
 )
         :
             
-                <span class="type">Object</span>
+                <span class="type">C3DTileFeature</span>
 
             
         
@@ -609,8 +679,7 @@ https://github.com/MEPP-team/RICT/blob/master/Doc/iTowns/Doc.md#itowns-internal-
     
         
             <div class="description">
-                <p>Gets semantic information from batch table and batch table extensions
-of an intersected feature.</p>
+                <p>Get the closest c3DTileFeature of an intersects array.</p>
             </div>
         
     
@@ -619,9 +688,7 @@ of an intersected feature.</p>
                 <h4>Returns</h4>
                 
                     <ul>
-<li>an object containing the batch id, the
-information from the batch table and from the extension of the batch
-table for an intersected feature.</li>
+<li>the closest C3DTileFeature of the intersects array</li>
 </ul>
                 
 
@@ -639,6 +706,61 @@ table for an intersected feature.</li>
 targets picked under specified coordinates. Intersects can be
 computed with view.pickObjectsAt(..). See fillHTMLWithPickingInfo()
 in 3dTilesHelper.js for an example.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">initC3DTileFeatures</span>
+        (
+
+
+    
+    
+        tileContent:
+            <span class="type">THREE.Object3D</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Initialize C3DTileFeatures from tileContent</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>tileContent</code>
+        
+        
+            &mdash; <span><p>tile as THREE.Object3D</p></span>
         
 
         
@@ -703,6 +825,61 @@ in 3dTilesHelper.js for an example.</p></span>
         
         
             &mdash; <span><p>The feature</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">onTileContentLoaded</span>
+        (
+
+
+    
+    
+        tileContent:
+            <span class="type">THREE.Object3D</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Call by 3dTilesProcessing which handle load and unload of 3DTiles</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>tileContent</code>
+        
+        
+            &mdash; <span><p>tile as THREE.Object3D</p></span>
         
 
         
@@ -823,6 +1000,71 @@ should have at least <code>x</code> and <code>y</code> properties.</p></span>
     
 </div>
 
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">updateStyle</span>
+        (
+
+
+    
+    
+        allowTileIdList:
+            <span class="type">Array.&lt;number>|null</span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Update style of the C3DTFeatures, an allowList of tile id can be passed to only update certain tile.
+Note that this function only update THREE.Object3D materials, in order to see style changes you should call view.notifyChange()</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>true if style updated false otherwise</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>allowTileIdList</code>
+        (optional)
+        
+            &mdash; <span><p>tile ids to allow in updateStyle computation if null all tiles are updated</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
             
         
     
@@ -834,6 +1076,80 @@ should have at least <code>x</code> and <code>y</code> properties.</p></span>
     
         <hr class="title-divider"/>
         <h2>Events</h2>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">on-tile-content-loaded</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Fires when a tile content has been loaded</p>
+        </div>
+    
+
+    
+        <h4>Properties</h4>
+        
+        
+
+<ul class="params">
+    
+    <li>
+        <code>tileContent: <span class="type">THREE.Object3D</span></code>
+        
+        
+            &mdash; <span><p>object3D of the tile</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">on-tile-requested</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Fires when a tile is requested</p>
+        </div>
+    
+
+    
+        <h4>Properties</h4>
+        
+        
+
+<ul class="params">
+    
+    <li>
+        <code>metadata: <span class="type">object</span></code>
+        
+        
+            &mdash; <span><p>tile</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+</div>
+
+            <hr/>
         
             
 

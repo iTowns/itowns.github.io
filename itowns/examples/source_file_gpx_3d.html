@@ -44,8 +44,8 @@
                 var layer = new itowns.ElevationLayer(config.id, config);
                 view.addLayer(layer);
             }
-            itowns.Fetcher.json('./layers/JSONLayers/WORLD_DTM.json').then(addElevationLayerFromConfig);
             itowns.Fetcher.json('./layers/JSONLayers/IGN_MNT_HIGHRES.json').then(addElevationLayerFromConfig);
+            itowns.Fetcher.json('./layers/JSONLayers/WORLD_DTM.json').then(addElevationLayerFromConfig);
 
             // update the waypoint
             var distance, scale, point = new itowns.THREE.Vector3();
@@ -72,7 +72,7 @@
                         out: {
                             crs: view.referenceCrs,
                             structure: '3d',
-                            style: new itowns.Style({
+                            style: {
                                 stroke : {
                                     color: 'red',
                                     width: 2,
@@ -80,10 +80,10 @@
                                 point : {
                                     color: 'white',
                                 }
-                            })
+                            }
                         }
                     }))
-                    .then(itowns.Feature2Mesh.convert())
+                    .then(itowns.Feature2Mesh.convert({style}))
                     .then(function (mesh) {
                         if (mesh) {
                             mesh.updateMatrixWorld();

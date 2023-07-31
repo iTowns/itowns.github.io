@@ -25,15 +25,16 @@
     </h1>
 
     
-        <div class="description"><p>A Style is an object that defines the visual appearance of <a onclick="window.parent.goTo('api/Base/FeatureCollection.html','api/Base/FeatureCollection')" title="FeatureCollection">FeatureCollection</a> and <a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a>. It is taken into account when drawing
+        <div class="description"><p>A Style is a class that defines the visual appearance of <a onclick="window.parent.goTo('api/Base/FeatureCollection.html','api/Base/FeatureCollection')" title="FeatureCollection">FeatureCollection</a> and <a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a>. It is taken into account when drawing
 them in textures that will be placed onto tiles.</p>
-<p>As there are four basic elements present in <code>Features</code>, there are also four
+<p>As there are five basic elements present in <code>Features</code>, there are also five
 main components in a <code>Style</code> object:</p>
 <ul>
 <li><code>fill</code> is for all fillings and polygons</li>
 <li><code>stroke</code> is for all lines and polygons edges</li>
 <li><code>point</code> is for all points</li>
 <li><code>text</code> contains all <a onclick="window.parent.goTo('api/Base/Label.html','api/Base/Label')" title="Label">Label</a> related things</li>
+<li><code>icon</code> defines the appearance of icons attached to label.</li>
 </ul>
 <p>Many style property can be set to functions. When that is the case, the function's
 return type must necessarily be the same as the types (other than function) of the property.
@@ -57,7 +58,7 @@ the properties of the features displayed with the current <code>Style</code> ins
     
     
         params:
-            <span class="type">Object</span>, 
+            <span class="type"><a onclick="window.parent.goTo('api/Base/StyleOptions.html','api/Base/StyleOptions')" title="StyleOptions">StyleOptions</a></span>, 
     
         parent:
             <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
@@ -82,8 +83,9 @@ the properties of the features displayed with the current <code>Style</code> ins
         (default: <code>{}</code>)
         
         
-            &mdash; <span><p>An object that can contain all properties of
-a Style.</p></span>
+            &mdash; <span><p>An object that contain any properties
+(order, zoom, fill, stroke, point, text or/and icon)
+and sub properties of a Style (@see <a onclick="window.parent.goTo('api/Base/StyleOptions.html','api/Base/StyleOptions')" title="StyleOptions">StyleOptions</a>).</p></span>
         
 
         
@@ -178,7 +180,7 @@ the style. It can helps sorting and prioritizing features if needed.</p>
 <div class="property">
     <h3>
         <span class="property-name">fill.color</span>
-        : <span class="type">string|function</span>
+        : <span class="type">string|function|THREE.Color</span>
     </h3>
 
     
@@ -187,7 +189,7 @@ the style. It can helps sorting and prioritizing features if needed.</p>
 any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid color
 string</a>.
 Default is no value, indicating that no filling needs to be done.
-If the <code>Layer</code> is a <code>GeometryLayer</code> you could use <code>THREE.Color</code>.</p>
+If the <code>Layer</code> is a <code>GeometryLayer</code> you can use <code>THREE.Color</code>.</p>
         </div>
     
 </div>
@@ -208,7 +210,7 @@ If the <code>Layer</code> is a <code>GeometryLayer</code> you could use <code>TH
 surface with. It can be an <code>Image</code> to use directly, or an url to fetch the
 pattern from. See <a href="http://www.itowns-project.org/itowns/examples/#source_file_geojson_raster">this
 example</a>
-for how to use.</p>
+for an example.</p>
         </div>
     
 </div>
@@ -225,7 +227,7 @@ for how to use.</p>
 
     
         <div class="description">
-            <p>The opacity of the color or the
+            <p>The opacity of the color or of the
 pattern. Can be between <code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.
 For a <code>GeometryLayer</code>, this opacity property isn't used.</p>
         </div>
@@ -244,8 +246,8 @@ For a <code>GeometryLayer</code>, this opacity property isn't used.</p>
 
     
         <div class="description">
-            <p><code>GeometryLayer</code> Style, defines altitude
-for each Coordinates.
+            <p>Only for <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, defines altitude
+for each coordinate.
 If <code>base_altitude</code> is <code>undefined</code>, the original altitude is kept, and if it doesn't exist
 then the altitude value is set to 0.</p>
         </div>
@@ -264,7 +266,7 @@ then the altitude value is set to 0.</p>
 
     
         <div class="description">
-            <p><code>GeometryLayer</code> Style, if defined,
+            <p>Only for <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, if defined,
 polygons will be extruded by the specified amount</p>
         </div>
     
@@ -282,7 +284,7 @@ polygons will be extruded by the specified amount</p>
 
     
         <div class="description">
-            <p>Lines and polygon edges.</p>
+            <p>Lines and polygons edges.</p>
         </div>
     
 </div>
@@ -294,7 +296,7 @@ polygons will be extruded by the specified amount</p>
 <div class="property">
     <h3>
         <span class="property-name">stroke.color</span>
-        : <span class="type">string|function</span>
+        : <span class="type">string|function|THREE.Color</span>
     </h3>
 
     
@@ -302,7 +304,7 @@ polygons will be extruded by the specified amount</p>
             <p>The color of the line. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
 color string</a>.
 Default is no value, indicating that no stroke needs to be done.
-If the <code>Layer</code> is a <code>GeometryLayer</code> you could use <code>THREE.Color</code>.</p>
+If the <code>Layer</code> is a <code>GeometryLayer</code> you can use <code>THREE.Color</code>.</p>
         </div>
     
 </div>
@@ -355,8 +357,8 @@ For a <code>GeometryLayer</code>, this opacity property isn't used.</p>
 
     
         <div class="description">
-            <p><code>GeometryLayer</code> Style, defines altitude
-for each Coordinates.
+            <p>Only for <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, defines altitude
+for each coordinate.
 If <code>base_altitude</code> is <code>undefined</code>, the original altitude is kept, and if it doesn't exist
 then the altitude value is set to 0.</p>
         </div>
@@ -432,7 +434,7 @@ is <code>2.0</code>.</p>
             <p>The color of the border of the point. Can be
 any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid color
 string</a>.
-It's not supported with a <code>GeometryLayer</code>.</p>
+Not supported for <code>GeometryLayer</code>.</p>
         </div>
     
 </div>
@@ -469,7 +471,7 @@ is <code>0.0</code> (no border).</p>
         <div class="description">
             <p>The opacity of the point. Can be between
 <code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.
-It's not supported with a <code>GeometryLayer</code>.</p>
+Not supported for <code>GeometryLayer</code>.</p>
         </div>
     
 </div>
@@ -486,10 +488,27 @@ It's not supported with a <code>GeometryLayer</code>.</p>
 
     
         <div class="description">
-            <p><code>GeometryLayer</code> Style, defines altitude
-for each Coordinates.
+            <p>Only for <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, defines altitude
+for each coordinate.
 If <code>base_altitude</code> is <code>undefined</code>, the original altitude is kept, and if it doesn't exist
 then the altitude value is set to 0.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">point.model</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>3D model to instantiate at each point position</p>
         </div>
     
 </div>
@@ -523,17 +542,16 @@ then the altitude value is set to 0.</p>
 
     
         <div class="description">
-            <p>A string to help read the text field from
-properties of a <code>FeatureGeometry</code>, with the key of the property enclosed by
-brackets. For example, if each geometry contains a <code>name</code> property,
-<code>text.field</code> can be set as <code>{name}</code>. Default is no value, indicating that no
-text will be shown.</p>
-<p>The brackets allows the use of complex fields. For
-example, if a static string <code>foo</code> is attached to the changing property <code>bar</code>,
-you can specify <code>foo {bar}</code>, and <code>foo</code> will stay everytime, while <code>{bar}</code>
-will change into the value of the property of the geometry. You can also have
-multiple properties in one field, like if you want the latin name and the
-local name of a location. Specifying <code>{name_latin} - {name_local}</code> can result
+            <p>A string representing a property key of
+a <code>FeatureGeometry</code> enclosed in brackets, that will be replaced by the value of the
+property for each geometry. For example, if each geometry contains a <code>name</code> property,
+<code>text.field</code> can be set to <code>{name}</code>. Default is no value, indicating that no
+text will be displayed.</p>
+<p>It's also possible to create more complex expressions. For example, you can combine
+text that will always be displayed (e.g. <code>foo</code>) and variable properties (e.g. <code>{bar}</code>)
+like the following: <code>foo {bar}</code>. You can also use multiple variables in one field.
+Let's say for instance that you have two properties latin name and local name of a
+place, you can write something like <code>{name_latin} - {name_local}</code> which can result
 in <code>Marrakesh - مراكش</code> for example.</p>
         </div>
     
@@ -570,8 +588,8 @@ Default is <code>#000000</code>.</p>
 
     
         <div class="description">
-            <p>The anchor of the text compared to its
-position (see <a onclick="window.parent.goTo('api/Base/Label.html','api/Base/Label')" title="Label">Label</a> for the position). Can be a few value: <code>top</code>,
+            <p>The anchor of the text relative to its
+position (see <a onclick="window.parent.goTo('api/Base/Label.html','api/Base/Label')" title="Label">Label</a> for the position). Can be one of the following values: <code>top</code>,
 <code>left</code>, <code>bottom</code>, <code>right</code>, <code>center</code>, <code>top-left</code>, <code>top-right</code>, <code>bottom-left</code>
 or <code>bottom-right</code>. Default is <code>center</code>.</p>
 <p>It can also be defined as an Array of two numbers. Each number defines an offset (in
@@ -827,7 +845,7 @@ Default is <code>0</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">icon.source</span>
-        : <span class="type">String</span>
+        : <span class="type">string</span>
     </h3>
 
     
@@ -844,7 +862,7 @@ Default is <code>0</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">icon.key</span>
-        : <span class="type">String</span>
+        : <span class="type">string</span>
     </h3>
 
     
@@ -868,7 +886,7 @@ Default is <code>0</code>.</p>
         <div class="description">
             <p>The anchor of the icon compared to the label position.
 Can be <code>left</code>, <code>bottom</code>, <code>right</code>, <code>center</code>, <code>top-left</code>, <code>top-right</code>, <code>bottom-left</code>
-or <code>bottom-right</code>.</p>
+or <code>bottom-right</code>. Default is <code>center</code>.</p>
         </div>
     
 </div>
@@ -886,7 +904,44 @@ or <code>bottom-right</code>.</p>
     
         <div class="description">
             <p>If the icon's image is passed with <code>icon.source</code> or
-<code>icon.key</code>, it size when displayed on screen is multiplied by <code>icon.size</code>. Default is <code>1</code>.</p>
+<code>icon.key</code>, its size when displayed on screen is multiplied by <code>icon.size</code>. Default is <code>1</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">icon.color</span>
+        : <span class="type">string|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The color of the icon. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
+color string</a>.
+It will change the color of the white pixels of the icon source image.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">icon.opacity</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The opacity of the icon. Can be between
+<code>0.0</code> and <code>1.0</code>. Default is <code>1.0</code>.</p>
         </div>
     
 </div>
@@ -1089,7 +1144,7 @@ properties of this style.</p>
 )
         :
             
-                <span class="type">Object</span>
+                <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
 
             
         
@@ -1264,7 +1319,7 @@ replace the keys in <code>style.text.field</code>.</p>
 )
         :
             
-                <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
+                <span class="type"><a onclick="window.parent.goTo('api/Base/StyleOptions.html','api/Base/StyleOptions')" title="StyleOptions">StyleOptions</a></span>
 
             
         
@@ -1273,12 +1328,16 @@ replace the keys in <code>style.text.field</code>.</p>
     
         
             <div class="description">
-                <p>set Style from geojson properties.</p>
+                <p>set Style from (geojson-like) properties.</p>
             </div>
         
     
 
     
+                <h4>Returns</h4>
+                
+                    <p>containing all properties for itowns.Style</p>
+                
 
     
         <h4>Parameters</h4>
@@ -1290,7 +1349,7 @@ replace the keys in <code>style.text.field</code>.</p>
         <code>properties</code>
         
         
-            &mdash; <span><p>geojson properties.</p></span>
+            &mdash; <span><p>(geojson-like) properties.</p></span>
         
 
         
@@ -1341,7 +1400,7 @@ replace the keys in <code>style.text.field</code>.</p>
 )
         :
             
-                <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
+                <span class="type"><a onclick="window.parent.goTo('api/Base/StyleOptions.html','api/Base/StyleOptions')" title="StyleOptions">StyleOptions</a></span>
 
             
         
@@ -1356,6 +1415,10 @@ replace the keys in <code>style.text.field</code>.</p>
     
 
     
+                <h4>Returns</h4>
+                
+                    <p>containing all properties for itowns.Style</p>
+                
 
     
         <h4>Parameters</h4>
