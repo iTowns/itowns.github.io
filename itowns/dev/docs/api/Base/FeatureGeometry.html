@@ -223,11 +223,11 @@ stored in indices, see constructor for more information.</p>
 
     
     
-        coordIn:
-            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>, 
-    
         feature:
-            <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+            <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>, 
+    
+        coordIn:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
     
 
 )
@@ -251,20 +251,20 @@ stored in indices, see constructor for more information.</p>
 <ul class="params">
     
     <li>
-        <code>coordIn</code>
+        <code>feature</code>
         
         
-            &mdash; <span><p>The coordinates to push.</p></span>
+            &mdash; <span><p>the feature containing the geometry</p></span>
         
 
         
     </li>
     
     <li>
-        <code>feature</code>
+        <code>coordIn</code>
         
         
-            &mdash; <span><p>the feature containing the geometry</p></span>
+            &mdash; <span><p>The coordinates to push.</p></span>
         
 
         
@@ -294,14 +294,11 @@ stored in indices, see constructor for more information.</p>
         feature:
             <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>, 
     
-        long:
-            <span class="type">number</span>, 
+        coordIn:
+            <span class="type">Object</span>, 
     
-        lat:
-            <span class="type">number</span>, 
-    
-        normal:
-            <span class="type">THREE.Vector3</span>
+        coordProj:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
     
 
 )
@@ -311,9 +308,8 @@ stored in indices, see constructor for more information.</p>
     
         
             <div class="description">
-                <p>Push new values coordinates in vertices buffer.
-No geographical conversion is made or the normal doesn't stored.
-No local transformation is made on coordinates.</p>
+                <p>Push new values coordinates in vertices buffer without any transformation.
+No geographical conversion is made or the normal doesn't stored.</p>
             </div>
         
     
@@ -337,30 +333,58 @@ No local transformation is made on coordinates.</p>
     </li>
     
     <li>
-        <code>long</code>
+        <code>coordIn</code>
         
         
-            &mdash; <span><p>The longitude coordinate.</p></span>
+            &mdash; <span><p>An object containing the coordinates values to push.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>coordIn.x</code>
+        
+        
+            &mdash; <span><p>the x coordinate (in a local system).</p></span>
         
 
         
     </li>
     
     <li>
-        <code>lat</code>
+        <code>coordIn.y</code>
         
         
-            &mdash; <span><p>The latitude coordinate.</p></span>
+            &mdash; <span><p>the y coordinate (in a local system).</p></span>
         
 
         
     </li>
     
     <li>
-        <code>normal</code>
+        <code>coordIn.normal</code>
         (optional)
         
             &mdash; <span><p>the normal on coordinates (only for <code>EPSG:4978</code> projection).</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>coordProj</code>
+        (optional)
+        
+            &mdash; <span><p>An optional argument containing the geodesic coordinates in EPSG:4326
+It allows the user to get access to the feature coordinates to set style.base_altitude.</p></span>
         
 
         
