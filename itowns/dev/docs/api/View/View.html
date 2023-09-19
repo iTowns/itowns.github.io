@@ -128,24 +128,6 @@ added to viewerDiv (mutually exclusive with mainLoop)</p></span>
         
 
         
-            
-
-<ul class="params">
-    
-    <li>
-        <code>options.renderer.isWebGL2</code>
-        (default: <code>true</code>)
-        
-        
-            &mdash; <span><p>enable webgl 2.0 for THREE.js.</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-        
     </li>
     
     <li>
@@ -217,15 +199,6 @@ var view = itowns.View('EPSG:4326', viewerDiv, { camera: { cameraThree: customCa
     <pre class="prettyprint source lang-js"><code>var viewerDiv = document.getElementById('viewerDiv');
 var view = itowns.View('EPSG:4326', viewerDiv, { camera: { type: itowns.CAMERA_TYPE.ORTHOGRAPHIC } });
 var customControls = itowns.THREE.OrbitControls(view.camera.camera3D, viewerDiv);</code></pre>
-
-    
-        <caption><b>Enable WebGl 1.0 instead of WebGl 2.0.</b></caption>
-
-    
-
-    <pre class="prettyprint source lang-js"><code>var viewerDiv = document.getElementById('viewerDiv');
-const extent = new Extent('EPSG:3946', 1837816.94334, 1847692.32501, 5170036.4587, 5178412.82698);
-var view = new itowns.View('EPSG:4326', viewerDiv, {  renderer: { isWebGL2: false } });</code></pre>
 
 
     
