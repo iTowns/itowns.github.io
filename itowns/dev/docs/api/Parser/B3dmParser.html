@@ -63,6 +63,9 @@
         
             <div class="description">
                 <p>Enable Draco decoding for gltf.</p>
+<p>The Draco library files are in folder itowns/examples/libs/draco/.
+You must indicate this path when you want to enable Draco Decoding.
+For more information on Draco, read /itowns/examples/libs/draco/README.md.</p>
             </div>
         
     
@@ -79,8 +82,8 @@
         <code>path</code>
         
         
-            &mdash; <span><p>to draco library folder.
-This library is mandatory to load b3dm with Draco compression.</p></span>
+            &mdash; <span><p>path to draco library folder.
+This library is mandatory to load b3dm and gltf with Draco compression.</p></span>
         
 
         
@@ -90,10 +93,7 @@ This library is mandatory to load b3dm with Draco compression.</p></span>
         <code>config</code>
         
         
-            &mdash; <span><p>optional configuration for Draco compression.</p>
-<p>The Draco library files are in folder itowns/examples/libs/draco/.
-You are obliged to indicate this path when you want enable the Draco Decoding.</p>
-<p>For more information on Draco, read file in /itowns/examples/libs/draco/README.md.</p></span>
+            &mdash; <span><p>optional configuration for Draco compression.</p></span>
         
 
         
@@ -114,9 +114,95 @@ You are obliged to indicate this path when you want enable the Draco Decoding.</
 
     
 
-    <pre class="prettyprint source lang-js"><code>// if you copied the folder from /itowns/examples/libs/draco/ to your root project,
-// You could set path with './'.
-itowns.enableDracoLoader('./');</code></pre>
+    <pre class="prettyprint source lang-js"><code>// if you copied /itowns/examples/libs/draco/ to the root folder of your project,you can set the path to './'.
+itowns.enableDracoLoader('./');
+
+ </code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">enableKtx2Loader</span>
+        (
+
+
+    
+    
+        path:
+            <span class="type">string</span>, 
+    
+        renderer:
+            <span class="type">THREE.WebGLRenderer</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Enable KTX2 decoding for gltf. This library is mandatory to load b3dm and gltf with KTX2 compression.</p>
+<p>The KTX2 library files are in folder itowns/examples/libs/basis/.
+You must indicate this path when you want to enable KTX2 decoding.
+For more information about KTX2, read /itowns/examples/libs/basis/README.md.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>path</code>
+        
+        
+            &mdash; <span><p>path to KTX2 library folder.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>renderer</code>
+        
+        
+            &mdash; <span><p>the threejs renderer</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+        <caption>Enable ktx2 decoder</caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// if you copied /itowns/examples/libs/draco/ to the root folder of your project,you can set the path to './'.
+itowns.enableKtx2Loader('./', view.mainLoop.gfxEngine.renderer);</code></pre>
 
 
         
