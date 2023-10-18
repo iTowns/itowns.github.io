@@ -92,6 +92,17 @@
     </li>
     
     <li>
+        <code>options.mode</code>
+        (default: <code>PNTS_SHAPE.CIRCLE</code>)
+        
+        
+            &mdash; <span><p>rendered points shape.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
         <code>options.overlayColor</code>
         (default: <code>new THREE.Vector4(0, 0, 0, 0)</code>)
         
@@ -128,6 +139,39 @@
         (optional)
         
             &mdash; <span><p>define points classification.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.sizeMode</code>
+        (default: <code>PNTS_SIZE_MODE.VALUE</code>)
+        
+        
+            &mdash; <span><p>point cloud size mode. Only 'VALUE' or 'ATTENUATED' are possible. VALUE use constant size, ATTENUATED compute size depending on distance from point to camera.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.minAttenuatedSize</code>
+        (default: <code>3</code>)
+        
+        
+            &mdash; <span><p>minimum scale used by 'ATTENUATED' size mode</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.maxAttenuatedSize</code>
+        (default: <code>10</code>)
+        
+        
+            &mdash; <span><p>maximum scale used by 'ATTENUATED' size mode</p></span>
         
 
         
