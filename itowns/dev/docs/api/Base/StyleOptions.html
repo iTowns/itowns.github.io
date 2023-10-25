@@ -132,14 +132,54 @@ If the <code>Layer</code> is a <code>GeometryLayer</code> you can use <code>THRE
     </li>
     
     <li>
-        <code>fill.pattern: <span class="type">Image|Canvas|string|function</span></code>
+        <code>fill.pattern: <span class="type">Image|Canvas|string|object|function</span></code>
         (optional)
         
             &mdash; <span><p>Defines a pattern to fill the
-surface with. It can be an <code>Image</code> to use directly, or an url to fetch the pattern
+surface with. It can be an <code>Image</code> to use directly, an url to fetch the pattern or an object containing
+the url of the image to fetch and the transformation to apply.
 from. See [this example] (http://www.itowns-project.org/itowns/examples/#source_file_geojson_raster)
 for how to use.</p></span>
         
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>fill.pattern.source: <span class="type">string</span></code>
+        (optional)
+        
+            &mdash; <span><p>the url to fetch the pattern image</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>fill.pattern.cropValues: <span class="type">object</span></code>
+        (optional)
+        
+            &mdash; <span><p>the x, y, width and height (in pixel) of the sub image to use.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>fill.pattern.color: <span class="type">THREE.Color</span></code>
+        (optional)
+        
+            &mdash; <span><p>Can be any [valid color string]
+(https://developer.mozilla.org/en-US/docs/Web/CSS/color_value).
+It will change the color of the white pixels of the source image.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
 
         
     </li>
@@ -575,10 +615,20 @@ Default is <code>0</code>.</p></span>
     </li>
     
     <li>
-        <code>icon.key: <span class="type">string</span></code>
+        <code>icon.id: <span class="type">string</span></code>
         (optional)
         
-            &mdash; <span><p>The key of the icons' image in a vector tile data set.</p></span>
+            &mdash; <span><p>The id of the icons' sub-image in a vector tile data set.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>icon.cropValues: <span class="type">string</span></code>
+        (optional)
+        
+            &mdash; <span><p>the x, y, width and height (in pixel) of the sub image to use.</p></span>
         
 
         
@@ -600,8 +650,8 @@ or <code>bottom-right</code>. Default is <code>center</code>.</p></span>
         <code>icon.size: <span class="type">number</span></code>
         (optional)
         
-            &mdash; <span><p>If the icon's image is passed with <code>icon.source</code> or
-<code>icon.key</code>, its size when displayed on screen is multiplied by <code>icon.size</code>. Default is <code>1</code>.</p></span>
+            &mdash; <span><p>If the icon's image is passed with <code>icon.source</code> and/or
+<code>icon.id</code>, its size when displayed on screen is multiplied by <code>icon.size</code>. Default is <code>1</code>.</p></span>
         
 
         
