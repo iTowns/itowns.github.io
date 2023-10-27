@@ -145,7 +145,7 @@ view.addLayer(layer);</code></pre>
 <div class="property">
     <h3>
         <span class="property-name">order</span>
-        : <span class="type">number</span>
+        : <span class="type">Number</span>
     </h3>
 
     
@@ -180,7 +180,7 @@ the style. It can helps sorting and prioritizing features if needed.</p>
 <div class="property">
     <h3>
         <span class="property-name">fill.color</span>
-        : <span class="type">string|function|THREE.Color</span>
+        : <span class="type">String|function|THREE.Color</span>
     </h3>
 
     
@@ -201,16 +201,67 @@ If the <code>Layer</code> is a <code>GeometryLayer</code> you can use <code>THRE
 <div class="property">
     <h3>
         <span class="property-name">fill.pattern</span>
-        : <span class="type">Image|Canvas|string|function</span>
+        : <span class="type">Image|Canvas|String|Object|function</span>
     </h3>
 
     
         <div class="description">
             <p>Defines a pattern to fill the
-surface with. It can be an <code>Image</code> to use directly, or an url to fetch the
-pattern from. See <a href="http://www.itowns-project.org/itowns/examples/#source_file_geojson_raster">this
-example</a>
-for an example.</p>
+surface with. It can be an <code>Image</code> to use directly, an url to fetch the pattern or an object containing
+the url of the image to fetch and the transformation to apply.
+from. See [this example] (http://www.itowns-project.org/itowns/examples/#source_file_geojson_raster)
+for how to use.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill.pattern.source</span>
+        : <span class="type">Image|String</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The image or the url to fetch the pattern image</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill.pattern.cropValues</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The x, y, width and height (in pixel) of the sub image to use.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">fill.pattern.color</span>
+        : <span class="type">THREE.Color</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Can be any [valid color string]</p>
         </div>
     
 </div>
@@ -222,7 +273,7 @@ for an example.</p>
 <div class="property">
     <h3>
         <span class="property-name">fill.opacity</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -241,7 +292,7 @@ For a <code>GeometryLayer</code>, this opacity property isn't used.</p>
 <div class="property">
     <h3>
         <span class="property-name">fill.base_altitude</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -261,7 +312,7 @@ then the altitude value is set to 0.</p>
 <div class="property">
     <h3>
         <span class="property-name">fill.extrusion_height</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -296,7 +347,7 @@ polygons will be extruded by the specified amount</p>
 <div class="property">
     <h3>
         <span class="property-name">stroke.color</span>
-        : <span class="type">string|function|THREE.Color</span>
+        : <span class="type">String|function|THREE.Color</span>
     </h3>
 
     
@@ -316,7 +367,7 @@ If the <code>Layer</code> is a <code>GeometryLayer</code> you can use <code>THRE
 <div class="property">
     <h3>
         <span class="property-name">stroke.opacity</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -335,7 +386,7 @@ For a <code>GeometryLayer</code>, this opacity property isn't used.</p>
 <div class="property">
     <h3>
         <span class="property-name">stroke.width</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -352,7 +403,7 @@ For a <code>GeometryLayer</code>, this opacity property isn't used.</p>
 <div class="property">
     <h3>
         <span class="property-name">stroke.base_altitude</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -389,7 +440,7 @@ then the altitude value is set to 0.</p>
 <div class="property">
     <h3>
         <span class="property-name">point.color</span>
-        : <span class="type">string|function</span>
+        : <span class="type">String|function</span>
     </h3>
 
     
@@ -408,7 +459,7 @@ Default is no value, indicating that no point will be shown.</p>
 <div class="property">
     <h3>
         <span class="property-name">point.radius</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -426,7 +477,7 @@ is <code>2.0</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">point.line</span>
-        : <span class="type">string|function</span>
+        : <span class="type">String|function</span>
     </h3>
 
     
@@ -446,7 +497,7 @@ Not supported for <code>GeometryLayer</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">point.width</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -464,7 +515,7 @@ is <code>0.0</code> (no border).</p>
 <div class="property">
     <h3>
         <span class="property-name">point.opacity</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -483,7 +534,7 @@ Not supported for <code>GeometryLayer</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">point.base_altitude</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -537,7 +588,7 @@ then the altitude value is set to 0.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.field</span>
-        : <span class="type">string|function</span>
+        : <span class="type">String|function</span>
     </h3>
 
     
@@ -564,7 +615,7 @@ in <code>Marrakesh - مراكش</code> for example.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.color</span>
-        : <span class="type">string|function</span>
+        : <span class="type">String|function</span>
     </h3>
 
     
@@ -583,7 +634,7 @@ Default is <code>#000000</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.anchor</span>
-        : <span class="type">string|Array.&lt;number>|function</span>
+        : <span class="type">String|Array.&lt;Number>|function</span>
     </h3>
 
     
@@ -626,7 +677,7 @@ is <code>[0, 0]</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.padding</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -644,7 +695,7 @@ Default is <code>2</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.size</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -662,7 +713,7 @@ Default is <code>2</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.wrap</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -680,7 +731,7 @@ is wrapped, because the string is too long. Default is <code>10</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.spacing</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -698,7 +749,7 @@ Default is <code>0</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.transform</span>
-        : <span class="type">string|function</span>
+        : <span class="type">String|function</span>
     </h3>
 
     
@@ -718,7 +769,7 @@ Default is <code>none</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.justify</span>
-        : <span class="type">string|function</span>
+        : <span class="type">String|function</span>
     </h3>
 
     
@@ -737,7 +788,7 @@ Default is <code>center</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.opacity</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -773,7 +824,7 @@ names, prioritized in the order it is set. Default is <code>Open Sans Regular, A
 <div class="property">
     <h3>
         <span class="property-name">text.haloColor</span>
-        : <span class="type">string|function</span>
+        : <span class="type">String|function</span>
     </h3>
 
     
@@ -792,7 +843,7 @@ Default is <code>#000000</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.haloWidth</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -810,7 +861,7 @@ Default is <code>0</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">text.haloBlur</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -845,7 +896,7 @@ Default is <code>0</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">icon.source</span>
-        : <span class="type">string</span>
+        : <span class="type">String</span>
     </h3>
 
     
@@ -862,7 +913,7 @@ Default is <code>0</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">icon.id</span>
-        : <span class="type">string</span>
+        : <span class="type">String</span>
     </h3>
 
     
@@ -879,7 +930,7 @@ Default is <code>0</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">icon.cropValues</span>
-        : <span class="type">string</span>
+        : <span class="type">String</span>
     </h3>
 
     
@@ -896,7 +947,7 @@ Default is <code>0</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">icon.anchor</span>
-        : <span class="type">string</span>
+        : <span class="type">String</span>
     </h3>
 
     
@@ -915,7 +966,7 @@ or <code>bottom-right</code>. Default is <code>center</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">icon.size</span>
-        : <span class="type">number</span>
+        : <span class="type">Number</span>
     </h3>
 
     
@@ -933,7 +984,7 @@ or <code>bottom-right</code>. Default is <code>center</code>.</p>
 <div class="property">
     <h3>
         <span class="property-name">icon.color</span>
-        : <span class="type">string|function</span>
+        : <span class="type">String|function</span>
     </h3>
 
     
@@ -952,7 +1003,7 @@ It will change the color of the white pixels of the icon source image.</p>
 <div class="property">
     <h3>
         <span class="property-name">icon.opacity</span>
-        : <span class="type">number|function</span>
+        : <span class="type">Number|function</span>
     </h3>
 
     
@@ -970,6 +1021,72 @@ It will change the color of the white pixels of the icon source image.</p>
     
         <hr class="title-divider"/>
         <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">applyContext</span>
+        (
+
+
+    
+    
+        context:
+            <span class="type">Object</span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Map style object properties (fill, stroke, point, text and icon) from context to Style.
+Only the necessary properties are mapped to object.
+if a property is expression, the mapped value will be the expression result depending on context.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>mapped style depending on context.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>context</code>
+        
+        
+            &mdash; <span><p>The context of the FeatureGeometry that we want to get the Style.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
         
             
 
@@ -1239,72 +1356,6 @@ for an icon: a Promise resolving with the HTMLImageElement containing the image.
 
 <div class="method">
     <h3>
-        <span class="method-name">drawingStylefromContext</span>
-        (
-
-
-    
-    
-        context:
-            <span class="type">Object</span>
-    
-
-)
-        :
-            
-                <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
-
-            
-        
-    </h3>
-
-    
-        
-            <div class="description">
-                <p>Map drawing properties style (fill, stroke and point) from context to object.
-Only the necessary properties are mapped to object.
-if a property is expression, the mapped value will be the expression result depending on context.</p>
-            </div>
-        
-    
-
-    
-                <h4>Returns</h4>
-                
-                    <p>mapped style depending on context.</p>
-                
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>context</code>
-        
-        
-            &mdash; <span><p>The context</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
         <span class="method-name">getTextAnchorPosition</span>
         (
 
@@ -1312,7 +1363,7 @@ if a property is expression, the mapped value will be the expression result depe
 )
         :
             
-                <span class="type">Array.&lt;number></span>
+                <span class="type">Array.&lt;Number></span>
 
             
         
@@ -1359,7 +1410,7 @@ proportions, to use with a <code>translate()</code> and a <code>transform</code>
 )
         :
             
-                <span class="type">string|undefined</span>
+                <span class="type">String|undefined</span>
 
             
         
@@ -1418,10 +1469,10 @@ replace the keys in <code>style.text.field</code>.</p>
     
     
         properties:
-            <span class="type">object</span>, 
+            <span class="type">Object</span>, 
     
         type:
-            <span class="type">number</span>
+            <span class="type">Number</span>
     
 
 )
@@ -1493,16 +1544,16 @@ replace the keys in <code>style.text.field</code>.</p>
     
     
         layer:
-            <span class="type">object</span>, 
+            <span class="type">Object</span>, 
     
         sprites:
             <span class="type">Object</span>, 
     
         order:
-            <span class="type">number</span>, 
+            <span class="type">Number</span>, 
     
         symbolToCircle:
-            <span class="type">boolean</span>
+            <span class="type">Boolean</span>
     
 
 )
@@ -1565,72 +1616,6 @@ replace the keys in <code>style.text.field</code>.</p>
     <li>
         <code>symbolToCircle</code>
         (optional)
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
-        <span class="method-name">symbolStylefromContext</span>
-        (
-
-
-    
-    
-        context:
-            <span class="type">Object</span>
-    
-
-)
-        :
-            
-                <span class="type">Object</span>
-
-            
-        
-    </h3>
-
-    
-        
-            <div class="description">
-                <p>Map symbol properties style (symbol and icon) from context to object.
-Only the necessary properties are mapped to object.
-if a property is expression, the mapped value will be the expression result depending on context.</p>
-            </div>
-        
-    
-
-    
-                <h4>Returns</h4>
-                
-                    <p>mapped style depending on context.</p>
-                
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>context</code>
-        
-        
-            &mdash; <span><p>The context</p></span>
         
 
         

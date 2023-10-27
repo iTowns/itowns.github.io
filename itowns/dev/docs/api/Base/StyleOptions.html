@@ -59,7 +59,7 @@ Used for the instanciation of a <a onclick="window.parent.goTo('api/Base/Style.h
 <ul class="params">
     
     <li>
-        <code>order: <span class="type">number</span></code>
+        <code>order: <span class="type">Number</span></code>
         (optional)
         
             &mdash; <span><p>Order of the features that will be associated to
@@ -82,7 +82,7 @@ the style. It can helps sorting and prioritizing features if needed.</p></span>
 <ul class="params">
     
     <li>
-        <code>zoom.max: <span class="type">number</span></code>
+        <code>zoom.max: <span class="type">Number</span></code>
         (optional)
         
             &mdash; <span><p>max level</p></span>
@@ -92,7 +92,7 @@ the style. It can helps sorting and prioritizing features if needed.</p></span>
     </li>
     
     <li>
-        <code>zoom.min: <span class="type">number</span></code>
+        <code>zoom.min: <span class="type">Number</span></code>
         (optional)
         
             &mdash; <span><p>min level</p></span>
@@ -119,7 +119,7 @@ the style. It can helps sorting and prioritizing features if needed.</p></span>
 <ul class="params">
     
     <li>
-        <code>fill.color: <span class="type">string|function|THREE.Color</span></code>
+        <code>fill.color: <span class="type">String|function|THREE.Color</span></code>
         (optional)
         
             &mdash; <span><p>Defines the main fill color. Can be
@@ -132,7 +132,7 @@ If the <code>Layer</code> is a <code>GeometryLayer</code> you can use <code>THRE
     </li>
     
     <li>
-        <code>fill.pattern: <span class="type">Image|Canvas|string|object|function</span></code>
+        <code>fill.pattern: <span class="type">Image|Canvas|String|Object|function</span></code>
         (optional)
         
             &mdash; <span><p>Defines a pattern to fill the
@@ -148,20 +148,20 @@ for how to use.</p></span>
 <ul class="params">
     
     <li>
-        <code>fill.pattern.source: <span class="type">string</span></code>
+        <code>fill.pattern.source: <span class="type">Image|String</span></code>
         (optional)
         
-            &mdash; <span><p>the url to fetch the pattern image</p></span>
+            &mdash; <span><p>The image or the url to fetch the pattern image</p></span>
         
 
         
     </li>
     
     <li>
-        <code>fill.pattern.cropValues: <span class="type">object</span></code>
+        <code>fill.pattern.cropValues: <span class="type">Object</span></code>
         (optional)
         
-            &mdash; <span><p>the x, y, width and height (in pixel) of the sub image to use.</p></span>
+            &mdash; <span><p>The x, y, width and height (in pixel) of the sub image to use.</p></span>
         
 
         
@@ -185,7 +185,7 @@ It will change the color of the white pixels of the source image.</p></span>
     </li>
     
     <li>
-        <code>fill.opacity: <span class="type">number|function</span></code>
+        <code>fill.opacity: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p>The opacity of the color or of the
@@ -197,7 +197,7 @@ For a <code>GeometryLayer</code>, this opacity property isn't used.</p></span>
     </li>
     
     <li>
-        <code>fill.base_altitude: <span class="type">number|function</span></code>
+        <code>fill.base_altitude: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p><code>GeometryLayer</code> style option, defines altitude
@@ -210,7 +210,7 @@ then the altitude value is set to 0.</p></span>
     </li>
     
     <li>
-        <code>fill.extrusion_height: <span class="type">number|function</span></code>
+        <code>fill.extrusion_height: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p><code>GeometryLayer</code> style option, if defined,
@@ -238,7 +238,7 @@ polygons will be extruded by the specified amount</p></span>
 <ul class="params">
     
     <li>
-        <code>stroke.color: <span class="type">string|function|THREE.Color</span></code>
+        <code>stroke.color: <span class="type">String|function|THREE.Color</span></code>
         (optional)
         
             &mdash; <span><p>The color of the line. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
@@ -251,7 +251,7 @@ If the <code>Layer</code> is a <code>GeometryLayer</code> you can use <code>THRE
     </li>
     
     <li>
-        <code>stroke.opacity: <span class="type">number|function</span></code>
+        <code>stroke.opacity: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p>The opacity of the line. Can be between
@@ -263,7 +263,7 @@ For a <code>GeometryLayer</code>, this opacity property isn't used.</p></span>
     </li>
     
     <li>
-        <code>stroke.width: <span class="type">number|function</span></code>
+        <code>stroke.width: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p>The width of the line. Default is <code>1.0</code>.</p></span>
@@ -273,7 +273,7 @@ For a <code>GeometryLayer</code>, this opacity property isn't used.</p></span>
     </li>
     
     <li>
-        <code>stroke.base_altitude: <span class="type">number|function</span></code>
+        <code>stroke.base_altitude: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p><code>GeometryLayer</code> style option, defines altitude
@@ -303,7 +303,7 @@ then the altitude value is set to 0.</p></span>
 <ul class="params">
     
     <li>
-        <code>point.color: <span class="type">string|function</span></code>
+        <code>point.color: <span class="type">String|function</span></code>
         (optional)
         
             &mdash; <span><p>The color of the point. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
@@ -315,7 +315,7 @@ Default is no value, which means points won't be displayed.</p></span>
     </li>
     
     <li>
-        <code>point.radius: <span class="type">number|function</span></code>
+        <code>point.radius: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p>The radius of the point, in pixel. Default
@@ -326,7 +326,7 @@ is <code>2.0</code>.</p></span>
     </li>
     
     <li>
-        <code>point.line: <span class="type">string|function</span></code>
+        <code>point.line: <span class="type">String|function</span></code>
         (optional)
         
             &mdash; <span><p>The color of the border of the point. Can be
@@ -339,7 +339,7 @@ Not supported for a <code>GeometryLayer</code>.</p></span>
     </li>
     
     <li>
-        <code>point.width: <span class="type">number|function</span></code>
+        <code>point.width: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p>The width of the border, in pixel. Default
@@ -350,7 +350,7 @@ is <code>0.0</code> (no border).</p></span>
     </li>
     
     <li>
-        <code>point.opacity: <span class="type">number|function</span></code>
+        <code>point.opacity: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p>The opacity of the point. Can be between
@@ -362,7 +362,7 @@ Not supported for <code>GeometryLayer</code>.</p></span>
     </li>
     
     <li>
-        <code>point.base_altitude: <span class="type">number|function</span></code>
+        <code>point.base_altitude: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p><code>GeometryLayer</code> style option, defines altitude
@@ -402,7 +402,7 @@ then the altitude value is set to 0.</p></span>
 <ul class="params">
     
     <li>
-        <code>text.field: <span class="type">string|function</span></code>
+        <code>text.field: <span class="type">String|function</span></code>
         (optional)
         
             &mdash; <span><p>A string representing a property key of
@@ -422,7 +422,7 @@ in <code>Marrakesh - مراكش</code> for example.</p></span>
     </li>
     
     <li>
-        <code>text.color: <span class="type">string|function</span></code>
+        <code>text.color: <span class="type">String|function</span></code>
         (optional)
         
             &mdash; <span><p>The color of the text. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
@@ -434,7 +434,7 @@ Default is <code>#000000</code>.</p></span>
     </li>
     
     <li>
-        <code>text.anchor: <span class="type">string|Array.&lt;number>|function</span></code>
+        <code>text.anchor: <span class="type">String|Array.&lt;Number>|function</span></code>
         (optional)
         
             &mdash; <span><p>The anchor of the text compared to its
@@ -463,7 +463,7 @@ is <code>[0, 0]</code>.</p></span>
     </li>
     
     <li>
-        <code>text.padding: <span class="type">number|function</span></code>
+        <code>text.padding: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p>The padding outside the text, in pixels.
@@ -474,7 +474,7 @@ Default is <code>2</code>.</p></span>
     </li>
     
     <li>
-        <code>text.size: <span class="type">number|function</span></code>
+        <code>text.size: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p>The size of the font, in pixels. Default is
@@ -485,7 +485,7 @@ Default is <code>2</code>.</p></span>
     </li>
     
     <li>
-        <code>text.wrap: <span class="type">number|function</span></code>
+        <code>text.wrap: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p>The maximum width, in pixels, before the text
@@ -496,7 +496,7 @@ is wrapped, because the string is too long. Default is <code>10</code>.</p></spa
     </li>
     
     <li>
-        <code>text.spacing: <span class="type">number|function</span></code>
+        <code>text.spacing: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p>The spacing between the letters, in <code>em</code>.
@@ -507,7 +507,7 @@ Default is <code>0</code>.</p></span>
     </li>
     
     <li>
-        <code>text.transform: <span class="type">string|function</span></code>
+        <code>text.transform: <span class="type">String|function</span></code>
         (optional)
         
             &mdash; <span><p>A value corresponding to the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-transform">CSS
@@ -520,7 +520,7 @@ Default is <code>none</code>.</p></span>
     </li>
     
     <li>
-        <code>text.justify: <span class="type">string|function</span></code>
+        <code>text.justify: <span class="type">String|function</span></code>
         (optional)
         
             &mdash; <span><p>A value corresponding to the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-align">CSS property
@@ -532,7 +532,7 @@ Default is <code>center</code>.</p></span>
     </li>
     
     <li>
-        <code>text.opacity: <span class="type">number|function</span></code>
+        <code>text.opacity: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p>The opacity of the text. Can be between
@@ -554,7 +554,7 @@ names, prioritized in the order it is set. Default is <code>Open Sans Regular, A
     </li>
     
     <li>
-        <code>text.haloColor: <span class="type">string|function</span></code>
+        <code>text.haloColor: <span class="type">String|function</span></code>
         (optional)
         
             &mdash; <span><p>The color of the halo. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
@@ -566,7 +566,7 @@ Default is <code>#000000</code>.</p></span>
     </li>
     
     <li>
-        <code>text.haloWidth: <span class="type">number|function</span></code>
+        <code>text.haloWidth: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p>The width of the halo, in pixels.
@@ -577,7 +577,7 @@ Default is <code>0</code>.</p></span>
     </li>
     
     <li>
-        <code>text.haloBlur: <span class="type">number|function</span></code>
+        <code>text.haloBlur: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p>The blur value of the halo, in pixels.
@@ -605,7 +605,7 @@ Default is <code>0</code>.</p></span>
 <ul class="params">
     
     <li>
-        <code>icon.source: <span class="type">string</span></code>
+        <code>icon.source: <span class="type">String</span></code>
         (optional)
         
             &mdash; <span><p>The url of the icons' image file.</p></span>
@@ -615,7 +615,7 @@ Default is <code>0</code>.</p></span>
     </li>
     
     <li>
-        <code>icon.id: <span class="type">string</span></code>
+        <code>icon.id: <span class="type">String</span></code>
         (optional)
         
             &mdash; <span><p>The id of the icons' sub-image in a vector tile data set.</p></span>
@@ -625,7 +625,7 @@ Default is <code>0</code>.</p></span>
     </li>
     
     <li>
-        <code>icon.cropValues: <span class="type">string</span></code>
+        <code>icon.cropValues: <span class="type">String</span></code>
         (optional)
         
             &mdash; <span><p>the x, y, width and height (in pixel) of the sub image to use.</p></span>
@@ -635,7 +635,7 @@ Default is <code>0</code>.</p></span>
     </li>
     
     <li>
-        <code>icon.anchor: <span class="type">string</span></code>
+        <code>icon.anchor: <span class="type">String</span></code>
         (optional)
         
             &mdash; <span><p>The anchor of the icon compared to the label position.
@@ -647,7 +647,7 @@ or <code>bottom-right</code>. Default is <code>center</code>.</p></span>
     </li>
     
     <li>
-        <code>icon.size: <span class="type">number</span></code>
+        <code>icon.size: <span class="type">Number</span></code>
         (optional)
         
             &mdash; <span><p>If the icon's image is passed with <code>icon.source</code> and/or
@@ -658,7 +658,7 @@ or <code>bottom-right</code>. Default is <code>center</code>.</p></span>
     </li>
     
     <li>
-        <code>icon.color: <span class="type">string|function</span></code>
+        <code>icon.color: <span class="type">String|function</span></code>
         (optional)
         
             &mdash; <span><p>The color of the icon. Can be any <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">valid
@@ -670,7 +670,7 @@ It will change the color of the white pixels of the icon source image.</p></span
     </li>
     
     <li>
-        <code>icon.opacity: <span class="type">number|function</span></code>
+        <code>icon.opacity: <span class="type">Number|function</span></code>
         (optional)
         
             &mdash; <span><p>The opacity of the icon. Can be between
