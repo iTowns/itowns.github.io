@@ -54,7 +54,10 @@
             <span class="type">object</span>, 
     
         userData:
-            <span class="type">object</span>
+            <span class="type">object</span>, 
+    
+        object3d:
+            <span class="type">Object3D</span>
     
 
 )
@@ -75,7 +78,7 @@
         <code>tileId</code>
         
         
-            &mdash; <span><p>tile id</p></span>
+            &mdash; <span><p>tileId</p></span>
         
 
         
@@ -113,10 +116,19 @@
     
     <li>
         <code>userData</code>
-        (default: <code>{}</code>)
-        
+        (optional)
         
             &mdash; <span><p>some userData</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>object3d</code>
+        
+        
+            &mdash; <span><p>object3d in which feature is present</p></span>
         
 
         
@@ -148,6 +160,23 @@
     
         <div class="description">
             <p>tile id</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">object3d</span>
+        : <span class="type">Object3D</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>object3d in which feature is present</p>
         </div>
     
 </div>
@@ -227,6 +256,66 @@
     
         <hr class="title-divider"/>
         <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">computeWorldBox3</span>
+        (
+
+
+    
+    
+        target:
+            <span class="type">Box3</span>
+    
+
+)
+        :
+            
+                <span class="type">Box3</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Compute world box3 of this</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>target</code>
+        
+        
+            &mdash; <span><p>target of the result</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
         
             
 
