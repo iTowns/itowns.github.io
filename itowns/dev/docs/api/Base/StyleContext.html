@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>StyleContext - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        StyleContext
+        
+    </h1>
+
+    
+        <div class="description"><p>StyleContext stores metadata of one FeatureGeometry that are needed for its style computation:
+type of feature and what is needed (fill, stroke or draw a point, etc.) as well as where to get its
+properties and its coordinates (for base_altitude).</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">StyleContext</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">globals</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Style type (fill, stroke, point, text and or icon) to consider, it also
+contains the current zoom.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">collection</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The FeatureCollection to which the FeatureGeometry is attached</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">coordinates</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The coordinates (in world space) of the last vertex (x, y, z) set with
+setLocalCoordinatesFromArray().
+private properties:</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">worldCoord</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>@private Coordinates object to store coordinates in world space.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">localCoordinates</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>@private Coordinates object to store coordinates in local space.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">worldCoordsComputed</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>@private Have the world coordinates already been computed
+from the local coordinates?</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">geometry</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Base/FeatureGeometry.html','api/Base/FeatureGeometry')" title="FeatureGeometry">FeatureGeometry</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>@private The FeatureGeometry to compute the style.</p>
+        </div>
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/Style.js">
+            src/Core/Style.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>
