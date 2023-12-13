@@ -66,14 +66,13 @@ properties and its coordinates (for base_altitude).</p></div>
 
 <div class="property">
     <h3>
-        <span class="property-name">globals</span>
-        : <span class="type">Object</span>
+        <span class="property-name">zoom</span>
+        : <span class="type">number</span>
     </h3>
 
     
         <div class="description">
-            <p>Style type (fill, stroke, point, text and or icon) to consider, it also
-contains the current zoom.</p>
+            <p>Current zoom to display the FeatureGeometry.</p>
         </div>
     
 </div>
@@ -90,7 +89,59 @@ contains the current zoom.</p>
 
     
         <div class="description">
-            <p>The FeatureCollection to which the FeatureGeometry is attached</p>
+            <p>The FeatureCollection to which the FeatureGeometry is attached.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">properties</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Properties of the FeatureGeometry.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">type</span>
+        : <span class="type">string</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Geometry type of the feature. Can be <code>point</code>, <code>line</code>, or <code>polygon</code>.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">featureStyle</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Base/StyleOptions.html','api/Base/StyleOptions')" title="StyleOptions">StyleOptions</a>|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>StyleOptions object (or a function returning one) to get style
+information at feature and FeatureGeometry level from the data parsed.</p>
         </div>
     
 </div>
@@ -162,6 +213,23 @@ private properties:</p>
         <div class="description">
             <p>@private Have the world coordinates already been computed
 from the local coordinates?</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">feature</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>@private The itowns feature of interest.</p>
         </div>
     
 </div>

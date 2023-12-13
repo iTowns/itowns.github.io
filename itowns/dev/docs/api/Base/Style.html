@@ -58,10 +58,7 @@ the properties of the features displayed with the current <code>Style</code> ins
     
     
         params:
-            <span class="type"><a onclick="window.parent.goTo('api/Base/StyleOptions.html','api/Base/StyleOptions')" title="StyleOptions">StyleOptions</a></span>, 
-    
-        parent:
-            <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
+            <span class="type"><a onclick="window.parent.goTo('api/Base/StyleOptions.html','api/Base/StyleOptions')" title="StyleOptions">StyleOptions</a></span>
     
 
 )
@@ -86,17 +83,6 @@ the properties of the features displayed with the current <code>Style</code> ins
             &mdash; <span><p>An object that contain any properties
 (order, zoom, fill, stroke, point, text or/and icon)
 and sub properties of a Style (@see <a onclick="window.parent.goTo('api/Base/StyleOptions.html','api/Base/StyleOptions')" title="StyleOptions">StyleOptions</a>).</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>parent</code>
-        (optional)
-        
-            &mdash; <span><p>The parent style, that is looked onto if a value
-is missing.</p></span>
         
 
         
@@ -317,8 +303,8 @@ then the altitude value is set to 0.</p>
 
     
         <div class="description">
-            <p>Only for <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a>, if defined,
-polygons will be extruded by the specified amount</p>
+            <p>Only for <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a> and if user sets it.
+If defined, polygons will be extruded by the specified amount.</p>
         </div>
     
 </div>
@@ -1026,72 +1012,6 @@ It will change the color of the white pixels of the icon source image.</p>
 
 <div class="method">
     <h3>
-        <span class="method-name">applyContext</span>
-        (
-
-
-    
-    
-        context:
-            <span class="type">Object</span>
-    
-
-)
-        :
-            
-                <span class="type"><a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a></span>
-
-            
-        
-    </h3>
-
-    
-        
-            <div class="description">
-                <p>Map style object properties (fill, stroke, point, text and icon) from context to Style.
-Only the necessary properties are mapped to object.
-if a property is expression, the mapped value will be the expression result depending on context.</p>
-            </div>
-        
-    
-
-    
-                <h4>Returns</h4>
-                
-                    <p>mapped style depending on context.</p>
-                
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>context</code>
-        
-        
-            &mdash; <span><p>The context of the FeatureGeometry that we want to get the Style.</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
         <span class="method-name">applyToCanvasPolygon</span>
         (
 
@@ -1391,78 +1311,19 @@ proportions, to use with a <code>translate()</code> and a <code>transform</code>
     
 </div>
 
-            <hr/>
+            
+        
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Static Methods</h2>
         
             
 
 <div class="method">
     <h3>
-        <span class="method-name">getTextFromProperties</span>
-        (
-
-
-    
-    
-        ctx:
-            <span class="type">Object</span>
-    
-
-)
-        :
-            
-                <span class="type">String|undefined</span>
-
-            
-        
-    </h3>
-
-    
-        
-            <div class="description">
-                <p>Returns a string, associating <code>style.text.field</code> and properties to use to
-replace the keys in <code>style.text.field</code>.</p>
-            </div>
-        
-    
-
-    
-                <h4>Returns</h4>
-                
-                    <p>The formatted string if <code>style.text.field</code> is defined, nothing otherwise.</p>
-                
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>ctx</code>
-        
-        
-            &mdash; <span><p>An object containing the feature context.</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
-        <span class="method-name">setFromGeojsonProperties</span>
+        <span class="method-name">setFromProperties</span>
         (
 
 
@@ -1471,8 +1332,8 @@ replace the keys in <code>style.text.field</code>.</p>
         properties:
             <span class="type">Object</span>, 
     
-        type:
-            <span class="type">Number</span>
+        featCtx:
+            <span class="type">FeatureContext</span>
     
 
 )
@@ -1515,8 +1376,10 @@ replace the keys in <code>style.text.field</code>.</p>
     </li>
     
     <li>
-        <code>type</code>
+        <code>featCtx</code>
         
+        
+            &mdash; <span><p>the context of the feature</p></span>
         
 
         
@@ -1632,8 +1495,6 @@ replace the keys in <code>style.text.field</code>.</p>
 
             
         
-    
-
     
 
     
