@@ -25,12 +25,10 @@
     </h1>
 
     
-        <div class="description"><p>The LASParser module provides a parse method
-that takes a LAS file or a LAZ (LASZip) file in, and gives a
-<code>THREE.BufferGeometry</code> containing all the necessary attributes to be
+        <div class="description"><p>The LASParser module provides a parse method that takes a LAS or LAZ (LASZip) file in, and
+gives a <code>THREE.BufferGeometry</code> containing all the necessary attributes to be
 displayed in iTowns. It uses the
-<a href="https://loaders.gl/modules/las/docs/api-reference/las-loader">LASLoader</a>
-from <code>loaders.gl</code>.</p></div>
+<a href="https://github.com/connormanning/copc.js/">copc.js</a> library.</p></div>
     
 
     
@@ -107,6 +105,16 @@ header of the file is contained in <code>userData</code>.</p>
         <code>options</code>
         (optional)
         
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.in</code>
+        (optional)
+        
             &mdash; <span><p>Options to give to the parser.</p></span>
         
 
@@ -117,25 +125,17 @@ header of the file is contained in <code>userData</code>.</p>
     
     <li>
         <code>options.in.colorDepth</code>
-        (default: <code>'auto'</code>)
+        (optional)
         
-        
-            &mdash; <span><p>Does the color
-encoding is known ? Is it <code>8</code> or <code>16</code> bits ? By default it is to
-<code>'auto'</code>, but it will be more performant if a specific value is set.</p></span>
+            &mdash; <span><p>Color depth (in bits).
+Defaults to 8 bits for LAS 1.2 and 16 bits for later versions
+(as mandatory by the specification)</p></span>
         
 
         
     </li>
     
-    <li>
-        <code>options.out.skip</code>
-        (default: <code>1</code>)
-        
-        
-            &mdash; <span><p>Read one point from every <code>skip</code>
-points.</p></span>
-        
+</ul>
 
         
     </li>
