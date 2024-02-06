@@ -128,6 +128,52 @@ added to viewerDiv (mutually exclusive with mainLoop)</p></span>
         
 
         
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.renderer.isWebGL2</code>
+        (default: <code>true</code>)
+        
+        
+            &mdash; <span><p>enable webgl 2.0 for THREE.js.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>options.webXR</code>
+        (optional)
+        
+            &mdash; <span><p>enable webxr button to switch on VR visualization.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.webXR.scale</code>
+        (default: <code>1.0</code>)
+        
+        
+            &mdash; <span><p>apply webxr scale tranformation.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
     </li>
     
     <li>
@@ -198,11 +244,134 @@ var view = itowns.View('EPSG:4326', viewerDiv, { camera: { cameraThree: customCa
 
     <pre class="prettyprint source lang-js"><code>var viewerDiv = document.getElementById('viewerDiv');
 var view = itowns.View('EPSG:4326', viewerDiv, { camera: { type: itowns.CAMERA_TYPE.ORTHOGRAPHIC } });
-var customControls = itowns.THREE.OrbitControls(view.camera.camera3D, viewerDiv);</code></pre>
+var customControls = itowns.THREE.OrbitControls(view.camera3D, viewerDiv);</code></pre>
 
 
     
 
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">domElement</span>
+        : <span class="type">HTMLElement</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Thhe domElement holding the canvas where the view is displayed</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">referenceCrs</span>
+        : <span class="type">String</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The coordinate reference system of the view</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">mainLoop</span>
+        : <span class="type">MainLoop</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>itowns mainloop scheduling the operations</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">scene</span>
+        : <span class="type">THREE.Scene</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>threejs scene of the view</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">camera</span>
+        : <span class="type"><a onclick="window.parent.goTo('api/Renderer/Camera.html','api/Renderer/Camera')" title="Camera">Camera</a></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>itowns camera (that holds a threejs camera that is directly accessible with View.camera3D)</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">camera3D</span>
+        : <span class="type">THREE.Camera</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>threejs camera that is stored in itowns camera</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">renderer</span>
+        : <span class="type">THREE.WebGLRenderer</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>threejs webglrenderer rendering this view</p>
+        </div>
+    
+</div>
+
+            
+        
     
 
     

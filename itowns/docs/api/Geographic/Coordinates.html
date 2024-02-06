@@ -87,7 +87,7 @@ supported by default. To use another CRS, you have to declare it with proj4. For
         (optional)
         
             &mdash; <span><p>x or longitude value, or a more complex one: it can be an array of three
-numbers, being x/lon, x/lat, z/alt, or it can be <code>THREE.Vector3</code>. It can
+numbers, being x/lon, y/lat, z/alt, or it can be <code>THREE.Vector3</code>. It can
 also simply be a Coordinates.</p></span>
         
 
@@ -1054,6 +1054,85 @@ from.</p></span>
         
         
             &mdash; <span><p>The coordinate</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">toArray</span>
+        (
+
+
+    
+    
+        array:
+            <span class="type">Array.&lt;number></span>, 
+    
+        offset:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">Array.&lt;number></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Copy values coordinates to array</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>Returns an array [x, y, z], or copies x, y and z into
+the provided array.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>array</code>
+        
+        
+            &mdash; <span><p>array to store this vector to. If this is not
+provided a new array will be created.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>offset</code>
+        (optional)
+        
+            &mdash; <span><p>optional offset into the array.</p></span>
         
 
         

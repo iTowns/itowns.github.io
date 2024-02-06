@@ -26,7 +26,10 @@
 
     
         <div class="description"><p>3D Tiles
-<a href="https://github.com/AnalyticalGraphicsInc/3d-tiles/blob/master/specification/schema/boundingVolume.schema.json">bounding volume</a></p></div>
+<a href="https://github.com/AnalyticalGraphicsInc/3d-tiles/blob/master/specification/schema/boundingVolume.schema.json">bounding volume</a>
+Used to represent bounding volumes and viewer request volumes. The input bounding volume (from the dataset) can be a
+box, a sphere or a region. Regions are transformed to spheres internally for simplification of parsing and to speed
+up computations such as culling.</p></div>
     
 
     
@@ -84,14 +87,14 @@
 
 <div class="property">
     <h3>
-        <span class="property-name">box</span>
-        : <span class="type">THREE.Box3</span>
+        <span class="property-name">initialVolumeType</span>
+        : <span class="type">String</span>
     </h3>
 
     
         <div class="description">
-            <p>Bounding box, defined only if the Bounding Volume
-is a box.</p>
+            <p>the initial volume type to be able to dissociate spheres
+and regions if needed since both are converted to spheres (one of C3DTilesBoundingVolumeTypes)</p>
         </div>
     
 </div>
@@ -102,32 +105,14 @@ is a box.</p>
 
 <div class="property">
     <h3>
-        <span class="property-name">region</span>
-        : <span class="type"><a onclick="window.parent.goTo('api/Geographic/OBB.html','api/Geographic/OBB')" title="OBB">OBB</a></span>
+        <span class="property-name">volume</span>
+        : <span class="type">THREE.Box3|THREE.Sphere</span>
     </h3>
 
     
         <div class="description">
-            <p>Bounding region, defined only if the Bounding
-Volume is a region.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">sphere</span>
-        : <span class="type">THREE.Sphere</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Bounding sphere, defined only if the
-Bounding Volume is a sphere.</p>
+            <p>The 3D bounding volume created. Can be a THREE.Box3 for bounding volumes
+of types box or a THREE.Sphere for bounding volumes of type sphere or region.</p>
         </div>
     
 </div>
@@ -155,6 +140,164 @@ stored in the following format:
         
     
 
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">boundingVolumeCulling</span>
+        (
+
+
+    
+    
+        camera:
+            <span class="type"><a onclick="window.parent.goTo('api/Renderer/Camera.html','api/Renderer/Camera')" title="Camera">Camera</a></span>, 
+    
+        tileMatrixWorld:
+            <span class="type">THREE.Matrix4</span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Performs camera frustum culling on bounding volumes.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>true if the tile should be culled out (bounding volume not in camera frustum), false otherwise.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>camera</code>
+        
+        
+            &mdash; <span><p>the camera to perform culling for</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>tileMatrixWorld</code>
+        
+        
+            &mdash; <span><p>the world matrix of the tile</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">viewerRequestVolumeCulling</span>
+        (
+
+
+    
+    
+        camera:
+            <span class="type"><a onclick="window.parent.goTo('api/Renderer/Camera.html','api/Renderer/Camera')" title="Camera">Camera</a></span>, 
+    
+        tileMatrixWorld:
+            <span class="type">THREE.Matrix4</span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Checks if the camera is inside the [viewer request volumes](@link https://github.com/CesiumGS/3d-tiles/tree/main/specification#viewer-request-volume).</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>true if the camera is outside the viewer request volume, false otherwise.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>camera</code>
+        
+        
+            &mdash; <span><p>the camera to perform culling for</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>tileMatrixWorld</code>
+        
+        
+            &mdash; <span><p>the world matrix of the tile</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
     
 
     

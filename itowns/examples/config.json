@@ -3,6 +3,7 @@
         "view_3d_map": "3D map",
         "view_25d_map": "2.5D map",
         "view_2d_map": "2D map",
+        "view_3d_map_webxr": "3D map WebXR",
         "view_multiglobe": "Multiple globes",
         "view_multi_25d": "Multiple 2.5D maps",
         "view_immersive": "Immersive view",
@@ -55,7 +56,8 @@
         "source_file_kml_raster": "KML to raster",
         "source_file_kml_raster_usgs": "USGS KML flux to raster",
         "source_file_gpx_raster": "GPX to raster",
-        "source_file_gpx_3d": "GPX to 3D objects"
+        "source_file_gpx_3d": "GPX to 3D objects",
+        "source_file_cog": "Cloud Optimized GeoTIFF (COG)"
     },
 
     "Customize FileSource": {

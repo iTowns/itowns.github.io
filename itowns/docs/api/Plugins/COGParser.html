@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>LASParser - iTowns documentation</title>
+    <title>COGParser - iTowns documentation</title>
 
     <script src="../../scripts/prettify/prettify.js"> </script>
     <script src="../../scripts/prettify/lang-css.js"> </script>
@@ -20,18 +20,36 @@
 <article>
 
     <h1>
-        LASParser
+        COGParser
         
     </h1>
 
     
-        <div class="description"><p>The LASParser module provides a parse method that takes a LAS or LAZ (LASZip) file in, and
-gives a <code>THREE.BufferGeometry</code> containing all the necessary attributes to be
-displayed in iTowns. It uses the
-<a href="https://github.com/connormanning/copc.js/">copc.js</a> library.</p></div>
+        <div class="description"><p>The COGParser module provides a parse
+method that takes a COG in and gives a <code>THREE.DataTexture</code> that can be
+displayed in the view.</p>
+<p>It needs the <a href="https://github.com/geotiffjs/geotiff.js/">geotiff</a> library to parse the
+COG.</p></div>
     
 
     
+
+    
+        <hr class="title-divider"/>
+        <h2>Example</h2>
+        
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>GeoTIFF.fromUrl('http://image.tif')
+    .then(COGParser.parse)
+    .then(function _(texture) {
+        var source = new itowns.FileSource({ features: texture });
+        var layer = new itowns.ColorLayer('cog', { source });
+        view.addLayer(layer);
+    });</code></pre>
+
 
     
 
@@ -54,7 +72,7 @@ displayed in iTowns. It uses the
     
     
         data:
-            <span class="type">ArrayBuffer</span>, 
+            <span class="type">Object</span>, 
     
         options:
             <span class="type">Object</span>
@@ -63,7 +81,7 @@ displayed in iTowns. It uses the
 )
         :
             
-                <span class="type">Promise</span>
+                <span class="type">Promise.&lt;THREE.DataTexture></span>
 
             
         
@@ -72,8 +90,7 @@ displayed in iTowns. It uses the
     
         
             <div class="description">
-                <p>Parses a LAS file or a LAZ (LASZip) file and return the corresponding
-<code>THREE.BufferGeometry</code>.</p>
+                <p>Parse a COG file and return a <code>THREE.DataTexture</code>.</p>
             </div>
         
     
@@ -81,8 +98,7 @@ displayed in iTowns. It uses the
     
                 <h4>Returns</h4>
                 
-                    <p>A promise resolving with a <code>THREE.BufferGeometry</code>. The
-header of the file is contained in <code>userData</code>.</p>
+                    <p>A promise resolving with a <code>THREE.DataTexture</code>.</p>
                 
 
     
@@ -95,15 +111,32 @@ header of the file is contained in <code>userData</code>.</p>
         <code>data</code>
         
         
-            &mdash; <span><p>The file content to parse.</p></span>
+            &mdash; <span><p>Data passed with the Tile extent</p></span>
         
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>data.extent</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
 
         
     </li>
     
     <li>
         <code>options</code>
-        (optional)
+        
+        
+            &mdash; <span><p>Options (contains source)</p></span>
         
 
         
@@ -113,9 +146,7 @@ header of the file is contained in <code>userData</code>.</p>
     
     <li>
         <code>options.in</code>
-        (optional)
         
-            &mdash; <span><p>Options to give to the parser.</p></span>
         
 
         
@@ -124,12 +155,24 @@ header of the file is contained in <code>userData</code>.</p>
 <ul class="params">
     
     <li>
-        <code>options.in.colorDepth</code>
-        (optional)
+        <code>options.in.source</code>
         
-            &mdash; <span><p>Color depth (in bits).
-Defaults to 8 bits for LAS 1.2 and 16 bits for later versions
-(as mandatory by the specification)</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.in.tileWidth</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.in.tileHeight</code>
+        
         
 
         
@@ -166,8 +209,8 @@ Defaults to 8 bits for LAS 1.2 and 16 bits for later versions
 
         <hr class="title-divider"/>
         <h2>Source</h2>
-        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Parser/LASParser.js">
-            src/Parser/LASParser.js
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/examples/js/plugins/COGParser.js">
+            examples/js/plugins/COGParser.js
         </a>
 
 
