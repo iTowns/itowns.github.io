@@ -67,7 +67,8 @@ We need to change the starting position to something more appropriate.</p>
                 name: 'ORTHOIMAGERY.ORTHOPHOTOS',
                 tileMatrixSet: 'PM',
                 format: 'image/jpeg',
-            })
+            });
+
             // Create the ortho-images ColorLayer and add it to the view
             var orthoLayer = new itowns.ColorLayer('Ortho', {
                 source: orthoSource,
@@ -223,7 +224,8 @@ Had we left it to false, only the points and polygons would have been displayed 
                 name: 'ORTHOIMAGERY.ORTHOPHOTOS',
                 tileMatrixSet: 'PM',
                 format: 'image/jpeg',
-            })
+            });
+
             // Create the ortho-images ColorLayer and add it to the view
             var orthoLayer = new itowns.ColorLayer('Ortho', {
                 source: orthoSource,
