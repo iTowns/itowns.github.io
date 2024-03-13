@@ -79,7 +79,7 @@ Then, having those two objects, we create the <code><a onclick="window.parent.go
 Adding a layer to itowns is done in three steps: creating a data <code><a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a></code>, adding this source to a
 <code><a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></code> and adding this layer to the <code><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></code>.</p>
 <pre class="prettyprint source lang-js"><code>var orthoSource = new itowns.WMTSSource({
-    url: 'http://wxs.ign.fr/decouverte/geoportail/wmts',
+    url: 'https://data.geopf.fr/wmts?',
     crs: 'EPSG:3857',
     name: 'ORTHOIMAGERY.ORTHOPHOTOS',
     tileMatrixSet: 'PM',
@@ -113,7 +113,7 @@ process is quite similar to adding a <code><a onclick="window.parent.goTo('api/L
 <code>WMTSSource</code>, but we need to create a new one as the elevation data source is different from the
 previous one.</p>
 <pre class="prettyprint source lang-js"><code>var elevationSource = new itowns.WMTSSource({
-    url: 'http://wxs.ign.fr/altimetrie/geoportail/wmts',
+    url: 'https://data.geopf.fr/wmts?',
     crs: 'EPSG:4326',
     name: 'ELEVATION.ELEVATIONGRIDCOVERAGE.SRTM3',
     tileMatrixSet: 'WGS84G',
@@ -162,7 +162,7 @@ Here is the final code:</p>
             var view = new itowns.GlobeView(viewerDiv, placement);
 
             var orthoSource = new itowns.WMTSSource({
-                url: 'https://wxs.ign.fr/decouverte/geoportail/wmts',
+                url: 'https://data.geopf.fr/wmts?',
                 crs: &quot;EPSG:3857&quot;,
                 name: 'ORTHOIMAGERY.ORTHOPHOTOS',
                 tileMatrixSet: 'PM',
@@ -176,7 +176,7 @@ Here is the final code:</p>
             view.addLayer(orthoLayer);
 
             var elevationSource = new itowns.WMTSSource({
-                url: 'https://wxs.ign.fr/altimetrie/geoportail/wmts',
+                url: 'https://data.geopf.fr/wmts?',
                 crs: 'EPSG:4326',
                 name: 'ELEVATION.ELEVATIONGRIDCOVERAGE.SRTM3',
                 tileMatrixSet: 'WGS84G',
