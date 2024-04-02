@@ -85,7 +85,7 @@
                 view,
                 new itowns.ColorLayer('minimap', {
                     source: new itowns.VectorTilesSource({
-                        style: 'https://wxs.ign.fr/essentiels/static/vectorTiles/styles/PLAN.IGN/gris.json',
+                        style: "https://data.geopf.fr/annexes/ressources/vectorTiles/styles/PLAN.IGN/standard.json",
                         // We don't display mountains and plot related data to ease visualisation
                         filter: (layer) => !layer['source-layer'].includes('oro_')
                             && !layer['source-layer'].includes('parcellaire'),
@@ -110,8 +110,8 @@
             // Define options for geocoding service that should be used by the searchbar.
             const geocodingOptions = {
                 url: new URL(
-                    'https://wxs.ign.fr/ayxvok72rcocdyn8xyvy32og/ols/apis/completion?text=&type=StreetAddress,' +
-                    'PositionOfInterest',
+                    'https://data.geopf.fr/geocodage/completion?' +
+                    'text=&type=StreetAddress,PositionOfInterest',
                 ),
                 parser: (response) => {
                     const map = new Map();

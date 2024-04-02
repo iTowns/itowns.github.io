@@ -31,14 +31,15 @@
         <script src="js/GUI/LoadingScreen.js"></script>
         <script src="../dist/debug.js"></script>
         <script type="text/javascript">
+            itowns.proj4.defs('EPSG:3946', '+proj=lcc +lat_0=46 +lon_0=3 +lat_1=45.25 +lat_2=46.75 +x_0=1700000 +y_0=5200000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs');
+
             var debugGui = new dat.GUI();
             var viewerDiv = document.getElementById('viewerDiv');
             viewerDiv.style.display = 'block';
             var view = new itowns.View('EPSG:3946', viewerDiv);
             view.mainLoop.gfxEngine.renderer.setClearColor(0xcccccc);
 
-            var controls = new itowns.FirstPersonControls(view, { focusOnClick: true });
-            debugGui.add(controls.options, 'moveSpeed', 1, 10000).name('Movement speed');
+            const controls = new itowns.PlanarControls(view);
 
             var eptLayer, eptSource;
 
@@ -50,22 +51,30 @@
 
                 view.camera3D.far = 2.0 * size.length();
 
-                var position = eptLayer.root.bbox.min.clone().add(size.multiply({ x: 0, y: 0, z: size.x / size.z }));
+                controls.groundLevel = eptLayer.root.bbox.min.z;
+                var position = eptLayer.root.bbox.min.clone().add(
+                    size.multiply({ x: 0, y: 0, z: size.x / size.z })
+                );
 
                 view.camera3D.position.copy(position);
                 view.camera3D.lookAt(lookAt);
-
-                controls.options.moveSpeed = size.length();
+                view.camera3D.updateProjectionMatrix();
 
                 view.notifyChange(view.camera3D);
-                controls.reset();
             }
 
             function readEPTURL() {
-                var url = document.getElementById('ept_url').value || new URL(location.href).searchParams.get('ept');
+                const urlParams = new URL(location.href).searchParams
+                var url = document.getElementById('ept_url').value || urlParams.get('ept');
 
                 if (url) {
-                    loadEPT(url);
+                    const options = {};
+                    urlParams.keys().forEach(key => {
+                        if (key !== 'ept') {
+                            options[key] = parseInt(urlParams.get(key), 10);
+                        }
+                    });
+                    loadEPT(url, options);
 
                     document.getElementById('share').innerHTML = '<a href="' +
                         location.href.replace(location.search, '') +
@@ -75,22 +84,27 @@
                 }
             }
 
-            function loadEPT(url) {
+            function loadEPT(url, options) {
                 eptSource = new itowns.EntwinePointTileSource({ url });
 
                 if (eptLayer) {
-                    view.removeLayer('ept');
+                    debugGUI.removeFolder(eptLayer.debugUI);
+                    view.removeLayer('Entwine Point Tile');
                     view.notifyChange();
+                    eptLayer.delete();
                 }
 
-                eptLayer = new itowns.EntwinePointTileLayer('Entwine Point Tile', {
+                const config = {
                     source: eptSource,
                     crs: view.referenceCrs,
-                });
+                    ...options,
+                }
+                eptLayer = new itowns.EntwinePointTileLayer('Entwine Point Tile', config);
 
                 view.addLayer(eptLayer).then(onLayerReady);
 
-                debug.PotreeDebug.initTools(view, eptLayer, debugGui);
+                eptLayer.whenReady
+                    .then(() => debug.PotreeDebug.initTools(view, eptLayer, debugGui));
 
                 function dblClickHandler(event) {
                     var pick = view.pickObjectsAt(event, 5, eptLayer);

@@ -56,27 +56,28 @@ We need to change the starting position to something more appropriate.</p>
                 coord: new itowns.Coordinates('EPSG:4326', 3.05, 48.97),
                 range: 15000,
             };
-            
+
             // Create the view
             var view = new itowns.GlobeView(viewerDiv, placement);
-            
+
             // Define the source of the ortho-images
             var orthoSource = new itowns.WMTSSource({
-                url: 'https://wxs.ign.fr/decouverte/geoportail/wmts',
+                url: 'https://data.geopf.fr/wmts?',
                 crs: &quot;EPSG:3857&quot;,
                 name: 'ORTHOIMAGERY.ORTHOPHOTOS',
                 tileMatrixSet: 'PM',
                 format: 'image/jpeg',
-            })
+            });
+
             // Create the ortho-images ColorLayer and add it to the view
             var orthoLayer = new itowns.ColorLayer('Ortho', {
                 source: orthoSource,
             });
             view.addLayer(orthoLayer);
-            
+
             // Define the source of the dem data
             var elevationSource = new itowns.WMTSSource({
-                url: 'https://wxs.ign.fr/altimetrie/geoportail/wmts',
+                url: 'https://data.geopf.fr/wmts?',
                 crs: 'EPSG:4326',
                 name: 'ELEVATION.ELEVATIONGRIDCOVERAGE.SRTM3',
                 tileMatrixSet: 'WGS84G',
@@ -218,12 +219,13 @@ Had we left it to false, only the points and polygons would have been displayed 
 
             // Define the source of the ortho-images
             var orthoSource = new itowns.WMTSSource({
-                url: 'https://wxs.ign.fr/decouverte/geoportail/wmts',
+                url: 'https://data.geopf.fr/wmts?',
                 crs: &quot;EPSG:3857&quot;,
                 name: 'ORTHOIMAGERY.ORTHOPHOTOS',
                 tileMatrixSet: 'PM',
                 format: 'image/jpeg',
-            })
+            });
+
             // Create the ortho-images ColorLayer and add it to the view
             var orthoLayer = new itowns.ColorLayer('Ortho', {
                 source: orthoSource,
@@ -232,7 +234,7 @@ Had we left it to false, only the points and polygons would have been displayed 
 
             // Define the source of the dem data
             var elevationSource = new itowns.WMTSSource({
-                url: 'https://wxs.ign.fr/altimetrie/geoportail/wmts',
+                url: 'https://data.geopf.fr/wmts?',
                 crs: 'EPSG:4326',
                 name: 'ELEVATION.ELEVATIONGRIDCOVERAGE.SRTM3',
                 tileMatrixSet: 'WGS84G',

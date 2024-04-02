@@ -115,10 +115,32 @@
     
     <li>
         <code>options.intensityRange</code>
-        (default: <code>new THREE.Vector2(0, 1)</code>)
+        (default: <code>new THREE.Vector2(1, 65536)</code>)
         
         
             &mdash; <span><p>intensity range.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.elevationRange</code>
+        (default: <code>new THREE.Vector2(0, 1000)</code>)
+        
+        
+            &mdash; <span><p>elevation range.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.angleRange</code>
+        (default: <code>new THREE.Vector2(-90, 90)</code>)
+        
+        
+            &mdash; <span><p>scan angle range.</p></span>
         
 
         
@@ -138,7 +160,28 @@
         <code>options.classification</code>
         (optional)
         
-            &mdash; <span><p>define points classification.</p></span>
+            &mdash; <span><p>LUT for point classification colorization.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.discreteScheme</code>
+        (optional)
+        
+            &mdash; <span><p>LUT for other discret point values colorization.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.gradient</code>
+        (optional)
+        
+            &mdash; <span><p>Descrition of the gradient to use for continuous point values.
+(Default value will be the 'SPECTRAL' gradient from Utils/Gradients)</p></span>
         
 
         
@@ -215,13 +258,81 @@ pointMaterial.recomputeClassification();</code></pre>
 
 <div class="property">
     <h3>
-        <span class="property-name">classification</span>
-        : <span class="type"><a onclick="window.parent.goTo('api/Points/Classification.html','api/Points/Classification')" title="Classification">Classification</a></span>
+        <span class="property-name">classificationScheme</span>
+        : <span class="type">Scheme</span>
     </h3>
 
     
         <div class="description">
-            <p>points classification.</p>
+            <p>Color scheme for point classification values.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">discreteScheme</span>
+        : <span class="type">Scheme</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Color scheme for all other discrete values.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">gradients</span>
+        : <span class="type">object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Descriptions of all available gradients.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">gradient</span>
+        : <span class="type">object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Description of the gradient to use for display.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">gradientTexture</span>
+        : <span class="type">THREE.CanvasTexture</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The texture generate from the choosen gradient.</p>
         </div>
     
 </div>
