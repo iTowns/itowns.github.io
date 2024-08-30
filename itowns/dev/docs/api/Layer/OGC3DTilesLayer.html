@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>OGC3DTilesLayer - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        OGC3DTilesLayer
+        
+            <span class="extends">extends <a onclick="window.parent.goTo('api/Layer/Layer.html','api/Layer/Layer')" title="Layer">Layer</a></span>
+        
+    </h1>
+
+    
+        <div class="description"><p>Layer for <a href="https://www.ogc.org/standard/3dtiles/">3D Tiles</a> datasets.</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">OGC3DTilesLayer</span>
+        (
+
+
+    
+    
+        id:
+            <span class="type">String</span>, 
+    
+        config:
+            <span class="type">Object</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>id</code>
+        
+        
+            &mdash; <span><p>unique layer id.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config</code>
+        
+        
+            &mdash; <span><p>layer specific configuration</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>config.source</code>
+        
+        
+            &mdash; <span><p>data source configuration</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.pntsMode</code>
+        (default: <code>PNTS_MODE.COLOR</code>)
+        
+        
+            &mdash; <span><p>Point cloud coloring mode (passed to <a onclick="window.parent.goTo('api/Points/PointsMaterial.html','api/Points/PointsMaterial')" title="PointsMaterial">PointsMaterial</a>).
+Only 'COLOR' or 'CLASSIFICATION' are possible. COLOR uses RGB colors of the points,
+CLASSIFICATION uses a classification property of the batch table to color points.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.classificationScheme</code>
+        (optional)
+        
+            &mdash; <span><p><a onclick="window.parent.goTo('api/Points/PointsMaterial.html','api/Points/PointsMaterial')" title="PointsMaterial">PointsMaterial</a> classification scheme</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.pntsShape</code>
+        (default: <code>PNTS_SHAPE.CIRCLE</code>)
+        
+        
+            &mdash; <span><p>Point cloud point shape. Only 'CIRCLE' or 'SQUARE' are possible.
+(passed to <a onclick="window.parent.goTo('api/Points/PointsMaterial.html','api/Points/PointsMaterial')" title="PointsMaterial">PointsMaterial</a>).</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.pntsSizeMode</code>
+        (default: <code>PNTS_SIZE_MODE.VALUE</code>)
+        
+        
+            &mdash; <span><p><a onclick="window.parent.goTo('api/Points/PointsMaterial.html','api/Points/PointsMaterial')" title="PointsMaterial">PointsMaterial</a> Point cloud size mode (passed to <a onclick="window.parent.goTo('api/Points/PointsMaterial.html','api/Points/PointsMaterial')" title="PointsMaterial">PointsMaterial</a>).
+Only 'VALUE' or 'ATTENUATED' are possible. VALUE use constant size, ATTENUATED compute size depending on distance
+from point to camera.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.pntsMinAttenuatedSize</code>
+        (default: <code>3</code>)
+        
+        
+            &mdash; <span><p>Minimum scale used by 'ATTENUATED' size mode.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.pntsMaxAttenuatedSize</code>
+        (default: <code>10</code>)
+        
+        
+            &mdash; <span><p>Maximum scale used by 'ATTENUATED' size mode.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">defineLayerProperty</span>
+        (
+
+
+    
+    
+        propertyName:
+            <span class="type">string</span>, 
+    
+        defaultValue:
+            <span class="type">*</span>, 
+    
+        onChange:
+            <span class="type">function</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Defines a property for this layer, with a default value and a callback
+executed when the property changes.
+<br><br>
+When changing the property, it also emits an event, named following this
+convention: <code>${propertyName}-property-changed</code>, with <code>${propertyName}</code>
+being replaced by the name of the property.  For example, if the added
+property name is <code>frozen</code>, it will emit a <code>frozen-property-changed</code>.
+<br><br></p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>propertyName</code>
+        
+        
+            &mdash; <span><p>The name of the property, also used in
+the emitted event name.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>defaultValue</code>
+        
+        
+            &mdash; <span><p>The default set value.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>onChange</code>
+        (optional)
+        
+            &mdash; <span><p>The function executed when the property is
+changed. Parameters are the layer the property is defined on, and the
+name of the property.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+            <h4>Example</h4>
+            
+
+
+    
+        <caption>The emitted event has some properties assigned to it</caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>event = {
+    new: {
+        ${propertyName}: * // the new value of the property
+    },
+    previous: {
+        ${propertyName}: * // the previous value of the property
+    },
+    target: Layer // the layer it has been dispatched from
+    type: string // the name of the emitted event
+}</code></pre>
+
+
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">delete</span>
+        (
+
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Deletes the layer and frees associated memory</p>
+            </div>
+        
+    
+
+    
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">forEachTile</span>
+        (
+
+
+    
+    
+        callback:
+            <span class="type">function</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Executes a callback for each tile of this layer tileset.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>callback</code>
+        
+        
+            &mdash; <span><p>The callback to execute for each tile. Has the following two parameters:</p>
+<ol>
+<li>tile (Object) - the JSON tile</li>
+<li>scene (THREE.Object3D | null) - The tile content. Contains a <code>batchTable</code> property. Can be null if the tile
+has not yet been loaded.</li>
+</ol></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">getC3DTileFeatureFromIntersectsArray</span>
+        (
+
+
+    
+    
+        intersects:
+            <span class="type">Array</span>
+    
+
+)
+        :
+            
+                <span class="type">Object|null</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Get the attributes for the closest intersection from a list of
+intersects.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <ul>
+<li>An object containing</li>
+</ul>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>intersects</code>
+        
+        
+            &mdash; <span><p>An array containing all
+objects picked under mouse coordinates computed with view.pickObjectsAt(..).</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">isValidData</span>
+        (
+
+
+    
+    
+        feature:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+    
+
+)
+        :
+            
+                <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Determines whether the specified feature is valid data.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>the feature is returned if it's valided</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>feature</code>
+        
+        
+            &mdash; <span><p>The feature</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">pickObjectsAt</span>
+        (
+
+
+    
+    
+        view:
+            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>, 
+    
+        coords:
+            <span class="type">THREE.Vector2</span>, 
+    
+        radius:
+            <span class="type">number</span>, 
+    
+        target:
+            <span class="type">Array</span>
+    
+
+)
+        :
+            
+                <span class="type">Array</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Get all 3D objects (mesh and points primitives) as intersects at the
+given non-normalized screen coordinates.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>Array containing all target objects picked under the
+specified coordinates.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>view</code>
+        
+        
+            &mdash; <span><p>The view instance.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>coords</code>
+        
+        
+            &mdash; <span><p>The coordinates to pick in the view. It
+should have at least <code>x</code> and <code>y</code> properties.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>radius</code>
+        
+        
+            &mdash; <span><p>Radius of the picking circle.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>target</code>
+        (default: <code>[]</code>)
+        
+        
+            &mdash; <span><p>Target array to push results too</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Events</h2>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">dispose-model</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Fired when a tile model is disposed</p>
+        </div>
+    
+
+    
+        <h4>Properties</h4>
+        
+        
+
+<ul class="params">
+    
+    <li>
+        <code>scene: <span class="type">THREE.Group</span></code>
+        
+        
+            &mdash; <span><p>the model (tile content) that is disposed</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>tile: <span class="type">Object</span></code>
+        
+        
+            &mdash; <span><p>the tile metadata from the tileset</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">load-model</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Fired when a tile model is loaded</p>
+        </div>
+    
+
+    
+        <h4>Properties</h4>
+        
+        
+
+<ul class="params">
+    
+    <li>
+        <code>scene: <span class="type">THREE.Group</span></code>
+        
+        
+            &mdash; <span><p>the model (tile content) parsed in a THREE.GROUP</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>tile: <span class="type">Object</span></code>
+        
+        
+            &mdash; <span><p>the tile metadata from the tileset</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">load-tile-set</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Fired when a new root or child tile set is loaded</p>
+        </div>
+    
+
+    
+        <h4>Properties</h4>
+        
+        
+
+<ul class="params">
+    
+    <li>
+        <code>tileset: <span class="type">Object</span></code>
+        
+        
+            &mdash; <span><p>the tileset json parsed in an Object</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>url: <span class="type">String</span></code>
+        
+        
+            &mdash; <span><p>tileset url</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="event">
+    <h3>
+        <span class="event-name">tile-visibility-change</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Fired when a tiles visibility changes</p>
+        </div>
+    
+
+    
+        <h4>Properties</h4>
+        
+        
+
+<ul class="params">
+    
+    <li>
+        <code>scene: <span class="type">THREE.Group</span></code>
+        
+        
+            &mdash; <span><p>the model (tile content) parsed in a THREE.GROUP</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>tile: <span class="type">Object</span></code>
+        
+        
+            &mdash; <span><p>the tile metadata from the tileset</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>visible: <span class="type">boolean</span></code>
+        
+        
+            &mdash; <span><p>the tile visible state</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+</div>
+
+            
+        
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Layer/OGC3DTilesLayer.js">
+            src/Layer/OGC3DTilesLayer.js
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>
