@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>C3DTilesLayer - iTowns documentation</title>
+    <title>Potree2Layer - iTowns documentation</title>
 
     <script src="../../scripts/prettify/prettify.js"> </script>
     <script src="../../scripts/prettify/lang-css.js"> </script>
@@ -20,12 +20,14 @@
 <article>
 
     <h1>
-        C3DTilesLayer
+        Potree2Layer
         
-            <span class="extends">extends <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a></span>
+            <span class="extends">extends <a onclick="window.parent.goTo('api/Layer/PointCloudLayer.html','api/Layer/PointCloudLayer')" title="PointCloudLayer">PointCloudLayer</a></span>
         
     </h1>
 
+    
+        <div class="description"><p>Constructs a new instance of Potree2 layer.</p></div>
     
 
     
@@ -35,7 +37,7 @@
 
 <div class="method">
     <h3>
-        <span class="method-name">C3DTilesLayer</span>
+        <span class="method-name">Potree2Layer</span>
         (
 
 
@@ -45,10 +47,7 @@
             <span class="type">string</span>, 
     
         config:
-            <span class="type">object</span>, 
-    
-        view:
-            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>
+            <span class="type">Object</span>
     
 
 )
@@ -69,9 +68,8 @@
         <code>id</code>
         
         
-            &mdash; <span><p>The id of the layer, that should be unique.
-It is not mandatory, but an error will be emitted if this layer is
-added a
+            &mdash; <span><p>The id of the layer, that should be unique. It is
+not mandatory, but an error will be emitted if this layer is added a
 <a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> that already has a layer going by that id.</p></span>
         
 
@@ -82,8 +80,11 @@ added a
         <code>config</code>
         
         
-            &mdash; <span><p>configuration, all elements in it
-will be merged as is in the layer.</p></span>
+            &mdash; <span><p>Configuration, all elements in it
+will be merged as is in the layer. For example, if the configuration
+contains three elements <code>name, protocol, extent</code>, these elements will be
+available using <code>layer.name</code> or something else depending on the property
+name. See the list of properties to know which one can be specified.</p></span>
         
 
         
@@ -92,128 +93,19 @@ will be merged as is in the layer.</p></span>
 <ul class="params">
     
     <li>
-        <code>config.source</code>
+        <code>config.crs</code>
+        (default: <code>ESPG:4326</code>)
         
         
-            &mdash; <span><p>The source of 3d Tiles.</p>
-<p>name.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>config.sseThreshold</code>
-        (default: <code>16</code>)
-        
-        
-            &mdash; <span><p>The <a href="https://github.com/CesiumGS/3d-tiles/blob/main/specification/README.md#geometric-error">Screen Space Error</a>
-threshold at which child nodes of the current node will be loaded and added to the scene.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>config.cleanupDelay</code>
-        (default: <code>1000</code>)
-        
-        
-            &mdash; <span><p>The time (in ms) after which a tile content (and its children) are
-removed from the scene.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>config.registeredExtensions</code>
-        (optional)
-        
-            &mdash; <span><p>3D Tiles extensions managers registered for this tileset.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>config.pntsMode</code>
-        (default: <code>PNTS_MODE.COLOR</code>)
-        
-        
-            &mdash; <span><p>PointsMaterials Point cloud coloring mode.
-Only 'COLOR' or 'CLASSIFICATION' are possible. COLOR uses RGB colors of the points,
-CLASSIFICATION uses a classification property of the batch table to color points.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>config.pntsShape</code>
-        (default: <code>PNTS_SHAPE.CIRCLE</code>)
-        
-        
-            &mdash; <span><p>Point cloud point shape. Only 'CIRCLE' or 'SQUARE' are possible.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>config.pntsSizeMode</code>
-        (default: <code>PNTS_SIZE_MODE.VALUE</code>)
-        
-        
-            &mdash; <span><p>PointsMaterials Point cloud size mode. Only 'VALUE' or 'ATTENUATED' are possible. VALUE use constant size, ATTENUATED compute size depending on distance from point to camera.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>config.pntsMinAttenuatedSize</code>
-        (default: <code>3</code>)
-        
-        
-            &mdash; <span><p>Minimum scale used by 'ATTENUATED' size mode</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>config.pntsMaxAttenuatedSize</code>
-        (default: <code>10</code>)
-        
-        
-            &mdash; <span><p>Maximum scale used by 'ATTENUATED' size mode</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>config.style</code>
-        (optional)
-        
-            &mdash; <span><p>style used for this layer</p></span>
+            &mdash; <span><p>The CRS of the <a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> this
+layer will be attached to. This is used to determine the extent of this
+layer.  Default to <code>EPSG:4326</code>.</p></span>
         
 
         
     </li>
     
 </ul>
-
-        
-    </li>
-    
-    <li>
-        <code>view</code>
-        
-        
-            &mdash; <span><p>The view</p></span>
-        
 
         
     </li>
@@ -235,28 +127,43 @@ CLASSIFICATION uses a classification property of the batch table to color points
 
     
 
-    <pre class="prettyprint source lang-js"><code>// Create a new 3d-tiles layer from a web server
-const l3dt = new C3DTilesLayer('3dtiles', {
-     name: '3dtl',
-     source: new C3DTilesSource({
-          url: 'https://tileset.json'
-     })
-}, view);
-View.prototype.addLayer.call(view, l3dt);
+    <pre class="prettyprint source lang-js"><code>// Create a new point cloud layer
+const points = new Potree2Layer('points',
+ {
+     source: new Potree2Source({
+         url: 'https://pointsClouds/',
+         file: 'metadata.json',
+     }
+ });
 
-// Create a new 3d-tiles layer from a Cesium ion server
-const l3dt = new C3DTilesLayer('3dtiles', {
-     name: '3dtl',
-     source: new C3DTilesIonSource({
-             accessToken: 'myAccessToken',
-                    assetId: 12
-     })
-}, view);
-View.prototype.addLayer.call(view, l3dt);</code></pre>
+View.prototype.addLayer.call(view, points);</code></pre>
 
 
     
 
+    
+        <hr class="title-divider"/>
+        <h2>Properties</h2>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">isPotreeLayer</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Used to checkout whether this layer
+is a Potree2Layer. Default is <code>true</code>. You should not change this, as it is
+used internally for optimisation.</p>
+        </div>
+    
+</div>
+
+            
+        
     
 
     
@@ -557,130 +464,6 @@ attach a layer.</p>
 
 <div class="method">
     <h3>
-        <span class="method-name">getC3DTileFeatureFromIntersectsArray</span>
-        (
-
-
-    
-    
-        intersects:
-            <span class="type">Array</span>
-    
-
-)
-        :
-            
-                <span class="type">C3DTileFeature</span>
-
-            
-        
-    </h3>
-
-    
-        
-            <div class="description">
-                <p>Get the closest c3DTileFeature of an intersects array.</p>
-            </div>
-        
-    
-
-    
-                <h4>Returns</h4>
-                
-                    <ul>
-<li>the closest C3DTileFeature of the intersects array</li>
-</ul>
-                
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>intersects</code>
-        
-        
-            &mdash; <span><p>@return An array containing all
-targets picked under specified coordinates. Intersects can be
-computed with view.pickObjectsAt(..). See fillHTMLWithPickingInfo()
-in 3dTilesHelper.js for an example.</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
-        <span class="method-name">initC3DTileFeatures</span>
-        (
-
-
-    
-    
-        tileContent:
-            <span class="type">THREE.Object3D</span>
-    
-
-)
-        
-    </h3>
-
-    
-        
-            <div class="description">
-                <p>Initialize C3DTileFeatures from tileContent</p>
-            </div>
-        
-    
-
-    
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>tileContent</code>
-        
-        
-            &mdash; <span><p>tile as THREE.Object3D</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
         <span class="method-name">isValidData</span>
         (
 
@@ -725,61 +508,6 @@ in 3dTilesHelper.js for an example.</p></span>
         
         
             &mdash; <span><p>The feature</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
-        <span class="method-name">onTileContentLoaded</span>
-        (
-
-
-    
-    
-        tileContent:
-            <span class="type">THREE.Object3D</span>
-    
-
-)
-        
-    </h3>
-
-    
-        
-            <div class="description">
-                <p>Call by 3dTilesProcessing which handle load and unload of 3DTiles</p>
-            </div>
-        
-    
-
-    
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>tileContent</code>
-        
-        
-            &mdash; <span><p>tile as THREE.Object3D</p></span>
         
 
         
@@ -900,71 +628,6 @@ should have at least <code>x</code> and <code>y</code> properties.</p></span>
     
 </div>
 
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
-        <span class="method-name">updateStyle</span>
-        (
-
-
-    
-    
-        allowTileIdList:
-            <span class="type">Array.&lt;number>|null</span>
-    
-
-)
-        :
-            
-                <span class="type">boolean</span>
-
-            
-        
-    </h3>
-
-    
-        
-            <div class="description">
-                <p>Update style of the C3DTFeatures, an allowList of tile id can be passed to only update certain tile.
-Note that this function only update THREE.Object3D materials, in order to see style changes you should call view.notifyChange()</p>
-            </div>
-        
-    
-
-    
-                <h4>Returns</h4>
-                
-                    <p>true if style updated false otherwise</p>
-                
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>allowTileIdList</code>
-        (optional)
-        
-            &mdash; <span><p>tile ids to allow in updateStyle computation if null all tiles are updated</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
             
         
     
@@ -976,80 +639,6 @@ Note that this function only update THREE.Object3D materials, in order to see st
     
         <hr class="title-divider"/>
         <h2>Events</h2>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">on-tile-content-loaded</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Fires when a tile content has been loaded</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>tileContent: <span class="type">THREE.Object3D</span></code>
-        
-        
-            &mdash; <span><p>object3D of the tile</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">on-tile-requested</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Fires when a tile is requested</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>metadata: <span class="type">object</span></code>
-        
-        
-            &mdash; <span><p>tile</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            <hr/>
         
             
 
@@ -1075,8 +664,8 @@ Note that this function only update THREE.Object3D materials, in order to see st
 
         <hr class="title-divider"/>
         <h2>Source</h2>
-        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Layer/C3DTilesLayer.js">
-            src/Layer/C3DTilesLayer.js
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Layer/Potree2Layer.js">
+            src/Layer/Potree2Layer.js
         </a>
 
 

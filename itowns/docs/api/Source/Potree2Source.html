@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>COGSource - iTowns documentation</title>
+    <title>Potree2Source - iTowns documentation</title>
 
     <script src="../../scripts/prettify/prettify.js"> </script>
     <script src="../../scripts/prettify/lang-css.js"> </script>
@@ -20,15 +20,14 @@
 <article>
 
     <h1>
-        COGSource
+        Potree2Source
         
             <span class="extends">extends <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a></span>
         
     </h1>
 
     
-        <div class="description"><p>An object defining the source of resources to get from a <a href="https://www.cogeo.org/">COG</a> file. It
-inherits from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>.</p></div>
+        <div class="description"><p>Potree2Source are object containing informations on how to fetch potree 2.0 points cloud resources.</p></div>
     
 
     
@@ -38,7 +37,7 @@ inherits from <a onclick="window.parent.goTo('api/Source/Source.html','api/Sourc
 
 <div class="method">
     <h3>
-        <span class="method-name">COGSource</span>
+        <span class="method-name">Potree2Source</span>
         (
 
 
@@ -67,8 +66,166 @@ inherits from <a onclick="window.parent.goTo('api/Source/Source.html','api/Sourc
         
         
             &mdash; <span><p>An object that can contain all properties of a
-COGSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. Only <code>url</code> is mandatory.</p></span>
+Potree2Source</p></span>
         
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>source.url</code>
+        
+        
+            &mdash; <span><p>folder url.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>source.file</code>
+        
+        
+            &mdash; <span><p>metadata file name.</p>
+<p>This <code>metadata</code> file stores information about the potree cloud 2.0 in JSON format. the structure is :</p>
+<ul>
+<li><strong><code>version</code></strong> - The metadata.json format may change over time. The version number is
+necessary so that parsers know how to interpret the data.</li>
+<li><strong><code>name</code></strong> - Point cloud name.</li>
+<li><strong><code>description</code></strong> - Point cloud description.</li>
+<li><strong><code>points</code></strong> - Total number of points.</li>
+<li><strong><code>projection</code></strong> - Point cloud geographic projection system.</li>
+<li><strong><code>hierarchy</code></strong> - Information about point cloud hierarchy (first chunk size, step size, octree depth).</li>
+<li><strong><code>offset</code></strong> - Position offset used to determine the global point position.</li>
+<li><strong><code>scale</code></strong> - Point cloud scale.</li>
+<li><strong><code>spacing</code></strong> - The minimum distance between points at root level.</li>
+<li><strong><code>boundingBox</code></strong> - Contains the minimum and maximum of the axis aligned bounding box. This bounding box is cubic and aligned to fit to the octree root.</li>
+<li><strong><code>encoding</code></strong> - Encoding type: BROTLI or DEFAULT (uncompressed).</li>
+<li><strong><code>attributes</code></strong> - Array of attributes (position,  intensity, return number, number of returns, classification, scan angle rank, user data, point source id, gps-time, rgb).</li>
+</ul>
+<pre class="prettyprint source"><code>{
+    version: '2.0',
+    name: &quot;sample&quot;,
+    description: &quot;&quot;,
+    points: 534909153,
+    projection: &quot;&quot;,
+    hierarchy: {
+        firstChunkSize: 1276,
+        stepSize: 4,
+        depth: 16
+    },
+    offset: [1339072.07, 7238866.339, 85.281],
+    scale: [0.001, 0.001, 0.002],
+    spacing: 24.476062500005355,
+    boundingBox: {
+        min: [1339072.07, 7238866.339, 85.281],
+        max: [1342205.0060000008, 7241999.275, 3218.2170000006854]
+    },
+    encoding: &quot;BROTLI&quot;,
+    attributes: [
+         {
+             name: &quot;position&quot;,
+             description: &quot;&quot;,
+             size: 12,
+             numElements: 3,
+             elementSize: 4,
+             type: &quot;int32&quot;,
+             min: [-0.74821299314498901, -2.7804059982299805, 2.5478212833404541],
+             max: [2.4514148223438199, 1.4893437627414672, 7.1957106576508663]
+         },
+         {
+             name: &quot;intensity&quot;,
+             description: &quot;&quot;,
+             size: 2,
+             numElements: 1,
+             elementSize: 2,
+             type: &quot;uint16&quot;,
+             min: [0],
+             max: [0]
+         },{
+             name: &quot;return number&quot;,
+             description: &quot;&quot;,
+             size: 1,
+             numElements: 1,
+             elementSize: 1,
+             type: &quot;uint8&quot;,
+             min: [0],
+             max: [0]
+         },{
+             name: &quot;number of returns&quot;,
+             description: &quot;&quot;,
+             size: 1,
+             numElements: 1,
+             elementSize: 1,
+             type: &quot;uint8&quot;,
+             min: [0],
+             max: [0]
+         },{
+             name: &quot;classification&quot;,
+             description: &quot;&quot;,
+             size: 1,
+             numElements: 1,
+             elementSize: 1,
+             type: &quot;uint8&quot;,
+             min: [0],
+             max: [0]
+         },{
+             name: &quot;scan angle rank&quot;,
+             description: &quot;&quot;,
+             size: 1,
+             numElements: 1,
+             elementSize: 1,
+             type: &quot;uint8&quot;,
+             min: [0],
+             max: [0]
+         },{
+             name: &quot;user data&quot;,
+             description: &quot;&quot;,
+             size: 1,
+             numElements: 1,
+             elementSize: 1,
+             type: &quot;uint8&quot;,
+             min: [0],
+             max: [0]
+         },{
+             name: &quot;point source id&quot;,
+             description: &quot;&quot;,
+             size: 2,
+             numElements: 1,
+             elementSize: 2,
+             type: &quot;uint16&quot;,
+             min: [0],
+             max: [0]
+         },{
+             name: &quot;gps-time&quot;,
+             description: &quot;&quot;,
+             size: 8,
+             numElements: 1,
+             elementSize: 8,
+             type: &quot;double&quot;,
+             min: [0],
+             max: [0]
+         },{
+             name: &quot;rgb&quot;,
+             description: &quot;&quot;,
+             size: 6,
+             numElements: 3,
+             elementSize: 2,
+             type: &quot;uint16&quot;,
+             min: [5632, 5376, 4864],
+             max: [65280, 65280, 65280]
+         }
+    ]
+}
+</code></pre></span>
+        
+
+        
+    </li>
+    
+</ul>
 
         
     </li>
@@ -83,187 +240,7 @@ COGSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Sourc
     
 
     
-        <hr class="title-divider"/>
-        <h2>Example</h2>
-        
 
-
-    
-
-    <pre class="prettyprint source lang-js"><code>// Create the source
-const cogSource = new itowns.COGSource({
-    url: 'https://cdn.jsdelivr.net/gh/iTowns/iTowns2-sample-data/cog/orvault.tif',
-});
-
-// Create the layer
-const colorLayer = new itowns.ColorLayer('COG', {
-    source: cogSource,
-});
-
-// Add the layer
-view.addLayer(colorLayer);</code></pre>
-
-
-    
-
-    
-        <hr class="title-divider"/>
-        <h2>Properties</h2>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">zoom</span>
-        : <span class="type">Object</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Object containing the minimum and maximum values of
-the level, to zoom in the source.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">zoom.min</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>The minimum level of the source. Default value is 0.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">zoom.max</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>The maximum level of the source. Default value is Infinity.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">url</span>
-        : <span class="type">string</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>The URL of the COG.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">pool</span>
-        : <span class="type">GeoTIFF.Pool</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Pool use to decode GeoTiff.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">defaultAlpha</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Alpha byte value used if no alpha is present in COG. Default value is 255.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">tileWidth</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Tile width in pixels. Default value use 'geotiff.getTileWidth()'.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">tileHeight</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Tile height in pixels. Default value use 'geotiff.getTileHeight()'.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">resampleMethod</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>The desired resampling method. Default is 'nearest'.</p>
-        </div>
-    
-</div>
-
-            
-        
     
 
     
@@ -525,77 +502,6 @@ The loaded data is a Feature or Texture.</p>
 
 <div class="method">
     <h3>
-        <span class="method-name">selectDataType</span>
-        (
-
-
-    
-    
-        format:
-            <span class="type">number</span>, 
-    
-        bitsPerSample:
-            <span class="type">number</span>
-    
-
-)
-        :
-            
-                <span class="type">THREE.AttributeGPUType</span>
-
-            
-        
-    </h3>
-
-    
-        
-    
-
-    
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>format</code>
-        
-        
-            &mdash; <span><p>Format to interpret each data sample in a pixel
-https://www.awaresystems.be/imaging/tiff/tifftags/sampleformat.html</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>bitsPerSample</code>
-        
-        
-            &mdash; <span><p>Number of bits per component.
-https://www.awaresystems.be/imaging/tiff/tifftags/bitspersample.html</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
         <span class="method-name">urlFromExtent</span>
         (
 
@@ -669,8 +575,8 @@ resources inside the extent.</p>
 
         <hr class="title-divider"/>
         <h2>Source</h2>
-        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/examples/js/plugins/COGSource.js">
-            examples/js/plugins/COGSource.js
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Source/Potree2Source.js">
+            src/Source/Potree2Source.js
         </a>
 
 

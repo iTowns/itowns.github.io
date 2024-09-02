@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>COGSource - iTowns documentation</title>
+    <title>CopcSource - iTowns documentation</title>
 
     <script src="../../scripts/prettify/prettify.js"> </script>
     <script src="../../scripts/prettify/lang-css.js"> </script>
@@ -20,15 +20,26 @@
 <article>
 
     <h1>
-        COGSource
+        CopcSource
         
             <span class="extends">extends <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a></span>
         
     </h1>
 
     
-        <div class="description"><p>An object defining the source of resources to get from a <a href="https://www.cogeo.org/">COG</a> file. It
-inherits from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>.</p></div>
+        <div class="description"><p>A source for <a href="https://copc.io/">Cloud Optimised Point Cloud</a> (COPC) data.
+Such data consists of a <a href="https://www.ogc.org/standard/las/">LAZ 1.4</a> file
+that stores compressed points data organized in a clustered octree.</p>
+<p>A freshly created source fetches and parses portions of the file
+corresponding to the LAS 1.4 header, all the Variable Length Record (VLR)
+headers as well the following VLRs:</p>
+<ul>
+<li>COPC <a href="https://copc.io/#info-vlr"><code>info</code></a> record (mandatory)</li>
+<li>LAS 1.4 <code>OGC Coordinate System WKT</code> record (mandatory, see <a href="https://portal.ogc.org/files/?artifact_id=74523">Las 1.4
+spec</a>)</li>
+<li>LAS 1.4 <code>Extra Bytes</code> record (optional, see <a href="https://portal.ogc.org/files/?artifact_id=74523">Las 1.4
+spec</a>)</li>
+</ul></div>
     
 
     
@@ -38,13 +49,13 @@ inherits from <a onclick="window.parent.goTo('api/Source/Source.html','api/Sourc
 
 <div class="method">
     <h3>
-        <span class="method-name">COGSource</span>
+        <span class="method-name">CopcSource</span>
         (
 
 
     
     
-        source:
+        config:
             <span class="type">Object</span>
     
 
@@ -63,12 +74,84 @@ inherits from <a onclick="window.parent.goTo('api/Source/Source.html','api/Sourc
 <ul class="params">
     
     <li>
-        <code>source</code>
+        <code>config</code>
         
         
-            &mdash; <span><p>An object that can contain all properties of a
-COGSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. Only <code>url</code> is mandatory.</p></span>
+            &mdash; <span><p>Source configuration</p></span>
         
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>config.url</code>
+        
+        
+            &mdash; <span><p>URL of the COPC resource.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.colorDepth</code>
+        (default: <code>16</code>)
+        
+        
+            &mdash; <span><p>Encoding of the <code>color</code>
+attribute. Either <code>8</code> or <code>16</code> bits.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config._lazPerfBaseUrl</code>
+        (optional)
+        
+            &mdash; <span><p>(experimental) Overrides base
+url of the <code>las-zip.wasm</code> file of the <code>laz-perf</code> library.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.crs</code>
+        (default: <code>'EPSG:4326'</code>)
+        
+        
+            &mdash; <span><p>Native CRS of the COPC
+ressource. Note that this is not for now inferred from the COPC header.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.networkOptions</code>
+        (optional)
+        
+            &mdash; <span><p>Fetch options (passed
+directly to <code>fetch()</code>), see <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Syntax">the syntax for more information</a>.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.attribution</code>
+        (optional)
+        
+            &mdash; <span><p>Attribution of the data.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
 
         
     </li>
@@ -83,28 +166,6 @@ COGSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Sourc
     
 
     
-        <hr class="title-divider"/>
-        <h2>Example</h2>
-        
-
-
-    
-
-    <pre class="prettyprint source lang-js"><code>// Create the source
-const cogSource = new itowns.COGSource({
-    url: 'https://cdn.jsdelivr.net/gh/iTowns/iTowns2-sample-data/cog/orvault.tif',
-});
-
-// Create the layer
-const colorLayer = new itowns.ColorLayer('COG', {
-    source: cogSource,
-});
-
-// Add the layer
-view.addLayer(colorLayer);</code></pre>
-
-
-    
 
     
         <hr class="title-divider"/>
@@ -114,14 +175,31 @@ view.addLayer(colorLayer);</code></pre>
 
 <div class="property">
     <h3>
-        <span class="property-name">zoom</span>
+        <span class="property-name">isCopcSource</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Read-only flag to check that a given
+object is of type CopcSource.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">header</span>
         : <span class="type">Object</span>
     </h3>
 
     
         <div class="description">
-            <p>Object containing the minimum and maximum values of
-the level, to zoom in the source.</p>
+            <p>LAS header of the source.</p>
         </div>
     
 </div>
@@ -132,13 +210,85 @@ the level, to zoom in the source.</p>
 
 <div class="property">
     <h3>
-        <span class="property-name">zoom.min</span>
+        <span class="property-name">eb</span>
+        : <span class="type">Array.&lt;Object></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>List of headers of each Variable Length Records
+(VLRs).</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">info</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>COPC <code>info</code> VLR.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">info.cube</span>
+        : <span class="type">Array.&lt;number></span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Bounding box of the octree as a 6-elements.
+tuple <code>[minX, minY, minZ, maxX, maxY, maxZ]</code>. Computed from <code>center_x</code>,
+<code>center_y</code>, <code>center_z</code> and <code>halfSize</code> properties.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">info.rootHierarchyPage</span>
+        : <span class="type">Object</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Hierarchy page of the root node.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">info.rootHierarchyPage.pageOffset</span>
         : <span class="type">number</span>
     </h3>
 
     
         <div class="description">
-            <p>The minimum level of the source. Default value is 0.</p>
+            <p>Absolute Offset to the
+root node data chunk.</p>
         </div>
     
 </div>
@@ -149,13 +299,14 @@ the level, to zoom in the source.</p>
 
 <div class="property">
     <h3>
-        <span class="property-name">zoom.max</span>
+        <span class="property-name">info.rootHierarchyPage.pageOffset</span>
         : <span class="type">number</span>
     </h3>
 
     
         <div class="description">
-            <p>The maximum level of the source. Default value is Infinity.</p>
+            <p>Size (in bytes) of the
+root node data chunk.</p>
         </div>
     
 </div>
@@ -166,98 +317,14 @@ the level, to zoom in the source.</p>
 
 <div class="property">
     <h3>
-        <span class="property-name">url</span>
-        : <span class="type">string</span>
+        <span class="property-name">gpsTimeRange</span>
+        : <span class="type">Array.&lt;number></span>
     </h3>
 
     
         <div class="description">
-            <p>The URL of the COG.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">pool</span>
-        : <span class="type">GeoTIFF.Pool</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Pool use to decode GeoTiff.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">defaultAlpha</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Alpha byte value used if no alpha is present in COG. Default value is 255.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">tileWidth</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Tile width in pixels. Default value use 'geotiff.getTileWidth()'.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">tileHeight</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Tile height in pixels. Default value use 'geotiff.getTileHeight()'.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">resampleMethod</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>The desired resampling method. Default is 'nearest'.</p>
+            <p>A 2-element tuple denoting the minimum
+and maximum values of attribute <code>gpsTime</code>.</p>
         </div>
     
 </div>
@@ -525,77 +592,6 @@ The loaded data is a Feature or Texture.</p>
 
 <div class="method">
     <h3>
-        <span class="method-name">selectDataType</span>
-        (
-
-
-    
-    
-        format:
-            <span class="type">number</span>, 
-    
-        bitsPerSample:
-            <span class="type">number</span>
-    
-
-)
-        :
-            
-                <span class="type">THREE.AttributeGPUType</span>
-
-            
-        
-    </h3>
-
-    
-        
-    
-
-    
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>format</code>
-        
-        
-            &mdash; <span><p>Format to interpret each data sample in a pixel
-https://www.awaresystems.be/imaging/tiff/tifftags/sampleformat.html</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>bitsPerSample</code>
-        
-        
-            &mdash; <span><p>Number of bits per component.
-https://www.awaresystems.be/imaging/tiff/tifftags/bitspersample.html</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
         <span class="method-name">urlFromExtent</span>
         (
 
@@ -669,8 +665,8 @@ resources inside the extent.</p>
 
         <hr class="title-divider"/>
         <h2>Source</h2>
-        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/examples/js/plugins/COGSource.js">
-            examples/js/plugins/COGSource.js
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Source/CopcSource.js">
+            src/Source/CopcSource.js
         </a>
 
 

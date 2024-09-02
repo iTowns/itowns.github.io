@@ -22,12 +22,18 @@
         "3dtiles_pointcloud": "Pointcloud classification"
     },
 
+    "3D Tiles (new)": {
+        "3dtiles_loader": "3D Tiles tileset loader"
+    },
+
     "Pointcloud": {
         "potree_25d_map": "Potree 2.5D map",
+        "potree2_25d_map": "Potree 2.5D map 2.0 format",
         "potree_3d_map": "Potree 3D map",
         "laz_dragndrop": "LAS/LAZ viewer",
         "entwine_simple_loader": "Entwine loader",
-        "entwine_3d_loader": "Entwine 3D loader"
+        "entwine_3d_loader": "Entwine 3D loader",
+        "copc_simple_loader": "COPC loader"
     },
 
     "Vector tiles": {

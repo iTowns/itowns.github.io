@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>COGSource - iTowns documentation</title>
+    <title>OGC3DTilesSource - iTowns documentation</title>
 
     <script src="../../scripts/prettify/prettify.js"> </script>
     <script src="../../scripts/prettify/lang-css.js"> </script>
@@ -20,15 +20,14 @@
 <article>
 
     <h1>
-        COGSource
+        OGC3DTilesSource
         
             <span class="extends">extends <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a></span>
         
     </h1>
 
     
-        <div class="description"><p>An object defining the source of resources to get from a <a href="https://www.cogeo.org/">COG</a> file. It
-inherits from <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>.</p></div>
+        <div class="description"><p>An object defining the source connection to a 3DTiles dataset from a web server.</p></div>
     
 
     
@@ -38,7 +37,7 @@ inherits from <a onclick="window.parent.goTo('api/Source/Source.html','api/Sourc
 
 <div class="method">
     <h3>
-        <span class="method-name">COGSource</span>
+        <span class="method-name">OGC3DTilesSource</span>
         (
 
 
@@ -66,9 +65,26 @@ inherits from <a onclick="window.parent.goTo('api/Source/Source.html','api/Sourc
         <code>source</code>
         
         
-            &mdash; <span><p>An object that can contain all properties of a
-COGSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>. Only <code>url</code> is mandatory.</p></span>
+            &mdash; <span><p>An object that can contain all properties of OGC3DTilesSource and of <a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a>.
+Only <code>url</code> is mandatory.</p></span>
         
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>source.url</code>
+        
+        
+            &mdash; <span><p>The URL of the tileset json.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
 
         
     </li>
@@ -83,28 +99,6 @@ COGSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Sourc
     
 
     
-        <hr class="title-divider"/>
-        <h2>Example</h2>
-        
-
-
-    
-
-    <pre class="prettyprint source lang-js"><code>// Create the source
-const cogSource = new itowns.COGSource({
-    url: 'https://cdn.jsdelivr.net/gh/iTowns/iTowns2-sample-data/cog/orvault.tif',
-});
-
-// Create the layer
-const colorLayer = new itowns.ColorLayer('COG', {
-    source: cogSource,
-});
-
-// Add the layer
-view.addLayer(colorLayer);</code></pre>
-
-
-    
 
     
         <hr class="title-divider"/>
@@ -114,48 +108,14 @@ view.addLayer(colorLayer);</code></pre>
 
 <div class="property">
     <h3>
-        <span class="property-name">zoom</span>
-        : <span class="type">Object</span>
+        <span class="property-name">isOGC3DTilesSource</span>
+        : <span class="type">boolean</span>
     </h3>
 
     
         <div class="description">
-            <p>Object containing the minimum and maximum values of
-the level, to zoom in the source.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">zoom.min</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>The minimum level of the source. Default value is 0.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">zoom.max</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>The maximum level of the source. Default value is Infinity.</p>
+            <p>Used to check if this source is an isOGC3DTilesSource. Set to true.
+You should not change this, as it is used internally for optimisation.</p>
         </div>
     
 </div>
@@ -172,92 +132,7 @@ the level, to zoom in the source.</p>
 
     
         <div class="description">
-            <p>The URL of the COG.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">pool</span>
-        : <span class="type">GeoTIFF.Pool</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Pool use to decode GeoTiff.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">defaultAlpha</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Alpha byte value used if no alpha is present in COG. Default value is 255.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">tileWidth</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Tile width in pixels. Default value use 'geotiff.getTileWidth()'.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">tileHeight</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Tile height in pixels. Default value use 'geotiff.getTileHeight()'.</p>
-        </div>
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="property">
-    <h3>
-        <span class="property-name">resampleMethod</span>
-        : <span class="type">number</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>The desired resampling method. Default is 'nearest'.</p>
+            <p>The URL of the tileset json.</p>
         </div>
     
 </div>
@@ -525,77 +400,6 @@ The loaded data is a Feature or Texture.</p>
 
 <div class="method">
     <h3>
-        <span class="method-name">selectDataType</span>
-        (
-
-
-    
-    
-        format:
-            <span class="type">number</span>, 
-    
-        bitsPerSample:
-            <span class="type">number</span>
-    
-
-)
-        :
-            
-                <span class="type">THREE.AttributeGPUType</span>
-
-            
-        
-    </h3>
-
-    
-        
-    
-
-    
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>format</code>
-        
-        
-            &mdash; <span><p>Format to interpret each data sample in a pixel
-https://www.awaresystems.be/imaging/tiff/tifftags/sampleformat.html</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>bitsPerSample</code>
-        
-        
-            &mdash; <span><p>Number of bits per component.
-https://www.awaresystems.be/imaging/tiff/tifftags/bitspersample.html</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
         <span class="method-name">urlFromExtent</span>
         (
 
@@ -669,8 +473,8 @@ resources inside the extent.</p>
 
         <hr class="title-divider"/>
         <h2>Source</h2>
-        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/examples/js/plugins/COGSource.js">
-            examples/js/plugins/COGSource.js
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Source/OGC3DTilesSource.js">
+            src/Source/OGC3DTilesSource.js
         </a>
 
 
