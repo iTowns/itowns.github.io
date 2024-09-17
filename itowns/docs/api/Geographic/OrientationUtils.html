@@ -530,7 +530,7 @@ provided by the normalized geodetic normal of the provided coordinates
     
     
         proj:
-            <span class="type">Projection</span>, 
+            <span class="type">Object</span>, 
     
         coordinates:
             <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>, 
@@ -733,7 +733,7 @@ The identity quaternion (0,0,0,1) is returned, as longlat and ENU frame are assu
     
     
         proj:
-            <span class="type">Projection</span>, 
+            <span class="type">Object</span>, 
     
         coordinates:
             <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>, 
@@ -959,7 +959,7 @@ provided by the normalized geodetic normal of the provided coordinates
     
     
         proj:
-            <span class="type">Projection</span>, 
+            <span class="type">Object</span>, 
     
         coordinates:
             <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>, 
@@ -1379,7 +1379,7 @@ frame is <code>RotationZ(heading).RotationX(pitch).RotationY(roll)</code></p>
     
     
         proj:
-            <span class="type">Projection</span>, 
+            <span class="type">Object</span>, 
     
         coordinates:
             <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>, 
@@ -1737,10 +1737,10 @@ heading) or all <code>undefined</code>.</p>
 
     
         <div class="description">
-            <p>FunctionOrQuaternion is either a THREE.Quaternion or a function that accepts
-arguments <code>(coordinates, target)</code> and returns the quaternion that models a rotation
-around the point of origin. If target is not provided, a new quaternion is
-created and returned instead.</p>
+            <p>Either a
+THREE.Quaternion or a function that accepts arguments <code>(coordinates, target)</code> and returns the quaternion that models a rotation around the
+point of origin. If target is not provided, a new quaternion is created
+and returned instead.</p>
         </div>
     
 </div>
