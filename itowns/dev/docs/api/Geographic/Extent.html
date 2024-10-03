@@ -25,8 +25,7 @@
     </h1>
 
     
-        <div class="description"><p>Extent is geographical bounding rectangle defined by 4 limits: west, east, south and north.
-If crs is tiled projection (WMTS or TMS), the extent is defined by zoom, row and column.</p>
+        <div class="description"><p>Extent is geographical bounding rectangle defined by 4 limits: west, east, south and north.</p>
 <p>Warning, using geocentric projection isn't consistent with geographical extent.</p></div>
     
 
@@ -87,9 +86,9 @@ If crs is tiled projection (WMTS or TMS), the extent is defined by zoom, row and
         <code>v0</code>
         
         
-            &mdash; <span><p>west value, zoom
-value, Array of values [west, east, south and north], Coordinates of
-west-south corner or object {west, east, south and north}</p></span>
+            &mdash; <span><p>west value, Array
+of values [west, east, south and north], Coordinates of west-south
+corner or object {west, east, south and north}</p></span>
         
 
         
@@ -99,7 +98,7 @@ west-south corner or object {west, east, south and north}</p></span>
         <code>v1</code>
         (optional)
         
-            &mdash; <span><p>east value, row value or Coordinates of
+            &mdash; <span><p>east value or Coordinates of
 east-north corner</p></span>
         
 
@@ -110,7 +109,7 @@ east-north corner</p></span>
         <code>v2</code>
         (optional)
         
-            &mdash; <span><p>south value or column value</p></span>
+            &mdash; <span><p>south value</p></span>
         
 
         
@@ -261,7 +260,7 @@ east-north corner</p></span>
     
     <li>
         <code>target</code>
-        
+        (optional)
         
             &mdash; <span><p>copy the destination to target.</p></span>
         
@@ -933,7 +932,7 @@ across the curved surface of the world.</p>
 )
         :
             
-                <span class="type">Boolean</span>
+                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
 
             
         
@@ -1356,8 +1355,7 @@ Planar distance straight-line Euclidean distance calculated in a 2D Cartesian co
     
         
             <div class="description">
-                <p>Set west, east, south and north values.
-Or if tiled extent, set zoom, row and column values</p>
+                <p>Set west, east, south and north values.</p>
             </div>
         
     
@@ -1375,9 +1373,9 @@ Or if tiled extent, set zoom, row and column values</p>
         
         
             &mdash; <span><p>west value,
-zoom value, Array of values [west, east, south and north], Extent of same
-type (tiled or not), Coordinates of west-south corner or object {west,
-east, south and north}</p></span>
+Array of values [west, east, south and north], Extent of same type (tiled
+or not), Coordinates of west-south corner or object {west, east, south
+and north}</p></span>
         
 
         
@@ -1544,7 +1542,7 @@ order of the sections is [NW, NE, SW, SE].</p>
     
     
         scheme:
-            <span class="type">Vector2</span>
+            <span class="type">THREE.Vector2</span>
     
 
 )
@@ -1582,130 +1580,6 @@ order of the sections is [NW, NE, SW, SE].</p>
         
         
             &mdash; <span><p>The scheme to subdivise.</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
-        <span class="method-name">tiledCovering</span>
-        (
-
-
-    
-    
-        crs:
-            <span class="type">string</span>
-    
-
-)
-        :
-            
-                <span class="type">Array.&lt;Extent></span>
-
-            
-        
-    </h3>
-
-    
-        
-            <div class="description">
-                <p>get tiled extents convering this extent</p>
-            </div>
-        
-    
-
-    
-                <h4>Returns</h4>
-                
-                    <p>array of extents covering</p>
-                
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>crs</code>
-        
-        
-            &mdash; <span><p>WMTS, TMS crs</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="method">
-    <h3>
-        <span class="method-name">tiledExtentParent</span>
-        (
-
-
-    
-    
-        levelParent:
-            <span class="type">number</span>
-    
-
-)
-        :
-            
-                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>
-
-            
-        
-    </h3>
-
-    
-        
-            <div class="description">
-                <p>Return parent tiled extent with input level</p>
-            </div>
-        
-    
-
-    
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>levelParent</code>
-        
-        
-            &mdash; <span><p>level of parent.</p></span>
         
 
         

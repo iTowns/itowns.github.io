@@ -57,7 +57,7 @@ through the following alternative each time (no random). For example
     
     
         bbox:
-            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+            <span class="type">Object</span>, 
     
         source:
             <span class="type">Object</span>
@@ -107,11 +107,52 @@ source, using the letters <code>w, s, e, n</code> respectively for <code>WEST, S
         
 
         
+            
+
+<ul class="params">
+    
+    <li>
+        <code>bbox.west</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>bbox.south</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>bbox.east</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>bbox.north</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
+
+        
     </li>
     
     <li>
         <code>source</code>
         
+        
+            &mdash; <span><p>the source of data</p></span>
         
 
         
@@ -194,10 +235,10 @@ url = URLBuilder.bbox(extent, source);
     
     
         coords:
-            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+            <span class="type">Object</span>, 
     
         source:
-            <span class="type"><a onclick="window.parent.goTo('api/Source/Source.html','api/Source/Source')" title="Source">Source</a></span>
+            <span class="type">Object</span>
     
 
 )
@@ -241,8 +282,45 @@ specific strings that will be replaced by coordinates.</p>
         <code>coords</code>
         
         
-            &mdash; <span><p>the coordinates</p></span>
+            &mdash; <span><p>tile coordinates</p></span>
         
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>coords.row</code>
+        
+        
+            &mdash; <span><p>tile row</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>coords.col</code>
+        
+        
+            &mdash; <span><p>tile column</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>coords.zoom</code>
+        
+        
+            &mdash; <span><p>tile zoom</p></span>
+        
+
+        
+    </li>
+    
+</ul>
 
         
     </li>
@@ -251,6 +329,29 @@ specific strings that will be replaced by coordinates.</p>
         <code>source</code>
         
         
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>source.url</code>
+        
+        
+
+        
+    </li>
+    
+    <li>
+        <code>source.tileMatrixCallback</code>
+        
+        
+
+        
+    </li>
+    
+</ul>
 
         
     </li>
