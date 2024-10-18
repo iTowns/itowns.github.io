@@ -42,7 +42,7 @@
     
     
         crs:
-            <span class="type">string</span>, 
+            <span class="type">String</span>, 
     
         viewerDiv:
             <span class="type">HTMLElement</span>, 
@@ -239,13 +239,30 @@ var customControls = itowns.THREE.OrbitControls(view.camera3D, viewerDiv);</code
 
 <div class="property">
     <h3>
+        <span class="property-name">id</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The id of the view. It's incremented at each new view instance, starting at 0.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
         <span class="property-name">domElement</span>
         : <span class="type">HTMLElement</span>
     </h3>
 
     
         <div class="description">
-            <p>Thhe domElement holding the canvas where the view is displayed</p>
+            <p>The domElement holding the canvas where the view is displayed</p>
         </div>
     
 </div>
