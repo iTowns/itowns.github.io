@@ -49,7 +49,13 @@ directly, but rather implemented using <code>extends</code>.</p></div>
             <span class="type">string</span>, 
     
         config:
-            <span class="type">Object</span>
+            <span class="type">Object</span>, 
+    
+        options.minElevationRange:
+            <span class="type">number</span>, 
+    
+        options.maxElevationRange:
+            <span class="type">number</span>
     
 
 )
@@ -98,13 +104,33 @@ name. See the list of properties to know which one can be specified.</p></span>
         <code>config.source</code>
         
         
-            &mdash; <span><p>Description and options of the source.</p></span>
+            &mdash; <span><p>Description and options of the source See @Layer.</p></span>
         
 
         
     </li>
     
 </ul>
+
+        
+    </li>
+    
+    <li>
+        <code>options.minElevationRange</code>
+        (optional)
+        
+            &mdash; <span><p>Min value for the elevation range (default value will be taken from the source.metadata).</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.maxElevationRange</code>
+        (optional)
+        
+            &mdash; <span><p>Max value for the elevation range (default value will be taken from the source.metadata).</p></span>
+        
 
         
     </li>
