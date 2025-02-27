@@ -33,6 +33,11 @@ export function fillHTMLWithPickingInfo(event, pickingArg) {
         // eslint-disable-next-line
         htmlDiv.appendChild(createHTMLListFromObject(closestC3DTileFeature));
     }
+
+    layer.getMetadataFromIntersections(intersects).then((metadata) => {
+        // eslint-disable-next-line
+        metadata?.forEach(m => htmlDiv.appendChild(createHTMLListFromObject(m)));
+    });
 }
 
 function zoomToSphere(view, tile, sphere) {
@@ -47,7 +52,7 @@ function zoomToSphere(view, tile, sphere) {
     const distance = radius * Math.tan(fov * 2);
 
     return {
-        coord: new Coordinates('EPSG:4978', center),
+        coord: new Coordinates('EPSG:4978').setFromVector3(center),
         range: distance + radius,
     };
 }

@@ -14,16 +14,8 @@
         "geoid_geoidLayer": "Display geoid heights"
     },
 
-    "3d Tiles": {
-        "3dtiles_basic": "on 3D map",
-        "3dtiles_25d": "On 2.5D map",
-        "3dtiles_batch_table": "Batch table Hierarchy extension",
-        "3dtiles_ion": "From Cesium ion",
-        "3dtiles_pointcloud": "Pointcloud classification"
-    },
-
-    "3D Tiles (new)": {
-        "3dtiles_loader": "3D Tiles tileset loader"
+    "3D Tiles": {
+        "3dtiles_loader": "3D Tiles loader"
     },
 
     "Pointcloud": {
@@ -39,6 +31,7 @@
     "Vector tiles": {
         "vector_tile_raster_3d": "Raster on 3D map",
         "vector_tile_raster_2d": "Raster on 2D map",
+        "vector_tile_mapbox_raster": "Mapbox Vector Tiles to raster",
         "vector_tile_3d_mesh": "Vector tile to 3d objects",
         "vector_tile_3d_mesh_mapbox": "Mapbox Vector tile to 3d objects",
         "vector_tile_dragndrop": "Drag and drop a style"

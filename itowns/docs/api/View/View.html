@@ -42,7 +42,7 @@
     
     
         crs:
-            <span class="type">string</span>, 
+            <span class="type">String</span>, 
     
         viewerDiv:
             <span class="type">HTMLElement</span>, 
@@ -239,13 +239,30 @@ var customControls = itowns.THREE.OrbitControls(view.camera3D, viewerDiv);</code
 
 <div class="property">
     <h3>
+        <span class="property-name">id</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The id of the view. It's incremented at each new view instance, starting at 0.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
         <span class="property-name">domElement</span>
         : <span class="type">HTMLElement</span>
     </h3>
 
     
         <div class="description">
-            <p>Thhe domElement holding the canvas where the view is displayed</p>
+            <p>The domElement holding the canvas where the view is displayed</p>
         </div>
     
 </div>
@@ -1504,13 +1521,13 @@ non-interactive events (e.g: texture loaded)</p>
             <span class="type">THREE.Vector2|event</span>, 
     
         target:
-            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+            <span class="type">Coordinates</span>
     
 
 )
         :
             
-                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+                <span class="type">Coordinates</span>
 
             
         
@@ -1519,7 +1536,7 @@ non-interactive events (e.g: texture loaded)</p>
     
         
             <div class="description">
-                <p>Returns the world <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> of the terrain at given view coordinates.</p>
+                <p>Returns the world Coordinates of the terrain at given view coordinates.</p>
             </div>
         
     
@@ -1527,7 +1544,7 @@ non-interactive events (e.g: texture loaded)</p>
     
                 <h4>Returns</h4>
                 
-                    <p>The world <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> of the terrain at the given view coordinates.</p>
+                    <p>The world Coordinates of the terrain at the given view coordinates.</p>
                 
 
     
@@ -1553,8 +1570,8 @@ will be defaulted to the view's center coordinates.</p></span>
         <code>target</code>
         (optional)
         
-            &mdash; <span><p>The result will be copied into this <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a>. If not
-specified, a new <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> instance will be created.</p></span>
+            &mdash; <span><p>The result will be copied into this Coordinates. If not
+specified, a new Coordinates instance will be created.</p></span>
         
 
         
@@ -1817,13 +1834,13 @@ view.pickObjectsAt({ x, y }, 3, 'wfsBuilding', myLayer)</code></pre>
             <span class="type">THREE.Vector2|event</span>, 
     
         target:
-            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+            <span class="type">Coordinates</span>
     
 
 )
         :
             
-                <span class="type"><a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a></span>
+                <span class="type">Coordinates</span>
 
             
         
@@ -1832,7 +1849,7 @@ view.pickObjectsAt({ x, y }, 3, 'wfsBuilding', myLayer)</code></pre>
     
         
             <div class="description">
-                <p>Returns the world <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> of the terrain at given view coordinates.</p>
+                <p>Returns the world Coordinates of the terrain at given view coordinates.</p>
             </div>
         
     
@@ -1840,7 +1857,7 @@ view.pickObjectsAt({ x, y }, 3, 'wfsBuilding', myLayer)</code></pre>
     
                 <h4>Returns</h4>
                 
-                    <p>The world <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> of the terrain at the given view coordinates in the
+                    <p>The world Coordinates of the terrain at the given view coordinates in the
 coordinate reference system of the target or in the view referenceCrs if no target is specified.</p>
                 
 
@@ -1866,8 +1883,8 @@ it will be defaulted to the view's center coordinates.</p></span>
         <code>target</code>
         (optional)
         
-            &mdash; <span><p>The result will be copied into this <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> in the coordinate reference
-system of the given coordinate. If not specified, a new <a onclick="window.parent.goTo('api/Geographic/Coordinates.html','api/Geographic/Coordinates')" title="Coordinates">Coordinates</a> instance will be created (in the
+            &mdash; <span><p>The result will be copied into this Coordinates in the coordinate reference
+system of the given coordinate. If not specified, a new Coordinates instance will be created (in the
 view referenceCrs).</p></span>
         
 
@@ -2344,8 +2361,8 @@ layers are ready.</p>
 
         <hr class="title-divider"/>
         <h2>Source</h2>
-        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Core/View.js">
-            src/Core/View.js
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/packages/Main/src/Core/View.js">
+            packages/Main/src/Core/View.js
         </a>
 
 
