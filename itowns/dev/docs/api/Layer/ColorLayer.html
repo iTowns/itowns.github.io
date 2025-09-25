@@ -152,6 +152,47 @@ if <code>effect_type</code> equals:</p>
         
     </li>
     
+    <li>
+        <code>config.addLabelLayer</code>
+        (optional)
+        
+            &mdash; <span><p>Used to tell if this layer has
+labels to display from its data. For example, it needs to be set to <code>true</code>
+for a layer with vector tiles. If it's <code>true</code> a new <code>LabelLayer</code> is added and attached to this <code>Layer</code>.
+You can also configure it with <a onclick="window.parent.goTo('api/Layer/LabelLayer.html','api/Layer/LabelLayer')" title="LabelLayer">LabelLayer</a> options described below such as: <code>addLabelLayer: { performance: true }</code>.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>config.addLabelLayer.performance</code>
+        (optional)
+        
+            &mdash; <span><p>In case label layer adding, so remove labels that have no chance of being visible.
+Indeed, even in the best case, labels will never be displayed. By example, if there's many labels.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config.addLabelLayer.forceClampToTerrain</code>
+        (optional)
+        
+            &mdash; <span><p>use elevation layer to clamp label on terrain.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
 </ul>
 
         

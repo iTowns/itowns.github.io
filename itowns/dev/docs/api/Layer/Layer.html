@@ -105,20 +105,6 @@ the layer doesn't need Source (like debug Layer or procedural layer).</p></span>
     </li>
     
     <li>
-        <code>config.style</code>
-        (optional)
-        
-            &mdash; <span><p>an object that contain any properties
-(order, zoom, fill, stroke, point, text or/and icon)
-and sub properties of a Style (@see <a onclick="window.parent.goTo('api/Base/StyleOptions.html','api/Base/StyleOptions')" title="StyleOptions">StyleOptions</a>). Or directly a <a onclick="window.parent.goTo('api/Base/Style.html','api/Base/Style')" title="Style">Style</a> .<br/>
-When entering a StyleOptions the missing style properties will be look for in the data (if any)
-what won't be done when you use a Style.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
         <code>config.cacheLifeTime</code>
         (default: <code>Infinity</code>)
         
@@ -129,21 +115,6 @@ This value is used for cache expiration mechanism.</p></span>
 
         
     </li>
-    
-    <li>
-        <code>config.addLabelLayer</code>
-        (optional)
-        
-            &mdash; <span><p>Used to tell if this layer has
-labels to display from its data. For example, it needs to be set to <code>true</code>
-for a layer with vector tiles. If it's <code>true</code> a new <code>LabelLayer</code> is added and attached to this <code>Layer</code>.
-You can also configure it with <a onclick="window.parent.goTo('api/Layer/LabelLayer.html','api/Layer/LabelLayer')" title="LabelLayer">LabelLayer</a> options described below such as: <code>addLabelLayer: { performance: true }</code>.</p></span>
-        
-
-        
-            
-
-<ul class="params">
     
     <li>
         <code>config.addLabelLayer.performance</code>
@@ -162,11 +133,6 @@ Indeed, even in the best case, labels will never be displayed. By example, if th
         
             &mdash; <span><p>use elevation layer to clamp label on terrain.</p></span>
         
-
-        
-    </li>
-    
-</ul>
 
         
     </li>
@@ -525,6 +491,67 @@ name of the property.</p></span>
         (optional)
         
             &mdash; <span><p>Whether to clear the layer cache or not</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">startup</span>
+        (
+
+
+    
+    
+        context:
+            <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span>
+    
+
+)
+        :
+            
+                <span class="type">Promise.&lt;void></span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>The startup stage is the first stage of the layer lifecycle. It is called
+internally when the layer is added to the view.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>context</code>
+        
+        
+            &mdash; <span><p>the context the layer has been added to.</p></span>
         
 
         
