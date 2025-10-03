@@ -3,6 +3,21 @@
     <head>
         <title>Itowns - WebXR Example</title>
 
+        <script type="importmap">
+        {
+            "imports": {
+                "itowns": "../dist/itowns.js",
+                "debug": "../dist/debug.js",
+                "dat": "https://unpkg.com/dat.gui@0.7.9/build/dat.gui.module.js",
+                "GuiTools": "./jsm/GUI/GuiTools.js",
+                "LoadingScreen": "./jsm/GUI/LoadingScreen.js",
+                "itowns_widgets": "../dist/itowns_widgets.js",
+                "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/"
+            }
+        }
+        </script>
+
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,15 +29,22 @@
         <script type="importmap">
             {
                 "imports": {
+                    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
                     "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
                 }
             }
         </script>
 
         <!-- Import iTowns source code -->
-        <script src="../dist/itowns.js"></script>
 
         <script type="module">
+
+            import GuiTools from 'GuiTools';
+            import setupLoadingScreen from 'LoadingScreen';
+            import * as THREE from 'three';
+            import * as itowns from 'itowns';
+            import * as debug from 'debug';
+            import * as itowns_widgets from 'itowns_widgets';
 
             import { VRButton } from 'three/addons/webxr/VRButton.js';
 
@@ -40,11 +62,7 @@
             const viewerDiv = document.getElementById('viewerDiv');
 
             // Create a GlobeView
-            const view = new itowns.GlobeView(viewerDiv, placement, {
-                webXR: { scale: 0.005 },
-            });
-            // Temporary workaround to https://github.com/iTowns/itowns/issues/2473
-            view.scene.matrixWorldAutoUpdate = true;
+            const view = new itowns.GlobeView(viewerDiv, placement, { webXR: { controllers: true } });
 
             // Instantiate three's VR Button
             const vrButton = VRButton.createButton(view.renderer);
@@ -75,6 +93,10 @@
                 .then(addElevationLayerFromConfig);
             itowns.Fetcher.json('./layers/JSONLayers/WORLD_DTM.json')
                 .then(addElevationLayerFromConfig);
+            window.view = view;
+            window.itowns = itowns;
+            window.THREE = THREE;
+
         </script>
     </body>
 </html>
