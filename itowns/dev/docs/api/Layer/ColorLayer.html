@@ -156,10 +156,12 @@ if <code>effect_type</code> equals:</p>
         <code>config.addLabelLayer</code>
         (optional)
         
-            &mdash; <span><p>Used to tell if this layer has
-labels to display from its data. For example, it needs to be set to <code>true</code>
-for a layer with vector tiles. If it's <code>true</code> a new <code>LabelLayer</code> is added and attached to this <code>Layer</code>.
-You can also configure it with <a onclick="window.parent.goTo('api/Layer/LabelLayer.html','api/Layer/LabelLayer')" title="LabelLayer">LabelLayer</a> options described below such as: <code>addLabelLayer: { performance: true }</code>.</p></span>
+            &mdash; <span><p>Used to indicate
+whether this layer can display labels from the data. For example, it
+needs to be set for vector tile layers if you want to display labels.
+If set, a new <code>LabelLayer</code> is added and attached to this layer.
+You can also configure it with <a onclick="window.parent.goTo('api/Layer/LabelLayer.html','api/Layer/LabelLayer')" title="LabelLayer">LabelLayer</a> options described below
+such as: <code>addLabelLayer: { performance: true }</code>.</p></span>
         
 
         
@@ -171,8 +173,10 @@ You can also configure it with <a onclick="window.parent.goTo('api/Layer/LabelLa
         <code>config.addLabelLayer.performance</code>
         (optional)
         
-            &mdash; <span><p>In case label layer adding, so remove labels that have no chance of being visible.
-Indeed, even in the best case, labels will never be displayed. By example, if there's many labels.</p></span>
+            &mdash; <span><p>When adding
+a label layer, remove all labels that have no chance of being visible.
+Even if a label is visible, it may never be displayed if there are too
+many labels in the same screen area.</p></span>
         
 
         
@@ -182,7 +186,8 @@ Indeed, even in the best case, labels will never be displayed. By example, if th
         <code>config.addLabelLayer.forceClampToTerrain</code>
         (optional)
         
-            &mdash; <span><p>use elevation layer to clamp label on terrain.</p></span>
+            &mdash; <span><p>Use
+elevation layer to clamp labels to terrain.</p></span>
         
 
         
@@ -468,7 +473,7 @@ of effects. If <code>effect_type</code> equals:</p>
     
     
         node:
-            <span class="type"><a onclick="window.parent.goTo('api/Base/TileMesh.html','api/Base/TileMesh')" title="TileMesh">TileMesh</a></span>
+            <span class="type">TileMesh</span>
     
 
 )
