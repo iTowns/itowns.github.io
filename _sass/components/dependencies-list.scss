@@ -1,0 +1,38 @@
+.dependencies-list {
+  margin: var(--spacing-none);
+  padding: var(--spacing-none);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-XL);
+
+  list-style: none;
+}
+
+.dependency {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-L);
+}
+
+.dependency:after {
+  content: '';
+}
+
+.dependency:not(:last-child) {
+  border-bottom: 1px solid var(--border-blue);
+}
+
+.dependency-name {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.dependency-license {
+  font-size: 18px;
+}
+
+.dependency a {
+  font-size: 18px;
+}
+

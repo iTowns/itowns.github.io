@@ -1,0 +1,9 @@
+@media (max-width: $MOBILE_BREAKPOINT) {
+  .organisation-chart {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 88px);
+    grid-gap: var(--spacing-L);
+    justify-content: space-between;
+  }
+}
+

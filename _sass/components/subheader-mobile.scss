@@ -1,0 +1,18 @@
+@media (max-width: $MOBILE_BREAKPOINT) {
+  .subheader {
+    padding: var(--spacing-S);
+
+    align-items: stretch;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .subheader-title {
+    font-size: 22px;
+  }
+
+  .subheader-description {
+    font-size: 16px;
+  }
+}
+

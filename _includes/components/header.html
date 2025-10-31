@@ -1,0 +1,103 @@
+<header	class='header {{ include.class }}'>
+
+	{% include components/gradient-background.html %}
+
+	<div class='header-banner'>
+
+		<div class='header-brand'>
+
+			<h1 class='header-title'>
+
+				<a	class="header-title-link"
+					href="{{ site.baseurl }}/"
+					title="Go to home page">
+					iTowns
+				</a>
+
+			</h1>
+
+			<h2 class='header-subtitle'>
+				Visualising 3D geospatial data
+			</h2>
+
+		</div>
+
+		<div class='header-tools'>
+
+			{% for item in site.data.tools %}
+
+				<a	class='nav-link decorated small'
+					{% if item.externalLink %}
+					href='{{ item.link }}'
+					target='_blank'
+					{% else %}
+					href='{{ site.baseurl }}{{ item.link }}'
+					{% endif %}
+					title='{{ item.name }}'>
+					{{ item.name }}
+				</a>
+
+			{% endfor %}
+
+		</div>
+
+		<button class='header-button burger-button'
+				id='header-open-menu-button'>
+
+			<img src='{{ site.baseurl }}/assets/icons/burger.svg'>
+			<img src='{{ site.baseurl }}/assets/icons/burger.svg'>
+			<img src='{{ site.baseurl }}/assets/icons/burger.svg'>
+
+		</button>
+
+	</div>
+
+	<div 	class="header-menu"
+			id="header-hidable-menu">
+
+		<button class="header-button close-button"
+				id="header-close-menu-button">
+
+			<img src="{{ site.baseurl }}/assets/icons/cross.svg">
+
+			Fermer
+
+		</button>
+
+		<div class='header-tools'>
+
+			{% for item in site.data.tools %}
+
+				<a	class='nav-link'
+					{% if item.externalLink %}
+					href='{{ item.link }}'
+					target='_blank'
+					{% else %}
+					href='{{ site.baseurl }}{{ item.link }}'
+					{% endif %}
+					title='{{ item.name }}'>
+					{{ item.name }}
+				</a>
+
+			{% endfor %}
+
+		</div>
+
+		<nav class='header-nav-bar'>
+
+			{% for item in site.data.navigation %}
+
+				<a	class='nav-link
+						{% if page.url == item.link %}active{% endif %}'
+					href='{{ site.baseurl }}{{ item.link }}'
+					title='{{ item.name }}'>
+					{{ item.name }}
+				</a>
+
+			{% endfor %}
+
+		</nav>
+
+	</div>
+
+</header>

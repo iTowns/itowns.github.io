@@ -1,0 +1,62 @@
+.gradient-background {
+  background-color: var(--background-blue-950);
+  height: 100%;
+  width: 100%;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -100;
+
+  overflow: hidden;
+}
+
+.gradient-background-ellipse {
+  border-radius: 50%;
+
+  height: 120px;
+  width: 123px;
+
+  position: absolute;
+  filter: blur(75px);
+}
+
+#ellipse-1 {
+  height: 347px;
+  width: 356px;
+
+  bottom: -265px;
+  right: -132px;
+
+  background-color: #68D4AD;
+
+  z-index: -13;
+}
+
+#ellipse-2 {
+  bottom: -50px;
+  right: 35px;
+
+  background-color: #0D2237;
+
+  z-index: -12;
+}
+
+#ellipse-3 {
+  bottom: 10px;
+  right: -47px;
+
+  background-color: #0E4639;
+
+  z-index: -11;
+}
+
+#ellipse-4 {
+  bottom: -80px;
+  right: -27px;
+
+  background-color: #FE7611;
+
+  z-index: -10;
+}
+
