@@ -1,0 +1,177 @@
+---
+permalink: /
+title: "iTowns - Visualising 3D geospatial data"
+layout: default
+scripts:
+- assets/js/examples-carousel.js
+---
+
+<div class="home-content-wrapper">
+
+	<h3 class="home-title">
+		With iTowns, build your own geographic service!
+	</h3>
+
+	<div class="home-keywords-wrapper">
+
+		{% include components/gradient-background.html %}
+
+		<div class="home-keyword">
+
+			<div	class="home-keyword-icon"
+					style="--icon:
+						url('{{ site.baseurl }}/assets/icons/opensource.svg')">
+			</div>
+
+			<p class="home-keyword-text">
+				<span class="first-word">Open</span> source
+			</p>
+
+			<div class="home-keyword-info">
+
+				<div	class="info-icon"
+						style="--icon: url('{{ site.baseurl
+							}}/assets/icons/help-circle.svg')">
+				</div>
+
+				<p class="info-content">
+					iTowns is based on an open governance that allows everyone
+					to contribute.
+				</p>
+
+			</div>
+
+		</div>
+
+		<div class="home-keyword">
+
+			<div	class="home-keyword-icon"
+					style="--icon: url('{{ site.baseurl
+						}}/assets/icons/overlapping-layers.svg')">
+			</div>
+
+			<p class="home-keyword-text">
+				<span class="first-word">Multiple</span> format support
+			</p>
+
+			<div class="home-keyword-info">
+
+				<div	class="info-icon"
+						style="--icon: url('{{ site.baseurl
+							}}/assets/icons/help-circle.svg')">
+				</div>
+
+				<ul class="info-content">
+
+					<li>3D Tiles</li>
+
+					<li>Mapbox Vector Tiles</li>
+
+					<li>
+						Raster: elevation and imagery streams, Geotiff and COG
+					</li>
+
+					<li>Point clouds: Potree, EPT, COPC, las</li>
+
+				</ul>
+
+			</div>
+
+		</div>
+
+		<div class="home-keyword">
+
+			<div	class="home-keyword-icon"
+					style="--icon: url('{{ site.baseurl
+						}}/assets/icons/multiple-image.svg')">
+			</div>
+
+			<p class="home-keyword-text">
+				<span class="first-word">Multiple</span> use-case
+			</p>
+
+		</div>
+
+	</div>
+
+	<div class="home-call-to-action">
+
+		<a	class="button large secondary"
+			href="{{ site.baseurl }}/about"
+			title="Go to about page"
+			style="--icon-left:
+				url('{{ site.baseurl }}/assets/icons/about.svg')">
+			About iTowns
+		</a>
+
+		<a	class="button large primary hideable-tablet"
+			href="https://github.com/Desplandis/itowns-starter-webpack"
+			target="_blank"
+			title="Start a new project"
+			style="--icon-left:
+				url('{{ site.baseurl }}/assets/icons/code.svg')">
+			Start a new project
+		</a>
+
+	</div>
+
+	<p class="home-description hideable-tablet">
+		A technology designed to help developers integrate mapping and 3D
+		visualisation features into their web applications.
+	</p>
+
+	<div class="home-example-wrapper">
+
+		<button	class="home-example-arrow hideable-mobile"
+				id="previous-button">
+			<img src="{{ site.baseurl }}/assets/icons/arrow-left.svg">
+		</button>
+
+		{% for item in site.data.pages.home.examples %}
+
+			<div class="home-example">
+
+				<h4 class="home-example-title">
+					{{ item.title }}
+				</h4>
+
+				<div class="home-example-picture-wrapper">
+
+					<div class="home-example-picture">
+
+						<img 	class="home-example-picture-content"
+								src="{{ site.baseurl }}/{{ item.image-url }}"
+								alt="Picture of the example">
+
+					</div>
+
+				</div>
+
+				<p class="home-example-description">
+					{{ item.description }}
+				</p>
+
+				<a	class="button medium tertiary home-example-link"
+					href="{{ item.link }}"
+					target="_blank"
+					title="Go to the example"
+					style="--icon-left:
+						url('{{ site.baseurl }}/assets/icons/eye.svg')">
+					Test the example
+				</a>
+
+			</div>
+
+		{% endfor %}
+
+		<button	class="home-example-arrow hideable-mobile"
+				id="next-button">
+			<img src="{{ site.baseurl }}/assets/icons/arrow-right.svg">
+		</button>
+
+	</div>
+
+	<div class="home-page-filler">
+	</div>
+
+</div>

@@ -1,0 +1,35 @@
+.nav-link {
+  height: 30px;
+  margin-bottom: 5px;
+  padding: var(--spacing-2XS);
+
+  align-items: center;
+  display: inline-flex;
+  gap: var(--spacing-S);
+
+  color: var(--text-primary-invert);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 800;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.nav-link.active {
+  border-bottom: 5px solid var(--border-orange);
+  margin-bottom: 0;
+}
+
+.nav-link.decorated {
+  text-decoration: underline;
+  text-underline-offset: var(--spacing-3XS);
+}
+
+.nav-link.small {
+  font-size: 12px;
+}
+
+.nav-link:hover {
+  background-color: var(--links-hover-color);
+}
+

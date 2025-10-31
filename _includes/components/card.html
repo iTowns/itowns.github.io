@@ -1,0 +1,39 @@
+<div class="card {{ include.class }}">
+
+	<h6 class="card-title">
+		{{ include.content.title }}
+	</h6>
+
+	{% if include.content.tags %}
+
+		<ul class="card-tags-wrapper">
+
+			{% for tag in include.content.tags %}
+
+				<li class="card-tag">
+					{{ tag }}
+				</li>
+
+			{% endfor %}
+
+		</ul>
+
+	{% endif %}
+
+	{% if include.content.text %}
+
+		<div class="card-text-wrapper">
+
+			{% for text in include.content.text %}
+
+				<p class="card-text">
+					{{ text.paragraph }}
+				</p>
+
+			{% endfor %}
+
+		</div>
+
+	{% endif %}
+
+</div>
