@@ -1,0 +1,35 @@
+- title: Globe viewer
+  image-url: assets/images/home-examples/example-globe.png
+  description: Visualize data in a global reference coordinates system.
+  link: https://itowns.github.io/itowns/examples/view_3d_map.html
+
+- title: Planar viewer
+  image-url: assets/images/home-examples/example-planar.png
+  description: Visualize data in a local projected Coordinates Reference System.
+               Here, we display data in RGF93/Lambert93 CRS.
+  link: https://itowns.github.io/itowns/examples/view_25d_map.html
+
+- title: Vector Tiles viewer
+  image-url: assets/images/home-examples/example-vector-tiles.png
+  description: Visualize Vector Tiles data. Here we display polygons for the
+               holds of buildings and extrude them, their height being extracted
+               from data.
+  link: https://itowns.github.io/itowns/examples/vector_tile_3d_mesh_mapbox.html
+
+- title: 3D Tiles viewer
+  image-url: assets/images/home-examples/example-3d-tiles.png
+  description: Visualize 3D Tiles data. Here we display some batched 3d model.
+  link: https://itowns.github.io/itowns/examples/3dtiles_loader.html
+
+- title: Point cloud viewer
+  image-url: assets/images/home-examples/example-copc.png
+  description: Visualize point cloud data and style it as you wish. Here we
+               display COPC data colored from its classification.
+  link: https://itowns.github.io/itowns/examples/copc_simple_loader.html?copc=https%3A%2F%2Fs3.amazonaws.com%2Fhobu-lidar%2Fautzen-classified.copc.laz
+
+- title: Raster data viewer
+  image-url: assets/images/home-examples/example-dsm.png
+  description: Visualize raster data. Here we display some ortho-images as well
+               as a Digital Surface Model.
+  link: https://itowns.github.io/itowns/examples/view_3d_mns_map.html
+

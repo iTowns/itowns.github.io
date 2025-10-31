@@ -1,0 +1,38 @@
+<section class="tab-section">
+
+	{% assign section = include.content %}
+
+	{% include components/section-header.html content=section %}
+
+	<ul class="organisation-chart">
+
+		{% for link in section.list %}
+
+			<li class="contributor-wrapper">
+
+				<a	class="contributor-link"
+					href="{{ link.href }}"
+					title="{{ link.title }}"
+					target="_blank">
+
+					<img	class="contributor-picture"
+							src="https://github.com/{{ link.value }}.png"
+							alt="GitHub profile picture of {{ link.value }}">
+
+				</a>
+
+			</li>
+
+		{% endfor %}
+
+	</ul>
+
+	<a	class="button large tertiary organisation-button"
+		href="https://github.com/iTowns/itowns/blob/master/CONTRIBUTORS.md"
+		target="_blank"
+		title="Go to iTowns contributors list"
+		style="--icon-left:url('{{ site.baseurl }}/assets/icons/github.svg')">
+		See our full contributors list
+	</a>
+
+</section>
