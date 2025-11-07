@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Potree2Layer - iTowns documentation</title>
+    <title>VpcLayer - iTowns documentation</title>
 
     <script src="../../scripts/prettify/prettify.js"> </script>
     <script src="../../scripts/prettify/lang-css.js"> </script>
@@ -20,14 +20,15 @@
 <article>
 
     <h1>
-        Potree2Layer
+        VpcLayer
         
             <span class="extends">extends <a onclick="window.parent.goTo('api/Layer/PointCloudLayer.html','api/Layer/PointCloudLayer')" title="PointCloudLayer">PointCloudLayer</a></span>
         
     </h1>
 
     
-        <div class="description"><p>Constructs a new instance of Potree2 layer.</p></div>
+        <div class="description"><p>A layer for <a href="https://github.com/PDAL/wrench/blob/main/vpc-spec.md">Virtual Point Clouds</a> (VPC) datasets.
+See <a onclick="window.parent.goTo('api/Layer/PointCloudLayer.html','api/Layer/PointCloudLayer')" title="PointCloudLayer">PointCloudLayer</a> class for documentation on base properties.</p></div>
     
 
     
@@ -37,7 +38,7 @@
 
 <div class="method">
     <h3>
-        <span class="method-name">Potree2Layer</span>
+        <span class="method-name">VpcLayer</span>
         (
 
 
@@ -68,9 +69,7 @@
         <code>id</code>
         
         
-            &mdash; <span><p>The id of the layer, that should be unique. It is
-not mandatory, but an error will be emitted if this layer is added a
-<a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> that already has a layer going by that id.</p></span>
+            &mdash; <span><p>Unique id of the layer.</p></span>
         
 
         
@@ -80,32 +79,9 @@ not mandatory, but an error will be emitted if this layer is added a
         <code>config</code>
         
         
-            &mdash; <span><p>Configuration, all elements in it
-will be merged as is in the layer. For example, if the configuration
-contains three elements <code>name, protocol, extent</code>, these elements will be
-available using <code>layer.name</code> or something else depending on the property
-name. See the list of properties to know which one can be specified.</p></span>
+            &mdash; <span><p>See <a onclick="window.parent.goTo('api/Layer/PointCloudLayer.html','api/Layer/PointCloudLayer')" title="PointCloudLayer">PointCloudLayer</a> for base pointcloud
+options.</p></span>
         
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>config.crs</code>
-        (default: <code>ESPG:4326</code>)
-        
-        
-            &mdash; <span><p>The CRS of the <a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a> this
-layer will be attached to. This is used to determine the extent of this
-layer.  Default to <code>EPSG:4326</code>.</p></span>
-        
-
-        
-    </li>
-    
-</ul>
 
         
     </li>
@@ -127,16 +103,16 @@ layer.  Default to <code>EPSG:4326</code>.</p></span>
 
     
 
-    <pre class="prettyprint source lang-js"><code>// Create a new point cloud layer
-const points = new Potree2Layer('points',
- {
-     source: new Potree2Source({
-         url: 'https://pointsClouds/',
-         file: 'metadata.json',
-     }
- });
+    <pre class="prettyprint source lang-js"><code>// Create a new VPC layer
+const vpcSource = new VpcSource({
+    url: 'https://data.geopf.fr/chunk/telechargement/download/lidarhd_fxx_ept/vpc/index.vpc',
+});
 
-View.prototype.addLayer.call(view, points);</code></pre>
+const vpcLayer = new VpcLayer('VPC', {
+    source: vpcSource,
+});
+
+View.prototype.addLayer.call(view, vpcLayer);</code></pre>
 
 
     
@@ -149,14 +125,14 @@ View.prototype.addLayer.call(view, points);</code></pre>
 
 <div class="property">
     <h3>
-        <span class="property-name">isPotreeLayer</span>
+        <span class="property-name">isVpcLayer</span>
         : <span class="type">boolean</span>
     </h3>
 
     
         <div class="description">
             <p>Used to checkout whether this layer
-is a Potree2Layer. Default is <code>true</code>. You should not change this, as it is
+is a VpcLayer. Default is <code>true</code>. You should not change this, as it is
 used internally for optimisation.</p>
         </div>
     
@@ -684,8 +660,8 @@ node.loadData() on it.</p>
 
         <hr class="title-divider"/>
         <h2>Source</h2>
-        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/packages/Main/src/Layer/Potree2Layer.js">
-            packages/Main/src/Layer/Potree2Layer.js
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/packages/Main/src/Layer/VpcLayer.js">
+            packages/Main/src/Layer/VpcLayer.js
         </a>
 
 
