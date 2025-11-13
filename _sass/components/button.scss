@@ -1,0 +1,160 @@
+.button {
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 4px 4px 1px 0px var(--background-gray);
+  box-sizing: border-box;
+
+  align-items: center;
+  display: inline-flex;
+  gap: var(--spacing-S);
+  justify-content: center;
+
+  font-style: normal;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.button:hover {
+  cursor: pointer;
+}
+
+
+/* ---------- Size ---------------------------------------------------------- */
+
+/* Large */
+
+.button.large {
+  border-radius: var(--radius-L);
+  padding: var(--spacing-S) var(--spacing-XL);
+
+  font-size: 16px;
+}
+.button.large[style*='--icon-left']::before,
+.button.large[style*='--icon-right']::after {
+  background-size: var(--icon-size-L) var(--icon-size-L);
+  height: var(--icon-size-L);
+  width: var(--icon-size-L);
+}
+.button.large.icon-only {
+  padding: var(--spacing-S);
+}
+
+/* Medium */
+
+.button.medium {
+  border-radius: var(--radius-M);
+  padding: var(--spacing-XS) var(--spacing-S);
+
+  font-size: 16px;
+}
+.button.medium[style*='--icon-left']::before,
+.button.medium[style*='--icon-right']::after {
+  background-size: var(--icon-size-M) var(--icon-size-M);
+  height: var(--icon-size-M);
+  width: var(--icon-size-M);
+}
+.button.medium.icon-only {
+  padding: var(--spacing-XS);
+}
+
+/* Small */
+
+.button.small {
+  border-radius: var(--radius-S);
+  padding: var(--spacing-2XS) var(--spacing-XS);
+
+  font-size: 14px;
+}
+.button.small[style*='--icon-left']::before,
+.button.small[style*='--icon-right']::after {
+  background-size: var(--icon-size-S) var(--icon-size-S);
+  height: var(--icon-size-S);
+  width: var(--icon-size-S);
+}
+.button.small.icon-only {
+  padding: var(--spacing-2XS);
+}
+
+
+/* ---------- Type ---------------------------------------------------------- */
+
+/* Primary */
+
+.button.primary {
+  background-color: var(--background-blue-950);
+  border-color: var(--border-blue);
+  margin: 2px;
+
+  color: var(--text-primary-invert);
+}
+.button.primary[style*='--icon-left']::before,
+.button.primary[style*='--icon-right']::after {
+  filter: var(--filter-secondary);
+}
+.button.primary:hover {
+  background-color: var(--background-blue-800);
+  border-width: 3px;
+  margin: 0;
+}
+.button.primary.small {
+  margin: 1px;
+}
+.button.primary.small:hover {
+  border-width: 2px;
+  margin: 0;
+}
+
+/* Secondary */
+
+.button.secondary {
+  background-color: var(--background-green);
+  border-color: var(--border-blue);
+  margin: 1px;
+
+  color: var(--text-primary);
+}
+.button.secondary[style*='--icon-left']::before,
+.button.secondary[style*='--icon-right']::after {
+  filter: var(--filter-primary);
+}
+.button.secondary:hover {
+  background-color: var(--background-lighter-green);
+  border-width: 2px;
+  margin: 0;
+}
+
+/* Tertiary */
+
+.button.tertiary {
+  background-color: var(--background-light-gray);
+  border-color: var(--border-medium-gray);
+  margin: 1px;
+
+  color: var(--text-primary);
+}
+.button.tertiary[style*='--icon-left']::before,
+.button.tertiary[style*='--icon-right']::after {
+  filter: var(--filter-primary);
+}
+.button.tertiary:hover {
+  background-color: var(--background-gray);
+  border-width: 2px;
+  margin: 0;
+}
+
+
+/* ---------- Icon ---------------------------------------------------------- */
+
+.button[style*='--icon-left']::before,
+.button[style*='--icon-right']::after {
+  content: '';
+
+  display: flex;
+}
+.button[style*='--icon-left']::before {
+  background-image: var(--icon-left);
+}
+.button[style*='--icon-right']::after {
+  background-image: var(--icon-right);
+}
+

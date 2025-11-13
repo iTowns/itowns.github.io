@@ -1,16 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
 
-    {% include head.html %}
+	<head>
 
-    <body class="index">
+		<meta charset='UTF-8'>
+		<meta name='viewport' content='width=device-width,initial-scale=1'>
 
-        {% include header.html %}
-        <div class="page-content">
-            {{ content }}
-        </div>
-        {% include footer.html %}
+		<title>{{ page.title | default: 'iTowns' }}</title>
 
-    </body>
+		<link rel='icon' href='{{ site.baseurl }}/assets/icons/favicon.ico'>
+
+		<link rel='stylesheet' href='{{ site.baseurl }}/assets/style/main.css'>
+
+	</head>
+
+	<body>
+
+		{% include components/header.html %}
+
+		{{ content }}
+
+		{% include components/footer.html %}
+
+		{% for script in page.scripts %}
+			<script	type='text/javascript'
+					src='{{ site.baseurl }}/{{ script }}'>
+			</script>
+		{% endfor %}
+
+		<script	type="text/javascript"
+				src='{{ site.baseurl }}/assets/js/header.js'>
+		</script>
+
+	</body>
 
 </html>

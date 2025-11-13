@@ -1,0 +1,9 @@
+- name: Home
+  link: /
+
+- name: About iTowns
+  link: /about
+
+- name: Documentation
+  link: /documentation
+

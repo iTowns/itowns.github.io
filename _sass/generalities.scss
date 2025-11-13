@@ -1,0 +1,45 @@
+* {
+  font-family: "Lato";
+}
+
+html, body {
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  min-width: 320px;
+
+  display: flex;
+  flex-direction: column;
+
+  background-color: var(--background-light-gray);
+
+  color: var(--text-primary);
+}
+
+body.stop-scrolling {
+  overflow: hidden;
+}
+
+.inline-link {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--spacing-2XS);
+
+  color: inherit;
+  text-underline-offset: 4px;
+}
+
+.inline-link[target="_blank"]::after {
+  background-size: var(--icon-size-L) var(--icon-size-L);
+  height: var(--icon-size-L);
+  width: var(--icon-size-L);
+
+  background-image: url('../icons/external-link.svg');
+  content: '';
+  filter: var(--filter-primary);
+
+  display: flex;
+}
+
