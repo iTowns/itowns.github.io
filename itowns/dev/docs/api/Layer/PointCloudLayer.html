@@ -352,6 +352,40 @@ corresponding uniform. The value is normalized between 0 and 1.</p>
     
 </div>
 
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">zmin</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The minimal value for elevation (read from the metadata).</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">zmax</span>
+        : <span class="type">number</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The maximal value for elevation (read from the metadata).</p>
+        </div>
+    
+</div>
+
             
         
     
@@ -556,7 +590,7 @@ attach a layer.</p>
         layer:
             <span class="type"><a onclick="window.parent.goTo('api/Layer/PointCloudLayer.html','api/Layer/PointCloudLayer')" title="PointCloudLayer">PointCloudLayer</a></span>, 
     
-        bbox:
+        distanceToCamera:
             <span class="type">THREE.Box3</span>
     
 
@@ -624,10 +658,10 @@ as well.</p>
     </li>
     
     <li>
-        <code>bbox</code>
+        <code>distanceToCamera</code>
         
         
-            &mdash; <span><p>bbox of the node.</p></span>
+            &mdash; <span><p>The distance between the camera and the node.</p></span>
         
 
         
