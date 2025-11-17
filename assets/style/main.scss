@@ -1,0 +1,65 @@
+---
+# this ensures Jekyll reads the file to be transformed into CSS later
+# only Main files contain this front matter, not partials.
+---
+
+
+
+@import 'constants.scss';
+
+@import 'fonts.scss';
+
+@import 'generalities.scss';
+
+
+@import 'components/header.scss';
+@import 'components/header-tablet.scss';
+@import 'components/header-mobile.scss';
+
+@import 'components/gradient-background.scss';
+
+@import 'components/footer.scss';
+@import 'components/footer-tablet.scss';
+@import 'components/footer-mobile.scss';
+
+@import 'components/subheader.scss';
+@import 'components/subheader-tablet.scss';
+@import 'components/subheader-mobile.scss';
+
+@import 'components/tab-bar.scss';
+@import 'components/tab-bar-tablet.scss';
+@import 'components/tab-bar-mobile.scss';
+
+@import 'components/tab.scss';
+@import 'components/tab-tablet.scss';
+@import 'components/tab-mobile.scss';
+
+@import 'components/default-tab-section.scss';
+@import 'components/default-tab-section-mobile.scss';
+
+@import 'components/card.scss';
+@import 'components/card-mobile.scss';
+
+@import 'components/button.scss';
+
+@import 'components/nav-link.scss';
+
+@import 'components/dependencies-list.scss';
+@import 'components/dependencies-list-tablet.scss';
+@import 'components/dependencies-list-mobile.scss';
+
+@import 'components/organisation-chart.scss';
+@import 'components/organisation-chart-mobile.scss';
+
+@import 'components/main-dependencies.scss';
+@import 'components/main-dependencies-tablet.scss';
+
+@import 'components/alternative-cards.scss';
+@import 'components/alternative-cards-tablet.scss';
+
+
+@import 'pages/home.scss';
+@import 'pages/about.scss';
+@import 'pages/documentation.scss';
+@import 'pages/not-ready.scss';
+

@@ -1,0 +1,19 @@
+#tab-choosing-itowns > .tab-section:first-of-type > .cards-wrapper,
+#tab-choosing-itowns > .tab-section:nth-of-type(3) > .cards-wrapper,
+#tab-choosing-itowns > .tab-section:nth-of-type(4) > .cards-wrapper {
+  flex-direction: row;
+}
+
+@media (max-width: $TABLET_BREAKPOINT) {
+  #tab-choosing-itowns > .tab-section:first-of-type .cards-wrapper {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: $MOBILE_BREAKPOINT) {
+  #tab-choosing-itowns > .tab-section:nth-of-type(3) > .cards-wrapper,
+  #tab-choosing-itowns > .tab-section:nth-of-type(4) > .cards-wrapper {
+    flex-direction: column;
+  }
+}
+

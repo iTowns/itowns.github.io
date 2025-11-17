@@ -1,0 +1,33 @@
+<section class="tab-section">
+
+	{% assign section = include.content %}
+
+	{% include components/section-header.html content=section %}
+
+	<ul class="dependencies-list">
+
+		{% for dependency in section.list %}
+
+			<li class="dependency">
+
+				<span class="dependency-name">
+					{{ dependency.name }}
+				</span>
+
+				<span class="dependency-license">
+					{{ dependency.license }}
+				</span>
+
+				{% if dependency.link %}
+
+					{{ dependency.link }}
+
+				{% endif %}
+
+			</li>
+
+		{% endfor %}
+
+	</ul>
+
+</section>

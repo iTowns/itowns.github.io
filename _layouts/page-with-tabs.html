@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+	<head>
+
+		<meta charset='UTF-8'>
+		<meta name='viewport' content='width=device-width,initial-scale=1'>
+
+		<title>{{ page.title | default: 'iTowns' }}</title>
+
+		<link rel='icon' href='{{ site.baseurl }}/assets/icons/favicon.ico'>
+
+		<link rel='stylesheet' href='{{ site.baseurl }}/assets/style/main.css'>
+
+	</head>
+
+	<body>
+
+
+		{% assign content = page.structured_content %}
+
+
+		{% include components/header.html %}
+
+		<div class="subheader">
+
+			<h2 class="subheader-title">
+				{{ content.subheader.title }}
+			</h2>
+
+			{% if content.subheader.desc %}
+
+				<div class="subheader-description-wrapper">
+
+					{% for item in content.subheader.desc %}
+
+						<p class="subheader-description">
+							{{ item.paragraph }}
+						</p>
+
+					{% endfor %}
+
+				</div>
+
+			{% endif %}
+
+		</div>
+
+		<div class='active-tab-wrapper'>
+
+			<button	class='active-tab'
+					id='active-tab'
+					style="
+						--before-image:
+							url('{{ site.baseurl }}/assets/icons/tab-bar.svg');
+						--after-image-arrow-down:
+							url('{{ site.baseurl }}/assets/icons/arrow-down.svg');
+						--after-image-arrow-up:
+							url('{{ site.baseurl }}/assets/icons/arrow-up.svg');">
+			</button>
+
+		</div>
+
+		<ul	class='tab-bar collapsed'
+			id='tab-bar'>
+
+			{% for tab in content.tabs %}
+
+				{% assign tab_id = tab.title | slugify %}
+
+				<li>
+					<a	class='tab-bar-item'
+						id='link-{{ tab_id }}'
+						href='#{{ tab_id }}'
+						title='{{ tab.title }}'>
+						{{ tab.title }}
+					</a>
+				</li>
+
+			{% endfor %}
+
+		</ul>
+
+		{% for tab in content.tabs %}
+
+			{% assign tab_id = tab.title | slugify %}
+
+			<div	class="tab-content-wrapper"
+					id="tab-{{ tab_id }}">
+
+				<div class="tab-header">
+
+					<h3 class="tab-title">
+						{{ tab.title }}
+					</h3>
+
+					{% if tab.desc %}
+
+						{% for desc in tab.desc %}
+
+							<p class="tab-description">
+								{{ desc.paragraph }}
+							</p>
+
+						{% endfor %}
+
+					{% endif %}
+
+				</div>
+
+				{% for section in tab.sections %}
+
+
+					{% if section.template %}
+
+						{% include custom-sections/{{ section.template }}.html
+							content=section
+						%}
+
+					{% else %}
+
+						<section class="tab-section">
+
+							{% include components/section-header.html
+								content=section
+							%}
+
+							{% if section.cards %}
+
+								<div class="cards-wrapper">
+
+									{% for card in section.cards %}
+
+										{% include components/card.html
+											content=card
+										%}
+
+									{% endfor %}
+
+								</div>
+
+							{% endif %}
+
+						</section>
+
+					{% endif %}
+
+				{% endfor %}
+
+			</div>
+
+		{% endfor %}
+
+		{% include components/footer.html %}
+
+
+		{% for script in page.scripts %}
+			<script	type='text/javascript'
+					src='{{ site.baseurl }}/{{ script }}'>
+			</script>
+		{% endfor %}
+
+
+		<script	type="text/javascript"
+				src='{{ site.baseurl }}/assets/js/header.js'>
+		</script>
+
+		<script	type="text/javascript"
+				src='{{ site.baseurl }}/assets/js/tab-bar.js'>
+		</script>
+
+
+	</body>
+
+</html>

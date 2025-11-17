@@ -1,0 +1,11 @@
+@media (max-width: $MOBILE_BREAKPOINT) {
+  .tab-content-wrapper {
+    padding: var(--spacing-S);
+    padding-bottom: var(--spacing-3XL);
+  }
+
+  .tab-description {
+    font-size: 16px;
+  }
+}
+
