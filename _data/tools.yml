@@ -1,6 +1,0 @@
-- name: Contact
-  link: /contact
-
-- name: Github
-  link: https://github.com/iTowns/itowns
-  externalLink: true
