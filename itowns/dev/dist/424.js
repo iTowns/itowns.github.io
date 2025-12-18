@@ -1,2 +1,0 @@
-export const __webpack_id__=424;export const __webpack_ids__=[424];export const __webpack_modules__={50424:(e,_,r)=>{r.r(_),r.d(_,{default:()=>o});var t=r(3075),c=r(42132);class o extends c.A{decodeBlock(e){return(0,t.UD)(new Uint8Array(e)).buffer}}}};
-//# sourceMappingURL=424.js.map
