@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkitowns_repository=self.webpackChunkitowns_repository||[]).push([[416],{81416:(e,r,s)=>{s.r(r),s.d(r,{default:()=>o});var t=s(3075),n=s(75588);class o extends n.A{decodeBlock(e){return(0,t.UD)(new Uint8Array(e)).buffer}}}}]);
-//# sourceMappingURL=416.umd.js.map
