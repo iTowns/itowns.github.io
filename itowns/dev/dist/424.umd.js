@@ -1,2 +1,2 @@
-"use strict";(self.webpackChunkitowns_repository=self.webpackChunkitowns_repository||[]).push([[424],{50424:(e,r,s)=>{s.r(r),s.d(r,{default:()=>o});var t=s(3075),n=s(42132);class o extends n.A{decodeBlock(e){return(0,t.UD)(new Uint8Array(e)).buffer}}}}]);
+"use strict";(self.webpackChunkitowns_repository=self.webpackChunkitowns_repository||[]).push([[424],{424(e,s,r){r.d(s,{default:()=>o});var t=r(3075),n=r(2132);class o extends n.A{decodeBlock(e){return(0,t.UD)(new Uint8Array(e)).buffer}}}}]);
 //# sourceMappingURL=424.umd.js.map
