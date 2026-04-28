@@ -1,0 +1,19 @@
+import * as itowns from 'itowns';
+import { Config } from '../Config';
+let configPromise;
+let cachedConfig;
+export async function getFetcherConfig() {
+    if (cachedConfig) {
+        return Promise.resolve(cachedConfig);
+    }
+    if (!configPromise) {
+        configPromise = (itowns.Fetcher.json(`${Config.basePath}/demo/assets/WORLD_DTM.json`));
+        configPromise = configPromise.then((config) => {
+            config.source = new itowns.WMTSSource(config.source);
+            cachedConfig = config;
+            return cachedConfig;
+        });
+    }
+    return configPromise;
+}
+//# sourceMappingURL=WorldDTMFetcherSource.js.map

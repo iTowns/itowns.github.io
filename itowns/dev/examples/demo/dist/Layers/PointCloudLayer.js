@@ -1,0 +1,33 @@
+import * as itowns from 'itowns';
+import { PointCloudSource } from "../Sources/index.js";
+export const PointCloudLayer = {
+  id: 'point-cloud',
+  layerPromise: undefined,
+  cachedLayer: undefined,
+  getLayer: crs => {
+    if (PointCloudLayer.cachedLayer) {
+      return Promise.resolve(PointCloudLayer.cachedLayer);
+    }
+    if (!PointCloudLayer.layerPromise) {
+      PointCloudLayer.layerPromise = (async () => {
+        const options = {
+          mode: 2,
+          opacity: 0.5
+        };
+        const config = {
+          source: await PointCloudSource.getSource(),
+          crs,
+          sseThreshold: 4,
+          pointSize: 2,
+          ...options
+        };
+        PointCloudLayer.cachedLayer = new itowns.EntwinePointTileLayer(PointCloudLayer.id, config);
+
+        // @ts-expect-error mode property undefined
+        PointCloudLayer.cachedLayer.material.mode = itowns.PNTS_MODE.COLOR;
+        return PointCloudLayer.cachedLayer;
+      })();
+    }
+    return PointCloudLayer.layerPromise;
+  }
+};
