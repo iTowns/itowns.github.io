@@ -119,6 +119,24 @@ const layer = new itowns.ColorLayer('foo', {
 
 view.addLayer(layer);</code></pre>
 
+    
+        <caption>Updating style properties. Currently only works for FeatureGeometryLayer and color and extrusionHeight properties.</caption>
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// Update a single sub-property:
+layer.style.fill.color = '#00cc00';
+
+// Update several sub-properties at once via the category setter.
+// Only the provided keys are changed; other properties are kept intact.
+layer.style.fill = { color: '#00cc00', opacity: 0.8 };
+
+// WARNING: do NOT use the spread operator to "copy" the current category:
+//   layer.style.fill = { ...layer.style.fill, color: '#00cc00' };
+// The spread evaluates every getter immediately, which executes dynamic
+// properties (functions, expressions) without a feature context and will
+// either crash or freeze their values.</code></pre>
+
 
     
 
