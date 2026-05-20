@@ -32,7 +32,7 @@ class PlanarView extends View {
         for (const key of Object.keys(PlanarViewInstances)) {
             const instance = PlanarViewInstances[key];
             try {
-                instance.view.dispose();
+                instance.view?.dispose();
             }
             catch (e) {
                 console.error('Error disposing PlanarView instance:', e);

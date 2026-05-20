@@ -42,13 +42,13 @@
     
     
         crs:
-            <span class="type">String</span>, 
+            <span class="type">string</span>, 
     
         viewerDiv:
             <span class="type">HTMLElement</span>, 
     
         options:
-            <span class="type">Object</span>
+            <span class="type">object</span>
     
 
 )
@@ -246,7 +246,7 @@ var customControls = itowns.THREE.OrbitControls(view.camera3D, viewerDiv);</code
 <div class="property">
     <h3>
         <span class="property-name">referenceCrs</span>
-        : <span class="type">String</span>
+        : <span class="type">string</span>
     </h3>
 
     
@@ -377,7 +377,7 @@ var customControls = itowns.THREE.OrbitControls(view.camera3D, viewerDiv);</code
     
     
         when:
-            <span class="type">String</span>, 
+            <span class="type">string</span>, 
     
         frameRequester:
             <span class="type">FrameRequester</span>
@@ -764,10 +764,10 @@ If the event is neither a <code>MouseEvent</code> nor a <code>TouchEvent</code>,
     
     
         when:
-            <span class="type">String</span>, 
+            <span class="type">string</span>, 
     
         dt:
-            <span class="type">Number</span>, 
+            <span class="type">number</span>, 
     
         updateLoopRestarted:
             <span class="type">boolean</span>, 
@@ -923,7 +923,7 @@ distance at. By default this is the middle of the screen.</p></span>
     
     
         layerId:
-            <span class="type">String</span>
+            <span class="type">string</span>
     
 
 )
@@ -1588,7 +1588,7 @@ specified, a new Coordinates instance will be created.</p></span>
     
     
         mouseOrEvt:
-            <span class="type">Object</span>, 
+            <span class="type">object</span>, 
     
         radius:
             <span class="type">number</span>, 
@@ -1600,7 +1600,7 @@ specified, a new Coordinates instance will be created.</p></span>
 )
         :
             
-                <span class="type">Object</span>
+                <span class="type">object</span>
 
             
         
@@ -1707,7 +1707,7 @@ view.pickFeaturesAt({ x, y }, 3, 'wfsBuilding', myLayer);</code></pre>
     
     
         mouseOrEvt:
-            <span class="type">Object</span>, 
+            <span class="type">object</span>, 
     
         radius:
             <span class="type">number</span>, 
@@ -1719,7 +1719,7 @@ view.pickFeaturesAt({ x, y }, 3, 'wfsBuilding', myLayer);</code></pre>
 )
         :
             
-                <span class="type">Array.&lt;Object></span>
+                <span class="type">Array.&lt;object></span>
 
             
         
@@ -2076,7 +2076,7 @@ view referenceCrs).</p></span>
     
     
         when:
-            <span class="type">String</span>, 
+            <span class="type">string</span>, 
     
         frameRequester:
             <span class="type">FrameRequester</span>
@@ -2372,90 +2372,6 @@ the viewer with. By default it is the <code>clientHeight</code> of the <code>vie
 
     
 
-    
-        <hr class="title-divider"/>
-        <h2>Events</h2>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">dblclick-right</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Fired on current view's domElement when double right-clicking it. Copies all properties of the second right-click
-MouseEvent (such as cursor position).</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>dblclick-right</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">layers-initialized</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Fires when all the layers of the view are considered initialized.
-Initialized in this context means: all layers are ready to be
-displayed (no pending network access, no visual improvement to be
-expected, ...).
-If you add new layers, the event will be fired again when all
-layers are ready.</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>layers-initialized</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            
-        
     
 
 

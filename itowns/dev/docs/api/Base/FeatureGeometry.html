@@ -105,7 +105,7 @@ composing the geometry.</p>
 <div class="property">
     <h3>
         <span class="property-name">indices</span>
-        : <span class="type">Array.&lt;Object></span>
+        : <span class="type">Array.&lt;object></span>
     </h3>
 
     
@@ -124,7 +124,7 @@ The offset is related to the overall number of vertices in the Feature.</p>
 <div class="property">
     <h3>
         <span class="property-name">properties</span>
-        : <span class="type">Object</span>
+        : <span class="type">object</span>
     </h3>
 
     
@@ -295,10 +295,13 @@ stored in indices, see constructor for more information.</p>
             <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>, 
     
         coordIn:
-            <span class="type">Object</span>, 
+            <span class="type">object</span>, 
     
         coordProj:
-            <span class="type">Coordinates</span>
+            <span class="type">Coordinates</span>, 
+    
+        args:
+            <span class="type">any</span>
     
 
 )
@@ -385,6 +388,14 @@ No geographical conversion is made or the normal doesn't stored.</p>
         
             &mdash; <span><p>An optional argument containing the geodesic coordinates in EPSG:4326
 It allows the user to get access to the feature coordinates to set style.base_altitude.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>args</code>
+        
         
 
         

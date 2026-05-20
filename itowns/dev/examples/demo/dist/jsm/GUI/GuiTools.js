@@ -1,5 +1,5 @@
 import * as itowns from 'itowns';
-// eslint-disable-next-line
+// eslint-disable-next-line import/no-unresolved
 import dat from 'dat';
 /**
  * Generated On: 2015-10-5
@@ -148,7 +148,6 @@ GuiTools.prototype.colorLayerFolder = function colorLayerFolder(nameLayer, value
 };
 // Recursive function that creates an HTML List from a javascript
 // object
-// eslint-disable-next-line no-unused-vars
 export function createHTMLListFromObject(jsObject) {
     const list = document.createElement('ul');
     // Change the padding (top: 0, right:0, bottom:0 and left:1.5)
@@ -165,7 +164,6 @@ export function createHTMLListFromObject(jsObject) {
         if (typeof jsObject[property] === 'object') {
             // if property value is an object, then recurse to
             // create a list from it
-            // eslint-disable-next-line no-unused-vars
             item.appendChild(createHTMLListFromObject(jsObject[property]));
         }
         else {

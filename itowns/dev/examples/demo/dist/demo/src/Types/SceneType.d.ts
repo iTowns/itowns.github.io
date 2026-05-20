@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import type LayerType from './LayerType';
 import type ViewType from './ViewType';
 import ItownsViewType from './ItownsViewType';
-type SceneType = {
+interface SceneType {
     title: string;
     description: string;
     placement: {
@@ -23,5 +23,5 @@ type SceneType = {
     onExit?: () => Promise<void>;
     getView: () => ViewType;
     getItownsView: () => ItownsViewType;
-};
+}
 export default SceneType;

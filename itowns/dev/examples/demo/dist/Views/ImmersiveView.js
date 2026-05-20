@@ -56,7 +56,7 @@ class ImmersiveView extends View {
       return;
     }
     try {
-      ImmersiveView._instance.view.dispose();
+      ImmersiveView._instance.view?.dispose();
     } catch (e) {
       console.error('Error disposing ImmersiveView instance:', e);
     }

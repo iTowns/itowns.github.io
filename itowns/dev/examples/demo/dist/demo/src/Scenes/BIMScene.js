@@ -62,11 +62,11 @@ export const BIMScene = {
     },
     onEnter: async () => {
         const itownsView = BIMScene.getItownsView();
-        itownsView.scene.add(...BIMScene.meshes);
+        itownsView.scene.add(...(BIMScene.meshes ?? []));
     },
     onExit: async () => {
         const itownsView = BIMScene.getItownsView();
-        itownsView.scene.remove(...BIMScene.meshes);
+        itownsView.scene.remove(...(BIMScene.meshes ?? []));
     },
 };
 //# sourceMappingURL=BIMScene.js.map

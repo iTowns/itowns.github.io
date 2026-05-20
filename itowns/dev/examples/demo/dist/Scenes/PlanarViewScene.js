@@ -41,7 +41,9 @@ export const PlanarViewScene = {
   },
   onEnter: async () => {
     const itownsView = PlanarViewScene.getItownsView();
-    itownsView.camera3D.position.copy(PlanarViewScene.cameraPlacement);
+    if (PlanarViewScene.cameraPlacement) {
+      itownsView.camera3D.position.copy(PlanarViewScene.cameraPlacement);
+    }
     itownsView.camera3D.updateMatrixWorld(true);
     itownsView.notifyChange(itownsView.camera3D);
   }

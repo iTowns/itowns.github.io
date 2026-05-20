@@ -363,7 +363,7 @@ operator introduces while operating a heavy physical camera). Default is true.</
 <div class="property">
     <h3>
         <span class="property-name">stateControl</span>
-        : <span class="type">StateControl~State</span>
+        : <span class="type">StateControl.State</span>
     </h3>
 
     
@@ -889,7 +889,7 @@ the ground.</p></span>
     
     
         params:
-            <span class="type">CameraUtils~CameraTransformOptions|Extent</span>, 
+            <span class="type">CameraTransformOptions|Extent</span>, 
     
         isAnimated:
             <span class="type">boolean</span>
@@ -1136,10 +1136,7 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
     
     
         windowCoords:
-            <span class="type">Vector2</span>, 
-    
-        y:
-            <span class="type">number</span>
+            <span class="type">Vector2</span>
     
 
 )
@@ -1176,16 +1173,6 @@ The view flies to the desired coordinate, i.e.is not teleported instantly. Note 
         
         
             &mdash; <span><p>window coordinates</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>y</code>
-        (optional)
-        
-            &mdash; <span><p>The y-position inside the Globe element.</p></span>
         
 
         
@@ -1788,316 +1775,6 @@ The zoom is always in the [getMinZoom(), getMaxZoom()] range.</p>
 
     
 
-    
-        <hr class="title-divider"/>
-        <h2>Events</h2>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">camera-target-changed</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Globe control camera's target event. Fires when camera's target change</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>new: <span class="type">object</span></code>
-        
-        
-
-        
-    </li>
-    
-    <li>
-        <code>new: <span class="type">Coordinates</span></code>
-        
-        
-            &mdash; <span><p>the new camera's target coordinates</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>previous: <span class="type">Coordinates</span></code>
-        
-        
-            &mdash; <span><p>the previous camera's target coordinates</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>target: <span class="type"><a onclick="window.parent.goTo('api/Controls/GlobeControls.html','api/Controls/GlobeControls')" title="GlobeControls">GlobeControls</a></span></code>
-        
-        
-            &mdash; <span><p>dispatched on controls</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>camera-target-changed</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">orientation-changed</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Globe control orientation event. Fires when camera's orientation change</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>new: <span class="type">object</span></code>
-        
-        
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>new.tilt: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the new value of the tilt of the camera</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>new.heading: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the new value of the heading of the camera</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-        
-    </li>
-    
-    <li>
-        <code>previous: <span class="type">object</span></code>
-        
-        
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>previous.tilt: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the previous value of the tilt of the camera</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>previous.heading: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the previous value of the heading of the camera</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-        
-    </li>
-    
-    <li>
-        <code>target: <span class="type"><a onclick="window.parent.goTo('api/Controls/GlobeControls.html','api/Controls/GlobeControls')" title="GlobeControls">GlobeControls</a></span></code>
-        
-        
-            &mdash; <span><p>dispatched on controls</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>orientation-changed</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">pan-changed</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Globe control pan event. Fires after camera pan</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>target: <span class="type"><a onclick="window.parent.goTo('api/Controls/GlobeControls.html','api/Controls/GlobeControls')" title="GlobeControls">GlobeControls</a></span></code>
-        
-        
-            &mdash; <span><p>dispatched on controls</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>orientation-changed</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">range-changed</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Globe control range event. Fires when camera's range to target change</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>new: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the new value of the range</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>previous: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the previous value of the range</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>target: <span class="type"><a onclick="window.parent.goTo('api/Controls/GlobeControls.html','api/Controls/GlobeControls')" title="GlobeControls">GlobeControls</a></span></code>
-        
-        
-            &mdash; <span><p>dispatched on controls</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>range-changed</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            
-        
     
 
 

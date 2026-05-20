@@ -1,12 +1,12 @@
 import * as itowns from 'itowns';
 import * as THREE from 'three';
 import type LayerType from './LayerType';
-type LayerPromiseTypeBase = {
+interface LayerPromiseTypeBase {
     id: string;
     layerPromise: Promise<LayerType> | undefined;
     cachedLayer: LayerType | undefined;
     getPickingInfo?: (feature: unknown) => Record<string, string> | null;
-};
+}
 export type LayerPromiseTypeNoParams = LayerPromiseTypeBase & {
     getLayer: () => Promise<LayerType>;
 };

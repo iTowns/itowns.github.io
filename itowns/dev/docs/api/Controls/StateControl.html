@@ -310,13 +310,13 @@ not. Default is true.</p>
     
     
         mouseButton:
-            <span class="type">Number</span>, 
+            <span class="type">number</span>, 
     
         keyboard:
-            <span class="type">Number</span>, 
+            <span class="type">number</span>, 
     
         double:
-            <span class="type">Boolean</span>
+            <span class="type">boolean</span>
     
 
 )
@@ -401,7 +401,7 @@ single event which triggers movement, without the move of the mouse for instance
     
     
         options:
-            <span class="type">Object</span>
+            <span class="type">object</span>
     
 
 )
@@ -479,7 +479,7 @@ view.controls.states.setFromOptions({
     
     
         finger:
-            <span class="type">Number</span>
+            <span class="type">number</span>
     
 
 )
@@ -536,84 +536,6 @@ view.controls.states.setFromOptions({
 
     
 
-    
-        <hr class="title-divider"/>
-        <h2>Types</h2>
-        
-            
-
-<div class="typedef">
-    <h3>
-        <span class="typedef-name">State</span>
-        : <span class="type">Object</span>
-    </h3>
-
-    
-    
-
-<ul class="params">
-    
-    <li>
-        <code>enable: <span class="type">boolean</span></code>
-        (default: <code>true</code>)
-        
-        
-            &mdash; <span><p>Indicate whether the state is enabled or not.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>mouseButton: <span class="type">Number</span></code>
-        (optional)
-        
-            &mdash; <span><p>The mouse button bound to this state.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>keyboard: <span class="type">Number</span></code>
-        (optional)
-        
-            &mdash; <span><p>The keyCode of the keyboard input bound to this state.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>finger: <span class="type">Number</span></code>
-        (optional)
-        
-            &mdash; <span><p>The number of fingers on the pad bound to this state.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>double: <span class="type">boolean</span></code>
-        (optional)
-        
-            &mdash; <span><p>True if the mouse button bound to this state must be pressed twice. For
-example, if <code>double</code> is set to true with a <code>mouseButton</code> set to left click,
-the State will be bound to a double click mouse button.</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-
-    
-</div>
-
-            
-        
     
 
     

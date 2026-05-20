@@ -40,7 +40,8 @@ const cameraWorldToCoordinates = (view, targetCrs) => {
 /**
  * Moves the camera of a view to a given placement over a specified duration.
  * @param view - current view whose camera will be moved
- * @param placement - @see SceneType.placement - tilt and heading are optional
+ * @param placement - See {@link SceneType.placement} - tilt and heading are
+ * optional
  * @param duration - duration of the animation in ms
  * @returns Promise<any>
  */

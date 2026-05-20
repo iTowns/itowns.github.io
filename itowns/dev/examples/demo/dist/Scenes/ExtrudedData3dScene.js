@@ -17,9 +17,10 @@ export const ExtrudedData3dScene = {
   event: function update(/* dt */
   ) {
     const itownsView = ExtrudedData3dScene.getItownsView();
-    if (ExtrudedData3dScene.meshes.length) {
-      for (let i = 0; i < ExtrudedData3dScene.meshes.length; i++) {
-        const mesh = ExtrudedData3dScene.meshes[i];
+    const meshes = ExtrudedData3dScene.meshes ?? [];
+    if (meshes.length) {
+      for (let i = 0; i < meshes.length; i++) {
+        const mesh = meshes[i];
         if (mesh && mesh.scale.z < 1) {
           mesh.scale.z = Math.min(1.0, mesh.scale.z + 0.005);
           mesh.updateMatrixWorld(true);
@@ -46,7 +47,7 @@ export const ExtrudedData3dScene = {
       for (let i = 0; i < mesh.children.length; i++) {
         const c = mesh.children[i];
         c.scale.z = 0.01;
-        ExtrudedData3dScene.meshes.push(c);
+        ExtrudedData3dScene.meshes?.push(c);
       }
     }
     ExtrudedData3dScene.layers.push(await Layers.OrthoFetcherLayer.getLayer());
@@ -60,14 +61,14 @@ export const ExtrudedData3dScene = {
   },
   onEnter: async () => {
     const itownsView = ExtrudedData3dScene.getItownsView();
-    for (const mesh of ExtrudedData3dScene.meshes) {
+    for (const mesh of ExtrudedData3dScene.meshes ?? []) {
       itownsView.scene.add(mesh);
     }
     itownsView.addFrameRequester(itowns.MAIN_LOOP_EVENTS.BEFORE_RENDER, ExtrudedData3dScene.event);
   },
   onExit: async () => {
     const itownsView = ExtrudedData3dScene.getItownsView();
-    for (const mesh of ExtrudedData3dScene.meshes) {
+    for (const mesh of ExtrudedData3dScene.meshes ?? []) {
       itownsView.scene.remove(mesh);
     }
     itownsView.removeFrameRequester(itowns.MAIN_LOOP_EVENTS.BEFORE_RENDER, ExtrudedData3dScene.event);

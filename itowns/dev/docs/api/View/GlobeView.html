@@ -258,7 +258,7 @@ var view = new itowns.GlobeView(viewerDiv, placement);</code></pre>
     
     
         when:
-            <span class="type">String</span>, 
+            <span class="type">string</span>, 
     
         frameRequester:
             <span class="type">FrameRequester</span>
@@ -634,10 +634,10 @@ If the event is neither a <code>MouseEvent</code> nor a <code>TouchEvent</code>,
     
     
         when:
-            <span class="type">String</span>, 
+            <span class="type">string</span>, 
     
         dt:
-            <span class="type">Number</span>, 
+            <span class="type">number</span>, 
     
         updateLoopRestarted:
             <span class="type">boolean</span>, 
@@ -793,7 +793,7 @@ distance at. By default this is the middle of the screen.</p></span>
     
     
         layerId:
-            <span class="type">String</span>
+            <span class="type">string</span>
     
 
 )
@@ -1458,7 +1458,7 @@ specified, a new Coordinates instance will be created.</p></span>
     
     
         mouseOrEvt:
-            <span class="type">Object</span>, 
+            <span class="type">object</span>, 
     
         radius:
             <span class="type">number</span>, 
@@ -1470,7 +1470,7 @@ specified, a new Coordinates instance will be created.</p></span>
 )
         :
             
-                <span class="type">Object</span>
+                <span class="type">object</span>
 
             
         
@@ -1577,7 +1577,7 @@ view.pickFeaturesAt({ x, y }, 3, 'wfsBuilding', myLayer);</code></pre>
     
     
         mouseOrEvt:
-            <span class="type">Object</span>, 
+            <span class="type">object</span>, 
     
         radius:
             <span class="type">number</span>, 
@@ -1589,7 +1589,7 @@ view.pickFeaturesAt({ x, y }, 3, 'wfsBuilding', myLayer);</code></pre>
 )
         :
             
-                <span class="type">Array.&lt;Object></span>
+                <span class="type">Array.&lt;object></span>
 
             
         
@@ -1946,7 +1946,7 @@ view referenceCrs).</p></span>
     
     
         when:
-            <span class="type">String</span>, 
+            <span class="type">string</span>, 
     
         frameRequester:
             <span class="type">FrameRequester</span>
@@ -2250,44 +2250,6 @@ the viewer with. By default it is the <code>clientHeight</code> of the <code>vie
 
 <div class="event">
     <h3>
-        <span class="event-name">dblclick-right</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Fired on current view's domElement when double right-clicking it. Copies all properties of the second right-click
-MouseEvent (such as cursor position).</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>dblclick-right</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="event">
-    <h3>
         <span class="event-name">initialized</span>
     </h3>
 
@@ -2305,10 +2267,10 @@ MouseEvent (such as cursor position).</p>
 <ul class="params">
     
     <li>
-        <code>target: <span class="type">view</span></code>
+        <code>target: <span class="type"><a onclick="window.parent.goTo('api/View/View.html','api/View/View')" title="View">View</a></span></code>
         
         
-            &mdash; <span><p>dispatched on view</p></span>
+            &mdash; <span><p>the view that dispatched the event</p></span>
         
 
         
@@ -2319,329 +2281,6 @@ MouseEvent (such as cursor position).</p>
         
         
             &mdash; <span><p>initialized</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">layer-added</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Fires when a layer is added</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>layerId: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>the id of the layer</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>target: <span class="type">view</span></code>
-        
-        
-            &mdash; <span><p>dispatched on view</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>layers-added</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">layer-removed</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Fires when a layer is removed</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>layerId: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>the id of the layer</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>target: <span class="type">view</span></code>
-        
-        
-            &mdash; <span><p>dispatched on view</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>layers-added</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">layers-initialized</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Fires when all the layers of the view are considered initialized.
-Initialized in this context means: all layers are ready to be
-displayed (no pending network access, no visual improvement to be
-expected, ...).
-If you add new layers, the event will be fired again when all
-layers are ready.</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>layers-initialized</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-</div>
-
-            <hr/>
-        
-            
-
-<div class="event">
-    <h3>
-        <span class="event-name">layers-order-changed</span>
-    </h3>
-
-    
-        <div class="description">
-            <p>Fires when the layers oder has changed</p>
-        </div>
-    
-
-    
-        <h4>Properties</h4>
-        
-        
-
-<ul class="params">
-    
-    <li>
-        <code>new: <span class="type">object</span></code>
-        
-        
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>new.sequence: <span class="type">array</span></code>
-        
-        
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>new.sequence.0: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the new layer at position 0</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>new.sequence.1: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the new layer at position 1</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>new.sequence.2: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the new layer at position 2</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-        
-    </li>
-    
-</ul>
-
-        
-    </li>
-    
-    <li>
-        <code>previous: <span class="type">object</span></code>
-        
-        
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>previous.sequence: <span class="type">array</span></code>
-        
-        
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>previous.sequence.0: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the previous layer at position 0</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>previous.sequence.1: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the previous layer at position 1</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>previous.sequence.2: <span class="type">number</span></code>
-        
-        
-            &mdash; <span><p>the previous layer at position 2</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-        
-    </li>
-    
-</ul>
-
-        
-    </li>
-    
-    <li>
-        <code>target: <span class="type">view</span></code>
-        
-        
-            &mdash; <span><p>dispatched on view</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>type: <span class="type">string</span></code>
-        
-        
-            &mdash; <span><p>layers-order-changed</p></span>
         
 
         
