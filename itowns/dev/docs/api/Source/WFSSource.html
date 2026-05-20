@@ -321,14 +321,14 @@ set in the constructor parameters.</p>
 
 <div class="method">
     <h3>
-        <span class="method-name">extentInsideLimit</span>
+        <span class="method-name">hasData</span>
         (
 
 
     
     
-        extent:
-            <span class="type">Extent</span>
+        extentOrTile:
+            <span class="type">Extent|Tile</span>
     
 
 )
@@ -343,7 +343,10 @@ set in the constructor parameters.</p>
     
         
             <div class="description">
-                <p>Tests if an extent is inside the source limits.</p>
+                <p>Determines whether this source has data intersecting the given extent.</p>
+<p>If the source has no defined extent, it is assumed to cover all areas and
+this method always returns <code>true</code>. Otherwise, the source's extent is
+tested for intersection with the provided extent.</p>
             </div>
         
     
@@ -351,7 +354,8 @@ set in the constructor parameters.</p>
     
                 <h4>Returns</h4>
                 
-                    <p>True if the extent is inside the limit, false otherwise.</p>
+                    <p><code>true</code> if the source has data for the
+given extent, <code>false</code> otherwise.</p>
                 
 
     
@@ -361,10 +365,10 @@ set in the constructor parameters.</p>
 <ul class="params">
     
     <li>
-        <code>extent</code>
+        <code>extentOrTile</code>
         
         
-            &mdash; <span><p>Extent to test.</p></span>
+            &mdash; <span><p>The extent or tile to test against.</p></span>
         
 
         

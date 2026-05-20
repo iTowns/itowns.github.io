@@ -195,6 +195,17 @@ If false, it will be impossible to enable it later on.</p></span>
         
     </li>
     
+    <li>
+        <code>options.shadows</code>
+        (optional)
+        
+            &mdash; <span><p>Enable shadow map rendering. Can be toggled
+later via <code>this.shadows</code>.</p></span>
+        
+
+        
+    </li>
+    
 </ul>
 
         
@@ -1008,7 +1019,7 @@ projected distance at. By default, this is the middle of the screen.</p></span>
     
     
         mouse:
-            <span class="type">THREE.Vector2</span>, 
+            <span class="type">THREE.Vector2|null</span>, 
     
         target:
             <span class="type">THREE.Vector3</span>
