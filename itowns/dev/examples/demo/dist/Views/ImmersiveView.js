@@ -1,6 +1,5 @@
 import * as itowns from 'itowns';
 import View from "./View.js";
-// eslint-disable-next-line import/no-relative-packages
 import setupLoadingScreen from "../../../jsm/GUI/LoadingScreen.js";
 class ImmersiveView extends View {
   constructor() {

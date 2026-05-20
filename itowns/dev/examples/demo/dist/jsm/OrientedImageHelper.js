@@ -26,7 +26,6 @@ function transformTexturedPlane(camera, distance, plane) {
     plane.position.set(0, 0, -distance);
     plane.updateMatrixWorld();
 }
-// eslint-disable-next-line no-unused-vars
 function initCamera(view, image, coord, EnhToOrientationUp, EnhToOrientationLookAt, rotMatrix, orientationToCameraUp, orientationToCameraLookAt, distance, size, focale) {
     const fov = THREE.MathUtils.radToDeg((2 * Math.atan((size[1] / 2) / focale)));
     const coordView = coord.as(view.referenceCrs);

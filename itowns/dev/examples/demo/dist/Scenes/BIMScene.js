@@ -1,6 +1,5 @@
 import * as itowns from 'itowns';
 import * as THREE from 'three';
-// eslint-disable-next-line import/no-unresolved
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import * as Layers from "../Layers/index.js";
 import { View3D } from "../Views/index.js";

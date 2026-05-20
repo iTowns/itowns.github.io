@@ -1,7 +1,6 @@
 import * as itowns from 'itowns';
 import { Config } from "../Config/index.js";
 import View from "./View.js";
-// eslint-disable-next-line import/no-relative-packages
 import setupLoadingScreen from "../../../jsm/GUI/LoadingScreen.js";
 class View3D extends View {
   constructor() {
