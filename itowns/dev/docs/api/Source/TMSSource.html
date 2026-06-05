@@ -97,7 +97,7 @@ TMSSource and <a onclick="window.parent.goTo('api/Source/Source.html','api/Sourc
     <pre class="prettyprint source lang-js"><code>// Create the source
 const tmsSource = new itowns.TMSSource({
     format: 'image/png',
-    url: 'http://osm.io/styles/${z}/${x}/${y}.png',
+    url: 'http://osm.io/styles/{z}/{x}/{y}.png',
     attribution: {
         name: 'OpenStreetMap',
         url: 'http://www.openstreetmap.org/',
@@ -120,7 +120,7 @@ view.addLayer(colorLayer);</code></pre>
 
     <pre class="prettyprint source lang-js"><code>// Create the source
 const orthoSource = new itowns.TMSSource({
-    url: 'https://api.mapbox.com/v4/mapbox.satellite/${z}/${x}/${y}.jpg?access_token=' + accessToken,
+    url: 'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.jpg?access_token=' + accessToken,
     crs: 'EPSG:3857',
 };
 

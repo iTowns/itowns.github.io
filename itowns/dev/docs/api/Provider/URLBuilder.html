@@ -30,7 +30,7 @@ in it by coordinates or other things.</p>
 <p>In an url, it is also possible to specify subdomains alternatives using the
 <code>${u:a|b|c}</code> pattern, by separating differents options using <code>|</code>. It will go
 through the following alternative each time (no random). For example
-<code>https://${u:xyz.org|yzx.org|zxy.org}/${z}/${x}/${y}.png</code></p></div>
+<code>https://${u:xyz.org|yzx.org|zxy.org}/{z}/{x}/{y}.png</code></p></div>
     
 
     
@@ -257,9 +257,9 @@ url = URLBuilder.bbox(extent, source);
 The source object needs to have an url property, which should have some
 specific strings that will be replaced by coordinates.</p>
 <ul>
-<li>`${x}` or `%COL` will be replaced by `coords.col`</li>
-<li>`${y}` or `%ROW` will be replaced by `coords.row`</li>
-<li>`${z}` or `%TILEMATRIX` will be replaced by `coords.zoom`</li>
+<li>`{x}` or `%COL` will be replaced by `coords.col`</li>
+<li>`{y}` or `%ROW` will be replaced by `coords.row`</li>
+<li>`{z}` or `%TILEMATRIX` will be replaced by `coords.zoom`</li>
 </ul>
             </div>
         
@@ -377,7 +377,7 @@ url = URLBuilder.xyz(coords, source);
     
 
     <pre class="prettyprint source lang-js"><code>coords = new Extent('TMS', 15, 2142, 3412);
-source.url = 'http://server.geo/tms/${z}/${y}/${x}.jpg';
+source.url = 'http://server.geo/tms/{z}/{y}/{x}.jpg';
 url = URLBuilder.xyz(coords, source);
 
 // The resulting url is:
