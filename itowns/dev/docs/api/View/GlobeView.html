@@ -161,23 +161,34 @@ enable WebXR to switch on VR visualization.</p></span>
     
     <li>
         <code>options.farFactor</code>
-        (default: <code>20</code>)
+        (default: <code>0.3</code>)
         
         
-            &mdash; <span><p>Controls how far the camera can see.
-The maximum view distance is this factor times the camera's altitude (above sea level).</p></span>
+            &mdash; <span><p>Controls the far plane distance at low altitudes.
+Value between 0 and 1. Lower values reduce far distance near the ground. At higher altitudes,
+far distance transitions to full horizon distance.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>options.fogSpread</code>
-        (default: <code>0.5</code>)
+        <code>options.maxFarAltitude</code>
+        (default: <code>80000</code>)
         
         
-            &mdash; <span><p>Proportion of the visible depth range that contains fog.
-Between 0 and 1.</p></span>
+            &mdash; <span><p>the altitude at which the horizon is fully visible (meters).</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>options.minFarDistance</code>
+        (default: <code>10000</code>)
+        
+        
+            &mdash; <span><p>the minimum horizon distance (meters).</p></span>
         
 
         
@@ -379,6 +390,47 @@ If you want add a unattached layer use <code>View#addLayer</code> parent method.
     </li>
     
 </ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">computeHorizonScaleFactor</span>
+        (
+
+
+)
+        :
+            
+                <span class="type">number</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>This factor scales down the visible horizon at low altitudes based on farFactor and maxFarAltitude.
+farFactor sets its minimum at sea level and maxFarAltitude the altitude at which the horizon is fully visible.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>Scale factor between farFactor and 1</p>
+                
 
     
 
