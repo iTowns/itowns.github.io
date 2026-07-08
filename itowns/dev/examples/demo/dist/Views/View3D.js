@@ -21,8 +21,8 @@ class View3D extends View {
     });
     const view = this.view;
     this.atmosphereFrameRequester = () => {
-      if (view.skyManager) {
-        view.skyManager.enabled = view.getDistanceFromCamera() > Config.ATMOSPHERE_THRESHOLD;
+      if (view.skyController) {
+        view.realisticLighting = view.getDistanceFromCamera() > Config.ATMOSPHERE_THRESHOLD;
       }
     };
     this.view.addFrameRequester(itowns.MAIN_LOOP_EVENTS.BEFORE_RENDER, this.atmosphereFrameRequester);

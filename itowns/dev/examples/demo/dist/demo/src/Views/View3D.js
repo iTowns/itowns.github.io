@@ -23,8 +23,8 @@ class View3D extends View {
         });
         const view = this.view;
         this.atmosphereFrameRequester = () => {
-            if (view.skyManager) {
-                view.skyManager.enabled =
+            if (view.skyController) {
+                view.realisticLighting =
                     view.getDistanceFromCamera() > Config.ATMOSPHERE_THRESHOLD;
             }
         };

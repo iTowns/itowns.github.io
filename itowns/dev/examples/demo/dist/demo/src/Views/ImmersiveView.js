@@ -41,9 +41,7 @@ class ImmersiveView extends View {
         // @ts-expect-error camera3D updateProjectionMatrix method undefined
         this.view.camera3D.updateProjectionMatrix();
         const view = this.view;
-        if (view.skyManager && view.skyManager.enabled) {
-            view.skyManager.enabled = false;
-        }
+        view.realisticLighting = false;
         setupLoadingScreen(this.viewerDiv, view);
         this.setVisible(false);
         ImmersiveView._instance = this;
