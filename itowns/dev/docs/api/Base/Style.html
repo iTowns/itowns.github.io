@@ -315,6 +315,26 @@ If defined, polygons will be extruded by the specified amount.</p>
 
 <div class="property">
     <h3>
+        <span class="property-name">fill.levelled_roofs</span>
+        : <span class="type">boolean</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Only for <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a> with extrusion.
+When true, all roof vertices are placed at a uniform height equal to the polygon's minimum
+base altitude plus the extrusion height, producing flat-topped extrusions even over uneven
+terrain. Cannot be set to a function.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
         <span class="property-name">stroke</span>
         : <span class="type">object</span>
     </h3>
