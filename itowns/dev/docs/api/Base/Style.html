@@ -391,6 +391,24 @@ For a <code>GeometryLayer</code>, this opacity property isn't used.</p>
 
 <div class="property">
     <h3>
+        <span class="property-name">stroke.line_cap</span>
+        : <span class="type">string|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The shape used at the ends of lines.
+For extruded <code>GeometryLayer</code> lines, setting it to <code>round</code> adds half-sphere caps.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
         <span class="property-name">stroke.width</span>
         : <span class="type">number|function</span>
     </h3>
@@ -418,6 +436,24 @@ For a <code>GeometryLayer</code>, this opacity property isn't used.</p>
 for each coordinate.
 If <code>base_altitude</code> is <code>undefined</code>, the original altitude is kept, and if it doesn't exist
 then the altitude value is set to 0.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">stroke.extrusion_radius</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>Only for <a onclick="window.parent.goTo('api/Layer/GeometryLayer.html','api/Layer/GeometryLayer')" title="GeometryLayer">GeometryLayer</a> and if user sets it.
+If defined, lines will be extruded as cylinders with the specified amount as a radius.</p>
         </div>
     
 </div>
