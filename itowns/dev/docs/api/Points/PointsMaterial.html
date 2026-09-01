@@ -150,7 +150,9 @@
         (default: <code>PNTS_SIZE_MODE.VALUE</code>)
         
         
-            &mdash; <span><p>point cloud size mode. Only 'VALUE' or 'ATTENUATED' are possible. VALUE use constant size, ATTENUATED compute size depending on distance from point to camera.</p></span>
+            &mdash; <span><p>point cloud size mode. Only 'VALUE' or 'ATTENUATED' or 'ADAPTIVE' are possible.
+VALUE use constant size, ATTENUATED compute size depending on distance from point to camera and ADAPTIVE computes the point size on a per-point basis rather than on a per-node basis.
+<strong>Warning:</strong> ADAPTIVE work only if point cloud is an octree</p></span>
         
 
         

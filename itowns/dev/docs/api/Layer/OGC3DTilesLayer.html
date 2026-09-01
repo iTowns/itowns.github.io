@@ -144,8 +144,9 @@ CLASSIFICATION uses a classification property of the batch table to color points
         
         
             &mdash; <span><p><a onclick="window.parent.goTo('api/Points/PointsMaterial.html','api/Points/PointsMaterial')" title="PointsMaterial">PointsMaterial</a> Point cloud size mode (passed to <a onclick="window.parent.goTo('api/Points/PointsMaterial.html','api/Points/PointsMaterial')" title="PointsMaterial">PointsMaterial</a>).
-Only 'VALUE' or 'ATTENUATED' are possible. VALUE use constant size, ATTENUATED compute size depending on distance
-from point to camera.</p></span>
+Only 'VALUE' or 'ATTENUATED' or 'ADAPTIVE' are possible. VALUE use constant size, ATTENUATED compute size depending on distance
+from point to camera and ADAPTIVE computes the point size on a per-point basis rather than on a per-node basis.
+<strong>Warning:</strong> ADAPTIVE work only if point cloud is an octree</p></span>
         
 
         
