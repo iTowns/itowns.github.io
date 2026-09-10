@@ -595,13 +595,117 @@ then the altitude value is set to 0.</p>
 
 <div class="property">
     <h3>
-        <span class="property-name">point.model</span>
+        <span class="property-name">model</span>
         : <span class="type">object</span>
     </h3>
 
     
         <div class="description">
-            <p>3D model to instantiate at each point position</p>
+            <p>To instanciate a unique 3D model at different point positions</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">model.object</span>
+        : <span class="type">THREE.Object3D</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The 3D model object to instantiate at each position</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">model.size</span>
+        : <span class="type">object|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The wanted size of the instanced model in local dimension.
+Should be (or returning) an object containing 3 properties: x, y and z.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">model.heading</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The heading (or azimuth) to orient the model in degree.</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">model.scale</span>
+        : <span class="type">number|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The value to scale the model. (default value is 1).</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">model.up</span>
+        : <span class="type">THREE.Vector3|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The vector pointing up. (default value is Vector3(0, 0, 1)).</p>
+        </div>
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="property">
+    <h3>
+        <span class="property-name">model.front</span>
+        : <span class="type">THREE.Vector3|function</span>
+    </h3>
+
+    
+        <div class="description">
+            <p>The vector pointing toward the front of the model. It
+should be orthogonal to the 'up' vector. (default value is Vector3(0, 1, 0)).</p>
         </div>
     
 </div>
