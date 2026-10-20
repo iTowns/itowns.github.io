@@ -103,17 +103,7 @@ header of the file is contained in <code>userData</code>.</p>
     
     <li>
         <code>options</code>
-        (optional)
         
-
-        
-            
-
-<ul class="params">
-    
-    <li>
-        <code>options.in</code>
-        (optional)
         
             &mdash; <span><p>Options to give to the parser.</p></span>
         
@@ -124,22 +114,42 @@ header of the file is contained in <code>userData</code>.</p>
 <ul class="params">
     
     <li>
-        <code>options.in.crs</code>
+        <code>options.in</code>
         
         
-            &mdash; <span><p>Crs of the source.</p></span>
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.in.source</code>
+        
+        
+            &mdash; <span><p>source information</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>options.in.source.crs</code>
+        
+        
+            &mdash; <span><p>crs of the source</p></span>
         
 
         
     </li>
     
     <li>
-        <code>options.in.colorDepth</code>
+        <code>options.in.source.colorDepth</code>
         (optional)
         
-            &mdash; <span><p>Color depth (in bits).
-Defaults to 8 bits for LAS 1.2 and 16 bits for later versions
-(as mandatory by the specification)</p></span>
+            &mdash; <span><p>Color depth (in bits).</p></span>
         
 
         
@@ -151,33 +161,28 @@ Defaults to 8 bits for LAS 1.2 and 16 bits for later versions
     </li>
     
     <li>
-        <code>options.out.crs</code>
+        <code>options.in.clampOBB</code>
         
         
-            &mdash; <span><p>Crs of the view.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>options.out.origin</code>
-        
-        
-            &mdash; <span><p>The coordinate of the local origin
-in the world referentiel.</p></span>
+            &mdash; <span><p>OBB of the data.</p></span>
         
 
         
     </li>
     
     <li>
-        <code>options.out.rotation</code>
+        <code>options.in.crs</code>
         
         
-            &mdash; <span><p>Rotation to go from the local referetiel
-to a geocentrique one (in appliable).</p></span>
+            &mdash; <span><p>Crs of the view.
+Defaults to 8 bits for LAS 1.2 and 16 bits for later versions
+(as mandatory by the specification)</p></span>
         
+
+        
+    </li>
+    
+</ul>
 
         
     </li>
