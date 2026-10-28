@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>CogSource - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        CogSource
+        
+    </h1>
+
+    
+        <div class="description"><p>A source for <a href="https://cogeo.org/">Cloud Optimized Geotiff</a> (COG) data.</p>
+<p>Such data consists of a <a href="https://www.ogc.org/fr/standards/geotiff/">GeoTIFF</a>
+file that stores a georeferenced image and downsampled versions of this
+image. The original image is always the first image in the COG file. The
+downsampled versions are called &quot;overviews&quot;. They share the same position and
+geographic extent with the original image. Their resolution (in distance per
+pixel) however is higher.</p>
+<p>A freshly created CogSource fetches and parses the header and metadata for
+each image (original and overviews) from the file into an array of nodes.
+Each of these nodes contains information about an image (origin,
+resolution...) and an accessor to get the actual image data. This array is
+what CogSource's parser later uses to create textures that contain the COG
+file data.</p>
+<p>At the moment, iTowns only displays data either as single band or RGBA
+textures. Therefore, a COG image with a number of samples other than 1, 2 or
+3 won't be displayed.</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">CogSource</span>
+        (
+
+
+    
+    
+        config:
+            <span class="type">CogSourceConfig</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>config</code>
+        
+        
+            &mdash; <span><p>Source configuration.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/packages/Main/src/Source/CogSource.ts">
+            packages/Main/src/Source/CogSource.ts
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

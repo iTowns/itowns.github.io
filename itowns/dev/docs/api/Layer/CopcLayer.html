@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>CopcLayer - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        CopcLayer
+        
+    </h1>
+
+    
+        <div class="description"><p>A layer for <a href="https://copc.io">Cloud Optimised Point Cloud</a> (COPC) datasets.
+See <a onclick="window.parent.goTo('api/Layer/PointCloudLayer.html','api/Layer/PointCloudLayer')" title="PointCloudLayer">PointCloudLayer</a> class for documentation on base properties.</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">CopcLayer</span>
+        (
+
+
+    
+    
+        id:
+            <span class="type">string</span>, 
+    
+        config:
+            <span class="type">CopcLayerParameters</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>id</code>
+        
+        
+            &mdash; <span><p>Unique id of the layer.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>config</code>
+        
+        
+            &mdash; <span><p>See <a onclick="window.parent.goTo('api/Layer/PointCloudLayer.html','api/Layer/PointCloudLayer')" title="PointCloudLayer">PointCloudLayer</a> for base pointcloud options.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Example</h2>
+        
+
+
+    
+
+    <pre class="prettyprint source lang-js"><code>// Create a new COPC layer
+const copcSource = new CopcSource({
+    url: 'https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz',
+    crs: 'EPSG:4978',
+    colorDepth: 16, // bit-depth of 'color' attribute (either 8 or 16 bits)
+});
+
+const copcLayer = new CopcLayer('COPC', {
+    source: copcSource,
+});
+
+View.prototype.addLayer.call(view, copcLayer);</code></pre>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/packages/Main/src/Layer/CopcLayer.ts">
+            packages/Main/src/Layer/CopcLayer.ts
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>

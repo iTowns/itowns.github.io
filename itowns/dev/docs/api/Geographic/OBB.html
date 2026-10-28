@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>OBB - iTowns documentation</title>
+
+    <script src="../../scripts/prettify/prettify.js"> </script>
+    <script src="../../scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../../styles/itowns.css">
+</head>
+
+<body>
+
+
+
+<section>
+
+<article>
+
+    <h1>
+        OBB
+        
+    </h1>
+
+    
+        <div class="description"><p>Represents an oriented bounding box.</p></div>
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Constructor</h2>
+        
+
+<div class="method">
+    <h3>
+        <span class="method-name">OBB</span>
+        (
+
+
+    
+    
+        min:
+            <span class="type">THREE.Vector3</span>, 
+    
+        max:
+            <span class="type">THREE.Vector3</span>
+    
+
+)
+        
+    </h3>
+
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>min</code>
+        (optional)
+        
+            &mdash; <span><p>(optional) A THREE.Vector3 representing the lower
+(x, y, z) boundary of the box.
+Default is ( + Infinity, + Infinity, + Infinity ).</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>max</code>
+        (optional)
+        
+            &mdash; <span><p>(optional) A THREE.Vector3 representing the upper
+(x, y, z) boundary of the box.
+Default is ( - Infinity, - Infinity, - Infinity ).</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+</div>
+
+    
+
+    
+
+    
+
+    
+        <hr class="title-divider"/>
+        <h2>Methods</h2>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">clampZ</span>
+        (
+
+
+    
+    
+        zmin:
+            <span class="type">number</span>, 
+    
+        zmax:
+            <span class="type">number</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Clamped the OBB on the z axes of the OBB.box3D.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>zmin</code>
+        
+        
+            &mdash; <span><p>The min z value for clamping.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>zmax</code>
+        
+        
+            &mdash; <span><p>the max z value for clamping.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">copy</span>
+        (
+
+
+    
+    
+        cOBB:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/OBB.html','api/Geographic/OBB')" title="OBB">OBB</a></span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Copies the property from cOBB to this OBB.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>cOBB</code>
+        
+        
+            &mdash; <span><p>OBB to copy</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">isSphereAboveXYBox</span>
+        (
+
+
+    
+    
+        sphere:
+            <span class="type">THREE.Sphere</span>
+    
+
+)
+        :
+            
+                <span class="type">boolean</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Determines if the sphere is above the XY space of the box.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>true if the sphere is above the XY space of the box, false
+otherwise.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>sphere</code>
+        
+        
+            &mdash; <span><p>The sphere</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">projOBB</span>
+        (
+
+
+    
+    
+        crsIn:
+            <span class="type">ProjectionLike</span>, 
+    
+        crsOut:
+            <span class="type">ProjectionLike</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Project the OBB in a specified crs.
+The OBB new position will be the initial OBB center
+projected at z=0 in the initial crs.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>crsIn</code>
+        
+        
+            &mdash; <span><p>The initial crs (at the creation of the OBB)</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>crsOut</code>
+        
+        
+            &mdash; <span><p>The crs in which we want the obb to be projected</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">setFromExtent</span>
+        (
+
+
+    
+    
+        extent:
+            <span class="type"><a onclick="window.parent.goTo('api/Geographic/Extent.html','api/Geographic/Extent')" title="Extent">Extent</a></span>, 
+    
+        minHeight:
+            <span class="type">number</span>, 
+    
+        maxHeight:
+            <span class="type">number</span>
+    
+
+)
+        :
+            
+                <span class="type">this</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Computes the OBB from an extent.
+The OBB resulted can be only in the system 'EPSG:3946'.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>return this object</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>extent</code>
+        
+        
+            &mdash; <span><p>The extent (with crs 'EPSG:4326') to compute oriented
+bounding box</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>minHeight</code>
+        (optional)
+        
+            &mdash; <span><p>The minimum height of OBB</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>maxHeight</code>
+        (optional)
+        
+            &mdash; <span><p>The maximum height of OBB</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
+        <span class="method-name">updateZ</span>
+        (
+
+
+    
+    
+        elevation:
+            <span class="type">Object</span>
+    
+
+)
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Updates the z min, z max and z scale of oriented bounding box.</p>
+            </div>
+        
+    
+
+    
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>elevation</code>
+        (optional)
+        
+            &mdash; <span><p>Elevation parameters</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>elevation.min</code>
+        (optional)
+        
+            &mdash; <span><p>The minimum elevation</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>elevation.max</code>
+        (optional)
+        
+            &mdash; <span><p>The maximum elevation</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>elevation.scale</code>
+        (optional)
+        
+            &mdash; <span><p>The scale of the elevation</p></span>
+        
+
+        
+    </li>
+    
+    <li>
+        <code>elevation.geoidHeight</code>
+        (optional)
+        
+            &mdash; <span><p>The geoid height</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            
+        
+    
+
+    
+
+    
+
+    
+
+
+
+        <hr class="title-divider"/>
+        <h2>Source</h2>
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/packages/Main/src/Renderer/OBB.ts">
+            packages/Main/src/Renderer/OBB.ts
+        </a>
+
+
+
+
+</article>
+
+</section>
+
+<script> prettyPrint(); </script>
+<script src="../../scripts/linenumber.js"> </script>
+</body>
+</html>
