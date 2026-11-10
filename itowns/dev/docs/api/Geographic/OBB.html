@@ -121,18 +121,29 @@ Default is ( - Infinity, - Infinity, - Infinity ).</p></span>
     
 
 )
+        :
+            
+                <span class="type">this</span>
+
+            
         
     </h3>
 
     
         
             <div class="description">
-                <p>Clamped the OBB on the z axes of the OBB.box3D.</p>
+                <p>Clamped the OBB natBox on the z axes.
+/!\ If the box3 and the values don't intersect
+the initial box is kept.</p>
             </div>
         
     
 
     
+                <h4>Returns</h4>
+                
+                    <p>The new OBB clamped on z.</p>
+                
 
     
         <h4>Parameters</h4>
@@ -317,7 +328,8 @@ otherwise.</p>
             <div class="description">
                 <p>Project the OBB in a specified crs.
 The OBB new position will be the initial OBB center
-projected at z=0 in the initial crs.</p>
+projected at z=0 in the initial crs.
+It doesn't modified the initial value of the OBB (this.natBox)</p>
             </div>
         
     
