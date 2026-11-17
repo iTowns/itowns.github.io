@@ -704,11 +704,6 @@ generate a list of nodes to update.</p></span>
     
 
 )
-        :
-            
-                <span class="type">Promise</span>
-
-            
         
     </h3>
 
@@ -726,10 +721,6 @@ current node and the view of the context will be notified of this change.</p>
     
 
     
-                <h4>Returns</h4>
-                
-                    <p>{ description_of_the_return_value }</p>
-                
 
     
         <h4>Parameters</h4>
@@ -781,9 +772,6 @@ current node and the view of the context will be notified of this change.</p>
         context:
             <span class="type">object</span>, 
     
-        layer:
-            <span class="type"><a onclick="window.parent.goTo('api/Layer/PlanarLayer.html','api/Layer/PlanarLayer')" title="PlanarLayer">PlanarLayer</a></span>, 
-    
         node:
             <span class="type"><a onclick="window.parent.goTo('api/Base/TileMesh.html','api/Base/TileMesh')" title="TileMesh">TileMesh</a></span>
     
@@ -824,16 +812,6 @@ current node and the view of the context will be notified of this change.</p>
         
         
             &mdash; <span><p>The context of the update; see the MainLoop for more informations.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>layer</code>
-        
-        
-            &mdash; <span><p>This layer, parameter to be removed.</p></span>
         
 
         
@@ -954,94 +932,6 @@ have been aligned.</p></span>
         
     
 
-    
-        <hr class="title-divider"/>
-        <h2>Static Methods</h2>
-        
-            
-
-<div class="method">
-    <h3>
-        <span class="method-name">hasEnoughTexturesToSubdivide</span>
-        (
-
-
-    
-    
-        context:
-            <span class="type">object</span>, 
-    
-        node:
-            <span class="type"><a onclick="window.parent.goTo('api/Base/TileMesh.html','api/Base/TileMesh')" title="TileMesh">TileMesh</a></span>
-    
-
-)
-        :
-            
-                <span class="type">boolean</span>
-
-            
-        
-    </h3>
-
-    
-        
-            <div class="description">
-                <p>Tell if a node has enough elevation or color textures to subdivide.
-Subdivision is prevented if:</p>
-<ul>
- <li>the node is covered by at least one elevation layer and if the node
- doesn't have an elevation texture yet</li>
- <li>a color texture is missing</li>
-</ul>
-            </div>
-        
-    
-
-    
-                <h4>Returns</h4>
-                
-                    <p>False if the node can not be subdivided, true
-otherwise.</p>
-                
-
-    
-        <h4>Parameters</h4>
-        
-
-<ul class="params">
-    
-    <li>
-        <code>context</code>
-        
-        
-            &mdash; <span><p>The context of the update; see the MainLoop for more informations.</p></span>
-        
-
-        
-    </li>
-    
-    <li>
-        <code>node</code>
-        
-        
-            &mdash; <span><p>The node to subdivide.</p></span>
-        
-
-        
-    </li>
-    
-</ul>
-
-    
-
-    
-        
-    
-</div>
-
-            
-        
     
 
     

@@ -337,6 +337,71 @@ example</a>.</p>
 
 <div class="method">
     <h3>
+        <span class="method-name">addRasterTile</span>
+        (
+
+
+    
+    
+        node:
+            <span class="type"><a onclick="window.parent.goTo('api/Base/TileMesh.html','api/Base/TileMesh')" title="TileMesh">TileMesh</a></span>
+    
+
+)
+        :
+            
+                <span class="type">RasterElevationTile</span>
+
+            
+        
+    </h3>
+
+    
+        
+            <div class="description">
+                <p>Setup RasterElevationTile added to TileMesh. This RasterElevationTile handles
+the elevation texture to displace TileMesh vertices.</p>
+            </div>
+        
+    
+
+    
+                <h4>Returns</h4>
+                
+                    <p>The raster elevation node added.</p>
+                
+
+    
+        <h4>Parameters</h4>
+        
+
+<ul class="params">
+    
+    <li>
+        <code>node</code>
+        
+        
+            &mdash; <span><p>The node to apply new RasterElevationTile;</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+    
+
+    
+        
+    
+</div>
+
+            <hr/>
+        
+            
+
+<div class="method">
+    <h3>
         <span class="method-name">delete</span>
         (
 
@@ -392,11 +457,17 @@ example</a>.</p>
 
 <div class="method">
     <h3>
-        <span class="method-name">setupRasterNode</span>
+        <span class="method-name">update</span>
         (
 
 
     
+    
+        context:
+            <span class="type">object</span>, 
+    
+        layer:
+            <span class="type">RasterLayer</span>, 
     
         node:
             <span class="type"><a onclick="window.parent.goTo('api/Base/TileMesh.html','api/Base/TileMesh')" title="TileMesh">TileMesh</a></span>
@@ -405,7 +476,7 @@ example</a>.</p>
 )
         :
             
-                <span class="type">RasterElevationTile</span>
+                <span class="type">Promise.&lt;void>|undefined</span>
 
             
         
@@ -414,8 +485,8 @@ example</a>.</p>
     
         
             <div class="description">
-                <p>Setup RasterElevationTile added to TileMesh. This RasterElevationTile handles
-the elevation texture to displace TileMesh vertices.</p>
+                <p>Updates raster data for a node if the layer is active and data is available.
+Creates or recreates the raster tile when needed, then triggers loading.</p>
             </div>
         
     
@@ -423,7 +494,7 @@ the elevation texture to displace TileMesh vertices.</p>
     
                 <h4>Returns</h4>
                 
-                    <p>The raster elevation node added.</p>
+                    <p>A loading promise when an update is scheduled.</p>
                 
 
     
@@ -433,10 +504,47 @@ the elevation texture to displace TileMesh vertices.</p>
 <ul class="params">
     
     <li>
+        <code>context</code>
+        
+        
+            &mdash; <span><p>Update context.</p></span>
+        
+
+        
+            
+
+<ul class="params">
+    
+    <li>
+        <code>context.view</code>
+        
+        
+            &mdash; <span><p>Active view used to schedule loading.</p></span>
+        
+
+        
+    </li>
+    
+</ul>
+
+        
+    </li>
+    
+    <li>
+        <code>layer</code>
+        
+        
+            &mdash; <span><p>Current raster layer.</p></span>
+        
+
+        
+    </li>
+    
+    <li>
         <code>node</code>
         
         
-            &mdash; <span><p>The node to apply new RasterElevationTile;</p></span>
+            &mdash; <span><p>Tile node to update.</p></span>
         
 
         

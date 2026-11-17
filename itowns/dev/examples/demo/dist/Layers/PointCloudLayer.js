@@ -22,9 +22,9 @@ export const PointCloudLayer = {
           ...options
         };
         PointCloudLayer.cachedLayer = new itowns.EntwinePointTileLayer(PointCloudLayer.id, config);
-
-        // @ts-expect-error mode property undefined
-        PointCloudLayer.cachedLayer.material.mode = itowns.PNTS_MODE.COLOR;
+        Object.assign(PointCloudLayer.cachedLayer.material, {
+          mode: itowns.PNTS_MODE.COLOR
+        });
         return PointCloudLayer.cachedLayer;
       })();
     }
